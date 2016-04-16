@@ -21,7 +21,7 @@ export class DotField implements IGameObject {
     }
 
     update(lastDrawModifier) {
-        // add new object TODO: random and canvas size
+        /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
         var o = new Coordinate(Math.random() * 512, this.starty );
         this.fieldObjects.push(o);
         // move objects
