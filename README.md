@@ -14,15 +14,12 @@ Each has own characteristic, weapons (lasers, phasers, bullets, missiles), defen
 Planets:
 Build mines, factories, make weapons, ships, defenses.
 
-
-
 Eventually to involve trade, inter solar system exploration, mining.
-
-
-
 
 Written in Typescript, using visual Studio Code and using Requirejs to load exported Modules.
 
+Dependencies:
+npm install requirejs
 
 Todo
 
