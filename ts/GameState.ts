@@ -1,5 +1,6 @@
 import { DrawContext} from "./Common/DrawContext";
-import { IGameObject, StaticGameObject, MovingGameObject, Ship } from "./Common/GameObject";
+import { IGameObject, StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { Ship } from "./Common/Ship";
 
 import { DotField } from "./DotField";
 

@@ -1,5 +1,6 @@
 import { Canvas } from "./Common/Canvas";
-import { StaticGameObject, MovingGameObject, Ship } from "./Common/GameObject";
+import { StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { Ship } from "./Common/Ship";
 import { Polygon } from "./Common/DisplayObject";
 import { Coordinate } from "./Common/Coordinate";
 import { EventLoop } from "./Common/EventLoop";
