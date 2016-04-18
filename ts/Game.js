@@ -1,4 +1,4 @@
-define(["require", "exports", "./Common/Canvas", "./Ship", "./Common/DisplayObject", "./Common/Coordinate", "./Common/EventLoop", "./DotField", "./GameState"], function (require, exports, Canvas_1, Ship_1, DisplayObject_1, Coordinate_1, EventLoop_1, DotField_1, GameState_1) {
+define(["require", "exports", "./Common/Canvas", "./Common/GameObject", "./Ship", "./Common/DisplayObject", "./Common/Coordinate", "./Common/EventLoop", "./DotField", "./GameState"], function (require, exports, Canvas_1, GameObject_1, Ship_1, DisplayObject_1, Coordinate_1, EventLoop_1, DotField_1, GameState_1) {
     "use strict";
     var Game = (function () {
         function Game() {
@@ -16,7 +16,9 @@ define(["require", "exports", "./Common/Canvas", "./Ship", "./Common/DisplayObje
             //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
             var field2 = new DotField_1.DotField(-1, 0, 0, -16, 1, 1);
             //var field3 = new DotField(512, 200, 8, 1, 1, 1);
-            var gameState = new GameState_1.PlayGameState(ship, [field2]);
+            var objects = new GameObject_1.GameObjectArray();
+            objects.add(field2);
+            var gameState = new GameState_1.PlayGameState(ship, objects);
             var gameloop = new EventLoop_1.EventLoop(window, canvas, gameState);
             console.log(ship.toString());
             gameloop.loop();

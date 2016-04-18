@@ -1,5 +1,5 @@
 import { DrawContext} from "./Common/DrawContext";
-import { IGameObject, StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { IGameObject, StaticGameObject, MovingGameObject, GameObjectArray } from "./Common/GameObject";
 import { BasicShip } from "./Ship"
 
 import { DotField } from "./DotField";
@@ -15,9 +15,9 @@ export interface IGameState
 
 export class PlayGameState implements IGameState {
     player : BasicShip;
-    objects : IGameObject[];
+    objects : GameObjectArray;
     
-    constructor(player : BasicShip, objects : IGameObject[]) {
+    constructor(player : BasicShip, objects : GameObjectArray) {
         this.player = player;
         this.objects = objects;
 
@@ -25,10 +25,7 @@ export class PlayGameState implements IGameState {
 
     update(lastDrawModifier : number) {
         this.player.update(lastDrawModifier);
-        for (var index = 0; index < this.objects.length; index++) {
-            var element = this.objects[index];
-            element.update(lastDrawModifier);
-        }
+        this.objects.update(lastDrawModifier);
     }
 
     input(keys : () => Array<number>, lastDrawModifier : number) {
@@ -54,10 +51,7 @@ export class PlayGameState implements IGameState {
     display(drawingContext : DrawContext) {
         drawingContext.clear();
         this.player.display(drawingContext);
-        for (var index = 0; index < this.objects.length; index++) {
-            var element = this.objects[index];
-            element.display(drawingContext);
-        }
+        this.objects.display(drawingContext);
     }
     
     hasEnded() : boolean {

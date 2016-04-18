@@ -62,13 +62,13 @@ export class MovingGameObject extends StaticGameObject{
 }
 
 export class GameObjectArray implements IGameObject {
-    private array : Array<MovingGameObject>;
+    private array : Array<IGameObject>;
     
     constructor(){
         this.array = [];
     }
     
-    add(o : MovingGameObject){
+    add(o : IGameObject){
         this.array.push(o);
     }
     

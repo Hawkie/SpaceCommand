@@ -7,10 +7,7 @@ define(["require", "exports"], function (require, exports) {
         }
         PlayGameState.prototype.update = function (lastDrawModifier) {
             this.player.update(lastDrawModifier);
-            for (var index = 0; index < this.objects.length; index++) {
-                var element = this.objects[index];
-                element.update(lastDrawModifier);
-            }
+            this.objects.update(lastDrawModifier);
         };
         PlayGameState.prototype.input = function (keys, lastDrawModifier) {
             var k = keys();
@@ -34,10 +31,7 @@ define(["require", "exports"], function (require, exports) {
         PlayGameState.prototype.display = function (drawingContext) {
             drawingContext.clear();
             this.player.display(drawingContext);
-            for (var index = 0; index < this.objects.length; index++) {
-                var element = this.objects[index];
-                element.display(drawingContext);
-            }
+            this.objects.display(drawingContext);
         };
         PlayGameState.prototype.hasEnded = function () {
             return false;
