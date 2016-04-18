@@ -61,24 +61,28 @@ export class MovingGameObject extends StaticGameObject{
     }
 }
 
-export class Ship extends MovingGameObject {
-    thrustPower : number;
-    rotationalPower : number;
-    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        super(displayObject, location, velx, vely, angle, spin);
-        this.thrustPower = 16;
-        this.rotationalPower = 64;
+export class GameObjectArray implements IGameObject {
+    private array : Array<MovingGameObject>;
+    
+    constructor(){
+        this.array = [];
     }
     
-    thrust(lastTimeModifier : number){
-        this.angularThrust(this.thrustPower * lastTimeModifier)
+    add(o : MovingGameObject){
+        this.array.push(o);
     }
     
-    rotateLeft(lastTimeModifier : number){
-        this.angle -= this.rotationalPower * lastTimeModifier;
+    update(lastTimeModifier: number){
+        for(var i = 0; i< this.array.length;i++) {
+            var projectile = this.array[i];
+            projectile.update(lastTimeModifier);
+        };
     }
     
-    rotateRight(lastTimeModifier : number){
-        this.angle += this.rotationalPower * lastTimeModifier;
+    display(drawingContext : DrawContext){
+        for(var i = 0; i< this.array.length;i++) {
+            var projectile = this.array[i];
+            projectile.display(drawingContext);
+        };
     }
 }

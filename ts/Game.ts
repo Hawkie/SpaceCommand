@@ -1,5 +1,6 @@
 import { Canvas } from "./Common/Canvas";
-import { StaticGameObject, MovingGameObject, Ship } from "./Common/GameObject";
+import { StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { BasicShip } from "./Ship"
 import { Polygon } from "./Common/DisplayObject";
 import { Coordinate } from "./Common/Coordinate";
 import { EventLoop } from "./Common/EventLoop";
@@ -10,7 +11,7 @@ import { PlayGameState } from "./GameState"
 
 export class Game {
 
-    // globals are document and window
+    // globals are doc and window
     run(window, document) {
         console.log("Game Run()");
         //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
@@ -19,7 +20,7 @@ export class Game {
         let points = new Array<Coordinate>();
         points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var poly = new Polygon(points)
-        let ship = new Ship(poly, new Coordinate(256, 240), 0, 0, 0, 0);
+        let ship = new BasicShip(poly, new Coordinate(256, 240), 0, 0, 0, 0);
         //var ship = new RotatingPolygon(SHIPPOINTS, 256, 0, 240, 0, 0, 0);
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var field2 = new DotField(-1, 0, 0, -16, 1, 1);

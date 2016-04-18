@@ -26,9 +26,10 @@ define(["require", "exports"], function (require, exports) {
             if (k.indexOf(39) > -1) {
                 this.player.rotateRight(lastDrawModifier);
             }
-            // // space bar (shoot)
-            // if (32 in keysDown) {
-            // }
+            // space bar (shoot)
+            if (k.indexOf(32) > -1) {
+                this.player.shootPrimary(lastDrawModifier);
+            }
         };
         PlayGameState.prototype.display = function (drawingContext) {
             drawingContext.clear();

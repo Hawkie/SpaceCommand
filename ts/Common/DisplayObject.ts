@@ -18,3 +18,17 @@ export class Polygon implements IDisplayObject
     }
     
 }
+
+export class Rect implements IDisplayObject
+{
+    sizeX : number;
+    sizeY : number;
+    constructor(sizeX : number, sizeY : number){
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+    }
+    
+    draw(location : Coordinate, drawingContext : DrawContext) {
+        drawingContext.drawRect(location.x, location.y, this.sizeX, this.sizeY);
+    }
+}

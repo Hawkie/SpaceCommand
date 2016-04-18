@@ -11,5 +11,16 @@ define(["require", "exports"], function (require, exports) {
         return Polygon;
     }());
     exports.Polygon = Polygon;
+    var Rect = (function () {
+        function Rect(sizeX, sizeY) {
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+        }
+        Rect.prototype.draw = function (location, drawingContext) {
+            drawingContext.drawRect(location.x, location.y, this.sizeX, this.sizeY);
+        };
+        return Rect;
+    }());
+    exports.Rect = Rect;
 });
 //# sourceMappingURL=DisplayObject.js.map

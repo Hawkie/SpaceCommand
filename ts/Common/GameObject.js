@@ -48,24 +48,29 @@ define(["require", "exports", "./Transforms"], function (require, exports, Trans
         return MovingGameObject;
     }(StaticGameObject));
     exports.MovingGameObject = MovingGameObject;
-    var Ship = (function (_super) {
-        __extends(Ship, _super);
-        function Ship(displayObject, location, velx, vely, angle, spin) {
-            _super.call(this, displayObject, location, velx, vely, angle, spin);
-            this.thrustPower = 16;
-            this.rotationalPower = 64;
+    var GameObjectArray = (function () {
+        function GameObjectArray() {
+            this.array = [];
         }
-        Ship.prototype.thrust = function (lastTimeModifier) {
-            this.angularThrust(this.thrustPower * lastTimeModifier);
+        GameObjectArray.prototype.add = function (o) {
+            this.array.push(o);
         };
-        Ship.prototype.rotateLeft = function (lastTimeModifier) {
-            this.angle -= this.rotationalPower * lastTimeModifier;
+        GameObjectArray.prototype.update = function (lastTimeModifier) {
+            for (var i = 0; i < this.array.length; i++) {
+                var projectile = this.array[i];
+                projectile.update(lastTimeModifier);
+            }
+            ;
         };
-        Ship.prototype.rotateRight = function (lastTimeModifier) {
-            this.angle += this.rotationalPower * lastTimeModifier;
+        GameObjectArray.prototype.display = function (drawingContext) {
+            for (var i = 0; i < this.array.length; i++) {
+                var projectile = this.array[i];
+                projectile.display(drawingContext);
+            }
+            ;
         };
-        return Ship;
-    }(MovingGameObject));
-    exports.Ship = Ship;
+        return GameObjectArray;
+    }());
+    exports.GameObjectArray = GameObjectArray;
 });
 //# sourceMappingURL=GameObject.js.map

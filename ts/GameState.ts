@@ -1,5 +1,6 @@
 import { DrawContext} from "./Common/DrawContext";
-import { IGameObject, StaticGameObject, MovingGameObject, Ship } from "./Common/GameObject";
+import { IGameObject, StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { BasicShip } from "./Ship"
 
 import { DotField } from "./DotField";
 
@@ -13,10 +14,10 @@ export interface IGameState
 }
 
 export class PlayGameState implements IGameState {
-    player : Ship;
+    player : BasicShip;
     objects : IGameObject[];
     
-    constructor(player : Ship, objects : IGameObject[]) {
+    constructor(player : BasicShip, objects : IGameObject[]) {
         this.player = player;
         this.objects = objects;
 
@@ -44,10 +45,10 @@ export class PlayGameState implements IGameState {
         if (k.indexOf(39) > -1) { // Player holding right
             this.player.rotateRight(lastDrawModifier);
         }
-        // // space bar (shoot)
-        // if (32 in keysDown) {
-           
-        // }
+        // space bar (shoot)
+        if (k.indexOf(32) > -1) {
+            this.player.shootPrimary(lastDrawModifier);   
+        }
     }
 
     display(drawingContext : DrawContext) {
