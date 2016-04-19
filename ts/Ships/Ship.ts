@@ -1,18 +1,27 @@
 import {Coordinate } from "../Common/Coordinate";
-import { IDisplayObject } from "../Common/DisplayObject";
+import { IDisplayObject, Polygon } from "../Common/DisplayObject";
 import { MovingGameObject, GameObjectArray } from "../Common/GameObject";
 
 import { DrawContext } from "../Common/DrawContext"
 import { Transforms } from "../Common/Transforms"
-import { Bullet } from "../Weapons/Projectile";
+import { Bullet } from "../Weapons/Bullet";
 import { IWeapon, BasicGun } from "../Weapons/Weapon"
 
-export class BasicShip extends MovingGameObject {
+//var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
+
+export interface IShip {
+    thrust(lastTimeModifier : number);
+}
+
+export class BasicShip extends MovingGameObject implements IShip {
     thrustPower : number;
     rotationalPower : number;
     primaryWeapon : IWeapon;
-    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        super(displayObject, location, velx, vely, angle, spin);
+    constructor(location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
+        let points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        var triangleShip = new Polygon(points)
+        
+        super(triangleShip, location, velx, vely, angle, spin);
         this.thrustPower = 16;
         this.rotationalPower = 64;
         this.primaryWeapon = new BasicGun();
@@ -44,7 +53,6 @@ export class BasicShip extends MovingGameObject {
     }
     
     shootPrimary(lastTimeModifier : number){
-        
         this.primaryWeapon.pullTrigger(this.location.x, this.location.y, this.angle);
     }
 }

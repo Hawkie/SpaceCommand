@@ -1,6 +1,6 @@
 import { IGameObject, GameObjectArray } from "../Common/GameObject";
 import { DrawContext} from "../Common/DrawContext";
-import { Bullet } from "./Projectile"
+import { Bullet } from "./Bullet"
 import { Coordinate } from "../Common/Coordinate"
 
 export interface IWeapon extends IGameObject{
@@ -41,7 +41,7 @@ export class BasicGun implements IWeapon {
         var secElapsed = (now - this.lastFired)/1000;
         if (secElapsed >= 1/this.fireRatePerSecond)
         {
-            var b = new Bullet(new Coordinate(x, y), shipAngle + this.offsetAngle);
+            var b = new Bullet(new Coordinate(x, y), shipAngle + this.offsetAngle, this.velocity);
             this.projectiles.add(b); 
             this.lastFired = now;
         }

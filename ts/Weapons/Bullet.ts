@@ -5,11 +5,11 @@ import { Transforms } from "../Common/Transforms"
 import { DrawContext } from "../Common/DrawContext"
 
 export class Bullet extends MovingGameObject {
-    static velocity : number = 128;
-    constructor(location : Coordinate, angle : number){
+    
+    constructor(location : Coordinate, angle : number, velocity : number){
         let displayObject = new Rect(1,1);
         
-        var vector = Transforms.toVector(angle, Bullet.velocity)
+        var vector = Transforms.toVector(angle, velocity)
         super(displayObject, location, vector.x, vector.y, 0, 0);
     }
 }
