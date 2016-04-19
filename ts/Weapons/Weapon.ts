@@ -1,4 +1,4 @@
-import { IGameObject, GameObjectArray } from "../Common/GameObject";
+import { IGameObject, IHittable, GameObjectArray } from "../Common/GameObject";
 import { DrawContext} from "../Common/DrawContext";
 import { Bullet } from "./Bullet"
 import { Coordinate } from "../Common/Coordinate"
@@ -34,9 +34,13 @@ export class BasicGun implements IWeapon {
      
      display(drawingContext : DrawContext){
          this.projectiles.display(drawingContext);
-     }   
+     }
+     
+     hitTest(hitableObjects : Array<IHittable>){
+         
+     }
           
-    pullTrigger(x : number, y : number, shipAngle : number) {
+     pullTrigger(x : number, y : number, shipAngle : number) {
         var now = Date.now();
         var secElapsed = (now - this.lastFired)/1000;
         if (secElapsed >= 1/this.fireRatePerSecond)

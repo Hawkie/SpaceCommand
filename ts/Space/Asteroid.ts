@@ -30,10 +30,11 @@ export class Asteroid extends MovingGameObject {
         this.asteroid1 = asteroid1;
     }
     
-    playerBulletHitTest(bullet : Coordinate){
-        // for now, we accelerate the asteroid when hit
+    hitTest(bullet : Coordinate){
+        // for now, we accelerate and spin the asteroid when hit
         if (this.asteroid1.hasPoint(this.location, bullet)) {
             this.velx +=2;
+            this.spin +=1;
         }
     }
 }

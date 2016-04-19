@@ -17,4 +17,10 @@ export class SparseArray<T> extends Array<T> {
             this.splice(index,1);
         }
     }
+    
+    contains(item : T) : boolean {
+        if (this.indexOf(item) > -1)
+            return true;
+        return false;
+    }
 }

@@ -9,6 +9,11 @@ export interface IGameObject
     display(drawingContext : DrawContext);
 }
 
+export interface IHittable
+{
+    hitTest(testPoint : Coordinate);
+}
+
 export class StaticGameObject implements IGameObject{
     
     displayObject : IDisplayObject;
@@ -94,15 +99,15 @@ export class GameObjectArray implements IGameObject {
     
     update(lastTimeModifier: number){
         for(var i = 0; i< this.array.length;i++) {
-            var projectile = this.array[i];
-            projectile.update(lastTimeModifier);
+            var item = this.array[i];
+            item.update(lastTimeModifier);
         };
     }
     
     display(drawingContext : DrawContext){
         for(var i = 0; i< this.array.length;i++) {
-            var projectile = this.array[i];
-            projectile.display(drawingContext);
+            var item = this.array[i];
+            item.display(drawingContext);
         };
     }
 }
