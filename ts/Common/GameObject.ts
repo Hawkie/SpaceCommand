@@ -61,6 +61,26 @@ export class MovingGameObject extends StaticGameObject{
     }
 }
 
+// TODO: Implement actual gravity
+export class GravityGameObject extends MovingGameObject{
+    mass : number;
+    gravitationalPull : number;
+    weight : number;
+    
+    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number, mass : number, gravitationalPull : number){
+        super(displayObject, location, velx, vely, angle, spin);
+        this.mass = mass;
+        this.gravitationalPull = gravitationalPull;
+        this.weight = mass * gravitationalPull;
+    }
+    
+    update(timeModifier : number){
+        super.update(timeModifier);
+        
+        this.location.y -= this.weight * timeModifier;
+    }
+}
+
 export class GameObjectArray implements IGameObject {
     private array : Array<IGameObject>;
     
