@@ -1,14 +1,14 @@
 import { Canvas } from "./Common/Canvas";
 
-import { StaticGameObject, MovingGameObject, GameObjectArray } from "./Common/GameObject";
-import { BasicShip } from "./Ship"
+import { IGameObject, StaticGameObject, MovingGameObject, GameObjectArray } from "./Common/GameObject";
+import { BasicShip } from "./Ships/Ship"
 
 import { Polygon } from "./Common/DisplayObject";
 import { Coordinate } from "./Common/Coordinate";
 import { EventLoop } from "./Common/EventLoop";
 
-import { DotField } from "./DotField";
-import { PlayGameState } from "./GameState"
+import { DotField } from "./Space/DotField";
+import { PlayGameState } from "./States/GameState"
 
 
 export class Game {

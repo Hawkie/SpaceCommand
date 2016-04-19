@@ -1,29 +1,31 @@
-import {Coordinate } from "./Common/Coordinate";
-import { IDisplayObject } from "./Common/DisplayObject";
-import { MovingGameObject, GameObjectArray } from "./Common/GameObject";
-import { Bullet } from "./Projectile";
-import { DrawContext } from "./Common/DrawContext"
-import { Transforms } from "./Common/Transforms"
+import {Coordinate } from "../Common/Coordinate";
+import { IDisplayObject } from "../Common/DisplayObject";
+import { MovingGameObject, GameObjectArray } from "../Common/GameObject";
+
+import { DrawContext } from "../Common/DrawContext"
+import { Transforms } from "../Common/Transforms"
+import { Bullet } from "../Weapons/Projectile";
+import { IWeapon, BasicGun } from "../Weapons/Weapon"
 
 export class BasicShip extends MovingGameObject {
     thrustPower : number;
     rotationalPower : number;
-    projectiles : GameObjectArray;
+    primaryWeapon : IWeapon;
     constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
         super(displayObject, location, velx, vely, angle, spin);
         this.thrustPower = 16;
         this.rotationalPower = 64;
-        this.projectiles = new GameObjectArray();
+        this.primaryWeapon = new BasicGun();
         
     }
     
     update(lastTimeModifier : number){
-        this.projectiles.update(lastTimeModifier);
+        this.primaryWeapon.update(lastTimeModifier);
         super.update(lastTimeModifier);
     }
     
     display(drawingContext : DrawContext){
-        this.projectiles.display(drawingContext);
+        this.primaryWeapon.display(drawingContext);
         super.display(drawingContext);    
     }
     
@@ -43,8 +45,6 @@ export class BasicShip extends MovingGameObject {
     
     shootPrimary(lastTimeModifier : number){
         
-        var b = new Bullet(new Coordinate(this.location.x, this.location.y), this.angle);
-        
-        this.projectiles.add(b);
+        this.primaryWeapon.pullTrigger(this.location.x, this.location.y, this.angle);
     }
 }

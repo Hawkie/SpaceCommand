@@ -1,8 +1,8 @@
-import { DrawContext} from "./Common/DrawContext";
-import { IGameObject, StaticGameObject, MovingGameObject, GameObjectArray } from "./Common/GameObject";
-import { BasicShip } from "./Ship"
+import { DrawContext} from "../Common/DrawContext";
+import { IGameObject, StaticGameObject, MovingGameObject, GameObjectArray } from "../Common/GameObject";
+import { BasicShip } from "../Ships/Ship"
 
-import { DotField } from "./DotField";
+import { DotField } from "../Space/DotField";
 
 
 export interface IGameState

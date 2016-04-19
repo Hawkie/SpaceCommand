@@ -1,5 +1,5 @@
-import { IGameObject } from "./Common/GameObject";
-import { Coordinate } from "./Common/Coordinate";
+import { IGameObject } from "../Common/GameObject";
+import { Coordinate } from "../Common/Coordinate";
 
 export class DotField implements IGameObject {
     fieldObjects : Coordinate[];

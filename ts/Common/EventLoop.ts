@@ -1,5 +1,5 @@
 import { Canvas } from "./Canvas";
-import { IGameState } from "./GameState";
+import { IGameState } from "../States/GameState";
 import { DrawContext } from "./DrawContext";
 import { SparseArray } from "../Collections/SparseArray";
 

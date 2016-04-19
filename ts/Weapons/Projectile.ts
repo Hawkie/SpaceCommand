@@ -1,8 +1,8 @@
-import { IGameObject, MovingGameObject } from "./Common/GameObject"
-import { IDisplayObject, Rect } from "./Common/DisplayObject"
-import { Coordinate} from "./Common/Coordinate"
-import { Transforms } from "./Common/Transforms"
-import { DrawContext } from "./Common/DrawContext"
+import { IGameObject, MovingGameObject } from "../Common/GameObject"
+import { IDisplayObject, Rect } from "../Common/DisplayObject"
+import { Coordinate} from "../Common/Coordinate"
+import { Transforms } from "../Common/Transforms"
+import { DrawContext } from "../Common/DrawContext"
 
 export class Bullet extends MovingGameObject {
     static velocity : number = 128;
