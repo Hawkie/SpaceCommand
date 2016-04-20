@@ -2,20 +2,20 @@ import { IGameState } from "./GameState";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { SparseArray } from "../Collections/SparseArray";
 import { DrawContext} from "../Common/DrawContext";
-import { GameObjectArray } from "../Common/GameObject";
+import { IGameObject } from "../Common/GameObject"
 
-export class LandingState implements IGameState{
+export class LandingState implements IGameState {
     player : LandingBasicShip;
-    objects : GameObjectArray;
+    objects : Array<IGameObject>;
     
-    constructor(player : LandingBasicShip, objects : GameObjectArray){
+    constructor(player : LandingBasicShip, objects : Array<IGameObject>){
         this.player = player;
         this.objects = objects;
     }
     
     update(lastDrawModifier : number){
         this.player.update(lastDrawModifier);
-        this.objects.update(lastDrawModifier);
+        this.objects.forEach(o => o.update(lastDrawModifier));
     }
     
     input(keys : () => SparseArray<number>, lastDrawModifier : number) {
@@ -37,8 +37,10 @@ export class LandingState implements IGameState{
     display(drawingContext : DrawContext) {
         drawingContext.clear();
         this.player.display(drawingContext);
-        this.objects.display(drawingContext);
+        this.objects.forEach(o => o.display(drawingContext));
     }
+    
+    tests(){}
     
     hasEnded() : boolean {
         return false;
