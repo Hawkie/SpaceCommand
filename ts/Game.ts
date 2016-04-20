@@ -34,7 +34,7 @@ export class Game {
         objects.add(asteroid);
         
         //var gameState = new PlayGameState(ship, objects);
-        var gameState = new LandingState(landingShip);
+        var gameState = new LandingState(landingShip, objects);
 
         var gameloop = new EventLoop(window, canvas, gameState);
         console.log(ship.toString());
