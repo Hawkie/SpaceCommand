@@ -1,7 +1,7 @@
 import { DrawContext } from "./DrawContext";
 import { IDisplayObject } from "./DisplayObject";
 import { Coordinate } from "./Coordinate";
-import { Transforms } from "./Transforms"
+import { Transforms } from "./Transforms";
 
 export interface IGameObject
 {
@@ -63,26 +63,6 @@ export class MovingGameObject extends StaticGameObject{
         let velchange = Transforms.toVector(this.angle, thrust);
         this.velx += velchange.x;
         this.vely += velchange.y;
-    }
-}
-
-// TODO: Implement actual gravity
-export class GravityGameObject extends MovingGameObject{
-    mass : number;
-    gravitationalPull : number;
-    weight : number;
-    
-    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number, mass : number, gravitationalPull : number){
-        super(displayObject, location, velx, vely, angle, spin);
-        this.mass = mass;
-        this.gravitationalPull = gravitationalPull;
-        this.weight = mass * gravitationalPull;
-    }
-    
-    update(timeModifier : number){
-        super.update(timeModifier);
-        
-        this.location.y -= this.weight * timeModifier;
     }
 }
 
