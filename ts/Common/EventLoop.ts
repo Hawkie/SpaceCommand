@@ -59,6 +59,7 @@ export class EventLoop {
             var now = Date.now();
             var delta = now - then;
             gs.display(dc);
+            gs.tests();
             gs.update(delta / 1000);
             gs.input(keys, delta / 1000);
             then = now;

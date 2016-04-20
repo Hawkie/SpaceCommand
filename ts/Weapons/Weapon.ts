@@ -1,10 +1,11 @@
-import { IGameObject, IHittable, GameObjectArray } from "../Common/GameObject";
+import { IGameObject, MovingGameObject } from "../Common/GameObject";
 import { DrawContext} from "../Common/DrawContext";
 import { Bullet } from "./Bullet"
 import { Coordinate } from "../Common/Coordinate"
 
 export interface IWeapon extends IGameObject{
     pullTrigger(x : number, y : number, angle : number);
+    projectiles : Array<MovingGameObject>;
     
 }
 
@@ -17,7 +18,7 @@ export class BasicGun implements IWeapon {
     
     // state
     lastFired : number;
-    projectiles : GameObjectArray;
+    projectiles : Array<MovingGameObject>;
     constructor(){
         this.fireRatePerSecond = 2;
         this.velocity = 128;
@@ -25,19 +26,15 @@ export class BasicGun implements IWeapon {
         // 0= infinite range
         this.range = 0;
         this.lastFired = 0;
-        this.projectiles = new GameObjectArray();
+        this.projectiles = [];
      }
      
      update(lastTimeModifier : number){
-         this.projectiles.update(lastTimeModifier);
+         this.projectiles.forEach(bullet => bullet.update(lastTimeModifier));
      }
      
      display(drawingContext : DrawContext){
-         this.projectiles.display(drawingContext);
-     }
-     
-     hitTest(hitableObjects : Array<IHittable>){
-         
+         this.projectiles.forEach(bullet => bullet.display(drawingContext));
      }
           
      pullTrigger(x : number, y : number, shipAngle : number) {
@@ -46,7 +43,7 @@ export class BasicGun implements IWeapon {
         if (secElapsed >= 1/this.fireRatePerSecond)
         {
             var b = new Bullet(new Coordinate(x, y), shipAngle + this.offsetAngle, this.velocity);
-            this.projectiles.add(b); 
+            this.projectiles.push(b);
             this.lastFired = now;
         }
     }

@@ -1,6 +1,6 @@
 import {Coordinate } from "../Common/Coordinate";
 import { IDisplayObject, Polygon } from "../Common/DisplayObject";
-import { MovingGameObject, GameObjectArray } from "../Common/GameObject";
+import { MovingGameObject } from "../Common/GameObject";
 
 import { DrawContext } from "../Common/DrawContext"
 import { Transforms } from "../Common/Transforms"

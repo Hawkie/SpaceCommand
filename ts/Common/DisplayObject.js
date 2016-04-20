@@ -6,7 +6,7 @@ define(["require", "exports"], function (require, exports) {
         }
         Polygon.prototype.hasPoint = function (location, testPoint) {
             var c = false;
-            for (var i = 0, j = this.points.length; i < this.points.length; i += 1) {
+            for (var i = 0, j = this.points.length - 1; i < this.points.length; i += 1) {
                 var px1 = this.points[i].x + location.x;
                 var px2 = this.points[j].x + location.x;
                 var py1 = this.points[i].y + location.y;

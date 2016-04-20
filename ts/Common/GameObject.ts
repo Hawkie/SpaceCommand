@@ -85,29 +85,3 @@ export class GravityGameObject extends MovingGameObject{
         this.location.y -= this.weight * timeModifier;
     }
 }
-
-export class GameObjectArray implements IGameObject {
-    private array : Array<IGameObject>;
-    
-    constructor(){
-        this.array = [];
-    }
-    
-    add(o : IGameObject){
-        this.array.push(o);
-    }
-    
-    update(lastTimeModifier: number){
-        for(var i = 0; i< this.array.length;i++) {
-            var item = this.array[i];
-            item.update(lastTimeModifier);
-        };
-    }
-    
-    display(drawingContext : DrawContext){
-        for(var i = 0; i< this.array.length;i++) {
-            var item = this.array[i];
-            item.display(drawingContext);
-        };
-    }
-}
