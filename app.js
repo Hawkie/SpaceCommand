@@ -22,5 +22,5 @@ requirejs.config({
 requirejs(["./ts/tests/tester"],
 function   (testerModule) {
     var tester = new testerModule.Tester();
-    tester.testVector();
+    tester.allTests();
 });
