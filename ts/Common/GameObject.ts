@@ -1,7 +1,7 @@
 import { DrawContext } from "./DrawContext";
 import { IDisplayObject } from "./DisplayObject";
 import { Coordinate } from "./Coordinate";
-import { Transforms } from "./Transforms"
+import { Transforms } from "./Transforms";
 
 export interface IGameObject
 {
