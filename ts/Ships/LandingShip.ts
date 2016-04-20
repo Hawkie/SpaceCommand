@@ -11,6 +11,7 @@ export interface ILandableShip
 export class LandingBasicShip extends MovingGameObject implements ILandableShip {
     thrustPower : number;
     leftRightSpeed : number;
+    leftRightSlowing : number;
     gravitationalPull : number;
     
     constructor(location : Coordinate){
@@ -20,6 +21,7 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
         super(triangleShip, location, 0, 0, 0, 0);
         this.thrustPower = 16;
         this.leftRightSpeed = 16;
+        this.leftRightSlowing = 0.2;
         this.gravitationalPull = 0.1;
     }
     
@@ -40,5 +42,12 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
     
     moveRight(){
         this.velx = this.leftRightSpeed;
+    }
+    
+    notMovingOnX(){
+        if(this.velx < 0)
+            this.velx += this.leftRightSlowing;
+        if(this.velx > 0)
+            this.velx -= this.leftRightSlowing;
     }
 }

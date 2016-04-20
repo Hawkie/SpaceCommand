@@ -30,7 +30,7 @@ export class LandingState implements IGameState{
             this.player.moveRight();
         }
         else{
-            this.player.velx = 0;
+            this.player.notMovingOnX();
         }
     }
     
