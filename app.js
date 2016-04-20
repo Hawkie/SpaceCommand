@@ -1,3 +1,7 @@
+// Press F5 in visual studio code to launch app.js with node
+// This file loads requirejs module first 
+// The specific module can then be loaded with requirejs([<module-path>], function(<module-name>))
+
 var requirejs = require('requirejs');
 
 requirejs.config({
@@ -16,7 +20,7 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs(["./ts/tests/tester"],
-function   (n) {
-    var t = new n.Tester();
-    t.test();
+function   (testerModule) {
+    var tester = new testerModule.Tester();
+    tester.test();
 });
