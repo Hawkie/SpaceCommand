@@ -13,6 +13,8 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
     leftRightSpeed : number;
     leftRightSlowing : number;
     gravitationalPull : number;
+    windSpeed : number;
+    windChangeChance : number;
     
     constructor(location : Coordinate){
         let points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
@@ -23,12 +25,22 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
         this.leftRightSpeed = 16;
         this.leftRightSlowing = 0.2;
         this.gravitationalPull = 0.1;
+        this.windSpeed = 0.25;
+        this.windChangeChance = 100;
     }
     
     update(timeModifier : number){
         super.update(timeModifier);
         
         this.vely += this.gravitationalPull;
+    }
+    
+    wind(blowingRight : boolean){
+        if(blowingRight){
+            this.velx += this.windSpeed;
+        }else{
+            this.velx -= this.windSpeed;
+        }
     }
     
     thrust(lastTimeModifier : number){
