@@ -12,6 +12,7 @@ import { DotField } from "./Space/DotField";
 import { Asteroid } from "./Space/Asteroid"
 import { PlayGameState } from "./States/GameState"
 import { LandingState } from "./States/LandingState";
+import { GuiText } from "./Gui/GuiText";
 
 
 export class Game {
@@ -29,7 +30,8 @@ export class Game {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var field2 = new DotField(-1, 0, 0, -16, 1, 1);
         //var field3 = new DotField(512, 200, 8, 1, 1, 1);
-        var objects : Array<IGameObject> = [field2];
+        var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var objects : Array<IGameObject> = [field2, text];
         var asteroids : Array<Asteroid> = [asteroid1];
 
         //var gameState = new PlayGameState(ship, objects, asteroids);
