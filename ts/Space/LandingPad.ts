@@ -23,8 +23,6 @@ export class LandingPad extends MovingGameObject{
     }
     
     hit(player : MovingGameObject){
-        //console.log("Landed!");
-        console.log(player.vely);
         if(player.vely > 0)
             player.vely = 0;
             player.velx = 0;
