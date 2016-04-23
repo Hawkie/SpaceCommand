@@ -6,10 +6,12 @@ export class LandingPad extends MovingGameObject{
     landingPadPolygon : Polygon;
     constructor(location : Coordinate){
         var points = [
-            new Coordinate(-20, -5),
-            new Coordinate(-20, 0),
-            new Coordinate(20, 0),
-            new Coordinate(20, -5)
+            new Coordinate(-10, -2),
+            new Coordinate(-13, 5),
+            new Coordinate(-10, 0),
+            new Coordinate(10, 0),
+            new Coordinate(13, 5),
+            new Coordinate(10, -2)
         ];
         var polygon = new Polygon(points);
         super(polygon, location, 0, 0, 0, 0);
@@ -25,5 +27,6 @@ export class LandingPad extends MovingGameObject{
         console.log(player.vely);
         if(player.vely > 0)
             player.vely = 0;
+            player.velx = 0;
     }
 }
