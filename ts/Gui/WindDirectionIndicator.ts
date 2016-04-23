@@ -10,23 +10,23 @@ export class WindDirectionIndicator extends GuiPolygon{
     blowingRight : boolean;
     
     constructor(location : Coordinate){
-        var pointsRight : Coordinate[] = [new Coordinate(-10, 10),
-                                         new Coordinate(10, 10),
-                                         new Coordinate(10, 20),
-                                         new Coordinate(25, 0),
-                                         new Coordinate(10, -20),
-                                         new Coordinate(10, -10),
-                                         new Coordinate(-10, -10),
-                                         new Coordinate(-10, 10)];
+        var pointsRight : Coordinate[] = [new Coordinate(-15, 10),
+                                         new Coordinate(15, 10),
+                                         new Coordinate(15, 20),
+                                         new Coordinate(30, 0),
+                                         new Coordinate(15, -20),
+                                         new Coordinate(15, -10),
+                                         new Coordinate(-15, -10),
+                                         new Coordinate(-15, 10)];
         
-        var pointsLeft : Coordinate[] = [new Coordinate(10, 10),
+        var pointsLeft : Coordinate[] = [new Coordinate(20, 10),
                                          new Coordinate(-10, 10),
                                          new Coordinate(-10, 20),
                                          new Coordinate(-25, 0),
                                          new Coordinate(-10, -20),
                                          new Coordinate(-10, -10),
-                                         new Coordinate(10, -10),
-                                         new Coordinate(10, 10)];
+                                         new Coordinate(20, -10),
+                                         new Coordinate(20, 10)];
         
         super(new Polygon(pointsRight), location);
         this.polygonRight = new Polygon(pointsRight);
