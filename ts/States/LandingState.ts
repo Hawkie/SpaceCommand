@@ -5,20 +5,20 @@ import { DrawContext} from "../Common/DrawContext";
 import { IGameObject } from "../Common/GameObject"
 import { Wind } from "../Space/Wind";
 import { Coordinate } from "../Common/Coordinate";
-import { LandingPad } from "../Space/LandingPad";
+import { PlanetSurface } from "../Space/PlanetSurface";
 
 export class LandingState implements IGameState {
     player : LandingBasicShip;
     objects : Array<IGameObject>;
     wind : Wind;
-    landingPad : LandingPad;
+    surface : PlanetSurface;
     
     constructor(player : LandingBasicShip, objects : Array<IGameObject>){
         this.player = player;
         this.objects = objects;
         this.wind = new Wind(new Coordinate(450,50), 0.3, 300);
-        this.landingPad = new LandingPad(new Coordinate(200, 400));
-        this.objects.push(this.landingPad);
+        this.surface = new PlanetSurface(new Coordinate(0, 400));
+        this.objects.push(this.surface);
     }
     
     update(lastDrawModifier : number){
@@ -51,9 +51,7 @@ export class LandingState implements IGameState {
     }
     
     tests(){
-        if(this.landingPad.hitTest(this.player.location)){
-            this.landingPad.hit(this.player);
-        }
+        this.surface.hitTest(this.player);
     }
     
     hasEnded() : boolean {

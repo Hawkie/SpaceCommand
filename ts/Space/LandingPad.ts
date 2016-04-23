@@ -7,10 +7,10 @@ export class LandingPad extends MovingGameObject{
     constructor(location : Coordinate){
         var points = [
             new Coordinate(-10, -2),
-            new Coordinate(-13, 5),
+            new Coordinate(-13, 20),
             new Coordinate(-10, 0),
             new Coordinate(10, 0),
-            new Coordinate(13, 5),
+            new Coordinate(13, 20),
             new Coordinate(10, -2)
         ];
         var polygon = new Polygon(points);
