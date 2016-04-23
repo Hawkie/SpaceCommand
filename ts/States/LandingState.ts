@@ -51,7 +51,11 @@ export class LandingState implements IGameState {
     }
     
     tests(){
-        this.surface.hitTest(this.player);
+        if(this.surface.hitTest(this.player.location))
+            this.surface.hit(this.player);
+        if(this.surface.landingPad.hitTest(this.player.location)){
+            this.surface.landingPad.hit(this.player);
+        }
     }
     
     hasEnded() : boolean {

@@ -6,6 +6,7 @@ import { DrawContext } from "../Common/DrawContext";
 
 export class PlanetSurface extends StaticGameObject{
     landingPad : LandingPad;
+    surfacePolygon : Polygon;
     
     xMin = 20;
     xMax = 40;
@@ -15,7 +16,8 @@ export class PlanetSurface extends StaticGameObject{
     constructor(location : Coordinate){
         super(null, location);
         this.landingPad = new LandingPad(new Coordinate(0,0)); // Temporarily place at (0,0) so this.generateSurface can position it
-        this.displayObject = new Polygon(this.generateSurface(600));
+        this.surfacePolygon = new Polygon(this.generateSurface(600));
+        this.displayObject = this.surfacePolygon;
     }
     
     generateSurface(surfaceLength : number) : Coordinate[]{
@@ -52,10 +54,14 @@ export class PlanetSurface extends StaticGameObject{
         this.landingPad.display(drawingContext);
     }
     
-    hitTest(player : MovingGameObject){
-        if(this.landingPad.hitTest(player.location)){
-            this.landingPad.hit(player);
-        }
+    hitTest(playerPos : Coordinate) : boolean{
+        return this.surfacePolygon.hasPoint(this.location, playerPos);
+    }
+    
+    hit(player : MovingGameObject){
+        player.vely = 0;
+        player.velx = 0;
+        console.log("Ship crashed!");
     }
     
     private random(min : number, max : number){
