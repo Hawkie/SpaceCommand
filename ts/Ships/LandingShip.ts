@@ -20,7 +20,7 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
         
         super(triangleShip, location, 0, 0, 0, 0);
         this.thrustPower = 16;
-        this.leftRightSpeed = 16;
+        this.leftRightSpeed = 1;
         this.leftRightSlowing = 0.2;
         this.gravitationalPull = 0.1;
     }
@@ -37,11 +37,11 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
     }
     
     moveLeft(){
-        this.velx = -this.leftRightSpeed;
+        this.velx -= this.leftRightSpeed;
     }
     
     moveRight(){
-        this.velx = this.leftRightSpeed;
+        this.velx += this.leftRightSpeed;
     }
     
     notMovingOnX(){
