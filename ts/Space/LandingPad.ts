@@ -23,8 +23,15 @@ export class LandingPad extends MovingGameObject{
     }
     
     hit(player : MovingGameObject){
-        if(player.vely > 0)
+        if(player.vely > 0){
+            console.log("Land velocity: " + player.vely);
+            
+            if(player.vely > 30){
+                console.log("Too fast impact - crashed!");
+            }
+            
             player.vely = 0;
             player.velx = 0;
+        }
     }
 }
