@@ -21,18 +21,25 @@ export class PlanetSurface extends StaticGameObject{
     }
     
     generateSurface(surfaceLength : number) : Coordinate[]{
+        // Could probably be nicer code but works for now
+        
         var points : Coordinate[] = [];
         
         var x = 0, y = 0;
+        var sameY = false;
         
         while(true){
             points.push(new Coordinate(x, y));
             
-            y = this.random(this.yMin, this.yMax);
+            if(sameY)
+                sameY = false;
+            else
+                y = this.random(this.yMin, this.yMax);
             x += this.random(this.xMin, this.xMax);
             
             if(x > (surfaceLength / 5) && this.landingPad.location.x == 0){ // Position the landing pad
-                this.landingPad.location = new Coordinate(x - 5, (this.location.y + y) - 10);
+                this.landingPad.location = new Coordinate(x + 12, (this.location.y + y) - 10);
+                sameY = true;
             }
             
             if(x > surfaceLength){
