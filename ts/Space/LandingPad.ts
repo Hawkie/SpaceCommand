@@ -27,7 +27,7 @@ export class LandingPad extends MovingGameObject{
         if(player.vely > 0){
             console.log("Land velocity: " + player.vely);
             
-            if(player.vely > 30){
+            if(player.vely > 20){
                 player.crash();
             }
             
