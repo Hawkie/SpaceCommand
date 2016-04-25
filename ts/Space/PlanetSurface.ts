@@ -1,4 +1,5 @@
-import { StaticGameObject, MovingGameObject } from "../Common/GameObject";
+import { StaticGameObject } from "../Common/GameObject";
+import { LandingBasicShip } from "../Ships/LandingShip";
 import { LandingPad } from "./LandingPad";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../Common/DisplayObject";
@@ -65,10 +66,10 @@ export class PlanetSurface extends StaticGameObject{
         return this.surfacePolygon.hasPoint(this.location, playerPos);
     }
     
-    hit(player : MovingGameObject){
+    hit(player : LandingBasicShip){
         player.vely = 0;
         player.velx = 0;
-        console.log("Ship crashed!");
+        player.crash(20);
     }
     
     private random(min : number, max : number){

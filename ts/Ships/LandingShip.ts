@@ -1,14 +1,9 @@
 import { StaticGameObject, MovingGameObject } from "../Common/GameObject";
+import { IShip } from "./Ship";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../Common/DisplayObject";
 
-export interface ILandableShip
-{
-    //landingPad : StaticGameObject;
-    thrust(lastTimeModifier : number);
-}
-
-export class LandingBasicShip extends MovingGameObject implements ILandableShip {
+export class LandingBasicShip extends MovingGameObject implements IShip {
     thrustPower : number;
     leftRightSpeed : number;
     leftRightSlowing : number;
@@ -34,6 +29,10 @@ export class LandingBasicShip extends MovingGameObject implements ILandableShip 
     thrust(lastTimeModifier : number){
         // TODO: Play thrust sfx
         this.angularThrust(this.thrustPower * lastTimeModifier)
+    }
+    
+    crash(damage : number){
+        console.log("Your crashed your ship while landing! The hull took " + damage + " points of damage!");
     }
     
     moveLeft(){

@@ -1,4 +1,5 @@
 import { MovingGameObject } from "../Common/GameObject";
+import { LandingBasicShip } from "../Ships/LandingShip";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../Common/DisplayObject"
 
@@ -22,12 +23,12 @@ export class LandingPad extends MovingGameObject{
         return this.landingPadPolygon.hasPoint(this.location, playerPos);
     }
     
-    hit(player : MovingGameObject){
+    hit(player : LandingBasicShip){
         if(player.vely > 0){
             console.log("Land velocity: " + player.vely);
             
             if(player.vely > 30){
-                console.log("Too fast impact - crashed!");
+                player.crash(20);
             }
             
             player.vely = 0;
