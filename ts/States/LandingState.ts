@@ -6,22 +6,28 @@ import { IGameObject } from "../Common/GameObject"
 import { Wind } from "../Space/Wind";
 import { Coordinate } from "../Common/Coordinate";
 import { PlanetSurface } from "../Space/PlanetSurface";
+import { GuiText } from "../Gui/GuiText";
 
 export class LandingState implements IGameState {
     player : LandingBasicShip;
     objects : Array<IGameObject>;
     wind : Wind;
     surface : PlanetSurface;
+    velocityText : GuiText;
     
     constructor(player : LandingBasicShip, objects : Array<IGameObject>){
         this.player = player;
         this.objects = objects;
         this.wind = new Wind(new Coordinate(450,50), 0.3, 300);
         this.surface = new PlanetSurface(new Coordinate(0, 400));
+        this.velocityText = new GuiText("Velocity: " + Math.round(this.player.vely), new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
+        this.objects.push(this.velocityText);
     }
     
     update(lastDrawModifier : number){
+        this.velocityText.text = "Velocity: " + Math.round(this.player.vely);
+        
         this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.wind.update(lastDrawModifier, this.player);
