@@ -20,13 +20,13 @@ export class LandingState implements IGameState {
         this.objects = objects;
         this.wind = new Wind(new Coordinate(450,50), 0.3, 300);
         this.surface = new PlanetSurface(new Coordinate(0, 400));
-        this.velocityText = new GuiText("Velocity: " + Math.round(this.player.vely), new Coordinate(325, 50), "monospace", 12);
+        this.velocityText = new GuiText("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
         this.objects.push(this.velocityText);
     }
     
     update(lastDrawModifier : number){
-        this.velocityText.text = "Velocity: " + Math.round(this.player.vely);
+        this.velocityText.text = "Velocity: " + Math.abs(Math.round(this.player.vely));
         
         this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
