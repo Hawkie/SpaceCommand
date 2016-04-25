@@ -11,7 +11,7 @@ import { IWeapon, BasicGun } from "../Weapons/Weapon"
 
 export interface IShip {
     thrust(lastTimeModifier : number);
-    crash(damage : number);
+    crash();
 }
 
 export class BasicShip extends MovingGameObject implements IShip {
@@ -45,8 +45,8 @@ export class BasicShip extends MovingGameObject implements IShip {
         this.angularThrust(this.thrustPower * lastTimeModifier)
     }
     
-    crash(damage : number){
-        console.log("Your ship crashed! The hull took " + damage + " points of damage!");
+    crash(){
+        console.log("Your ship crashed!");
     }
     
     rotateLeft(lastTimeModifier : number){

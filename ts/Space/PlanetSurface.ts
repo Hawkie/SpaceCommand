@@ -69,7 +69,7 @@ export class PlanetSurface extends StaticGameObject{
     hit(player : LandingBasicShip){
         player.vely = 0;
         player.velx = 0;
-        player.crash(20);
+        player.crash();
     }
     
     private random(min : number, max : number){

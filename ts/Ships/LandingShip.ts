@@ -31,8 +31,8 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
         this.angularThrust(this.thrustPower * lastTimeModifier)
     }
     
-    crash(damage : number){
-        console.log("Your crashed your ship while landing! The hull took " + damage + " points of damage!");
+    crash(){
+        console.log("Your crashed your ship while landing!");
     }
     
     moveLeft(){
