@@ -1,4 +1,7 @@
-import WebSocket = require("ws");
+/// <reference path='./declarations/node.d.ts' />
+/// <reference path='./declarations/ws.d.ts' />
+
+import WebSocket = require('ws');
 
 var port : number = 13579;
 var server = new WebSocket.Server({port: port});
