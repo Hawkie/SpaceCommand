@@ -10,7 +10,7 @@ import { EventLoop } from "./Common/EventLoop";
 
 import { DotField } from "./Space/DotField";
 import { Asteroid } from "./Space/Asteroid"
-import { PlayGameState } from "./States/GameState"
+import { AsteroidState } from "./States/AsteroidState"
 import { LandingState } from "./States/LandingState";
 import { GuiText } from "./Gui/GuiText";
 
@@ -34,8 +34,8 @@ export class Game {
         var objects : Array<IGameObject> = [field2, text];
         var asteroids : Array<Asteroid> = [asteroid1];
 
-        //var gameState = new PlayGameState(ship, objects, asteroids);
-        var gameState = new LandingState(landingShip, objects);
+        var gameState = new AsteroidState(ship, objects, asteroids);
+        //var gameState = new LandingState(landingShip, objects);
 
         var gameloop = new EventLoop(window, canvas, gameState);
         console.log(ship.toString());
