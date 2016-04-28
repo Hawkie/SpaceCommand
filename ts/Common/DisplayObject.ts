@@ -11,6 +11,7 @@ export class Polygon implements IDisplayObject {
         this.points = points;
     }
     
+    // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     hasPoint(location : Coordinate, testPoint : Coordinate) : boolean
     {
         var c = false;

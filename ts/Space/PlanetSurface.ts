@@ -28,7 +28,7 @@ export class PlanetSurface extends StaticGameObject{
         
         var x = 0, y = 0;
         var sameY = false;
-        
+        points.push(new Coordinate(-1,200));
         while(true){
             points.push(new Coordinate(x, y));
             
@@ -48,6 +48,8 @@ export class PlanetSurface extends StaticGameObject{
                 break;
             }
         }
+        points.push(new Coordinate(512,200));
+        
         
         return points;
     }
