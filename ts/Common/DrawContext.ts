@@ -12,7 +12,8 @@ export class DrawContext {
     drawP(location: Coordinate, points: Coordinate[]) {
         var ctx = this.ctx;
         var p = points;
-
+        let origFillStyle = ctx.fillStyle;
+        ctx.fillStyle = "#111";
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
@@ -21,7 +22,9 @@ export class DrawContext {
                 ctx.lineTo(p[i].x + location.x, p[i].y + location.y);
             }
             ctx.stroke();
+            ctx.fill();
         }
+        this.ctx.fillStyle = origFillStyle;
     }
 
     drawImage(img, x, y) {

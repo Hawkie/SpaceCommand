@@ -1,5 +1,5 @@
 import { DrawContext } from "./DrawContext";
-import { IDisplayObject } from "./DisplayObject";
+import { IDisplayObject } from "../DisplayObjects/DisplayObject";
 import { Coordinate } from "./Coordinate";
 import { Transforms } from "./Transforms";
 

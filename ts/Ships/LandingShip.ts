@@ -1,7 +1,7 @@
 import { StaticGameObject, MovingGameObject } from "../Common/GameObject";
 import { IShip } from "./Ship";
 import { Coordinate } from "../Common/Coordinate";
-import { Polygon } from "../Common/DisplayObject";
+import { Polygon } from "../DisplayObjects/DisplayObject";
 
 export class LandingBasicShip extends MovingGameObject implements IShip {
     thrustPower : number;

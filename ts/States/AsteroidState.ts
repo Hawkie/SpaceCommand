@@ -20,17 +20,19 @@ export class AsteroidState implements IGameState {
         this.asteroids = asteroids;
     }
 
+    
     update(lastDrawModifier : number) {
-        this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
+        this.player.update(lastDrawModifier);
     }
     
+    // order is important. Like layers on top of each other.
     display(drawingContext : DrawContext) {
         drawingContext.clear();
-        this.player.display(drawingContext);
         this.objects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
+        this.player.display(drawingContext);
     }
     
     input(keys : () => SparseArray<number>, lastDrawModifier : number) {

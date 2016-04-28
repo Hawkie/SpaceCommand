@@ -1,5 +1,5 @@
 import {Coordinate } from "../Common/Coordinate";
-import { IDisplayObject, Polygon } from "../Common/DisplayObject";
+import { IDisplayObject, Polygon } from "../DisplayObjects/DisplayObject";
 import { MovingGameObject } from "../Common/GameObject";
 
 import { DrawContext } from "../Common/DrawContext"

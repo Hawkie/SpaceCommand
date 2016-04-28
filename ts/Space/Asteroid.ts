@@ -1,6 +1,6 @@
 import { Coordinate } from "../Common/Coordinate";
 import { MovingGameObject } from "../Common/GameObject";
-import { IDisplayObject, Polygon } from "../Common/DisplayObject"
+import { IDisplayObject, Polygon } from "../DisplayObjects/DisplayObject"
 
 
 export class Asteroid extends MovingGameObject {

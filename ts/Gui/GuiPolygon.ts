@@ -1,6 +1,6 @@
 import { DrawContext } from "../Common/DrawContext";
 import { StaticGameObject } from "../Common/GameObject";
-import { IDisplayObject, Polygon } from "../Common/DisplayObject";
+import { IDisplayObject, Polygon } from "../DisplayObjects/DisplayObject";
 import { Coordinate } from "../Common/Coordinate";
 
 export class GuiPolygon extends StaticGameObject{

@@ -1,7 +1,7 @@
 import { MovingGameObject } from "../Common/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { Coordinate } from "../Common/Coordinate";
-import { Polygon } from "../Common/DisplayObject"
+import { Polygon } from "../DisplayObjects/DisplayObject"
 
 export class LandingPad extends MovingGameObject{
     landingPadPolygon : Polygon;

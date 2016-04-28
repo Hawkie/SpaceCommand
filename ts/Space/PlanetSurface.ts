@@ -2,7 +2,7 @@ import { StaticGameObject } from "../Common/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { LandingPad } from "./LandingPad";
 import { Coordinate } from "../Common/Coordinate";
-import { Polygon } from "../Common/DisplayObject";
+import { Polygon } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 
 export class PlanetSurface extends StaticGameObject{

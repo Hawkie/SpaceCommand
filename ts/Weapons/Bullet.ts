@@ -1,5 +1,5 @@
 import { IGameObject, MovingGameObject } from "../Common/GameObject"
-import { IDisplayObject, Rect } from "../Common/DisplayObject"
+import { IDisplayObject, Rect } from "../DisplayObjects/DisplayObject"
 import { Coordinate} from "../Common/Coordinate"
 import { Transforms } from "../Common/Transforms"
 import { DrawContext } from "../Common/DrawContext"

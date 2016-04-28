@@ -4,7 +4,7 @@ import { IGameObject, StaticGameObject, MovingGameObject } from "./Common/GameOb
 import { BasicShip } from "./Ships/Ship"
 import { LandingBasicShip } from "./Ships/LandingShip";
 
-import { Polygon } from "./Common/DisplayObject";
+import { Polygon } from "./DisplayObjects/DisplayObject";
 import { Coordinate } from "./Common/Coordinate";
 import { EventLoop } from "./Common/EventLoop";
 
