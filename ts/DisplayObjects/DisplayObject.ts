@@ -1,6 +1,10 @@
 import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Common/Coordinate";
 
+// Display objects are simple objects that only have the single responsibility to render to the screen.
+// This therefore fulfills the S of SOLID design principle.
+// Examples are polygon, rectangle, text, sprite.
+// This object is contained inside a GameObject, which holds the location and other game state variables. 
 export interface IDisplayObject {
     draw(location: Coordinate, drawingContext: DrawContext);
 }
