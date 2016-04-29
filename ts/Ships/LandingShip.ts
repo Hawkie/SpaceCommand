@@ -35,18 +35,22 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
         console.log("Your crashed your ship while landing!");
     }
     
-    moveLeft(){
-        this.velx -= this.leftRightSpeed;
+    moveLeft(lastTimeModifier: number) {
+        this.velx = -this.leftRightSpeed * (lastTimeModifier * 50);
     }
-    
-    moveRight(){
-        this.velx += this.leftRightSpeed;
+
+    moveRight(lastTimeModifier: number) {
+        this.velx = this.leftRightSpeed * (lastTimeModifier * 50);
     }
-    
-    notMovingOnX(){
-        if(this.velx < 0)
-            this.velx += this.leftRightSlowing;
-        if(this.velx > 0)
-            this.velx -= this.leftRightSlowing;
+
+    notMovingOnX(lastDrawModifier: number) {
+        if (this.velx < 0) {
+            this.velx += (this.leftRightSlowing * lastDrawModifier);
+            if (this.velx >= 0) this.velx = 0;
+        }
+        else if (this.velx > 0) {
+            this.velx -= (this.leftRightSlowing * lastDrawModifier);
+            if (this.velx < 0) this.velx = 0;
+        }
     }
 }

@@ -6,6 +6,7 @@ import { DotField } from "../Space/DotField";
 import { Coordinate } from "../Common/Coordinate";
 import { Asteroid } from "../Space/Asteroid";
 import { IGameState } from "GameState";
+import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 
 
 export class AsteroidState implements IGameState {
@@ -35,24 +36,11 @@ export class AsteroidState implements IGameState {
         this.player.display(drawingContext);
     }
     
-    input(keys : () => SparseArray<number>, lastDrawModifier : number) {
-        var k = keys();
-        if (k.contains(38)) { // Player holding up
-                this.player.thrust(lastDrawModifier);
-        }
-        // // if (40 in keysDown) { // Player holding down
-        // //     player.y += player.speed * lastDrawModifier;
-        // // }
-        if (k.contains(37)) { // Player holding left
-            this.player.rotateLeft(lastDrawModifier);
-        }
-        if (k.contains(39)) { // Player holding right
-            this.player.rotateRight(lastDrawModifier);
-        }
-        // space bar (shoot)
-        if (k.contains(32)) {
-            this.player.shootPrimary(lastDrawModifier);   
-        }
+    input(keys: KeyStateProvider, lastDrawModifier: number) {
+        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust(lastDrawModifier);
+        if (keys.isKeyDown(Keys.LeftArrow)) this.player.rotateLeft(lastDrawModifier);
+        if (keys.isKeyDown(Keys.RightArrow)) this.player.rotateRight(lastDrawModifier);
+        if (keys.isKeyDown(Keys.SpaceBar)) this.player.shootPrimary(lastDrawModifier);
     }
 
     tests(){

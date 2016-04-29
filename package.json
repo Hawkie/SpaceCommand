@@ -1,0 +1,14 @@
+{
+  "name": "SpaceCommand",
+  "private": true,
+  "version": "0.0.1",
+  "repository": {
+    "type": "GIT",
+    "url": "https://github.com/Hawkie/SpaceCommand"
+  },
+  "keywords": [],
+  "author": "SpaceCommandTeam",
+  "dependencies": {
+    "requirejs": "2.2.0"
+  }
+}

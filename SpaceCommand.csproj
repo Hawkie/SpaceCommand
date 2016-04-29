@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{8EF465E4-33B8-429E-9903-21A33B1E63AA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\style.css" />
+    <Content Include="img\ship.png" />
+    <Content Include="img\sprite1.png" />
+    <Content Include="img\star.png" />
+    <Content Include="index.html" />
+    <Content Include="wav\thrust.wav" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="main.ts" />
+    <TypeScriptCompile Include="Scripts\Typings\require\require.d.ts" />
+    <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
+    <TypeScriptCompile Include="ts\Common\Canvas.ts" />
+    <TypeScriptCompile Include="ts\Common\Coordinate.ts" />
+    <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
+    <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
+    <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
+    <TypeScriptCompile Include="ts\Common\GameObject.ts" />
+    <TypeScriptCompile Include="ts\Common\Transforms.ts" />
+    <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
+    <TypeScriptCompile Include="ts\Game.ts" />
+    <TypeScriptCompile Include="ts\Gui\GuiPolygon.ts" />
+    <TypeScriptCompile Include="ts\Gui\GuiText.ts" />
+    <TypeScriptCompile Include="ts\Gui\WindDirectionIndicator.ts" />
+    <TypeScriptCompile Include="ts\Ships\LandingShip.ts" />
+    <TypeScriptCompile Include="ts\Ships\Ship.ts" />
+    <TypeScriptCompile Include="ts\Space\Asteroid.ts" />
+    <TypeScriptCompile Include="ts\Space\DotField.ts" />
+    <TypeScriptCompile Include="ts\Space\LandingPad.ts" />
+    <TypeScriptCompile Include="ts\Space\PlanetSurface.ts" />
+    <TypeScriptCompile Include="ts\Space\Wind.ts" />
+    <TypeScriptCompile Include="ts\States\AsteroidState.ts" />
+    <TypeScriptCompile Include="ts\States\GameState.ts" />
+    <TypeScriptCompile Include="ts\States\LandingState.ts" />
+    <TypeScriptCompile Include="ts\tests\tester.ts" />
+    <TypeScriptCompile Include="ts\Weapons\Bullet.ts" />
+    <TypeScriptCompile Include="ts\Weapons\Weapon.ts" />
+    <TypeScriptCompile Include="_includes.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tsconfig.json" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>SpaceCommand</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>32127</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:32127/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>

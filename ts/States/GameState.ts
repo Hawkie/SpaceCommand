@@ -5,13 +5,14 @@ import { SparseArray } from "../Collections/SparseArray"
 import { DotField } from "../Space/DotField";
 import { Coordinate } from "../Common/Coordinate"
 import { Asteroid } from "../Space/Asteroid"
+import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 
 
 export interface IGameState
 {
     update(lastDrawModifier : number);
     display(drawingContext : DrawContext);
-    input(keys : ()=> SparseArray<number>, lastDrawModifier : number);
+    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number);
     tests();
     hasEnded() : boolean;
 }

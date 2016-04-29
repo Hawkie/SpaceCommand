@@ -3,6 +3,7 @@ import { LandingBasicShip } from "../Ships/LandingShip";
 import { SparseArray } from "../Collections/SparseArray";
 import { DrawContext} from "../Common/DrawContext";
 import { IGameObject } from "../Common/GameObject"
+import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 import { Wind } from "../Space/Wind";
 import { Coordinate } from "../Common/Coordinate";
 import { PlanetSurface } from "../Space/PlanetSurface";
@@ -33,20 +34,12 @@ export class LandingState implements IGameState {
         this.wind.update(lastDrawModifier, this.player);
     }
     
-    input(keys : () => SparseArray<number>, lastDrawModifier : number) {
-        var k = keys();
-        if(k.contains(38)){ // Holding up arrow
-            this.player.thrust(lastDrawModifier);
-        }
-        if(k.contains(37)){ // Holding left arrow
-            this.player.moveLeft();
-        }
-        else if(k.contains(39)){ // Holding right arrow
-            this.player.moveRight();
-        }
-        else{
-            this.player.notMovingOnX();
-        }
+    input(keys: KeyStateProvider, lastDrawModifier: number) {
+        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust(lastDrawModifier);
+
+        if (keys.isKeyDown(Keys.LeftArrow)) this.player.moveLeft(lastDrawModifier);
+        else if (keys.isKeyDown(Keys.RightArrow)) this.player.moveRight(lastDrawModifier);
+        else this.player.notMovingOnX(lastDrawModifier);
     }
     
     display(drawingContext : DrawContext) {

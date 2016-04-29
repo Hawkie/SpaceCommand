@@ -24,7 +24,7 @@ export class Polygon implements IDisplayObject {
             var px2 = this.points[j].x + location.x;
             var py1 = this.points[i].y + location.y;
             var py2 = this.points[j].y + location.y;
-            if ((py1 > testPoint.y != py2 > testPoint.y) &&
+            if ((py1 > testPoint.y !== py2 > testPoint.y) &&
                 (testPoint.x < (px2 - px1) * (testPoint.y - py1) / (py2 - py1) + px1)
             ) {
                 c = !c;
