@@ -35,6 +35,11 @@ export class DrawContext {
     //     this.ctx.drawImage(img, spriteX, spriteY, spriteW, spriteH, x, y, screenWidth, screenHeight)
     // }
 
+    drawText(x : number, y : number, text : string, fontSize : number, font : string) {
+        this.ctx.font = String(fontSize) + "px " + font;
+        this.ctx.fillText(text, x, y);
+    }
+
     drawRect(x : number, y : number, w : number, h : number) {
         this.ctx.fillRect(x, y, w, h);
     }

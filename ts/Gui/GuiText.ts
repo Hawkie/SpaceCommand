@@ -18,7 +18,6 @@ export class GuiText implements IGameObject{
     update(timeModifier : number){}
     
     display(drawingContext : DrawContext){
-        drawingContext.ctx.font = String(this.fontSize) + "px " + this.font;
-        drawingContext.ctx.fillText(this.text, this.location.x, this.location.y);
+        drawingContext.drawText(this.location.x, this.location.y, this.text, this.fontSize, this.font);
     }
 }
