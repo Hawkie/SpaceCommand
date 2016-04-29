@@ -1,5 +1,5 @@
 import { DrawContext} from "../Common/DrawContext";
-import { IGameObject, IHittable, StaticGameObject, MovingGameObject } from "../Common/GameObject";
+import { IGameObject, StaticGameObject, MovingGameObject } from "../Common/GameObject";
 import { BasicShip } from "../Ships/Ship"
 import { SparseArray } from "../Collections/SparseArray"
 import { DotField } from "../Space/DotField";

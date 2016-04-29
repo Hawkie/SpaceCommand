@@ -9,11 +9,6 @@ export interface IGameObject
     display(drawingContext : DrawContext);
 }
 
-export interface IHittable
-{
-    hitTest(testPoint : Coordinate);
-}
-
 export class StaticGameObject implements IGameObject{
     
     displayObject : IDisplayObject;
