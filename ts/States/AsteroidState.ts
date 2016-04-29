@@ -72,8 +72,8 @@ export class AsteroidState implements IGameState {
         return new Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
     }
     
-    hasEnded() : boolean {
-        return false;
+    returnState() : IGameState {
+        return null;
     }
 
 }

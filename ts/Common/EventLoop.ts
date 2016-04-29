@@ -6,8 +6,10 @@ import { KeyStateProvider } from "./KeyStateProvider";
 
 export class EventLoop {
 
-    constructor(private window: Window, private canvas: Canvas, private gameState: IGameState) {
+    private currentGameState: IGameState = null;
+    constructor(private window: Window, private canvas: Canvas, private initialGameState: IGameState) {
         this.keyStateProvider = new KeyStateProvider(this.window);
+        this.currentGameState = initialGameState;
     }
 
     loop() {
@@ -23,11 +25,13 @@ export class EventLoop {
     }
 
     processOneFrame(delta: number) {
-        const gs = this.gameState;
+        let gs : IGameState = this.currentGameState;
         gs.display(this.canvas.context());
         gs.tests();
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);
+        if (gs.returnState() != null)
+            this.currentGameState = gs.returnState();
     }
 
     keyStateProvider: KeyStateProvider;

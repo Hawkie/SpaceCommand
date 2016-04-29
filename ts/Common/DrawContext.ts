@@ -2,7 +2,7 @@ import { Coordinate } from "./Coordinate";
 //import { Polygon } from "./DisplayObject";
 
 export class DrawContext {
-    ctx: any;
+    private ctx: any;
     constructor(ctx) {
         this.ctx = ctx;
         this.ctx.strokeStyle = "#fff";

@@ -14,5 +14,5 @@ export interface IGameState
     display(drawingContext : DrawContext);
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number);
     tests();
-    hasEnded() : boolean;
+    returnState() : IGameState;
 }
