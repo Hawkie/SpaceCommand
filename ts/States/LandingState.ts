@@ -37,7 +37,7 @@ export class LandingState implements IGameState {
         this.player = player;
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
-        this.wind = new Wind(new Coordinate(450,50), 0.3, 300);
+        this.wind = new Wind(new Coordinate(450,50), 12, 300);
         this.surface = new PlanetSurface(new Coordinate(0, 400));
         this.velocityText = new GuiText("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);

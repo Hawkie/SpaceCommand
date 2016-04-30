@@ -15,7 +15,7 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
         
         super(triangleShip, location, 0, 0, 0, 0);
         this.thrustPower = 16;
-        this.leftRightSpeed = 16;
+        this.leftRightSpeed = 32;
         this.leftRightSlowing = 2;
         this.gravitationalPull = 0.1;
     }
@@ -36,11 +36,11 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
     }
     
     moveLeft(lastTimeModifier: number) {
-        this.velx = -this.leftRightSpeed * (lastTimeModifier * 50);
+        this.velx -= this.leftRightSpeed * lastTimeModifier;
     }
 
     moveRight(lastTimeModifier: number) {
-        this.velx = this.leftRightSpeed * (lastTimeModifier * 50);
+        this.velx += this.leftRightSpeed * lastTimeModifier;
     }
 
     notMovingOnX(lastDrawModifier: number) {

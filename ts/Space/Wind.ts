@@ -9,7 +9,7 @@ export class Wind extends WindDirectionIndicator {
 
     constructor(location: Coordinate, private windSpeed: number, private windChangeChance: number) {
         super(location);
-        this.text = new GuiText(String(this.windSpeed * 10) + " mph", new Coordinate(location.x - 12, location.y + 2), "monospace", 12);
+        this.text = new GuiText(String(this.windSpeed / 4) + " mph", new Coordinate(location.x - 12, location.y + 2), "monospace", 12);
     }
 
     update(lastTimeModifier: number, player: MovingGameObject = null) { // default to null so overloading works
