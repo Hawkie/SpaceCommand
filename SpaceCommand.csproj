@@ -56,6 +56,7 @@
     <TypeScriptCompile Include="ts\States\AsteroidState.ts" />
     <TypeScriptCompile Include="ts\States\GameState.ts" />
     <TypeScriptCompile Include="ts\States\LandingState.ts" />
+    <TypeScriptCompile Include="ts\States\MenuState.ts" />
     <TypeScriptCompile Include="ts\tests\tester.ts" />
     <TypeScriptCompile Include="ts\Weapons\Bullet.ts" />
     <TypeScriptCompile Include="ts\Weapons\Weapon.ts" />
@@ -103,6 +104,17 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

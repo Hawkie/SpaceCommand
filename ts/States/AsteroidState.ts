@@ -1,5 +1,5 @@
 import { DrawContext} from "../Common/DrawContext";
-import { IGameObject, IHittable, StaticGameObject, MovingGameObject } from "../Common/GameObject";
+import { IGameObject, StaticGameObject, MovingGameObject } from "../Common/GameObject";
 import { BasicShip } from "../Ships/Ship";
 import { SparseArray } from "../Collections/SparseArray";
 import { DotField } from "../Space/DotField";
@@ -72,8 +72,8 @@ export class AsteroidState implements IGameState {
         return new Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
     }
     
-    hasEnded() : boolean {
-        return false;
+    returnState() : IGameState {
+        return null;
     }
 
 }
