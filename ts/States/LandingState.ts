@@ -8,13 +8,30 @@ import { Wind } from "../Space/Wind";
 import { Coordinate } from "../Common/Coordinate";
 import { PlanetSurface } from "../Space/PlanetSurface";
 import { GuiText } from "../Gui/GuiText";
+import { DotField } from "../Space/Dotfield";
 
 export class LandingState implements IGameState {
     player : LandingBasicShip;
     objects : Array<IGameObject>;
     wind : Wind;
     surface : PlanetSurface;
-    velocityText : GuiText;
+    velocityText: GuiText;
+
+    static create(): LandingState {
+        // Background
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var field2 = new DotField(-1, 0, 0, -16, 1, 1);
+        //var field3 = new DotField(512, 200, 8, 1, 1, 1);
+        
+
+        // ships        
+        let landingShip = new LandingBasicShip(new Coordinate(256, 240));
+
+        var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var objects: Array<IGameObject> = [field2, text];
+        var landingState = new LandingState(landingShip, objects);
+        return landingState;
+    }
     
     constructor(player : LandingBasicShip, objects : Array<IGameObject>){
         this.player = player;

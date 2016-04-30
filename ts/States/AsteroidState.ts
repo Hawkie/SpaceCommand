@@ -5,6 +5,7 @@ import { SparseArray } from "../Collections/SparseArray";
 import { DotField } from "../Space/DotField";
 import { Coordinate } from "../Common/Coordinate";
 import { Asteroid } from "../Space/Asteroid";
+import { GuiText } from "../Gui/GuiText";
 import { IGameState } from "GameState";
 import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 
@@ -13,7 +14,23 @@ export class AsteroidState implements IGameState {
     player : BasicShip;
     objects : Array<IGameObject>;
     asteroids : Array<Asteroid>;
-    //hitInteraction : Interaction<Coordinate, IHittable>
+    
+    static create(): AsteroidState {
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var field2 = new DotField(-1, 0, 0, -16, 1, 1);
+        //var field3 = new DotField(512, 200, 8, 1, 1, 1);
+
+        // special
+        let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
+        let asteroid1 = new Asteroid(new Coordinate(200, 230), 2, 2, 40, -2);
+
+        var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var objects: Array<IGameObject> = [field2, text];
+        var asteroids: Array<Asteroid> = [asteroid1];
+
+        var asteroidState = new AsteroidState(ship, objects, asteroids);
+        return asteroidState;
+    }
     
     constructor(player : BasicShip, objects : Array<IGameObject>, asteroids : Array<Asteroid>) {
         this.player = player;

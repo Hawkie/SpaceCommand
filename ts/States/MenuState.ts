@@ -17,7 +17,17 @@ export class MenuState implements IGameState {
     selectedItem: number = 0;
     objects: Array<IGameObject>;
     states: Array<IGameState>;
-    selectedState: IGameState = null;
+    selectedState: IGameState = null
+
+    static create(states: Array<IGameState>): MenuState {
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var field2 = new DotField(-1, 0, 0, -16, 1, 1);
+        var field3 = new DotField(-1, 0, 0, -32, 2, 2);
+        
+        var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var objects: Array<IGameObject> = [field2, field3, text];
+        return new MenuState(["Asteroids", "Landing"], objects, states);
+    }
 
     constructor(private textItems: Array<string>, objects : Array<IGameObject>, states : Array<IGameState>) {
         let x: number = 200;
