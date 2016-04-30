@@ -59,12 +59,14 @@
     <TypeScriptCompile Include="ts\tests\tester.ts" />
     <TypeScriptCompile Include="ts\Weapons\Bullet.ts" />
     <TypeScriptCompile Include="ts\Weapons\Weapon.ts" />
-    <TypeScriptCompile Include="_includes.ts" />
+    <TypeScriptCompile Include="ts\_includes.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
