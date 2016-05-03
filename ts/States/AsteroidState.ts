@@ -3,6 +3,8 @@ import { IGameObject, StaticGameObject, MovingGameObject } from "../Common/GameO
 import { BasicShip } from "../Ships/Ship";
 import { SparseArray } from "../Collections/SparseArray";
 import { DotField } from "../Space/DotField";
+import { ParticleField } from "../Space/ParticleField";
+import { Rect } from "../DisplayObjects/DisplayObject";
 import { Coordinate } from "../Common/Coordinate";
 import { Asteroid } from "../Space/Asteroid";
 import { GuiText } from "../Gui/GuiText";
@@ -17,7 +19,11 @@ export class AsteroidState implements IGameState {
     
     static create(): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var field2 = new DotField(-1, 0, 0, -16, 1, 1);
+        var field = new ParticleField(() => { return 512 * Math.random(); }, () => { return 0; }, () => {
+            return 0;
+        }, () => { return 16; }, new Rect(2, 2), 10);
+         
+        //var field2 = new DotField(-1, 0, 0, -16, 1, 1);
         //var field3 = new DotField(512, 200, 8, 1, 1, 1);
 
         // special
@@ -25,7 +31,7 @@ export class AsteroidState implements IGameState {
         let asteroid1 = new Asteroid(new Coordinate(200, 230), 2, 2, 40, -2);
 
         var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: Array<IGameObject> = [field2, text];
+        var objects: Array<IGameObject> = [field, text];
         var asteroids: Array<Asteroid> = [asteroid1];
 
         var asteroidState = new AsteroidState(ship, objects, asteroids);

@@ -27,6 +27,7 @@
     <Content Include="img\sprite1.png" />
     <Content Include="img\star.png" />
     <Content Include="index.html" />
+    <Content Include="js\sound.js" />
     <Content Include="wav\thrust.wav" />
     <Content Include="web.config" />
   </ItemGroup>
@@ -48,9 +49,11 @@
     <TypeScriptCompile Include="ts\Gui\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Ships\LandingShip.ts" />
     <TypeScriptCompile Include="ts\Ships\Ship.ts" />
+    <TypeScriptCompile Include="ts\Sound\AudioContext.ts" />
     <TypeScriptCompile Include="ts\Space\Asteroid.ts" />
     <TypeScriptCompile Include="ts\Space\DotField.ts" />
     <TypeScriptCompile Include="ts\Space\LandingPad.ts" />
+    <TypeScriptCompile Include="ts\Space\ParticleField.ts" />
     <TypeScriptCompile Include="ts\Space\PlanetSurface.ts" />
     <TypeScriptCompile Include="ts\Space\Wind.ts" />
     <TypeScriptCompile Include="ts\States\AsteroidState.ts" />

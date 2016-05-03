@@ -26,6 +26,7 @@ export class MenuState implements IGameState {
         
         var text = new GuiText("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field2, field3, text];
+
         return new MenuState(["Asteroids", "Landing"], objects, states);
     }
 
