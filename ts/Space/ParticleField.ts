@@ -82,6 +82,7 @@ export class ParticleField implements IGameObject {
                 var ageInSec = (now - element.born) / 1000;
                 if (ageInSec > this.durationInSec) {
                     this.fieldObjects.splice(i, 1);
+                    removed = true;
                 }
             }
             // draw if still remains
