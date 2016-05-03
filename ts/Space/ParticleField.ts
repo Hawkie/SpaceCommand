@@ -42,7 +42,7 @@ export class ParticleField implements IGameObject {
     lastAdded: number;
 
     // how long a particle survives
-    duration: number;
+    durationInSec: number;
     range: number;
     maxNumber: number;
 
@@ -53,7 +53,7 @@ export class ParticleField implements IGameObject {
         this.velx = velx;
         this.vely = vely;
         this.item = item;
-        this.duration = 0;
+        this.durationInSec = 10;
         this.range = 0;
         this.maxNumber = 0;
         this.lastAdded = 0;
@@ -62,7 +62,7 @@ export class ParticleField implements IGameObject {
 
     init() { }
 
-    update(lastDrawModifier) {
+    update(lastDrawModifier : number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
         var now = Date.now();
         var secElapsed = (now - this.lastAdded) / 1000;
@@ -76,9 +76,16 @@ export class ParticleField implements IGameObject {
         for (var i: number = this.fieldObjects.length-1; i >=0; i--){
             var element = this.fieldObjects[i];
         
-            if (this.duration > 0 && (now - element.born) > this.duration)
-                this.fieldObjects.splice(i, 1);
-            else {
+            // remove if too old
+            var removed = false;
+            if (this.durationInSec > 0) {
+                var ageInSec = (now - element.born) / 1000;
+                if (ageInSec > this.durationInSec) {
+                    this.fieldObjects.splice(i, 1);
+                }
+            }
+            // draw if still remains
+            if (!removed) {
                 element.location.x += this.velx() * lastDrawModifier;
                 element.location.y += this.vely() * lastDrawModifier;
             }
