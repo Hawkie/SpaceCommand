@@ -11,18 +11,13 @@ export class ParticleDetail {
         this.origin = new Coordinate(locationx, locationy);
     } 
 
-    update(locationx: number, locationy: number) {
-        this.location.x += locationx;
-        this.location.y += locationy;
-    }
-
-    born(): number {
+    get born(): number { 
         return this.bornTime;
     }
-    originx(): number {
+    get originX(): number {
         return this.origin.x;
     }
-    originy(): number {
+    get originY(): number {
         return this.origin.y;
     }
     
@@ -81,10 +76,12 @@ export class ParticleField implements IGameObject {
         for (var i: number = this.fieldObjects.length-1; i >=0; i--){
             var element = this.fieldObjects[i];
         
-            if (this.duration > 0 && (now - element.born()) > this.duration)
-                this.fieldObjects.splice(i,1);
-            else 
-                element.update(this.velx() * lastDrawModifier, this.vely() * lastDrawModifier);
+            if (this.duration > 0 && (now - element.born) > this.duration)
+                this.fieldObjects.splice(i, 1);
+            else {
+                element.location.x += this.velx() * lastDrawModifier;
+                element.location.y += this.vely() * lastDrawModifier;
+            }
         }
     }
 
