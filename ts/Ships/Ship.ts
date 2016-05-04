@@ -45,7 +45,7 @@ export class BasicShip extends MovingGameObject implements IShip {
         this.rotationalSpeed = 64;
         this.weapon1 = new BasicGun();
         this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 20, 1, 0, false);
-        this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.3,false);
+        this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.2,false);
         this.crashed = false;
     }
 
@@ -78,7 +78,9 @@ export class BasicShip extends MovingGameObject implements IShip {
         this.thrustParticles1.turnOff();
     }
     
-    // flash screen white. remove ship, turn on explosionParticles
+    // TODO: flash screen white. 
+    // remove ship - done
+    // turn on explosionParticles - done
     crash() {
         this.crashed = true;
         this.explosionParticles1.turnOn();

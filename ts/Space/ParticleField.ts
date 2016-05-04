@@ -55,7 +55,7 @@ export class ParticleField implements IGameObject {
 
     // fadeOut
     firstAdded: number;
-    fadeOutInSec: number;
+    generationTimeInSec: number;
 
     // init
     lastCheck: number;
@@ -73,12 +73,11 @@ export class ParticleField implements IGameObject {
 
         this.range = 0;
         this.maxNumber = 0;
-        //this.lastAdded = 0;
         this.firstAdded = 0;
         this.lastCheck = Date.now();
         this.itemsPerSec = itemsPerSecond;
 
-        this.fadeOutInSec = fadeOutInSec;
+        this.generationTimeInSec = fadeOutInSec;
         this.on = on;
     }
 
@@ -102,11 +101,11 @@ export class ParticleField implements IGameObject {
         if (this.on) {
             var secSinceLast = (now - this.lastCheck) / 1000;
 
-            // Don't add if fading out
-            if (this.fadeOutInSec == 0 || this.firstAdded == 0 || ((now - this.firstAdded) / 1000) < this.fadeOutInSec) {
+            // Don't add if past generation time
+            if (this.generationTimeInSec == 0 || this.firstAdded == 0 || ((now - this.firstAdded) / 1000) < this.generationTimeInSec) {
                 
+                // find the integer number of particles to add. conservatively round down
                 let toAdd = Math.floor(this.itemsPerSec * secSinceLast);
-                // only add
                 for (let i: number = 0; i < toAdd; i++) {
                     var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
                     this.fieldObjects.push(o);
