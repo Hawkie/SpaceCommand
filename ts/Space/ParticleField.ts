@@ -76,24 +76,34 @@ export class ParticleField implements IGameObject {
 
         this.fadeOutInSec = fadeOutInSec;
         this.on = on;
-
-        
     }
 
-    init() { }
+    init() {
+        
+    }
 
 
     update(lastTimeModifier : number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
         if (this.on) {
             var now = Date.now();
-            var secElapsed = (now - this.lastAdded) / 1000;
-            var secSinceStart = (now - this.firstAdded) / 1000;
-            if ((secElapsed >= 1 / this.itemsPerSec) && (this.fadeOutInSec == 0 || this.firstAdded == 0 || secSinceStart < this.fadeOutInSec)) {
-                var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
-                this.fieldObjects.push(o);
-                if (this.lastAdded == 0) this.firstAdded = now;
-                this.lastAdded = now;
+            var secSinceLast = (now - this.lastAdded) / 1000;
+            var secSinceFirst = (now - this.firstAdded) / 1000;
+            if (this.fadeOutInSec == 0 || this.firstAdded == 0 || secSinceFirst < this.fadeOutInSec) {
+                if (this.firstAdded == 0) {
+                    this.firstAdded = now;
+                    this.lastAdded = now;
+                }
+                else {
+                    let toAdd = this.itemsPerSec * secSinceLast;
+                    // only add
+                    for (let i: number = 0; i < toAdd; i++) {
+                        var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
+                        this.fieldObjects.push(o);
+                        if (this.lastAdded == 0) this.firstAdded = now;
+                        this.lastAdded = now;
+                    }
+                }
             }
         }
 

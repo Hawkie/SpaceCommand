@@ -41,8 +41,8 @@ export class BasicShip extends MovingGameObject implements IShip {
         this.thrustPower = 16;
         this.rotationalPower = 64;
         this.primaryWeapon = new BasicGun();
-        this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 30, 2, 0, false);
-        this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(2, 2), 40, 5,1,false);
+        this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 10, 2, 0, false);
+        this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.3,false);
         this.crashed = false;
     }
 
@@ -52,7 +52,7 @@ export class BasicShip extends MovingGameObject implements IShip {
         this.primaryWeapon.update(lastTimeModifier);
         this.thrustParticles1.update(lastTimeModifier);
         this.explosionParticles1.update(lastTimeModifier);
-        super.update(lastTimeModifier);
+        if (!this.crashed) super.update(lastTimeModifier);
     }
     
     display(drawContext : DrawContext){
@@ -104,20 +104,20 @@ export class BasicShip extends MovingGameObject implements IShip {
 
     thrustVelX(): number {
         let velchange = Transforms.toVector(this.angle, this.thrustPower);
-        return -velchange.x + this.velx + (Math.random() * 2);
+        return -velchange.x + this.velx + (Math.random() * 5);
     }
 
     thrustVelY(): number {
         let velchange = Transforms.toVector(this.angle, this.thrustPower);
-        return -velchange.y + this.vely + (Math.random() * 2);
+        return -velchange.y + this.vely + (Math.random() * 5);
     }
 
     explosionX(): number {
-        return this.velx + (Math.random() * 20);
+        return this.velx + ((Math.random()- 0.5) * 20);
     }
 
     explosionY(): number {
-        return this.vely + (Math.random() * 20);
+        return this.vely + ((Math.random()-0.5) * 20);
     }
 
 }

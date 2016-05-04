@@ -21,7 +21,7 @@ export class AsteroidState implements IGameState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var field = new ParticleField(() => { return 512 * Math.random(); }, () => { return 0; }, () => {
             return 0;
-        }, () => { return 16; }, new Rect(2, 2), 10);
+        }, () => { return 16; }, new Rect(2, 2), 1);
          
         //var field2 = new DotField(-1, 0, 0, -16, 1, 1);
         //var field3 = new DotField(512, 200, 8, 1, 1, 1);
