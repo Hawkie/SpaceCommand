@@ -18,12 +18,14 @@ export class Transforms {
         return newCoordinates;
     }
 
-    static toVector(degrees, length): Coordinate {
+    static VectorToCartesian(degrees, length): Coordinate {
         var radians = degrees / 360 * Math.PI * 2;
         var x = Math.sin(radians) * length;
         var y = Math.cos(radians) * -length;
         return new Coordinate(x, y);
     }
+
+
 
 
 }

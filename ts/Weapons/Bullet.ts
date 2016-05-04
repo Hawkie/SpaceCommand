@@ -9,7 +9,7 @@ export class Bullet extends MovingGameObject {
     constructor(location : Coordinate, angle : number, velocity : number){
         let displayObject = new Rect(1,1);
         
-        var vector = Transforms.toVector(angle, velocity)
+        var vector = Transforms.VectorToCartesian(angle, velocity)
         super(displayObject, location, vector.x, vector.y, 0, 0);
     }
 }

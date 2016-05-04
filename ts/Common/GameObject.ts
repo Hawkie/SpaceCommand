@@ -26,21 +26,22 @@ export class StaticGameObject implements IGameObject{
 }
 
 export class MovingGameObject extends StaticGameObject{
-    velx : number;
-    vely : number;
+    velX : number;
+    velY : number;
     angle : number;
-    spin : number;
-    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
+    spin: number;
+
+    constructor(displayObject : IDisplayObject, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
         super(displayObject, location);
-        this.velx = velx;
-        this.vely = vely;
+        this.velX = velX;
+        this.velY = velY;
         this.angle = angle;
         this.spin = spin;
     }
     
     update(timeModifier : number){
-        this.location.x += this.velx * timeModifier;
-        this.location.y += this.vely * timeModifier;
+        this.location.x += this.velX * timeModifier;
+        this.location.y += this.velY * timeModifier;
         this.angle += this.spin * timeModifier;
     }
     
@@ -55,9 +56,9 @@ export class MovingGameObject extends StaticGameObject{
     }
     
     protected angularThrust(thrust : number) {
-        let velchange = Transforms.toVector(this.angle, thrust);
-        this.velx += velchange.x;
-        this.vely += velchange.y;
+        let velChange = Transforms.VectorToCartesian(this.angle, thrust);
+        this.velX += velChange.x;
+        this.velY += velChange.y;
     }
 }
 

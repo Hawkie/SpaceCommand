@@ -72,7 +72,7 @@ export class AsteroidState implements IGameState {
     }
 
     bulletHitAsteroidTest(){
-        var bullets = this.player.primaryWeapon.projectiles;
+        var bullets = this.player.weapon1.projectiles;
         for (let i=0;i<bullets.length;i++)
         {
             let bullet = bullets[i];

@@ -24,15 +24,15 @@ export class LandingPad extends MovingGameObject{
     }
     
     hit(player : LandingBasicShip){
-        if(player.vely > 0){
-            console.log("Land velocity: " + player.vely);
+        if(player.velY > 0){
+            console.log("Land velocity: " + player.velY);
             
-            if(player.vely > 20){
+            if(player.velY > 20){
                 player.crash();
             }
             
-            player.vely = 0;
-            player.velx = 0;
+            player.velY = 0;
+            player.velX = 0;
         }
     }
 }

@@ -46,7 +46,7 @@ export class ParticleField implements IGameObject {
 
     // how frequently a particle appears
     itemsPerSec: number;
-    lastAdded: number;
+    //lastAdded: number;
 
     // how long a particle survives
     lifeTimeInSec: number;
@@ -57,7 +57,10 @@ export class ParticleField implements IGameObject {
     firstAdded: number;
     fadeOutInSec: number;
 
-    on: boolean;
+    // init
+    lastCheck: number;
+
+    private on: boolean;
 
     constructor(startx: () => number, starty: () => number, velx: () => number, vely: () => number, item: IDisplayObject, itemsPerSecond : number, lifeTimeInSec : number = 0, fadeOutInSec : number = 0, on : boolean = true) {
         this.fieldObjects = [];
@@ -70,39 +73,45 @@ export class ParticleField implements IGameObject {
 
         this.range = 0;
         this.maxNumber = 0;
-        this.lastAdded = 0;
+        //this.lastAdded = 0;
         this.firstAdded = 0;
+        this.lastCheck = Date.now();
         this.itemsPerSec = itemsPerSecond;
 
         this.fadeOutInSec = fadeOutInSec;
         this.on = on;
     }
 
-    init() {
-        
+    init() { }
+
+    turnOn() {
+        this.on = true;
     }
 
+    turnOff() {
+        this.on = false;
+    }
 
     update(lastTimeModifier : number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
+        var now = Date.now();
+        if (!this.on) {
+            this.lastCheck = now;
+            this.firstAdded = 0;
+        }
         if (this.on) {
-            var now = Date.now();
-            var secSinceLast = (now - this.lastAdded) / 1000;
-            var secSinceFirst = (now - this.firstAdded) / 1000;
-            if (this.fadeOutInSec == 0 || this.firstAdded == 0 || secSinceFirst < this.fadeOutInSec) {
-                if (this.firstAdded == 0) {
-                    this.firstAdded = now;
-                    this.lastAdded = now;
-                }
-                else {
-                    let toAdd = this.itemsPerSec * secSinceLast;
-                    // only add
-                    for (let i: number = 0; i < toAdd; i++) {
-                        var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
-                        this.fieldObjects.push(o);
-                        if (this.lastAdded == 0) this.firstAdded = now;
-                        this.lastAdded = now;
-                    }
+            var secSinceLast = (now - this.lastCheck) / 1000;
+
+            // Don't add if fading out
+            if (this.fadeOutInSec == 0 || this.firstAdded == 0 || ((now - this.firstAdded) / 1000) < this.fadeOutInSec) {
+                
+                let toAdd = Math.floor(this.itemsPerSec * secSinceLast);
+                // only add
+                for (let i: number = 0; i < toAdd; i++) {
+                    var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
+                    this.fieldObjects.push(o);
+                    if (this.firstAdded == 0) this.firstAdded = now;
+                    this.lastCheck = now;
                 }
             }
         }
@@ -112,7 +121,7 @@ export class ParticleField implements IGameObject {
             var element = this.fieldObjects[i];
         
             // remove if too old
-            var removed = false;
+            let removed = false;
             if (this.lifeTimeInSec > 0) {
                 var ageInSec = (now - element.born) / 1000;
                 if (ageInSec > this.lifeTimeInSec) {

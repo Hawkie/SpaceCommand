@@ -15,8 +15,8 @@ export interface IShip {
     angle: number;
     location: Coordinate;
     thrustPower: number;
-    velx: number;
-    vely: number;
+    velX: number;
+    velY: number;
 
     // methods
     thrust(lastTimeModifier: number);
@@ -26,8 +26,8 @@ export interface IShip {
 
 export class BasicShip extends MovingGameObject implements IShip {
     thrustPower : number;
-    rotationalPower : number;
-    primaryWeapon: IWeapon;
+    rotationalSpeed : number;
+    weapon1: IWeapon;
     thrustParticles1: ParticleField;
     explosionParticles1: ParticleField;
     points: Coordinate[];
@@ -42,9 +42,9 @@ export class BasicShip extends MovingGameObject implements IShip {
         var triangleShip = new Polygon(this.points);
         
         this.thrustPower = 16;
-        this.rotationalPower = 64;
-        this.primaryWeapon = new BasicGun();
-        this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 10, 2, 0, false);
+        this.rotationalSpeed = 64;
+        this.weapon1 = new BasicGun();
+        this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 20, 1, 0, false);
         this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.3,false);
         this.crashed = false;
     }
@@ -52,14 +52,14 @@ export class BasicShip extends MovingGameObject implements IShip {
     
     
     update(lastTimeModifier : number){
-        this.primaryWeapon.update(lastTimeModifier);
+        this.weapon1.update(lastTimeModifier);
         this.thrustParticles1.update(lastTimeModifier);
         this.explosionParticles1.update(lastTimeModifier);
         if (!this.crashed) super.update(lastTimeModifier);
     }
     
     display(drawContext : DrawContext){
-        this.primaryWeapon.display(drawContext);
+        this.weapon1.display(drawContext);
         this.thrustParticles1.display(drawContext);
         this.explosionParticles1.display(drawContext);
         if (!this.crashed) super.display(drawContext);    
@@ -70,31 +70,31 @@ export class BasicShip extends MovingGameObject implements IShip {
         //audio.play();
         if (!this.crashed) {
             this.angularThrust(this.thrustPower * lastTimeModifier)
-            this.thrustParticles1.on = true;
+            this.thrustParticles1.turnOn();
         }
     }
 
     noThrust() {
-        this.thrustParticles1.on = false;
+        this.thrustParticles1.turnOff();
     }
     
     // flash screen white. remove ship, turn on explosionParticles
     crash() {
         this.crashed = true;
-        this.explosionParticles1.on = true;
+        this.explosionParticles1.turnOn();
         console.log("Your ship crashed!");
     }
     
     rotateLeft(lastTimeModifier: number) {
-        if (!this.crashed) this.angle -= this.rotationalPower * lastTimeModifier;
+        if (!this.crashed) this.angle -= this.rotationalSpeed * lastTimeModifier;
     }
     
     rotateRight(lastTimeModifier : number){
-        if (!this.crashed) this.angle += this.rotationalPower * lastTimeModifier;
+        if (!this.crashed) this.angle += this.rotationalSpeed * lastTimeModifier;
     }
     
     shootPrimary(lastTimeModifier : number){
-        if (!this.crashed) this.primaryWeapon.pullTrigger(this.location.x, this.location.y, this.angle);
+        if (!this.crashed) this.weapon1.pullTrigger(this.location.x, this.location.y, this.angle);
     }
 
     startFromX(): number {
@@ -106,21 +106,21 @@ export class BasicShip extends MovingGameObject implements IShip {
     }
 
     thrustVelX(): number {
-        let velchange = Transforms.toVector(this.angle, this.thrustPower);
-        return -velchange.x + this.velx + (Math.random() * 5);
+        let velchange = Transforms.VectorToCartesian(this.angle, this.thrustPower);
+        return -velchange.x + this.velX + (Math.random() * 5);
     }
 
     thrustVelY(): number {
-        let velchange = Transforms.toVector(this.angle, this.thrustPower);
-        return -velchange.y + this.vely + (Math.random() * 5);
+        let velchange = Transforms.VectorToCartesian(this.angle, this.thrustPower);
+        return -velchange.y + this.velY + (Math.random() * 5);
     }
 
     explosionX(): number {
-        return this.velx + ((Math.random()- 0.5) * 20);
+        return this.velX + ((Math.random()- 0.5) * 20);
     }
 
     explosionY(): number {
-        return this.vely + ((Math.random()-0.5) * 20);
+        return this.velY + ((Math.random()-0.5) * 20);
     }
 
 }

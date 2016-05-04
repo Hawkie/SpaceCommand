@@ -69,8 +69,8 @@ export class PlanetSurface extends StaticGameObject{
     }
     
     hit(player : LandingBasicShip){
-        player.vely = 0;
-        player.velx = 0;
+        player.velY = 0;
+        player.velX = 0;
         player.crash();
     }
     

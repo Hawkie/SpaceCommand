@@ -16,9 +16,9 @@ export class Wind extends WindDirectionIndicator {
         super.update(lastTimeModifier);
         if (player) {
             if (this.blowingRight) {
-                player.velx += (this.windSpeed * lastTimeModifier);
+                player.velX += (this.windSpeed * lastTimeModifier);
             } else {
-                player.velx -= (this.windSpeed * lastTimeModifier);
+                player.velX -= (this.windSpeed * lastTimeModifier);
             }
         }
 

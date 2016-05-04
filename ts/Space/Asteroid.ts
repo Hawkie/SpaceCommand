@@ -39,7 +39,7 @@ export class Asteroid extends MovingGameObject {
     }
     
     hit(){
-         this.velx +=2;
+         this.velX +=2;
          this.spin +=1;
     }
 }

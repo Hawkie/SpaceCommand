@@ -17,7 +17,7 @@ export class Tester {
     }
 
     testVector() {
-        var c: Coordinate = Transforms.toVector(45, 100);
+        var c: Coordinate = Transforms.VectorToCartesian(45, 100);
         console.log("Vector: " + c.x + "," + c.y)
     }
     

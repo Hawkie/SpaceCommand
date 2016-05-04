@@ -23,7 +23,7 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
     update(timeModifier : number){
         super.update(timeModifier);
         
-        this.vely += this.gravitationalPull;
+        this.velY += this.gravitationalPull;
     }
     
     thrust(lastTimeModifier : number){
@@ -36,21 +36,21 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
     }
     
     moveLeft(lastTimeModifier: number) {
-        this.velx -= this.leftRightSpeed * lastTimeModifier;
+        this.velX -= this.leftRightSpeed * lastTimeModifier;
     }
 
     moveRight(lastTimeModifier: number) {
-        this.velx += this.leftRightSpeed * lastTimeModifier;
+        this.velX += this.leftRightSpeed * lastTimeModifier;
     }
 
     notMovingOnX(lastDrawModifier: number) {
-        if (this.velx < 0) {
-            this.velx += (this.leftRightSlowing * lastDrawModifier);
-            if (this.velx >= 0) this.velx = 0;
+        if (this.velX < 0) {
+            this.velX += (this.leftRightSlowing * lastDrawModifier);
+            if (this.velX >= 0) this.velX = 0;
         }
-        else if (this.velx > 0) {
-            this.velx -= (this.leftRightSlowing * lastDrawModifier);
-            if (this.velx < 0) this.velx = 0;
+        else if (this.velX > 0) {
+            this.velX -= (this.leftRightSlowing * lastDrawModifier);
+            if (this.velX < 0) this.velX = 0;
         }
     }
 }

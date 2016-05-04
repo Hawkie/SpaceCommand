@@ -45,7 +45,7 @@ export class LandingState implements IGameState {
     }
     
     update(lastDrawModifier : number){
-        this.velocityText.text = "Velocity: " + Math.abs(Math.round(this.player.vely));
+        this.velocityText.text = "Velocity: " + Math.abs(Math.round(this.player.velY));
         
         this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
