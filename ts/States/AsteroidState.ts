@@ -49,6 +49,8 @@ export class AsteroidState implements IGameState {
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
         this.player.update(lastDrawModifier);
+        this.bulletHitAsteroidTest();
+        this.playerHitAsteroidTest();
     }
     
     // order is important. Like layers on top of each other.
@@ -60,20 +62,16 @@ export class AsteroidState implements IGameState {
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
-        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust(lastDrawModifier);
+        if (keys.isKeyDown(Keys.UpArrow))
+            this.player.thrust(lastDrawModifier);
+        else
+            this.player.noThrust();
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.rotateLeft(lastDrawModifier);
         if (keys.isKeyDown(Keys.RightArrow)) this.player.rotateRight(lastDrawModifier);
         if (keys.isKeyDown(Keys.SpaceBar)) this.player.shootPrimary(lastDrawModifier);
     }
 
-    tests(){
-        // let hitFunction = function(location : Coordinate, asteroid : IHittable){
-        //     if (asteroid.hitTest(location)){
-        //         // breaks rule of immutable (e.g. won't be able to make asteroid  immutable!)
-        //         asteroid.velx +=2;
-        //         asteroid.spin +=1;
-        //     }
-        // }
+    bulletHitAsteroidTest(){
         var bullets = this.player.primaryWeapon.projectiles;
         for (let i=0;i<bullets.length;i++)
         {
@@ -91,6 +89,23 @@ export class AsteroidState implements IGameState {
         }
     }
     
+    playerHitAsteroidTest() {
+        for (let a = 0; a < this.asteroids.length; a++) {
+            let asteroid = this.asteroids[a];
+            // todo make this local function so we can remove bullet
+            for (let p = 0; p < this.player.points.length - 2; p++) {
+                let point = this.player.points[p];
+                let location = new Coordinate(this.player.location.x + point.x, this.player.location.y + point.y);
+                if (asteroid.hitTest(location)) {
+                    this.player.crash();
+                    break;
+                }
+            }
+        }
+    }
+
+    tests() { }
+
     private createAsteroid(location : Coordinate) : Asteroid {
         return new Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
     }

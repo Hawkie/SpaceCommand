@@ -6,10 +6,16 @@ import { DrawContext } from "../Common/DrawContext";
 export class ParticleDetail {
     location: Coordinate;
     private origin: Coordinate;
-    constructor(locationx: number, locationy: number, private bornTime: number) {
+    constructor(locationx: number, locationy: number, private velX: number, private velY: number, private bornTime: number) {
+
         this.location = new Coordinate(locationx, locationy);
         this.origin = new Coordinate(locationx, locationy);
     } 
+
+    update(lastTimeModifier: number) {
+        this.location.x += this.velX * lastTimeModifier;
+        this.location.y += this.velY * lastTimeModifier;
+    }
 
     get born(): number { 
         return this.bornTime;
@@ -21,6 +27,7 @@ export class ParticleDetail {
         return this.origin.y;
     }
     
+
 }
 
 export class ParticleField implements IGameObject {
@@ -42,34 +49,52 @@ export class ParticleField implements IGameObject {
     lastAdded: number;
 
     // how long a particle survives
-    durationInSec: number;
+    lifeTimeInSec: number;
     range: number;
     maxNumber: number;
 
-    constructor(startx: () => number, starty: () => number, velx: () => number, vely: () => number, item: IDisplayObject, itemsPerSecond : number) {
+    // fadeOut
+    firstAdded: number;
+    fadeOutInSec: number;
+
+    on: boolean;
+
+    constructor(startx: () => number, starty: () => number, velx: () => number, vely: () => number, item: IDisplayObject, itemsPerSecond : number, lifeTimeInSec : number = 0, fadeOutInSec : number = 0, on : boolean = true) {
         this.fieldObjects = [];
         this.startx = startx;
         this.starty = starty;
         this.velx = velx;
         this.vely = vely;
         this.item = item;
-        this.durationInSec = 10;
+        this.lifeTimeInSec = lifeTimeInSec;
+
         this.range = 0;
         this.maxNumber = 0;
         this.lastAdded = 0;
+        this.firstAdded = 0;
         this.itemsPerSec = itemsPerSecond;
+
+        this.fadeOutInSec = fadeOutInSec;
+        this.on = on;
+
+        
     }
 
     init() { }
 
-    update(lastDrawModifier : number) {
+
+    update(lastTimeModifier : number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
-        var now = Date.now();
-        var secElapsed = (now - this.lastAdded) / 1000;
-        if (secElapsed >= 1 / this.itemsPerSec) {
-            var o = new ParticleDetail(this.startx(), this.starty(), now);
-            this.fieldObjects.push(o);
-            this.lastAdded = now;
+        if (this.on) {
+            var now = Date.now();
+            var secElapsed = (now - this.lastAdded) / 1000;
+            var secSinceStart = (now - this.firstAdded) / 1000;
+            if ((secElapsed >= 1 / this.itemsPerSec) && (this.fadeOutInSec == 0 || this.firstAdded == 0 || secSinceStart < this.fadeOutInSec)) {
+                var o = new ParticleDetail(this.startx(), this.starty(), this.velx(), this.vely(), now);
+                this.fieldObjects.push(o);
+                if (this.lastAdded == 0) this.firstAdded = now;
+                this.lastAdded = now;
+            }
         }
 
         // move objects
@@ -78,17 +103,16 @@ export class ParticleField implements IGameObject {
         
             // remove if too old
             var removed = false;
-            if (this.durationInSec > 0) {
+            if (this.lifeTimeInSec > 0) {
                 var ageInSec = (now - element.born) / 1000;
-                if (ageInSec > this.durationInSec) {
+                if (ageInSec > this.lifeTimeInSec) {
                     this.fieldObjects.splice(i, 1);
                     removed = true;
                 }
             }
             // draw if still remains
             if (!removed) {
-                element.location.x += this.velx() * lastDrawModifier;
-                element.location.y += this.vely() * lastDrawModifier;
+                element.update(lastTimeModifier);
             }
         }
     }
