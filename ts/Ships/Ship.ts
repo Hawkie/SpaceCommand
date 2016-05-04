@@ -34,10 +34,13 @@ export class BasicShip extends MovingGameObject implements IShip {
     crashed: boolean;
 
     constructor(location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        this.points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var triangleShip = new Polygon(this.points)
+        var p = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         
-        super(triangleShip, location, velx, vely, angle, spin);
+        super(new Polygon(p), location, velx, vely, angle, spin);
+        
+        this.points = p;
+        var triangleShip = new Polygon(this.points);
+        
         this.thrustPower = 16;
         this.rotationalPower = 64;
         this.primaryWeapon = new BasicGun();
