@@ -53,7 +53,8 @@ export class LandingState implements IGameState {
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
-        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust(lastDrawModifier);
+        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust();
+        else this.player.noThrust();
 
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.moveLeft(lastDrawModifier);
         else if (keys.isKeyDown(Keys.RightArrow)) this.player.moveRight(lastDrawModifier);

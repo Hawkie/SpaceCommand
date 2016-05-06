@@ -1,7 +1,8 @@
 import {Coordinate } from "../Common/Coordinate";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
-import { IGameObject, ILocated, IMoving, IAngled, LocatedAngledMovingGO } from "../GameObjects/GameObject";
+import { IGameObject, ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledGO";
+import { ForwardAccelerator } from "../Actors/Accelerators";
 import { DrawContext } from "../Common/DrawContext";
 import { Transforms } from "../Common/Transforms";
 import { ParticleField } from "../Space/ParticleField";
@@ -10,18 +11,18 @@ import { IWeapon, BasicGun } from "../Weapons/Weapon"
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 
-export interface IShip extends ILocated, IMoving, IAngled {
+export interface IShip extends ILocated, IMoving, IAngled, IRotating, IForwardAccelerator {
     
-    thrustPower: number;
-
     // methods
-    thrust(lastTimeModifier: number);
+    thrust();
+    noThrust();
     crash();
 }
 
 
 export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip {
-    thrustPower : number;
+    maxForwardForce: number;
+    forwardForce: number;
     rotationalSpeed : number;
     weapon1: IWeapon;
     thrustParticles1: ParticleField;
@@ -29,22 +30,22 @@ export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip 
     points: Coordinate[];
     crashed: boolean;
 
-    constructor(location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
+    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
         var p = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        super(new Polygon(p), location, velx, vely, angle, spin);
-        
+        var triangleShip = new Polygon(p);
+
+        super(triangleShip, location, velx, vely, angle, spin);
+        this.actors.push(new ForwardAccelerator(this));
+
         this.points = p;
-        var triangleShip = new Polygon(this.points);
-        
-        this.thrustPower = 16;
+        this.forwardForce = 0;
+        this.maxForwardForce = 16;
         this.rotationalSpeed = 64;
         this.weapon1 = new BasicGun();
         this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 20, 1, 0, false);
         this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.2,false);
         this.crashed = false;
     }
-
-    
     
     update(lastTimeModifier : number){
         this.weapon1.update(lastTimeModifier);
@@ -60,22 +61,17 @@ export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip 
         if (!this.crashed) super.display(drawContext);    
     }
     
-    thrust(lastTimeModifier : number){
+    thrust(){
         //var audio = new Audio("./wav/thrust.wav");
         //audio.play();
         if (!this.crashed) {
-            this.angularThrust(this.thrustPower * lastTimeModifier)
+            this.forwardForce = this.maxForwardForce;
             this.thrustParticles1.turnOn();
         }
     }
 
-    protected angularThrust(thrust: number) {
-        let velChange = Transforms.VectorToCartesian(this.angle, thrust);
-        this.velX += velChange.x;
-        this.velY += velChange.y;
-    }
-
     noThrust() {
+        this.forwardForce = 0;
         this.thrustParticles1.turnOff();
     }
     
@@ -109,12 +105,12 @@ export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip 
     }
 
     thrustVelX(): number {
-        let velchange = Transforms.VectorToCartesian(this.angle, this.thrustPower);
+        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
         return -velchange.x + this.velX + (Math.random() * 5);
     }
 
     thrustVelY(): number {
-        let velchange = Transforms.VectorToCartesian(this.angle, this.thrustPower);
+        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
         return -velchange.y + this.velY + (Math.random() * 5);
     }
 

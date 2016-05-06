@@ -63,7 +63,7 @@ export class AsteroidState implements IGameState {
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
         if (keys.isKeyDown(Keys.UpArrow))
-            this.player.thrust(lastDrawModifier);
+            this.player.thrust();
         else
             this.player.noThrust();
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.rotateLeft(lastDrawModifier);

@@ -34,6 +34,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="main.ts" />
     <TypeScriptCompile Include="Scripts\Typings\require\require.d.ts" />
+    <TypeScriptCompile Include="ts\Actors\Accelerators.ts" />
     <TypeScriptCompile Include="ts\Actors\Actor.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
     <TypeScriptCompile Include="ts\Common\Canvas.ts" />
@@ -84,7 +85,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ts\Interactors\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

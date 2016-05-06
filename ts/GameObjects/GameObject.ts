@@ -31,6 +31,10 @@ export interface IRotating {
     spin: number;
 }
 
+export interface IForwardAccelerator {
+    forwardForce: number;
+}
+
 export interface ILocatedAndAngled extends ILocated, IAngled {
 }
 
@@ -40,14 +44,11 @@ export interface ILocatedAndMoving extends ILocated, IMoving {
 export interface IAngledAndRotating extends IAngled, IRotating {
 }
 
-// to be used shortly
-export interface IForwardInteractor {
-    forwardAcceleration(force: number);
-}
+export interface IAngledMovingForwardAcc extends IAngled, IMoving, IForwardAccelerator { }
 
 // to be used shortly
 export interface IAngularInteractor {
-    angularAcceleration(force: number, angle: number);
+    anyAcceleration(force: number, angle: number);
 }
 
 export class LocatedGO implements IGameObject, ILocated {
@@ -104,7 +105,7 @@ export class LocatedAngledMovingRotating extends LocatedAngledMovingGO implement
 }
 
 // TODO: Implement actual gravity
-export class GravityGameObject extends LocatedAngledMovingRotating{
+export class GravityGameObject extends LocatedAngledMovingRotating {
     mass : number;
     gravitationalPull : number;
     weight : number;
