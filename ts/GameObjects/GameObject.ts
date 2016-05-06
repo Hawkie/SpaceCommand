@@ -3,6 +3,7 @@ import { IDrawable } from "../DisplayObjects/DisplayObject";
 import { IActor } from "../Actors/Actor";
 import { PolyRotator, Spinner } from "../Actors/Rotators";
 import { Mover } from "../Actors/Movers";
+import { VectorAccelerator } from "../Actors/Accelerators";
 import { IEffect } from "../Effects/Effect";
 import { Draw, DrawRotated } from "../Effects/DrawRotated";
 import { Coordinate } from "../Common/Coordinate";
@@ -35,6 +36,11 @@ export interface IForwardAccelerator {
     forwardForce: number;
 }
 
+export interface IVectorAccelerator {
+    vectorAngle: number;
+    vectorForce: number;
+}
+
 export interface ILocatedAndAngled extends ILocated, IAngled {
 }
 
@@ -45,6 +51,8 @@ export interface IAngledAndRotating extends IAngled, IRotating {
 }
 
 export interface IAngledMovingForwardAcc extends IAngled, IMoving, IForwardAccelerator { }
+
+export interface IMovingVecAcc extends IMoving, IVectorAccelerator { }
 
 // to be used shortly
 export interface IAngularInteractor {
@@ -101,24 +109,13 @@ export class LocatedAngledMovingRotating extends LocatedAngledMovingGO implement
         var spinner: IActor = new Spinner(this);
         this.actors.push(spinner);
     }
-
 }
 
 // TODO: Implement actual gravity
-export class GravityGameObject extends LocatedAngledMovingRotating {
-    mass : number;
-    gravitationalPull : number;
-    weight : number;
+export class GravityGameObject extends LocatedAngledMovingRotating implements IVectorAccelerator {
     
-    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, mass : number, gravitationalPull : number){
+    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, public vectorForce:number = 10, public vectorAngle: number = 180){
         super(drawable, location, velx, vely, angle, spin);
-        this.mass = mass;
-        this.gravitationalPull = gravitationalPull;
-        this.weight = mass * gravitationalPull;
-    }
-    
-    update(timeModifier : number){
-        super.update(timeModifier);
-        this.location.y -= this.weight * timeModifier;
+        this.actors.push(new VectorAccelerator(this));
     }
 }
