@@ -72,6 +72,7 @@ export class LocatedAngledGO extends LocatedGO implements IAngled {
     }
 
     // does not call superclass on purpose!
+    // the drawing is done here and we don't want to repeat in base.
     display(drawContext: DrawContext) {
         this.rotator.display(drawContext);
     }

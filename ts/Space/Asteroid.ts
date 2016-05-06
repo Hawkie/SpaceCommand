@@ -1,9 +1,10 @@
 import { Coordinate } from "../Common/Coordinate";
 import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
+import { MovingLocatedAngledPoly } from "../GameObjects/LocatedAngledGO";
 import { IDrawable, Polygon } from "../DisplayObjects/DisplayObject"
 
 
-export class Asteroid extends LocatedAngledMovingGO {
+export class Asteroid extends MovingLocatedAngledPoly {
 
 // 5 different asteroid shapes
     //  [-4,-2,-2,-4,0,-2,2,-4,4,-2,3,0,4,2,1,4,-2,4,-4,2,-4,-2],
