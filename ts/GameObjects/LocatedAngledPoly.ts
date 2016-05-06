@@ -10,7 +10,7 @@ import { Transforms } from "../Common/Transforms";
 import { LocatedGO, ILocated, IAngled, IMoving, IGameObject, IRotating, IVectorAccelerator } from "../GameObjects/GameObject";
 
 
-export class LocatedAngledPolyGO extends LocatedGO implements IAngled {
+export class LocatedAngledPoly extends LocatedGO implements IAngled {
 
     constructor(protected drawable: IDrawableAndRotatable, public location: Coordinate, public angle: number = 0) {
         super(drawable, location);
@@ -19,7 +19,7 @@ export class LocatedAngledPolyGO extends LocatedGO implements IAngled {
     }
 }
 
-export class MovingLocatedAngledPoly extends LocatedAngledPolyGO implements ILocated, IMoving {
+export class MovingLocatedAngledPoly extends LocatedAngledPoly implements ILocated, IMoving {
 
     constructor(drawable: IDrawableAndRotatable, location: Coordinate, public velX: number, public velY: number, public angle: number = 0, public spin: number = 0) {
         super(drawable, location, angle);

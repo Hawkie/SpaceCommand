@@ -1,7 +1,7 @@
 import {Coordinate } from "../Common/Coordinate";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
 import { IGameObject, ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, LocatedAngledMovingGO } from "../GameObjects/GameObject";
-import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledGO";
+import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledPoly";
 import { ForwardAccelerator } from "../Actors/Accelerators";
 import { DrawContext } from "../Common/DrawContext";
 import { Transforms } from "../Common/Transforms";

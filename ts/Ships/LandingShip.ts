@@ -1,5 +1,5 @@
 import { LocatedGO } from "../GameObjects/GameObject";
-import { GravityGameObjectPoly }from "../GameObjects/LocatedAngledGO";
+import { GravityGameObjectPoly }from "../GameObjects/LocatedAngledPoly";
 import { IShip } from "./Ship";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject";

@@ -1,8 +1,7 @@
 import { Coordinate } from "../Common/Coordinate";
 import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
-import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledGO";
+import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledPoly";
 import { IDrawable, Polygon } from "../DisplayObjects/DisplayObject"
-
 
 export class Asteroid extends LocatedAngledMovingRotatingPoly {
 

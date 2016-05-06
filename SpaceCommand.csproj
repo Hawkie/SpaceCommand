@@ -48,7 +48,7 @@
     <TypeScriptCompile Include="ts\Common\Transforms.ts" />
     <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
     <TypeScriptCompile Include="ts\Game.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\LocatedAngledGO.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\LocatedAngledPoly.ts" />
     <TypeScriptCompile Include="ts\Gui\GuiPolygon.ts" />
     <TypeScriptCompile Include="ts\Gui\GuiText.ts" />
     <TypeScriptCompile Include="ts\Gui\WindDirectionIndicator.ts" />

@@ -114,7 +114,7 @@ export class LocatedAngledMovingRotating extends LocatedAngledMovingGO implement
 // TODO: Implement actual gravity
 export class GravityGameObject extends LocatedAngledMovingRotating implements IVectorAccelerator {
     
-    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, public vectorForce:number = 10, public vectorAngle: number = 180){
+    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, public vectorForce:number, public vectorAngle: number){
         super(drawable, location, velx, vely, angle, spin);
         this.actors.push(new VectorAccelerator(this));
     }
