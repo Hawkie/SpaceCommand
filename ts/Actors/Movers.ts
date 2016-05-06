@@ -11,6 +11,4 @@ export class Mover implements IActor {
         this.locatedMoving.location.x += this.locatedMoving.velX * timeModifier;
         this.locatedMoving.location.y += this.locatedMoving.velY * timeModifier;
     }
-
-    display(drawContext: DrawContext) { }
 }

@@ -13,16 +13,11 @@ export class PolyRotator implements IActor {
         this.previousAngle = properties.angle;
     }
 
-
     update(timeModifier: number) {
         if (this.previousAngle != this.properties.angle) {
             // rotate the difference
             this.drawable.rotate(this.properties.angle- this.previousAngle);
             this.previousAngle = this.properties.angle;
         }
-    }
-
-    display(drawContext: DrawContext) {
-        this.drawable.draw(this.properties.location, drawContext);
     }
 }

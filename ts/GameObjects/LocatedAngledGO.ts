@@ -9,23 +9,20 @@ import { LocatedGO, ILocated, IAngled, IMoving, IGameObject } from "../GameObjec
 
 
 export class LocatedAngledPolyGO extends LocatedGO implements IAngled {
-    // add method policy here
-    private rotator: IGameObject;
 
     constructor(protected drawable: IDrawableAndRotatable, public location: Coordinate, public angle: number = 0) {
         super(drawable, location);
-        this.rotator = new PolyRotator(this, drawable);
-        this.actors.push(this.rotator);
+        var rotator = new PolyRotator(this, drawable);
+        this.actors.push(rotator);
     }
 }
 
 export class MovingLocatedAngledPoly extends LocatedAngledPolyGO implements ILocated, IMoving {
 
-    mover: IGameObject;
     constructor(protected drawable: IDrawableAndRotatable, public location: Coordinate, public velX: number, public velY: number, public angle: number = 0, public spin: number = 0) {
         super(drawable, location, angle);
-        this.mover = new Mover(this);
-        this.actors.push(this.mover);
+        var mover = new Mover(this);
+        this.actors.push(mover);
     }
 
     update(timeModifier: number) {
