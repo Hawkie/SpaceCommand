@@ -1,6 +1,7 @@
 ﻿import { DrawContext } from "../Common/DrawContext";
 import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
-import { GeneralRotator, PolyRotator } from "../Actors/Rotators";
+import { PolyRotator } from "../Actors/Rotators";
+import { Draw } from "../Effects/DrawRotated";
 import { Mover } from "../Actors/Movers";
 import { Coordinate } from "../Common/Coordinate";
 import { Transforms } from "../Common/Transforms";
@@ -14,16 +15,7 @@ export class LocatedAngledPolyGO extends LocatedGO implements IAngled {
     constructor(protected drawable: IDrawableAndRotatable, public location: Coordinate, public angle: number = 0) {
         super(drawable, location);
         this.rotator = new PolyRotator(this, drawable);
-    }
-
-    update(timeModifier: number) {
-        super.update(timeModifier);
-        this.rotator.update(timeModifier);
-    }
-
-    // does not call superclass on purpose!
-    display(drawContext: DrawContext) {
-        this.rotator.display(drawContext);
+        this.actors.push(this.rotator);
     }
 }
 
@@ -33,16 +25,11 @@ export class MovingLocatedAngledPoly extends LocatedAngledPolyGO implements ILoc
     constructor(protected drawable: IDrawableAndRotatable, public location: Coordinate, public velX: number, public velY: number, public angle: number = 0, public spin: number = 0) {
         super(drawable, location, angle);
         this.mover = new Mover(this);
+        this.actors.push(this.mover);
     }
 
     update(timeModifier: number) {
         super.update(timeModifier);
-        this.mover.update(timeModifier);
         this.angle += this.spin * timeModifier;
-    }
-
-    display(drawContext: DrawContext) {
-        super.display(drawContext);
-        this.mover.display(drawContext);
     }
 }

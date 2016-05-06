@@ -1,11 +1,11 @@
-import { LocatedGO } from "../GameObjects/GameObject";
+import { IGameObject } from "../GameObjects/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { LandingPad } from "./LandingPad";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 
-export class PlanetSurface extends LocatedGO{
+export class PlanetSurface implements IGameObject {
     landingPad : LandingPad;
     surfacePolygon : Polygon;
     
@@ -14,11 +14,9 @@ export class PlanetSurface extends LocatedGO{
     yMin = -20;
     yMax = 20;
     
-    constructor(location : Coordinate){
-        super(null, location);
-        this.landingPad = new LandingPad(new Coordinate(0,0)); // Temporarily place at (0,0) so this.generateSurface can position it
+    constructor(private surfaceStartingPoint: Coordinate) {
+        this.landingPad = new LandingPad(new Coordinate(0, 0)); // Temporarily place at (0,0) so this.generateSurface can position it
         this.surfacePolygon = new Polygon(this.generateSurface(600));
-        this.drawable = this.surfacePolygon;
     }
     
     generateSurface(surfaceLength : number) : Coordinate[]{
@@ -39,7 +37,7 @@ export class PlanetSurface extends LocatedGO{
             x += this.random(this.xMin, this.xMax);
             
             if(x > (surfaceLength / 5) && this.landingPad.location.x == 0){ // Position the landing pad
-                this.landingPad.location = new Coordinate(x + 12, (this.location.y + y) - 10);
+                this.landingPad.location = new Coordinate(x + 12, (this.surfaceStartingPoint.y + y) - 10);
                 sameY = true;
             }
             
@@ -55,17 +53,16 @@ export class PlanetSurface extends LocatedGO{
     }
     
     update(lastTimeModifier : number){
-        super.update(lastTimeModifier);
         this.landingPad.update(lastTimeModifier);
     }
     
     display(drawingContext : DrawContext){
-        super.display(drawingContext);
+        this.surfacePolygon.draw(this.surfaceStartingPoint, drawingContext);
         this.landingPad.display(drawingContext);
     }
     
     hitTest(playerPos : Coordinate) : boolean{
-        return this.surfacePolygon.hasPoint(this.location, playerPos);
+        return this.surfacePolygon.hasPoint(this.surfaceStartingPoint, playerPos);
     }
     
     hit(player : LandingBasicShip){

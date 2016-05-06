@@ -2,6 +2,7 @@ import { LocatedGO, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { IShip } from "./Ship";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject";
+import { Transforms } from "../Common/Transforms";
 
 export class LandingBasicShip extends LocatedAngledMovingGO implements IShip {
     thrustPower : number;
@@ -28,6 +29,12 @@ export class LandingBasicShip extends LocatedAngledMovingGO implements IShip {
     thrust(lastTimeModifier : number){
         // TODO: Play thrust sfx
         this.angularThrust(this.thrustPower * lastTimeModifier)
+    }
+
+    protected angularThrust(thrust: number) {
+        let velChange = Transforms.VectorToCartesian(this.angle, thrust);
+        this.velX += velChange.x;
+        this.velY += velChange.y;
     }
     
     crash(){

@@ -1,7 +1,10 @@
 import { DrawContext } from "../Common/DrawContext";
 import { IDrawable } from "../DisplayObjects/DisplayObject";
-import { GeneralRotator, PolyRotator } from "../Actors/Rotators";
+import { IActor } from "../Actors/Actor";
+import { PolyRotator } from "../Actors/Rotators";
 import { Mover } from "../Actors/Movers";
+import { IEffect } from "../Effects/Effect";
+import { Draw, DrawRotated } from "../Effects/DrawRotated";
 import { Coordinate } from "../Common/Coordinate";
 import { Transforms } from "../Common/Transforms";
 
@@ -45,36 +48,34 @@ export interface IAngularInteractor {
 }
 
 export class LocatedGO implements IGameObject, ILocated {
+    
+    actors: IActor[];
+    effects: IEffect[];
+
     constructor(protected drawable: IDrawable, public location: Coordinate) {
+        this.actors = [];
+        this.effects = [];
+        this.effects.push(new Draw(this, this.drawable));
     }
     
     update(timeModifier: number) {
-        //this.Properties.forEach(p => p.update
+        this.actors.forEach(a => a.update(timeModifier));
     }
     
     display(drawContext: DrawContext) {
-        this.drawable.draw(this.location, drawContext);
+        this.effects.forEach(e => e.display(drawContext));
     }
 }
 
 export class LocatedAngledGO extends LocatedGO implements IAngled {
 // add method policy here
-    private rotator: IGameObject;
+    private rotator: IEffect;
 
     constructor(protected drawable: IDrawable, public location: Coordinate, public angle: number = 0) {
         super(drawable, location);
-        this.rotator = new GeneralRotator(this, drawable);
-    }
-
-    update(timeModifier: number) {
-        super.update(timeModifier);
-        this.rotator.update(timeModifier);
-    }
-
-    // does not call superclass on purpose!
-    // the drawing is done here and we don't want to repeat in base.
-    display(drawContext: DrawContext) {
-        this.rotator.display(drawContext);
+        this.rotator = new DrawRotated(this, drawable);
+        this.effects.pop();
+        this.effects.push(this.rotator);
     }
 }
 
@@ -82,7 +83,7 @@ export class LocatedAngledMovingGO extends LocatedAngledGO implements IMoving {
     velX : number;
     velY : number;
     spin: number;
-    mover: IGameObject;
+    mover: IActor;
 
     constructor(drawable: IDrawable, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
         super(drawable, location, angle);
@@ -91,23 +92,12 @@ export class LocatedAngledMovingGO extends LocatedAngledGO implements IMoving {
         this.velY = velY;
         this.spin = spin;
         this.mover = new Mover(this);
+        this.actors.push(this.mover);
     }
     
     update(timeModifier: number) {
         super.update(timeModifier);
-        this.mover.update(timeModifier);
         this.angle += this.spin * timeModifier;
-    }
-    
-    display(drawingContext : DrawContext){
-        super.display(drawingContext);
-        this.mover.display(drawingContext);
-    }
-    
-    protected angularThrust(thrust : number) {
-        let velChange = Transforms.VectorToCartesian(this.angle, thrust);
-        this.velX += velChange.x;
-        this.velY += velChange.y;
     }
 }
 

@@ -1,9 +1,10 @@
-﻿import { DrawContext } from "../Common/DrawContext";
+﻿import { IActor } from "../Actors/Actor";
+import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Common/Coordinate";
 import { IGameObject, ILocated, IMoving, ILocatedAndMoving } from "../GameObjects/GameObject";
 import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
 
-export class Mover implements IGameObject {
+export class Mover implements IActor {
     constructor(private locatedMoving: ILocatedAndMoving) { }
 
     update(timeModifier: number) {
