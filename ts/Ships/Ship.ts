@@ -1,6 +1,6 @@
 import {Coordinate } from "../Common/Coordinate";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
-import { IGameObject, MovingGameObject } from "../Common/GameObject";
+import { IGameObject, ILocated, IMoving, IAngled, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 
 import { DrawContext } from "../Common/DrawContext";
 import { Transforms } from "../Common/Transforms";
@@ -10,13 +10,9 @@ import { IWeapon, BasicGun } from "../Weapons/Weapon"
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 
-export interface IShip {
+export interface IShip extends ILocated, IMoving, IAngled {
     
-    angle: number;
-    location: Coordinate;
     thrustPower: number;
-    velX: number;
-    velY: number;
 
     // methods
     thrust(lastTimeModifier: number);
@@ -24,7 +20,7 @@ export interface IShip {
 }
 
 
-export class BasicShip extends MovingGameObject implements IShip {
+export class BasicShip extends LocatedAngledMovingGO implements IShip {
     thrustPower : number;
     rotationalSpeed : number;
     weapon1: IWeapon;

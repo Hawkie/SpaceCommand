@@ -1,10 +1,10 @@
 ﻿import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Common/Coordinate";
-import { IGameObject, IDrawableProperties, IDrawableAndRotatableProperties } from "../Common/GameObject";
-import { IDrawable, IDrawableAndRotateable } from "../DisplayObjects/DisplayObject";
+import { IGameObject, ILocated, ILocatedAndAngled } from "../GameObjects/GameObject";
+import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
 
 export class GeneralRotator implements IGameObject {
-    constructor(private properties: IDrawableAndRotatableProperties, private drawable: IDrawable) { }
+    constructor(private properties: ILocatedAndAngled, private drawable: IDrawable) { }
 
     update(timeModifier: number) { }
 
@@ -22,10 +22,19 @@ export class GeneralRotator implements IGameObject {
 }
 
 export class PolyRotator implements IGameObject {
-    constructor(private properties: IDrawableAndRotatableProperties, private drawable: IDrawableAndRotateable) { }
+    private previousAngle: number;
+    
+    constructor(private properties: ILocatedAndAngled, private drawable: IDrawableAndRotatable) {
+        this.previousAngle = properties.angle;
+    }
+
 
     update(timeModifier: number) {
-        this.drawable.rotate(this.properties.angle);
+        if (this.previousAngle != this.properties.angle) {
+            // rotate the difference
+            this.drawable.rotate(this.properties.angle- this.previousAngle);
+            this.previousAngle = this.properties.angle;
+        }
     }
 
     display(drawContext: DrawContext) {

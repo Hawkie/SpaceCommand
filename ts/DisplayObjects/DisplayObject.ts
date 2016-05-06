@@ -14,7 +14,7 @@ export interface IRotatable{
     rotate(angle: number);
 }
 
-export interface IDrawableAndRotateable extends IDrawable, IRotatable { }
+export interface IDrawableAndRotatable extends IDrawable, IRotatable { }
 
 export class Polygon implements IDrawable, IRotatable {
     private points: Coordinate[];

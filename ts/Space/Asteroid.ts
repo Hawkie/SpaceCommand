@@ -1,9 +1,9 @@
 import { Coordinate } from "../Common/Coordinate";
-import { MovingGameObject } from "../Common/GameObject";
+import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { IDrawable, Polygon } from "../DisplayObjects/DisplayObject"
 
 
-export class Asteroid extends MovingGameObject {
+export class Asteroid extends LocatedAngledMovingGO {
 
 // 5 different asteroid shapes
     //  [-4,-2,-2,-4,0,-2,2,-4,4,-2,3,0,4,2,1,4,-2,4,-4,2,-4,-2],
@@ -26,11 +26,11 @@ export class Asteroid extends MovingGameObject {
             new Coordinate(-4, 2),
             new Coordinate(-4, -2),
         ];
-        var r1 = [new Coordinate(- 2, -4),
-            new Coordinate(2, -4),
-            new Coordinate(2, 4),
-            new Coordinate(-2, 4),
-            new Coordinate(-2, -4)];
+        var r1 = [new Coordinate(- 2, -20),
+            new Coordinate(2, -20),
+            new Coordinate(2, 20),
+            new Coordinate(-2, 20),
+            new Coordinate(-2, -20)];
         var asteroid1 = new Polygon(r1);
         super(asteroid1, location, velx, vely, angle, spin);
         this.asteroid1 = asteroid1;

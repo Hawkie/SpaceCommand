@@ -2,7 +2,7 @@ import { IGameState } from "./GameState";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { SparseArray } from "../Collections/SparseArray";
 import { DrawContext} from "../Common/DrawContext";
-import { IGameObject } from "../Common/GameObject"
+import { IGameObject } from "../GameObjects/GameObject"
 import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 import { Wind } from "../Space/Wind";
 import { Coordinate } from "../Common/Coordinate";

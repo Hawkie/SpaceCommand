@@ -1,8 +1,9 @@
-import { DrawContext } from "./DrawContext";
+import { DrawContext } from "../Common/DrawContext";
 import { IDrawable } from "../DisplayObjects/DisplayObject";
-import { GeneralRotator, PolyRotator } from "../Properties/Rotators";
-import { Coordinate } from "./Coordinate";
-import { Transforms } from "./Transforms";
+import { GeneralRotator, PolyRotator } from "../Actors/Rotators";
+import { Mover } from "../Actors/Movers";
+import { Coordinate } from "../Common/Coordinate";
+import { Transforms } from "../Common/Transforms";
 
 export interface IGameObject
 {
@@ -10,34 +11,55 @@ export interface IGameObject
     display(drawingContext : DrawContext);
 }
 
-export interface IDrawableProperties {
+export interface ILocated {
     location: Coordinate;
 }
 
-export interface IRotatableProperties {
+export interface IAngled {
     angle: number;
 }
 
-export interface IDrawableAndRotatableProperties extends IDrawableProperties, IRotatableProperties { }
+export interface IMoving {
+    velX: number;
+    velY: number;
+}
 
-export class StaticGameObject implements IGameObject, IDrawableProperties {
-    
-    // add properties
-    // rotatable
-    // moving
-    constructor(protected drawable: IDrawable, public location : Coordinate){
+export interface IRotating {
+    spin: number;
+}
+
+export interface ILocatedAndAngled extends ILocated, IAngled {
+}
+
+export interface ILocatedAndMoving extends ILocated, IMoving {
+}
+
+// to be used shortly
+export interface IForwardInteractor {
+    forwardAcceleration(force: number);
+}
+
+// to be used shortly
+export interface IAngularInteractor {
+    angularAcceleration(force: number, angle: number);
+}
+
+export class LocatedGO implements IGameObject, ILocated {
+    constructor(protected drawable: IDrawable, public location: Coordinate) {
     }
     
-    update(timeModifier : number){}
+    update(timeModifier: number) {
+        //this.Properties.forEach(p => p.update
+    }
     
     display(drawContext: DrawContext) {
         this.drawable.draw(this.location, drawContext);
     }
 }
 
-export class RotatedGameObject extends StaticGameObject implements IRotatableProperties {
+export class LocatedAngledGO extends LocatedGO implements IAngled {
 // add method policy here
-    private rotator: GeneralRotator;
+    private rotator: IGameObject;
 
     constructor(protected drawable: IDrawable, public location: Coordinate, public angle: number = 0) {
         super(drawable, location);
@@ -45,34 +67,40 @@ export class RotatedGameObject extends StaticGameObject implements IRotatablePro
     }
 
     update(timeModifier: number) {
+        super.update(timeModifier);
         this.rotator.update(timeModifier);
     }
 
+    // does not call superclass on purpose!
     display(drawContext: DrawContext) {
         this.rotator.display(drawContext);
     }
 }
 
-export class MovingGameObject extends RotatedGameObject{
+export class LocatedAngledMovingGO extends LocatedAngledGO implements IMoving {
     velX : number;
     velY : number;
     spin: number;
+    mover: IGameObject;
 
     constructor(drawable: IDrawable, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
         super(drawable, location, angle);
+        
         this.velX = velX;
         this.velY = velY;
         this.spin = spin;
+        this.mover = new Mover(this);
     }
     
-    update(timeModifier : number){
-        this.location.x += this.velX * timeModifier;
-        this.location.y += this.velY * timeModifier;
+    update(timeModifier: number) {
+        super.update(timeModifier);
+        this.mover.update(timeModifier);
         this.angle += this.spin * timeModifier;
     }
     
     display(drawingContext : DrawContext){
         super.display(drawingContext);
+        this.mover.display(drawingContext);
     }
     
     protected angularThrust(thrust : number) {
@@ -83,7 +111,7 @@ export class MovingGameObject extends RotatedGameObject{
 }
 
 // TODO: Implement actual gravity
-export class GravityGameObject extends MovingGameObject{
+export class GravityGameObject extends LocatedAngledMovingGO{
     mass : number;
     gravitationalPull : number;
     weight : number;
@@ -97,7 +125,6 @@ export class GravityGameObject extends MovingGameObject{
     
     update(timeModifier : number){
         super.update(timeModifier);
-        
         this.location.y -= this.weight * timeModifier;
     }
 }

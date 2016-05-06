@@ -1,11 +1,11 @@
-import { IGameObject, MovingGameObject } from "../Common/GameObject";
+import { IGameObject, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { DrawContext} from "../Common/DrawContext";
 import { Bullet } from "./Bullet"
 import { Coordinate } from "../Common/Coordinate"
 
 export interface IWeapon extends IGameObject{
     pullTrigger(x : number, y : number, angle : number);
-    projectiles : Array<MovingGameObject>;
+    projectiles : Array<LocatedAngledMovingGO>;
     
 }
 
@@ -18,7 +18,7 @@ export class BasicGun implements IWeapon {
     
     // state
     lastFired : number;
-    projectiles : Array<MovingGameObject>;
+    projectiles : Array<LocatedAngledMovingGO>;
     constructor(){
         this.fireRatePerSecond = 2;
         this.velocity = 128;

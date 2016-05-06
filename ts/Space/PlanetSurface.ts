@@ -1,11 +1,11 @@
-import { StaticGameObject } from "../Common/GameObject";
+import { LocatedGO } from "../GameObjects/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { LandingPad } from "./LandingPad";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 
-export class PlanetSurface extends StaticGameObject{
+export class PlanetSurface extends LocatedGO{
     landingPad : LandingPad;
     surfacePolygon : Polygon;
     

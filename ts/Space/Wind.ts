@@ -1,6 +1,6 @@
 import { WindDirectionIndicator } from "../Gui/WindDirectionIndicator";
 import { Coordinate } from "../Common/Coordinate";
-import { MovingGameObject } from "../Common/GameObject";
+import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { GuiText } from "../Gui/GuiText";
 import { DrawContext} from "../Common/DrawContext";
 
@@ -12,7 +12,7 @@ export class Wind extends WindDirectionIndicator {
         this.text = new GuiText(String(this.windSpeed / 4) + " mph", new Coordinate(location.x - 12, location.y + 2), "monospace", 12);
     }
 
-    update(lastTimeModifier: number, player: MovingGameObject = null) { // default to null so overloading works
+    update(lastTimeModifier: number, player: LocatedAngledMovingGO = null) { // default to null so overloading works
         super.update(lastTimeModifier);
         if (player) {
             if (this.blowingRight) {

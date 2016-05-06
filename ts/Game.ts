@@ -1,6 +1,6 @@
 import { Canvas } from "./Common/Canvas";
 
-import { IGameObject, StaticGameObject, MovingGameObject } from "./Common/GameObject";
+import { IGameObject, LocatedGO, LocatedAngledMovingGO } from "./GameObjects/GameObject";
 import { BasicShip } from "./Ships/Ship"
 import { LandingBasicShip } from "./Ships/LandingShip";
 

@@ -1,4 +1,4 @@
-﻿import { IGameObject } from "../Common/GameObject";
+﻿import { IGameObject } from "../GameObjects/GameObject";
 import { Coordinate } from "../Common/Coordinate";
 import { IDrawable } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";

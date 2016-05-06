@@ -1,10 +1,10 @@
-import { IGameObject, MovingGameObject } from "../Common/GameObject"
+import { IGameObject, LocatedAngledMovingGO } from "../GameObjects/GameObject"
 import { IDrawable, Rect } from "../DisplayObjects/DisplayObject"
 import { Coordinate} from "../Common/Coordinate"
 import { Transforms } from "../Common/Transforms"
 import { DrawContext } from "../Common/DrawContext"
 
-export class Bullet extends MovingGameObject {
+export class Bullet extends LocatedAngledMovingGO {
     
     constructor(location: Coordinate, angle: number, velocity: number) {
 
