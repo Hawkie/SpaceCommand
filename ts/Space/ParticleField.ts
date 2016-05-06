@@ -1,6 +1,6 @@
 ﻿import { IGameObject } from "../Common/GameObject";
 import { Coordinate } from "../Common/Coordinate";
-import { IDisplayObject } from "../DisplayObjects/DisplayObject";
+import { IDrawable } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 
 export class ParticleDetail {
@@ -42,7 +42,7 @@ export class ParticleField implements IGameObject {
     vely: () => number;
 
     // particle shape
-    item: IDisplayObject;
+    item: IDrawable;
 
     // how frequently a particle appears
     itemsPerSec: number;
@@ -62,7 +62,7 @@ export class ParticleField implements IGameObject {
 
     private on: boolean;
 
-    constructor(startx: () => number, starty: () => number, velx: () => number, vely: () => number, item: IDisplayObject, itemsPerSecond : number, lifeTimeInSec : number = 0, fadeOutInSec : number = 0, on : boolean = true) {
+    constructor(startx: () => number, starty: () => number, velx: () => number, vely: () => number, item: IDrawable, itemsPerSecond : number, lifeTimeInSec : number = 0, fadeOutInSec : number = 0, on : boolean = true) {
         this.fieldObjects = [];
         this.startx = startx;
         this.starty = starty;
@@ -71,8 +71,10 @@ export class ParticleField implements IGameObject {
         this.item = item;
         this.lifeTimeInSec = lifeTimeInSec;
 
+        // TODO
         this.range = 0;
         this.maxNumber = 0;
+
         this.firstAdded = 0;
         this.lastCheck = Date.now();
         this.itemsPerSec = itemsPerSecond;

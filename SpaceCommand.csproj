@@ -47,6 +47,7 @@
     <TypeScriptCompile Include="ts\Gui\GuiPolygon.ts" />
     <TypeScriptCompile Include="ts\Gui\GuiText.ts" />
     <TypeScriptCompile Include="ts\Gui\WindDirectionIndicator.ts" />
+    <TypeScriptCompile Include="ts\Properties\Rotators.ts" />
     <TypeScriptCompile Include="ts\Ships\LandingShip.ts" />
     <TypeScriptCompile Include="ts\Ships\Ship.ts" />
     <TypeScriptCompile Include="ts\Sound\AudioContext.ts" />
@@ -78,6 +79,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

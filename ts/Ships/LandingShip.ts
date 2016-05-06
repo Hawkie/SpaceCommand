@@ -12,7 +12,6 @@ export class LandingBasicShip extends MovingGameObject implements IShip {
     constructor(location : Coordinate){
         let points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var triangleShip = new Polygon(points);
-        
         super(triangleShip, location, 0, 0, 0, 0);
         this.thrustPower = 16;
         this.leftRightSpeed = 32;

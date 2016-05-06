@@ -1,5 +1,5 @@
 import {Coordinate } from "../Common/Coordinate";
-import { IDisplayObject, Polygon, Rect } from "../DisplayObjects/DisplayObject";
+import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
 import { IGameObject, MovingGameObject } from "../Common/GameObject";
 
 import { DrawContext } from "../Common/DrawContext";
@@ -35,7 +35,6 @@ export class BasicShip extends MovingGameObject implements IShip {
 
     constructor(location : Coordinate, velx: number, vely: number, angle: number, spin: number) {
         var p = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        
         super(new Polygon(p), location, velx, vely, angle, spin);
         
         this.points = p;

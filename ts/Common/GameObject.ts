@@ -1,5 +1,6 @@
 import { DrawContext } from "./DrawContext";
-import { IDisplayObject } from "../DisplayObjects/DisplayObject";
+import { IDrawable } from "../DisplayObjects/DisplayObject";
+import { GeneralRotator, PolyRotator } from "../Properties/Rotators";
 import { Coordinate } from "./Coordinate";
 import { Transforms } from "./Transforms";
 
@@ -9,33 +10,58 @@ export interface IGameObject
     display(drawingContext : DrawContext);
 }
 
-export class StaticGameObject implements IGameObject{
+export interface IDrawableProperties {
+    location: Coordinate;
+}
+
+export interface IRotatableProperties {
+    angle: number;
+}
+
+export interface IDrawableAndRotatableProperties extends IDrawableProperties, IRotatableProperties { }
+
+export class StaticGameObject implements IGameObject, IDrawableProperties {
     
-    displayObject : IDisplayObject;
-    location : Coordinate;
-    constructor(displayObject : IDisplayObject, location : Coordinate){
-        this.displayObject = displayObject;
-        this.location = location;
+    // add properties
+    // rotatable
+    // moving
+    constructor(protected drawable: IDrawable, public location : Coordinate){
     }
     
     update(timeModifier : number){}
     
-    display(drawingContext : DrawContext){
-        this.displayObject.draw(this.location, drawingContext);
+    display(drawContext: DrawContext) {
+        this.drawable.draw(this.location, drawContext);
     }
 }
 
-export class MovingGameObject extends StaticGameObject{
+export class RotatedGameObject extends StaticGameObject implements IRotatableProperties {
+// add method policy here
+    private rotator: GeneralRotator;
+
+    constructor(protected drawable: IDrawable, public location: Coordinate, public angle: number = 0) {
+        super(drawable, location);
+        this.rotator = new GeneralRotator(this, drawable);
+    }
+
+    update(timeModifier: number) {
+        this.rotator.update(timeModifier);
+    }
+
+    display(drawContext: DrawContext) {
+        this.rotator.display(drawContext);
+    }
+}
+
+export class MovingGameObject extends RotatedGameObject{
     velX : number;
     velY : number;
-    angle : number;
     spin: number;
 
-    constructor(displayObject : IDisplayObject, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
-        super(displayObject, location);
+    constructor(drawable: IDrawable, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
+        super(drawable, location, angle);
         this.velX = velX;
         this.velY = velY;
-        this.angle = angle;
         this.spin = spin;
     }
     
@@ -46,13 +72,7 @@ export class MovingGameObject extends StaticGameObject{
     }
     
     display(drawingContext : DrawContext){
-        drawingContext.translate(this.location.x, this.location.y);
-        drawingContext.rotate(this.angle);
-        drawingContext.translate(-this.location.x, -this.location.y);
         super.display(drawingContext);
-        drawingContext.translate(this.location.x, this.location.y);
-        drawingContext.rotate(-this.angle);
-        drawingContext.translate(-this.location.x, -this.location.y);
     }
     
     protected angularThrust(thrust : number) {
@@ -68,8 +88,8 @@ export class GravityGameObject extends MovingGameObject{
     gravitationalPull : number;
     weight : number;
     
-    constructor(displayObject : IDisplayObject, location : Coordinate, velx: number, vely: number, angle: number, spin: number, mass : number, gravitationalPull : number){
-        super(displayObject, location, velx, vely, angle, spin);
+    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, mass : number, gravitationalPull : number){
+        super(drawable, location, velx, vely, angle, spin);
         this.mass = mass;
         this.gravitationalPull = gravitationalPull;
         this.weight = mass * gravitationalPull;

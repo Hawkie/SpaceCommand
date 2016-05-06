@@ -18,7 +18,7 @@ export class PlanetSurface extends StaticGameObject{
         super(null, location);
         this.landingPad = new LandingPad(new Coordinate(0,0)); // Temporarily place at (0,0) so this.generateSurface can position it
         this.surfacePolygon = new Polygon(this.generateSurface(600));
-        this.displayObject = this.surfacePolygon;
+        this.drawable = this.surfacePolygon;
     }
     
     generateSurface(surfaceLength : number) : Coordinate[]{

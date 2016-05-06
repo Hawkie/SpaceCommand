@@ -7,7 +7,7 @@ import { Polygon } from "../DisplayObjects/DisplayObject";
 export class WindDirectionIndicator extends GuiPolygon{
     polygonRight : Polygon;
     polygonLeft : Polygon;
-    blowingRight : boolean;
+    blowingRight: boolean;
     
     constructor(location : Coordinate){
         var pointsRight : Coordinate[] = [new Coordinate(-15, 10),
@@ -41,8 +41,8 @@ export class WindDirectionIndicator extends GuiPolygon{
     
     private updatePolygon(){
         if(this.blowingRight)
-            this.displayObject = this.polygonRight;
+            this.drawable = this.polygonRight;
         else
-            this.displayObject = this.polygonLeft;
+            this.drawable = this.polygonLeft;
     }
 }

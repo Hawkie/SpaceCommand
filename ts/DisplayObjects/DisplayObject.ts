@@ -1,18 +1,34 @@
 import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Common/Coordinate";
+import { Transforms } from "../Common/Transforms";
 
 // Display objects are simple objects that only have the single responsibility to render to the screen.
 // This therefore fulfills the S of SOLID design principle.
 // Examples are polygon, rectangle, text, sprite.
 // This object is contained inside a GameObject, which holds the location and other game state variables. 
-export interface IDisplayObject {
+export interface IDrawable {
     draw(location: Coordinate, drawingContext: DrawContext);
 }
 
-export class Polygon implements IDisplayObject {
+export interface IRotatable{
+    rotate(angle: number);
+}
+
+export interface IDrawableAndRotateable extends IDrawable, IRotatable { }
+
+export class Polygon implements IDrawable, IRotatable {
     private points: Coordinate[];
-    constructor(points: Coordinate[]) {
+    constructor(points: Coordinate[], rotateMethod : number = 0) {
         this.points = points;
+    }
+
+    // method invoking basic methods on drawcontext
+    draw(location: Coordinate, drawingContext: DrawContext) {
+        drawingContext.drawP(location, this.points);
+    }
+
+    rotate(angle: number) {
+        this.points = Transforms.rotate(this.points, angle);
     }
     
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -33,15 +49,9 @@ export class Polygon implements IDisplayObject {
         }
         return c;
     }
-
-    // method invoking basic methods on drawcontext
-    draw(location: Coordinate, drawingContext: DrawContext) {
-        drawingContext.drawP(location, this.points);
-    }
-
 }
 
-export class Rect implements IDisplayObject {
+export class Rect implements IDrawable {
     sizeX: number;
     sizeY: number;
     constructor(sizeX: number, sizeY: number) {

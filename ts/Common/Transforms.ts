@@ -1,7 +1,7 @@
 import { Coordinate } from "./Coordinate";
 
 export class Transforms {
-    static rotate(points: Coordinate[], theta: number) {
+    static rotate(points: Coordinate[], theta: number) : Coordinate[]{
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
         var c = Math.cos(theta);
