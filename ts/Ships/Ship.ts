@@ -1,7 +1,7 @@
 import {Coordinate } from "../Common/Coordinate";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
 import { IGameObject, ILocated, IMoving, IAngled, LocatedAngledMovingGO } from "../GameObjects/GameObject";
-import { MovingLocatedAngledPoly} from "../GameObjects/LocatedAngledGO";
+import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledGO";
 import { DrawContext } from "../Common/DrawContext";
 import { Transforms } from "../Common/Transforms";
 import { ParticleField } from "../Space/ParticleField";
@@ -20,7 +20,7 @@ export interface IShip extends ILocated, IMoving, IAngled {
 }
 
 
-export class BasicShip extends MovingLocatedAngledPoly implements IShip {
+export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip {
     thrustPower : number;
     rotationalSpeed : number;
     weapon1: IWeapon;

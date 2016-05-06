@@ -10,7 +10,7 @@ export class Bullet extends LocatedAngledMovingGO {
 
         let drawable = new Rect(1,1); 
         var vector = Transforms.VectorToCartesian(angle, velocity)
-        super(drawable, location, vector.x, vector.y, 0, 0);
+        super(drawable, location, vector.x, vector.y, 0);
     }
 }
 

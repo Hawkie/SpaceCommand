@@ -1,7 +1,7 @@
 import { DrawContext } from "../Common/DrawContext";
 import { IDrawable } from "../DisplayObjects/DisplayObject";
 import { IActor } from "../Actors/Actor";
-import { PolyRotator } from "../Actors/Rotators";
+import { PolyRotator, Spinner } from "../Actors/Rotators";
 import { Mover } from "../Actors/Movers";
 import { IEffect } from "../Effects/Effect";
 import { Draw, DrawRotated } from "../Effects/DrawRotated";
@@ -37,6 +37,9 @@ export interface ILocatedAndAngled extends ILocated, IAngled {
 export interface ILocatedAndMoving extends ILocated, IMoving {
 }
 
+export interface IAngledAndRotating extends IAngled, IRotating {
+}
+
 // to be used shortly
 export interface IForwardInteractor {
     forwardAcceleration(force: number);
@@ -69,40 +72,39 @@ export class LocatedGO implements IGameObject, ILocated {
 
 export class LocatedAngledGO extends LocatedGO implements IAngled {
 // add method policy here
-    private rotator: IEffect;
 
-    constructor(protected drawable: IDrawable, public location: Coordinate, public angle: number = 0) {
+    constructor(drawable: IDrawable, location: Coordinate, public angle: number = 0) {
         super(drawable, location);
-        this.rotator = new DrawRotated(this, drawable);
+        var drawRotated: IEffect = new DrawRotated(this, drawable);
+
+        // remove normal draw
         this.effects.pop();
-        this.effects.push(this.rotator);
+        this.effects.push(drawRotated);
     }
 }
 
 export class LocatedAngledMovingGO extends LocatedAngledGO implements IMoving {
-    velX : number;
-    velY : number;
-    spin: number;
-    mover: IActor;
-
-    constructor(drawable: IDrawable, location : Coordinate, velX: number, velY: number, angle: number, spin: number) {
+    constructor(drawable: IDrawable, location : Coordinate, public velX: number = 0, public velY: number = 0, angle: number) {
         super(drawable, location, angle);
         
         this.velX = velX;
         this.velY = velY;
-        this.spin = spin;
-        this.mover = new Mover(this);
-        this.actors.push(this.mover);
-    }
-    
-    update(timeModifier: number) {
-        super.update(timeModifier);
-        this.angle += this.spin * timeModifier;
+        var mover : IActor = new Mover(this);
+        this.actors.push(mover);
     }
 }
 
+export class LocatedAngledMovingRotating extends LocatedAngledMovingGO implements IRotating {
+    constructor(drawable: IDrawable, location: Coordinate, velX: number = 0, velY: number = 0, angle: number = 0, public spin: number = 0) {
+        super(drawable, location, velX, velY, angle);
+        var spinner: IActor = new Spinner(this);
+        this.actors.push(spinner);
+    }
+
+}
+
 // TODO: Implement actual gravity
-export class GravityGameObject extends LocatedAngledMovingGO{
+export class GravityGameObject extends LocatedAngledMovingRotating{
     mass : number;
     gravitationalPull : number;
     weight : number;

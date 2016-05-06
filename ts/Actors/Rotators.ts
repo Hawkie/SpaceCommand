@@ -1,7 +1,7 @@
 ﻿import { IActor } from "../Actors/Actor";
 import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Common/Coordinate";
-import { IGameObject, ILocated, ILocatedAndAngled } from "../GameObjects/GameObject";
+import { IGameObject, ILocated, ILocatedAndAngled, IAngledAndRotating } from "../GameObjects/GameObject";
 import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
 
 
@@ -19,5 +19,14 @@ export class PolyRotator implements IActor {
             this.drawable.rotate(this.properties.angle- this.previousAngle);
             this.previousAngle = this.properties.angle;
         }
+    }
+}
+
+export class Spinner implements IActor {
+    constructor(private properties: IAngledAndRotating) {
+    }
+
+    update(timeModifier: number) {
+        this.properties.angle += this.properties.spin * timeModifier;
     }
 }

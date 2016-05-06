@@ -1,9 +1,9 @@
-import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
+import { LocatedGO } from "../GameObjects/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject"
 
-export class LandingPad extends LocatedAngledMovingGO{
+export class LandingPad extends LocatedGO {
     landingPadPolygon : Polygon;
     constructor(location : Coordinate){
         var points = [
@@ -15,7 +15,7 @@ export class LandingPad extends LocatedAngledMovingGO{
             new Coordinate(10, -2)
         ];
         var polygon = new Polygon(points);
-        super(polygon, location, 0, 0, 0, 0);
+        super(polygon, location);
         this.landingPadPolygon = polygon;
     }
     

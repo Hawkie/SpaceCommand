@@ -1,10 +1,11 @@
-import { LocatedGO, LocatedAngledMovingGO } from "../GameObjects/GameObject";
+import { LocatedGO } from "../GameObjects/GameObject";
+import { LocatedAngledMovingRotatingPoly }from "../GameObjects/LocatedAngledGO";
 import { IShip } from "./Ship";
 import { Coordinate } from "../Common/Coordinate";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 import { Transforms } from "../Common/Transforms";
 
-export class LandingBasicShip extends LocatedAngledMovingGO implements IShip {
+export class LandingBasicShip extends LocatedAngledMovingRotatingPoly implements IShip {
     thrustPower : number;
     leftRightSpeed : number;
     leftRightSlowing : number;
