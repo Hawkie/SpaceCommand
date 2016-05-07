@@ -1,5 +1,6 @@
-﻿import { IMovingVecAcc, IAngledMovingForwardAcc } from "../GameObjects/GameObject";
-import { Transforms } from "../Common/Transforms";
+﻿import { IVector, Vector } from "../Physics/Common";
+import { IMoving, IAngledMovingForwardAcc } from "../GameObjects/GameObject";
+import { Transforms } from "../Physics/Transforms";
 import { IActor } from "./Actor";
 
 
@@ -16,10 +17,10 @@ export class ForwardAccelerator implements IActor {
 
 export class VectorAccelerator implements IActor {
 
-    constructor(private properties: IMovingVecAcc) { }
+    constructor(private properties: IMoving, private externalForce: IVector) { }
 
     update(timeModifer: number) {
-        let velChange = Transforms.VectorToCartesian(this.properties.vectorAngle, this.properties.vectorForce * timeModifer);
+        let velChange = Transforms.VectorToCartesian(this.externalForce.angle, this.externalForce.length * timeModifer);
         this.properties.velX += velChange.x;
         this.properties.velY += velChange.y;
     }

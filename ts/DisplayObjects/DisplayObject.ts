@@ -1,6 +1,6 @@
 import { DrawContext } from "../Common/DrawContext";
-import { Coordinate } from "../Common/Coordinate";
-import { Transforms } from "../Common/Transforms";
+import { Coordinate } from "../Physics/Common";
+import { Transforms } from "../Physics/Transforms";
 
 // Display objects are simple objects that only have the single responsibility to render to the screen.
 // This therefore fulfills the S of SOLID design principle.

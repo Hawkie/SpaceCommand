@@ -1,5 +1,5 @@
-import { Coordinate } from "../Common/Coordinate"
-import { Transforms } from "../Common/Transforms";
+import { Coordinate } from "../Physics/Common"
+import { Transforms } from "../Physics/Transforms";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 
 export class Tester {

@@ -1,7 +1,7 @@
 import { IGameObject, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { DrawContext} from "../Common/DrawContext";
 import { Bullet } from "./Bullet"
-import { Coordinate } from "../Common/Coordinate"
+import { Coordinate } from "../Physics/Common"
 
 export interface IWeapon extends IGameObject{
     pullTrigger(x : number, y : number, angle : number);

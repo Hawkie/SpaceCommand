@@ -1,6 +1,6 @@
 import { LocatedGO } from "../GameObjects/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { Polygon } from "../DisplayObjects/DisplayObject"
 
 export class LandingPad extends LocatedGO {

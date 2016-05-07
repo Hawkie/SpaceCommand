@@ -1,4 +1,4 @@
-import { Coordinate } from "./Coordinate";
+import { Coordinate } from "../Physics/Common";
 //import { Polygon } from "./DisplayObject";
 
 export class DrawContext {

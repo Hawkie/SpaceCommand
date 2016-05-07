@@ -1,4 +1,4 @@
-import { Coordinate } from "./Coordinate";
+import { Coordinate } from "../Physics/Common";
 
 export class Transforms {
     static rotate(points: Coordinate[], degrees: number): Coordinate[]{

@@ -6,8 +6,8 @@ import { Mover } from "../Actors/Movers";
 import { VectorAccelerator } from "../Actors/Accelerators";
 import { IEffect } from "../Effects/Effect";
 import { Draw, DrawRotated } from "../Effects/DrawRotated";
-import { Coordinate } from "../Common/Coordinate";
-import { Transforms } from "../Common/Transforms";
+import { Coordinate, IVector, Vector } from "../Physics/Common";
+import { Transforms } from "../Physics/Transforms";
 
 export interface IGameObject
 {
@@ -36,11 +36,6 @@ export interface IForwardAccelerator {
     forwardForce: number;
 }
 
-export interface IVectorAccelerator {
-    vectorAngle: number;
-    vectorForce: number;
-}
-
 export interface ILocatedAndAngled extends ILocated, IAngled {
 }
 
@@ -52,7 +47,7 @@ export interface IAngledAndRotating extends IAngled, IRotating {
 
 export interface IAngledMovingForwardAcc extends IAngled, IMoving, IForwardAccelerator { }
 
-export interface IMovingVecAcc extends IMoving, IVectorAccelerator { }
+export interface IMovingVecAcc extends IMoving, IVector { }
 
 // to be used shortly
 export interface IAngularInteractor {
@@ -112,10 +107,10 @@ export class LocatedAngledMovingRotating extends LocatedAngledMovingGO implement
 }
 
 // TODO: Implement actual gravity
-export class GravityGameObject extends LocatedAngledMovingRotating implements IVectorAccelerator {
+export class GravityGameObject extends LocatedAngledMovingRotating {
     
-    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, public vectorForce:number, public vectorAngle: number){
+    constructor(drawable: IDrawable, location : Coordinate, velx: number, vely: number, angle: number, spin: number, public gravityForce: Vector){
         super(drawable, location, velx, vely, angle, spin);
-        this.actors.push(new VectorAccelerator(this));
+        this.actors.push(new VectorAccelerator(this, gravityForce));
     }
 }

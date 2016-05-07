@@ -5,7 +5,7 @@ import { BasicShip } from "./Ships/Ship"
 import { LandingBasicShip } from "./Ships/LandingShip";
 
 import { Polygon } from "./DisplayObjects/DisplayObject";
-import { Coordinate } from "./Common/Coordinate";
+import { Coordinate } from "./Physics/Common";
 import { EventLoop } from "./Common/EventLoop";
 
 import { DotField } from "./Space/DotField";

@@ -1,9 +1,9 @@
 import { LocatedGO } from "../GameObjects/GameObject";
 import { GravityGameObjectPoly }from "../GameObjects/LocatedAngledPoly";
 import { IShip } from "./Ship";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate, Vector } from "../Physics/Common";
 import { Polygon } from "../DisplayObjects/DisplayObject";
-import { Transforms } from "../Common/Transforms";
+import { Transforms } from "../Physics/Transforms";
 import { ForwardAccelerator } from "../Actors/Accelerators";
 
 export class LandingBasicShip extends GravityGameObjectPoly implements IShip {
@@ -15,7 +15,8 @@ export class LandingBasicShip extends GravityGameObjectPoly implements IShip {
     constructor(location : Coordinate){
         let points = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var triangleShip = new Polygon(points);
-        super(triangleShip, location, 0, 0, 0, 0, 10, 180);
+        var gravityForce = new Vector(180, 10);
+        super(triangleShip, location, 0, 0, 0, 0, gravityForce);
 
         this.actors.push(new ForwardAccelerator(this));
         this.forwardForce = 0;

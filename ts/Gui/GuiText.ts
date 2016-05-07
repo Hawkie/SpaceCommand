@@ -1,5 +1,5 @@
 import { IGameObject } from "../GameObjects/GameObject";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { DrawContext } from "../Common/DrawContext";
 
 export class GuiText implements IGameObject{

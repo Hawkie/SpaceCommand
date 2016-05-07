@@ -1,5 +1,5 @@
 import { WindDirectionIndicator } from "../Gui/WindDirectionIndicator";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { GuiText } from "../Gui/GuiText";
 import { DrawContext} from "../Common/DrawContext";

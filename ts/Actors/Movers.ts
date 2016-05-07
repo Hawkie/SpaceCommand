@@ -1,6 +1,6 @@
 ﻿import { IActor } from "../Actors/Actor";
 import { DrawContext } from "../Common/DrawContext";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { IGameObject, ILocated, IMoving, ILocatedAndMoving } from "../GameObjects/GameObject";
 import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
 

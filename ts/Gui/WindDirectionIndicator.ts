@@ -1,5 +1,5 @@
 import { GuiPolygon } from "./GuiPolygon";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 
 // TODO: Display wind speed text next to arrow

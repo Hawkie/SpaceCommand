@@ -1,7 +1,7 @@
 import { IGameObject, LocatedAngledMovingGO } from "../GameObjects/GameObject"
 import { IDrawable, Rect } from "../DisplayObjects/DisplayObject"
-import { Coordinate} from "../Common/Coordinate"
-import { Transforms } from "../Common/Transforms"
+import { Coordinate} from "../Physics/Common"
+import { Transforms } from "../Physics/Transforms"
 import { DrawContext } from "../Common/DrawContext"
 
 export class Bullet extends LocatedAngledMovingGO {

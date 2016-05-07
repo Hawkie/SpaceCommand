@@ -3,7 +3,7 @@ import { IGameObject, LocatedGO, LocatedAngledMovingGO } from "../GameObjects/Ga
 import { BasicShip } from "../Ships/Ship";
 import { SparseArray } from "../Collections/SparseArray";
 import { DotField } from "../Space/DotField";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { GuiText } from "../Gui/GuiText";
 import { Asteroid } from "../Space/Asteroid";
 import { IGameState } from "GameState";

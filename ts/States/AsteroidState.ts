@@ -5,7 +5,7 @@ import { SparseArray } from "../Collections/SparseArray";
 import { DotField } from "../Space/DotField";
 import { ParticleField } from "../Space/ParticleField";
 import { Rect } from "../DisplayObjects/DisplayObject";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { Asteroid } from "../Space/Asteroid";
 import { GuiText } from "../Gui/GuiText";
 import { IGameState } from "GameState";

@@ -5,7 +5,7 @@ import { DrawContext} from "../Common/DrawContext";
 import { IGameObject } from "../GameObjects/GameObject"
 import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 import { Wind } from "../Space/Wind";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { PlanetSurface } from "../Space/PlanetSurface";
 import { GuiText } from "../Gui/GuiText";
 import { DotField } from "../Space/Dotfield";

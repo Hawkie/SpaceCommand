@@ -1,7 +1,7 @@
 import { IGameObject } from "../GameObjects/GameObject";
 import { LandingBasicShip } from "../Ships/LandingShip";
 import { LandingPad } from "./LandingPad";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { Polygon } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 

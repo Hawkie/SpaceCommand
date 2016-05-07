@@ -38,14 +38,14 @@
     <TypeScriptCompile Include="ts\Actors\Actor.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
     <TypeScriptCompile Include="ts\Common\Canvas.ts" />
-    <TypeScriptCompile Include="ts\Common\Coordinate.ts" />
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
     <TypeScriptCompile Include="ts\Effects\DrawRotated.ts" />
     <TypeScriptCompile Include="ts\Effects\Effect.ts" />
+    <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />
-    <TypeScriptCompile Include="ts\Common\Transforms.ts" />
+    <TypeScriptCompile Include="ts\Physics\Transforms.ts" />
     <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
     <TypeScriptCompile Include="ts\Game.ts" />
     <TypeScriptCompile Include="ts\GameObjects\LocatedAngledPoly.ts" />

@@ -5,9 +5,9 @@ import { Draw } from "../Effects/DrawRotated";
 import { IActor } from "../Actors/Actor";
 import { Mover } from "../Actors/Movers";
 import { VectorAccelerator } from "../Actors/Accelerators";
-import { Coordinate } from "../Common/Coordinate";
-import { Transforms } from "../Common/Transforms";
-import { LocatedGO, ILocated, IAngled, IMoving, IGameObject, IRotating, IVectorAccelerator } from "../GameObjects/GameObject";
+import { Coordinate, IVector, Vector } from "../Physics/Common";
+import { Transforms } from "../Physics/Transforms";
+import { LocatedGO, ILocated, IAngled, IMoving, IGameObject, IRotating } from "../GameObjects/GameObject";
 
 
 export class LocatedAngledPoly extends LocatedGO implements IAngled {
@@ -37,10 +37,10 @@ export class LocatedAngledMovingRotatingPoly extends MovingLocatedAngledPoly imp
 }
 
 // TODO: Implement actual gravity
-export class GravityGameObjectPoly extends LocatedAngledMovingRotatingPoly implements IVectorAccelerator {
+export class GravityGameObjectPoly extends LocatedAngledMovingRotatingPoly {
 
-    constructor(drawable: IDrawableAndRotatable, location: Coordinate, velx: number, vely: number, angle: number, spin: number, public vectorForce: number, public vectorAngle: number) {
+    constructor(drawable: IDrawableAndRotatable, location: Coordinate, velx: number, vely: number, angle: number, spin: number, public gravityForce: Vector) {
         super(drawable, location, velx, vely, angle, spin);
-        this.actors.push(new VectorAccelerator(this));
+        this.actors.push(new VectorAccelerator(this, gravityForce));
     }
 }

@@ -1,10 +1,10 @@
-import {Coordinate } from "../Common/Coordinate";
+import {Coordinate } from "../Physics/Common";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
 import { IGameObject, ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledPoly";
 import { ForwardAccelerator } from "../Actors/Accelerators";
 import { DrawContext } from "../Common/DrawContext";
-import { Transforms } from "../Common/Transforms";
+import { Transforms } from "../Physics/Transforms";
 import { ParticleField } from "../Space/ParticleField";
 import { Bullet } from "../Weapons/Bullet";
 import { IWeapon, BasicGun } from "../Weapons/Weapon"

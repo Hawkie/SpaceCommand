@@ -1,4 +1,4 @@
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
 import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledPoly";
 import { IDrawable, Polygon } from "../DisplayObjects/DisplayObject"

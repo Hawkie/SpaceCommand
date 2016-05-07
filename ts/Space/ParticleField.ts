@@ -1,5 +1,5 @@
 ﻿import { IGameObject } from "../GameObjects/GameObject";
-import { Coordinate } from "../Common/Coordinate";
+import { Coordinate } from "../Physics/Common";
 import { IDrawable } from "../DisplayObjects/DisplayObject";
 import { DrawContext } from "../Common/DrawContext";
 
