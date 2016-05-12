@@ -1,16 +1,13 @@
-import { IGameObject, LocatedAngledMovingGO } from "../GameObjects/GameObject"
-import { IDrawable, Rect } from "../DisplayObjects/DisplayObject"
-import { Coordinate} from "../Physics/Common"
+import { ICoordinate, IVector } from "../Physics/Common"
 import { Transforms } from "../Physics/Transforms"
 import { DrawContext } from "../Common/DrawContext"
+import { ParticleModel } from "../Models/ParticleFieldModel";
 
-export class Bullet extends LocatedAngledMovingGO {
+export class BulletModel extends ParticleModel {
     
-    constructor(location: Coordinate, angle: number, velocity: number) {
-
-        let drawable = new Rect(1,1); 
-        var vector = Transforms.VectorToCartesian(angle, velocity)
-        super(drawable, location, vector.x, vector.y, 0);
+    constructor(location: ICoordinate, vector: IVector) {
+        var cartesian = Transforms.VectorToCartesian(vector.angle, vector.length)
+        super(location.x, location.y, cartesian.x, cartesian.y, 0);
     }
 }
 

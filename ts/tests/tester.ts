@@ -23,8 +23,8 @@ export class Tester {
     
      testCollision(expected : boolean, x : number, y : number) {
         var c: Coordinate = new Coordinate(x,y);
-        var p = new Polygon([new Coordinate(0,10), new Coordinate(10,0), new Coordinate(0,0), new Coordinate(0,10)]);
-        var t = p.hasPoint(new Coordinate(0,0), c);
+        var p = [new Coordinate(0,10), new Coordinate(10,0), new Coordinate(0,0), new Coordinate(0,10)];
+        var t = Transforms.hasPoint(p, new Coordinate(0,0), c);
         console.log("Point(" + c.x + "," + c.y + ") " + t + " " + Tester.pass(expected, t));
     }
     

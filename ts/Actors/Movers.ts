@@ -1,11 +1,10 @@
 ﻿import { IActor } from "../Actors/Actor";
 import { DrawContext } from "../Common/DrawContext";
 import { Coordinate } from "../Physics/Common";
-import { IGameObject, ILocated, IMoving, ILocatedAndMoving } from "../GameObjects/GameObject";
-import { IDrawable, IDrawableAndRotatable } from "../DisplayObjects/DisplayObject";
+import { ILocated, IMoving, ILocatedMoving } from "../Models/PolyModels";
 
 export class Mover implements IActor {
-    constructor(private locatedMoving: ILocatedAndMoving) { }
+    constructor(private locatedMoving: ILocatedMoving) { }
 
     update(timeModifier: number) {
         this.locatedMoving.location.x += this.locatedMoving.velX * timeModifier;

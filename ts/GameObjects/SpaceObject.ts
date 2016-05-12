@@ -1,0 +1,291 @@
+﻿import { IGameObject, GameObject } from "./GameObject";
+import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
+import { IView, PolyView, ParticleFieldView } from "../Views/PolyViews";
+import { TextView } from "../Views/TextView";
+import { TextModel } from "../Models/TextModel";
+import { PlanetSurfaceModel } from "../Space/PlanetSurface";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
+import { IShipModel, BasicShipModel, IShip, IFiringShip } from "../Ships/Ship";
+import { LandingBasicShipModel } from "../Ships/LandingShip";
+import { LandingPadModel } from "../Space/LandingPad";
+import { AsteroidModel } from "../Space/Asteroid";
+import { IWeapon, BasicGunModel } from "../Weapons/Weapon";
+import { IActor } from "../Actors/Actor";
+import { Mover } from "../Actors/Movers";
+import { ParticleFieldUpdater, ParticleFieldMover } from "../Actors/ParticleFieldUpdater";
+import { Coordinate } from "../Physics/Common";
+import { PolyRotator, Spinner } from "../Actors/Rotators";
+import { ForwardAccelerator } from "../Actors/Accelerators";
+import { Transforms } from "../Physics/Transforms";
+ 
+// todo: break down into single objects and composite objects
+// single objects have simpler constructor
+// composite objects
+
+export class StaticObject<ModelT extends IShapeLocated> extends GameObject<ModelT>{
+    constructor(model: ModelT, actors: IActor[], views: IView[]) {
+        super(model, actors, views);
+    }
+}
+
+export class MovingObject<ModelT extends IShapeLocatedMoving> extends GameObject<ModelT> {
+    constructor(model: ModelT, actors: IActor[], views: IView[]) {
+        var mover: IActor = new Mover(model);
+        actors.push(mover);
+        super(model, actors, views);
+    }
+}
+
+export class MovingSpinningObject<ModelT extends IShapeLocatedAngledMovingRotataing> extends GameObject<ModelT> {
+    constructor(model: ModelT, actors: IActor[], views: IView[]) {
+        var mover: IActor = new Mover(model);
+        var spinner: IActor = new Spinner(model);
+        var rotator = new PolyRotator(model);
+        actors.push(mover, spinner, rotator);
+        super(model, actors, views);
+    }
+}
+
+export class MovingSpinningThrustingObject<ModelT extends IShapeLocatedAngledMovingRotataingAccelerating> extends GameObject<ModelT> {
+    constructor(model: ModelT, actors: IActor[], views: IView[]) {
+        var mover: IActor = new Mover(model);
+        var spinner: IActor = new Spinner(model);
+        var thrust = new ForwardAccelerator(model);
+        var rotator = new PolyRotator(model);
+        actors.push(mover, spinner, thrust, rotator);
+        super(model, actors, views);
+    }
+}
+
+// ---
+
+export class TextObject extends GameObject<TextModel>{
+    constructor(text: string, location: Coordinate, font: string, fontSize: number) {
+        var textModel = new TextModel(text, location);
+        var view: IView = new TextView(textModel, font, fontSize);
+        super(textModel, [], [view]);
+    }
+}
+
+export class ParticleField extends GameObject<IParticleFieldModel> {
+    constructor(model: IParticleFieldModel, startx: () => number, starty: () => number, velx: () => number, vely: () => number, sizeX: number = 1, sizeY: number = 1) {
+        var view: ParticleFieldView = new ParticleFieldView(model, sizeX, sizeY);
+        var updater: IActor = new ParticleFieldUpdater(model, startx, starty, velx, vely);
+        super(model, [updater], [view]);
+    }
+}
+
+export class BasicShip extends MovingSpinningThrustingObject<IShipModel> implements IFiringShip {
+    weaponModel: IWeapon;
+    thrustParticles1: IParticleFieldModel;
+    explosionParticles1: IParticleFieldModel;
+
+    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
+        var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+
+        //data object
+        var shipModel: BasicShipModel = new BasicShipModel(triangleShip, location, velx, vely, angle, spin);
+        var shipView: IView = new PolyView(shipModel);
+        var shipRotator
+
+        this.weaponModel = new BasicGunModel();
+        var weaponView: IView = new ParticleFieldView(this.weaponModel, 1, 1);
+        var weaponUpdater: IActor = new ParticleFieldMover(this.weaponModel);
+
+        this.thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
+        var thrustView: ParticleFieldView = new ParticleFieldView(this.thrustParticles1, 1, 1);
+        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(this.thrustParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
+
+        this.explosionParticles1 = new ParticleFieldModel(50, 5, 0.2, false);
+        var explosionView: ParticleFieldView = new ParticleFieldView(this.explosionParticles1, 3, 3);
+        var explosionFieldUpdater: IActor = new ParticleFieldUpdater(this.explosionParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.explosionX.bind(shipModel), shipModel.explosionY.bind(shipModel));
+
+        var actors: IActor[] = [weaponUpdater, thrustFieldUpdater, explosionFieldUpdater];
+        var views: IView[] = [shipView, weaponView, thrustView, explosionView]
+        super(shipModel, actors, views);
+    }
+
+    // MOve these to an interactor
+    thrust() {
+        //var audio = new Audio("./wav/thrust.wav");
+        //audio.play();
+        if (!this.model.crashed) {
+            this.model.forwardForce = this.model.maxForwardForce;
+            this.thrustParticles1.turnOn();
+        }
+    }
+
+    noThrust() {
+        this.model.forwardForce = 0;
+        this.thrustParticles1.turnOff();
+    }
+    
+    // TODO: flash screen white. 
+    // remove ship - done
+    // turn on explosionParticles - done
+    crash() {
+        this.model.crashed = true;
+        this.explosionParticles1.turnOn();
+        console.log("Your ship crashed!");
+    }
+
+    left(lastTimeModifier: number) {
+        if (!this.model.crashed) this.model.angle -= this.model.maxRotationalSpeed * lastTimeModifier;
+    }
+
+    right(lastTimeModifier: number) {
+        if (!this.model.crashed) this.model.angle += this.model.maxRotationalSpeed * lastTimeModifier;
+    }
+
+    shootPrimary() {
+        if (!this.model.crashed) this.weaponModel.pullTrigger(this.model.location.x, this.model.location.y, this.model.angle);
+    }
+}
+
+export class BasicGun extends GameObject<IParticleFieldModel> {
+    constructor() {
+        var model: IParticleFieldModel = new BasicGunModel();
+        var view: IView = new ParticleFieldView(model, 1, 1);
+        super(model, [], [view]);
+    }
+}
+
+export class LandingPad extends GameObject<LandingPadModel> {
+    constructor(location: Coordinate) {
+        var model: LandingPadModel = new LandingPadModel(location);
+        var view: IView = new PolyView(model);
+        super(model, [], [view]);
+    }
+
+    hitTest(playerPos: Coordinate): boolean {
+        return Transforms.hasPoint(this.model.points, this.model.location, playerPos);
+    }
+
+    hit(player: LandingBasicShip) {
+        if (player.model.velY > 0) {
+            console.log("Land velocity: " + player.model.velY);
+
+            if (player.model.velY > 20) {
+                player.crash();
+            }
+
+            player.model.velY = 0;
+            player.model.velX = 0;
+        }
+    }
+
+}
+
+export class PlanetSurface extends StaticObject<PlanetSurfaceModel> {
+    constructor(location: Coordinate) {
+        var model: PlanetSurfaceModel = new PlanetSurfaceModel(location);
+        var view: IView = new PolyView(model);
+        super(model, [], [view]);
+    }
+
+    hitTest(playerPos: Coordinate): boolean {
+        return Transforms.hasPoint(this.model.points, this.model.location, playerPos);
+    }
+
+    hit(player: LandingBasicShip) {
+        player.model.velY = 0;
+        player.model.velX = 0;
+        player.crash();
+    }
+
+}
+
+
+export class Asteroid extends MovingSpinningObject<AsteroidModel> {
+    // 5 different asteroid shapes
+    //  [-4,-2,-2,-4,0,-2,2,-4,4,-2,3,0,4,2,1,4,-2,4,-4,2,-4,-2],
+    // 	[-3,0,-4,-2,-2,-4,0,-3,2,-4,4,-2,2,-1,4,1,2,4,-1,3,-2,4,-4,2,-3,0],
+    // 	[-2,0,-4,-1,-1,-4,2,-4,4,-1,4,1,2,4,0,4,0,1,-2,4,-4,1,-2,0],
+    // 	[-1,-2,-2,-4,1,-4,4,-2,4,-1,1,0,4,2,2,4,1,3,-2,4,-4,1,-4,-2,-1,-2],
+    // 	[-4,-2,-2,-4,2,-4,4,-2,4,2,2,4,-2,4,-4,2,-4,-2]
+    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
+
+        var asteroid1 = [new Coordinate(-4, -2),
+            new Coordinate(-2, -4),
+            new Coordinate(0, -2),
+            new Coordinate(2, -4),
+            new Coordinate(4, -2),
+            new Coordinate(3, 0),
+            new Coordinate(4, 2),
+            new Coordinate(1, 3),
+            new Coordinate(-2, 4),
+            new Coordinate(-4, 2),
+            new Coordinate(-4, -2),
+        ];
+        var rectangle1 = [new Coordinate(- 2, -20),
+            new Coordinate(2, -20),
+            new Coordinate(2, 20),
+            new Coordinate(-2, 20),
+            new Coordinate(-2, -20)];
+        var model: AsteroidModel = new AsteroidModel(rectangle1, location, velx, vely, angle, spin);
+        var view: PolyView = new PolyView(model);
+        super(model, [], [view]);
+    }
+
+    // move to collision actor
+    hitTest(bullet: Coordinate): boolean {
+        // for now, we accelerate and spin the asteroid when hit
+        if (Transforms.hasPoint(this.model.points, this.model.location, bullet)) {
+            return true;
+        }
+        return false;
+    }
+
+    hit() {
+        this.model.velX += 2;
+        this.model.spin += 1;
+    }
+}
+
+
+export class LandingBasicShip extends GameObject<LandingBasicShipModel> implements IShip {
+    constructor(location: Coordinate, actors: IActor[], views: IView[]) {
+
+        let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        var shipModel: LandingBasicShipModel = new LandingBasicShipModel(triangleShip, location);
+        var shipView: IView = new PolyView(shipModel);
+
+        var mover: IActor = new Mover(shipModel);
+        var thrust = new ForwardAccelerator(shipModel);
+        actors.push(mover, thrust);
+        super(shipModel, actors, [shipView]);
+    }
+
+    // Move to Model
+    thrust() {
+        // TODO: Play thrust sfx
+        this.model.forwardForce = this.model.maxForwardForce;
+    }
+
+    noThrust() {
+        this.model.forwardForce = 0;
+    }
+
+    crash() {
+        console.log("Your crashed your ship while landing!");
+    }
+
+    left(lastTimeModifier: number) {
+        this.model.velX -= this.model.leftRightSpeed * lastTimeModifier;
+    }
+
+    right(lastTimeModifier: number) {
+        this.model.velX += this.model.leftRightSpeed * lastTimeModifier;
+    }
+
+    notMovingOnX(lastDrawModifier: number) {
+        if (this.model.velX < 0) {
+            this.model.velX += (this.model.leftRightSlowing * lastDrawModifier);
+            if (this.model.velX >= 0) this.model.velX = 0;
+        }
+        else if (this.model.velX > 0) {
+            this.model.velX -= (this.model.leftRightSlowing * lastDrawModifier);
+            if (this.model.velX < 0) this.model.velX = 0;
+        }
+    }
+}

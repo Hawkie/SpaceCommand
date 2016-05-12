@@ -1,101 +1,60 @@
 import {Coordinate } from "../Physics/Common";
 import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
-import { IGameObject, ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, LocatedAngledMovingGO } from "../GameObjects/GameObject";
-import { LocatedAngledMovingRotatingPoly } from "../GameObjects/LocatedAngledPoly";
+import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels"
+import { MovingSpinningObject, MovingSpinningThrustingObject } from "../GameObjects/SpaceObject";
+import { IView, GraphicView, PolyView, ParticleFieldView } from "../Views/PolyViews";
+import { IActor } from "../Actors/Actor";
 import { ForwardAccelerator } from "../Actors/Accelerators";
+import { ParticleFieldUpdater } from "../Actors/ParticleFieldUpdater";
 import { DrawContext } from "../Common/DrawContext";
 import { Transforms } from "../Physics/Transforms";
-import { ParticleField } from "../Space/ParticleField";
-import { Bullet } from "../Weapons/Bullet";
-import { IWeapon, BasicGun } from "../Weapons/Weapon"
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
+import { BulletModel } from "../Weapons/Bullet";
+import { IWeapon, BasicGunModel } from "../Weapons/Weapon"
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 
-export interface IShip extends ILocated, IMoving, IAngled, IRotating, IForwardAccelerator {
+export interface IShip {
     
     // methods
+    left(timeModifier: number);
+    right(timeModifier: number);
     thrust();
     noThrust();
     crash();
 }
 
+export interface IFiringShip extends IShip {
+    shootPrimary();
+}
 
-export class BasicShip extends LocatedAngledMovingRotatingPoly implements IShip {
+export interface ICollisionDetection {
+    hitTest(point: Coordinate);
+    hit();
+}
+
+export interface IShipModel extends IShapeLocatedAngledMovingRotataingAccelerating {
+    maxForwardForce: number;
+    maxRotationalSpeed: number;
+    crashed: boolean;
+}
+
+
+export class BasicShipModel extends ShapeLocatedAngledMovingRotatingModel {
     maxForwardForce: number;
     forwardForce: number;
-    rotationalSpeed : number;
-    weapon1: IWeapon;
-    thrustParticles1: ParticleField;
-    explosionParticles1: ParticleField;
-    points: Coordinate[];
+    maxRotationalSpeed : number;
     crashed: boolean;
 
-    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        var p = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var triangleShip = new Polygon(p);
-
-        super(triangleShip, location, velx, vely, angle, spin);
-        this.actors.push(new ForwardAccelerator(this));
-
-        this.points = p;
+    constructor(collisionPoly: Coordinate[], location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
+        super(collisionPoly, location, velx, vely, angle, spin);
+        this.points = collisionPoly;
         this.forwardForce = 0;
         this.maxForwardForce = 16;
-        this.rotationalSpeed = 64;
-        this.weapon1 = new BasicGun();
-        this.thrustParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.thrustVelX.bind(this), this.thrustVelY.bind(this), new Rect(1, 1), 20, 1, 0, false);
-        this.explosionParticles1 = new ParticleField(this.startFromX.bind(this), this.startFromY.bind(this), this.explosionX.bind(this), this.explosionY.bind(this), new Rect(3, 3), 50, 5,0.2,false);
+        this.maxRotationalSpeed = 64;
         this.crashed = false;
     }
-    
-    update(lastTimeModifier : number){
-        this.weapon1.update(lastTimeModifier);
-        this.thrustParticles1.update(lastTimeModifier);
-        this.explosionParticles1.update(lastTimeModifier);
-        if (!this.crashed) super.update(lastTimeModifier);
-    }
-    
-    display(drawContext : DrawContext){
-        this.weapon1.display(drawContext);
-        this.thrustParticles1.display(drawContext);
-        this.explosionParticles1.display(drawContext);
-        if (!this.crashed) super.display(drawContext);    
-    }
-    
-    thrust(){
-        //var audio = new Audio("./wav/thrust.wav");
-        //audio.play();
-        if (!this.crashed) {
-            this.forwardForce = this.maxForwardForce;
-            this.thrustParticles1.turnOn();
-        }
-    }
-
-    noThrust() {
-        this.forwardForce = 0;
-        this.thrustParticles1.turnOff();
-    }
-    
-    // TODO: flash screen white. 
-    // remove ship - done
-    // turn on explosionParticles - done
-    crash() {
-        this.crashed = true;
-        this.explosionParticles1.turnOn();
-        console.log("Your ship crashed!");
-    }
-    
-    rotateLeft(lastTimeModifier: number) {
-        if (!this.crashed) this.angle -= this.rotationalSpeed * lastTimeModifier;
-    }
-    
-    rotateRight(lastTimeModifier : number){
-        if (!this.crashed) this.angle += this.rotationalSpeed * lastTimeModifier;
-    }
-    
-    shootPrimary(lastTimeModifier : number){
-        if (!this.crashed) this.weapon1.pullTrigger(this.location.x, this.location.y, this.angle);
-    }
-
+  
     startFromX(): number {
         return this.location.x;
     }

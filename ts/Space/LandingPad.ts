@@ -1,10 +1,10 @@
-import { LocatedGO } from "../GameObjects/GameObject";
-import { LandingBasicShip } from "../Ships/LandingShip";
+import { ShapeLocatedModel } from "../Models/PolyModels";
+import { LandingBasicShipModel } from "../Ships/LandingShip";
 import { Coordinate } from "../Physics/Common";
-import { Polygon } from "../DisplayObjects/DisplayObject"
+import { Transforms } from "../Physics/Transforms";
 
-export class LandingPad extends LocatedGO {
-    landingPadPolygon : Polygon;
+export class LandingPadModel extends ShapeLocatedModel {
+    
     constructor(location : Coordinate){
         var points = [
             new Coordinate(-10, -2),
@@ -14,25 +14,8 @@ export class LandingPad extends LocatedGO {
             new Coordinate(13, 10),
             new Coordinate(10, -2)
         ];
-        var polygon = new Polygon(points);
-        super(polygon, location);
-        this.landingPadPolygon = polygon;
+        //var polygon = new Polygon(points);
+        super(points, location);
     }
     
-    hitTest(playerPos : Coordinate) : boolean{
-        return this.landingPadPolygon.hasPoint(this.location, playerPos);
-    }
-    
-    hit(player : LandingBasicShip){
-        if(player.velY > 0){
-            console.log("Land velocity: " + player.velY);
-            
-            if(player.velY > 20){
-                player.crash();
-            }
-            
-            player.velY = 0;
-            player.velX = 0;
-        }
-    }
 }

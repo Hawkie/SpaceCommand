@@ -16,42 +16,19 @@ export interface IRotatable{
 
 export interface IDrawableAndRotatable extends IDrawable, IRotatable { }
 
-export class Polygon implements IDrawable, IRotatable {
+export class Polygon implements IRotatable {
     private points: Coordinate[];
-    constructor(points: Coordinate[], rotateMethod : number = 0) {
+    constructor(points: Coordinate[]) {
         this.points = points;
     }
 
-    // method invoking basic methods on drawcontext
-    draw(location: Coordinate, drawingContext: DrawContext) {
-        drawingContext.drawP(location, this.points);
-    }
-
     rotate(angle: number) {
-        this.points = Transforms.rotate(this.points, angle);
+        this.points = Transforms.Rotate(this.points, angle);
     }
     
-    // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    hasPoint(location : Coordinate, testPoint : Coordinate) : boolean
-    {
-        var c = false;
-        for (var i=0, j= this.points.length-1; i< this.points.length;i+=1) {
-            var px1 = this.points[i].x + location.x;
-            var px2 = this.points[j].x + location.x;
-            var py1 = this.points[i].y + location.y;
-            var py2 = this.points[j].y + location.y;
-            if ((py1 > testPoint.y !== py2 > testPoint.y) &&
-                (testPoint.x < (px2 - px1) * (testPoint.y - py1) / (py2 - py1) + px1)
-            ) {
-                c = !c;
-            }
-            j = i;
-        }
-        return c;
-    }
 }
 
-export class Rect implements IDrawable {
+export class Rect {
     sizeX: number;
     sizeY: number;
     constructor(sizeX: number, sizeY: number) {
@@ -59,7 +36,7 @@ export class Rect implements IDrawable {
         this.sizeY = sizeY;
     }
 
-    draw(location: Coordinate, drawingContext: DrawContext) {
-        drawingContext.drawRect(location.x, location.y, this.sizeX, this.sizeY);
-    }
+    //draw(location: Coordinate, drawingContext: DrawContext) {
+    //    drawingContext.drawRect(location.x, location.y, this.sizeX, this.sizeY);
+    //}
 }

@@ -1,38 +1,41 @@
-import { WindDirectionIndicator } from "../Gui/WindDirectionIndicator";
 import { Coordinate } from "../Physics/Common";
-import { LocatedAngledMovingGO } from "../GameObjects/GameObject";
-import { GuiText } from "../Gui/GuiText";
-import { DrawContext} from "../Common/DrawContext";
+import { ShapeLocatedModel } from "../Models/PolyModels";
 
-export class Wind extends WindDirectionIndicator {
-    private text: GuiText;
 
-    constructor(location: Coordinate, private windSpeed: number, private windChangeChance: number) {
-        super(location);
-        this.text = new GuiText(String(this.windSpeed / 4) + " mph", new Coordinate(location.x - 12, location.y + 2), "monospace", 12);
+export class WindDirectionIndicatorModel extends ShapeLocatedModel {
+    pointsRight: Coordinate[];
+    pointsLeft: Coordinate[];
+    blowingRight: boolean;
+
+    constructor(location: Coordinate) {
+        var pointsRight: Coordinate[] = [new Coordinate(-15, 10),
+            new Coordinate(15, 10),
+            new Coordinate(15, 20),
+            new Coordinate(30, 0),
+            new Coordinate(15, -20),
+            new Coordinate(15, -10),
+            new Coordinate(-15, -10),
+            new Coordinate(-15, 10)];
+
+        var pointsLeft: Coordinate[] = [new Coordinate(20, 10),
+            new Coordinate(-10, 10),
+            new Coordinate(-10, 20),
+            new Coordinate(-25, 0),
+            new Coordinate(-10, -20),
+            new Coordinate(-10, -10),
+            new Coordinate(20, -10),
+            new Coordinate(20, 10)];
+
+        super(pointsLeft, location);
+        this.pointsRight = pointsRight;
+        this.pointsLeft = pointsLeft;
+        this.blowingRight = true;
     }
 
-    update(lastTimeModifier: number, player: LocatedAngledMovingGO = null) { // default to null so overloading works
-        super.update(lastTimeModifier);
-        if (player) {
-            if (this.blowingRight) {
-                player.velX += (this.windSpeed * lastTimeModifier);
-            } else {
-                player.velX -= (this.windSpeed * lastTimeModifier);
-            }
-        }
-
-        // TODO take lastTimeModifier into account
-        if (!(Math.floor(Math.random() * this.windChangeChance))) { // there's a 1 in windChangeChance of the wind changing direction
-            console.log("Changing wind direction!");
-            this.changeWindDirection();
-        }
-
-        this.text.update(lastTimeModifier);
-    }
-
-    display(drawingContext: DrawContext) {
-        super.display(drawingContext);
-        this.text.display(drawingContext);
+    updatePolygon() {
+        if (this.blowingRight)
+            this.points = this.pointsRight;
+        else
+            this.points = this.pointsLeft;
     }
 }
