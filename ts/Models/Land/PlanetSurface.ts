@@ -1,11 +1,6 @@
 import { LandingPadModel } from "../../Models/Land/LandingPad";
-//import { IShipModel } from "../Ships/Ship";
 import { Coordinate } from "../../Physics/Common";
-//import { Polygon } from "../DisplayObjects/DisplayObject";
-//import { DrawContext } from "../Common/DrawContext";
 import { IShapeLocated, IMoving, ShapeLocatedModel } from "../../Models/PolyModels";
-//import { IView, PolyView } from "../Views/PolyViews";
-//import { Transforms } from "../Physics/Transforms";
 
 export class PlanetSurfaceModel extends ShapeLocatedModel {
     landingPad : LandingPadModel;
