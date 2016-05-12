@@ -3,17 +3,17 @@ import { SparseArray } from "../Collections/SparseArray";
 import { DrawContext} from "../Common/DrawContext";
 import { IGameObject } from "../GameObjects/GameObject"
 import { TextObject, ParticleField, PlanetSurface, LandingPad, LandingBasicShip } from "../GameObjects/SpaceObject"
-//import { Wind } from "../Gui/WindDirectionIndicator";
+import { WindDirectionIndicator } from "../GameObjects/Gui/WindDirectionIndicator";
 import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
 import { Coordinate } from "../Physics/Common";
-import { PlanetSurfaceModel } from "../Space/PlanetSurface";
-import { LandingPadModel } from "../Space/LandingPad";
+import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
+import { LandingPadModel } from "../Models/Land/LandingPad";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
 
 export class LandingState implements IGameState {
     //player : LandingBasicShip;
     //objects : Array<IGameObject>;
-    //wind : Wind;
+    wind : WindDirectionIndicator;
     surface: PlanetSurface;
     landingPad: LandingPad;
     velocityText: TextObject;
@@ -25,11 +25,10 @@ export class LandingState implements IGameState {
         var field: ParticleField = new ParticleField(particleFieldModel, () => { return 512 * Math.random(); }, () => { return 0; }, () => {
             return 0;
         }, () => { return 16; }, 2, 2);
-        //var field3 = new DotField(512, 200, 8, 1, 1, 1);
         
 
         // ships        
-        let landingShip = new LandingBasicShip(new Coordinate(256, 240), [], []);
+        let landingShip = new LandingBasicShip(new Coordinate(256, 240));
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
@@ -41,13 +40,14 @@ export class LandingState implements IGameState {
         this.player = player;
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
-        //this.wind = new Wind(new Coordinate(450,50), 12, 300);
+        this.wind = new WindDirectionIndicator(new Coordinate(450,50));
         this.surface = new PlanetSurface(new Coordinate(0, 400));
         // todo placement
         this.landingPad = new LandingPad(new Coordinate(0, 0)); 
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
         this.objects.push(this.velocityText);
+        this.objects.push(this.wind);
     }
     
     update(lastDrawModifier : number){
@@ -55,7 +55,7 @@ export class LandingState implements IGameState {
         
         this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
-        //this.wind.update(lastDrawModifier, this.player.model);
+        this.wind.windEffect(lastDrawModifier, this.player.model);
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
@@ -71,7 +71,7 @@ export class LandingState implements IGameState {
         drawingContext.clear();
         this.player.display(drawingContext);
         this.objects.forEach(o => o.display(drawingContext));
-        //this.wind.display(drawingContext);
+        this.wind.display(drawingContext);
     }
     
     tests(){

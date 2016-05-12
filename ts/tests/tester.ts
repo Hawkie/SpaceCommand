@@ -1,10 +1,13 @@
 import { Coordinate } from "../Physics/Common"
 import { Transforms } from "../Physics/Transforms";
-import { Polygon } from "../DisplayObjects/DisplayObject";
+//import { Polygon } from "../DisplayObjects/DisplayObject";
+import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
+
 
 export class Tester {
 
-    allTests(){
+    allTests() {
+        this.testPlanetSurfaceGenerator();
         this.testVector();
         this.testCollision(false, 5,5);
         this.testCollision(true, 4.9,4.9); // TODO should pass?
@@ -27,6 +30,11 @@ export class Tester {
         var t = Transforms.hasPoint(p, new Coordinate(0,0), c);
         console.log("Point(" + c.x + "," + c.y + ") " + t + " " + Tester.pass(expected, t));
     }
+
+     testPlanetSurfaceGenerator() {
+         var surface = new PlanetSurfaceModel(new Coordinate(0, 0));
+         surface.generateSurface(600);
+     }
     
     static pass(expected : boolean, actual : boolean) : string{
         if (expected == actual) return "pass";

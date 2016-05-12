@@ -1,13 +1,22 @@
-import { Coordinate } from "../Physics/Common";
-import { ShapeLocatedModel } from "../Models/PolyModels";
+import { Coordinate } from "ts/Physics/Common";
+import { ShapeLocatedModel } from "ts/Models/PolyModels";
+import { ValueModel } from "ts/Models/TextModel";
+
+export enum Direction {
+    left,
+    right
+}
 
 
-export class WindDirectionIndicatorModel extends ShapeLocatedModel {
+
+export class WindModel extends ShapeLocatedModel {
     pointsRight: Coordinate[];
     pointsLeft: Coordinate[];
-    blowingRight: boolean;
 
-    constructor(location: Coordinate) {
+    windStrength: ValueModel;
+    windRightLeft: Direction;
+
+    constructor(location: Coordinate, windStrength: number = 0, windRightLeft: Direction = Direction.right) {
         var pointsRight: Coordinate[] = [new Coordinate(-15, 10),
             new Coordinate(15, 10),
             new Coordinate(15, 20),
@@ -29,11 +38,12 @@ export class WindDirectionIndicatorModel extends ShapeLocatedModel {
         super(pointsLeft, location);
         this.pointsRight = pointsRight;
         this.pointsLeft = pointsLeft;
-        this.blowingRight = true;
+        this.windRightLeft = windRightLeft;
+        this.windStrength = new ValueModel(windStrength, new Coordinate(location.x, location.y));
     }
 
     updatePolygon() {
-        if (this.blowingRight)
+        if (this.windRightLeft == Direction.right)
             this.points = this.pointsRight;
         else
             this.points = this.pointsLeft;

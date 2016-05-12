@@ -1,22 +1,22 @@
-﻿import { IGameObject, GameObject } from "./GameObject";
+﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
-import { IView, PolyView, ParticleFieldView } from "../Views/PolyViews";
-import { TextView } from "../Views/TextView";
-import { TextModel } from "../Models/TextModel";
-import { PlanetSurfaceModel } from "../Space/PlanetSurface";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
-import { IShipModel, BasicShipModel, IShip, IFiringShip } from "../Ships/Ship";
-import { LandingBasicShipModel } from "../Ships/LandingShip";
-import { LandingPadModel } from "../Space/LandingPad";
-import { AsteroidModel } from "../Space/Asteroid";
-import { IWeapon, BasicGunModel } from "../Weapons/Weapon";
-import { IActor } from "../Actors/Actor";
-import { Mover } from "../Actors/Movers";
-import { ParticleFieldUpdater, ParticleFieldMover } from "../Actors/ParticleFieldUpdater";
-import { Coordinate } from "../Physics/Common";
-import { PolyRotator, Spinner } from "../Actors/Rotators";
-import { ForwardAccelerator } from "../Actors/Accelerators";
-import { Transforms } from "../Physics/Transforms";
+import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { TextView } from "ts/Views/TextView";
+import { TextModel } from "ts/Models/TextModel";
+import { PlanetSurfaceModel } from "ts/Models/Land/PlanetSurface";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IShipModel, BasicShipModel, IShip, IFiringShip } from "ts/Models/Ships/Ship";
+import { LandingBasicShipModel } from "ts/Models/Ships/LandingShip";
+import { LandingPadModel } from "ts/Models/Land/LandingPad";
+import { AsteroidModel } from "ts/Models/Space/Asteroid";
+import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
+import { IActor } from "ts/Actors/Actor";
+import { Mover } from "ts/Actors/Movers";
+import { ParticleFieldUpdater, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { Coordinate, Vector } from "ts/Physics/Common";
+import { PolyRotator, Spinner } from "ts/Actors/Rotators";
+import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Transforms } from "ts/Physics/Transforms";
  
 // todo: break down into single objects and composite objects
 // single objects have simpler constructor
@@ -88,21 +88,24 @@ export class BasicShip extends MovingSpinningThrustingObject<IShipModel> impleme
         var shipView: IView = new PolyView(shipModel);
         var shipRotator
 
-        this.weaponModel = new BasicGunModel();
-        var weaponView: IView = new ParticleFieldView(this.weaponModel, 1, 1);
-        var weaponUpdater: IActor = new ParticleFieldMover(this.weaponModel);
+        var weaponModel = new BasicGunModel();
+        var weaponView: IView = new ParticleFieldView(weaponModel, 1, 1);
+        var weaponUpdater: IActor = new ParticleFieldMover(weaponModel);
 
-        this.thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
-        var thrustView: ParticleFieldView = new ParticleFieldView(this.thrustParticles1, 1, 1);
-        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(this.thrustParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
+        var thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
+        var thrustView: ParticleFieldView = new ParticleFieldView(thrustParticles1, 1, 1);
+        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(thrustParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
 
-        this.explosionParticles1 = new ParticleFieldModel(50, 5, 0.2, false);
-        var explosionView: ParticleFieldView = new ParticleFieldView(this.explosionParticles1, 3, 3);
-        var explosionFieldUpdater: IActor = new ParticleFieldUpdater(this.explosionParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.explosionX.bind(shipModel), shipModel.explosionY.bind(shipModel));
+        var explosionParticles1 = new ParticleFieldModel(50, 5, 0.2, false);
+        var explosionView: ParticleFieldView = new ParticleFieldView(explosionParticles1, 3, 3);
+        var explosionFieldUpdater: IActor = new ParticleFieldUpdater(explosionParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.explosionX.bind(shipModel), shipModel.explosionY.bind(shipModel));
 
         var actors: IActor[] = [weaponUpdater, thrustFieldUpdater, explosionFieldUpdater];
         var views: IView[] = [shipView, weaponView, thrustView, explosionView]
         super(shipModel, actors, views);
+        this.weaponModel = weaponModel;
+        this.thrustParticles1 = thrustParticles1;
+        this.explosionParticles1 = explosionParticles1;
     }
 
     // MOve these to an interactor
@@ -176,7 +179,7 @@ export class LandingPad extends GameObject<LandingPadModel> {
 
 }
 
-export class PlanetSurface extends StaticObject<PlanetSurfaceModel> {
+export class PlanetSurface extends StaticObject<IShapeLocated> {
     constructor(location: Coordinate) {
         var model: PlanetSurfaceModel = new PlanetSurfaceModel(location);
         var view: IView = new PolyView(model);
@@ -244,7 +247,7 @@ export class Asteroid extends MovingSpinningObject<AsteroidModel> {
 
 
 export class LandingBasicShip extends GameObject<LandingBasicShipModel> implements IShip {
-    constructor(location: Coordinate, actors: IActor[], views: IView[]) {
+    constructor(location: Coordinate) {
 
         let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var shipModel: LandingBasicShipModel = new LandingBasicShipModel(triangleShip, location);
@@ -252,8 +255,8 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
 
         var mover: IActor = new Mover(shipModel);
         var thrust = new ForwardAccelerator(shipModel);
-        actors.push(mover, thrust);
-        super(shipModel, actors, [shipView]);
+        var gravityForce = new VectorAccelerator(shipModel, new Vector(180, 10));
+        super(shipModel, [mover, thrust, gravityForce], [shipView]);
     }
 
     // Move to Model

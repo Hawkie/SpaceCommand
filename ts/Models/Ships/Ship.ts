@@ -1,16 +1,16 @@
-import {Coordinate } from "../Physics/Common";
-import { IDrawable, Polygon, Rect } from "../DisplayObjects/DisplayObject";
-import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels"
-import { MovingSpinningObject, MovingSpinningThrustingObject } from "../GameObjects/SpaceObject";
-import { IView, GraphicView, PolyView, ParticleFieldView } from "../Views/PolyViews";
-import { IActor } from "../Actors/Actor";
-import { ForwardAccelerator } from "../Actors/Accelerators";
-import { ParticleFieldUpdater } from "../Actors/ParticleFieldUpdater";
-import { DrawContext } from "../Common/DrawContext";
-import { Transforms } from "../Physics/Transforms";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
-import { BulletModel } from "../Weapons/Bullet";
-import { IWeapon, BasicGunModel } from "../Weapons/Weapon"
+import {Coordinate } from "../../Physics/Common";
+import { IDrawable, Polygon, Rect } from "../../DisplayObjects/DisplayObject";
+import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "../../Models/PolyModels"
+import { MovingSpinningObject, MovingSpinningThrustingObject } from "../../GameObjects/SpaceObject";
+import { IView, GraphicView, PolyView, ParticleFieldView } from "../../Views/PolyViews";
+import { IActor } from "../../Actors/Actor";
+import { ForwardAccelerator } from "../../Actors/Accelerators";
+import { ParticleFieldUpdater } from "../../Actors/ParticleFieldUpdater";
+import { DrawContext } from "../../Common/DrawContext";
+import { Transforms } from "../../Physics/Transforms";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../../Models/ParticleFieldModel";
+import { BulletModel } from "../../Models/Weapons/Bullet";
+import { IWeapon, BasicGunModel } from "../../Models/Weapons/Weapon"
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 

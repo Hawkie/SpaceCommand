@@ -1,11 +1,11 @@
-import { LandingPadModel } from "./LandingPad";
-import { IShipModel } from "../Ships/Ship";
-import { Coordinate } from "../Physics/Common";
-import { Polygon } from "../DisplayObjects/DisplayObject";
-import { DrawContext } from "../Common/DrawContext";
-import { IShapeLocated, IMoving, ShapeLocatedModel } from "../Models/PolyModels";
-import { IView, PolyView } from "../Views/PolyViews";
-import { Transforms } from "../Physics/Transforms";
+import { LandingPadModel } from "../../Models/Land/LandingPad";
+//import { IShipModel } from "../Ships/Ship";
+import { Coordinate } from "../../Physics/Common";
+//import { Polygon } from "../DisplayObjects/DisplayObject";
+//import { DrawContext } from "../Common/DrawContext";
+import { IShapeLocated, IMoving, ShapeLocatedModel } from "../../Models/PolyModels";
+//import { IView, PolyView } from "../Views/PolyViews";
+//import { Transforms } from "../Physics/Transforms";
 
 export class PlanetSurfaceModel extends ShapeLocatedModel {
     landingPad : LandingPadModel;
@@ -16,13 +16,13 @@ export class PlanetSurfaceModel extends ShapeLocatedModel {
     yMax: number;
     
     constructor(surfaceStartingPoint: Coordinate) {
-        var points = this.generateSurface(600);
-        super(points, surfaceStartingPoint);
+        super([], surfaceStartingPoint);
         this.xMin = 20;
         this.xMax = 40;
         this.yMin = -20;
         this.yMax = 20;
         this.landingPad = new LandingPadModel(new Coordinate(0, 0)); // Temporarily place at (0,0) so this.generateSurface can position it
+        this.points = this.generateSurface(600);
     }
     
     generateSurface(surfaceLength : number) : Coordinate[]{
@@ -39,8 +39,8 @@ export class PlanetSurfaceModel extends ShapeLocatedModel {
             if(sameY)
                 sameY = false;
             else
-                y = this.random(this.yMin, this.yMax);
-            x += this.random(this.xMin, this.xMax);
+                y = PlanetSurfaceModel.random(this.yMin, this.yMax);
+            x += PlanetSurfaceModel.random(this.xMin, this.xMax);
             
             if(x > (surfaceLength / 5) && this.landingPad.location.x == 0){ // Position the landing pad
                 this.landingPad.location = new Coordinate(x + 12, (this.location.y + y) - 10);
@@ -48,7 +48,7 @@ export class PlanetSurfaceModel extends ShapeLocatedModel {
             }
             
             if(x > surfaceLength){
-                points.push(new Coordinate(surfaceLength, this.random(this.yMin, this.yMax)));
+                points.push(new Coordinate(surfaceLength, PlanetSurfaceModel.random(this.yMin, this.yMax)));
                 break;
             }
         }
@@ -57,7 +57,7 @@ export class PlanetSurfaceModel extends ShapeLocatedModel {
     }
   
     
-    private random(min : number, max : number){
+    static random(min : number, max : number){
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 }

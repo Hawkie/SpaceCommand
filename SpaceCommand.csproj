@@ -37,6 +37,7 @@
     <TypeScriptCompile Include="ts\Actors\Accelerators.ts" />
     <TypeScriptCompile Include="ts\Actors\Actor.ts" />
     <TypeScriptCompile Include="ts\Actors\ParticleFieldUpdater.ts" />
+    <TypeScriptCompile Include="ts\Actors\WindGenerator.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
     <TypeScriptCompile Include="ts\Common\Canvas.ts" />
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
@@ -52,24 +53,24 @@
     <TypeScriptCompile Include="ts\Game.ts" />
     <TypeScriptCompile Include="ts\GameObjects\SpaceObject.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
-    <TypeScriptCompile Include="ts\Gui\WindDirectionIndicator.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Gui\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />
     <TypeScriptCompile Include="ts\Actors\Rotators.ts" />
-    <TypeScriptCompile Include="ts\Ships\LandingShip.ts" />
-    <TypeScriptCompile Include="ts\Ships\Ship.ts" />
+    <TypeScriptCompile Include="ts\Models\Ships\LandingShip.ts" />
+    <TypeScriptCompile Include="ts\Models\Ships\Ship.ts" />
     <TypeScriptCompile Include="ts\Sound\AudioContext.ts" />
-    <TypeScriptCompile Include="ts\Space\Asteroid.ts" />
-    <TypeScriptCompile Include="ts\Space\LandingPad.ts" />
+    <TypeScriptCompile Include="ts\Models\Space\Asteroid.ts" />
+    <TypeScriptCompile Include="ts\Models\Land\LandingPad.ts" />
     <TypeScriptCompile Include="ts\Models\ParticleFieldModel.ts" />
-    <TypeScriptCompile Include="ts\Space\PlanetSurface.ts" />
-    <TypeScriptCompile Include="ts\Space\Wind.ts" />
+    <TypeScriptCompile Include="ts\Models\Land\PlanetSurface.ts" />
+    <TypeScriptCompile Include="ts\Models\Land\WindModel.ts" />
     <TypeScriptCompile Include="ts\States\AsteroidState.ts" />
     <TypeScriptCompile Include="ts\States\GameState.ts" />
     <TypeScriptCompile Include="ts\States\LandingState.ts" />
     <TypeScriptCompile Include="ts\States\MenuState.ts" />
     <TypeScriptCompile Include="ts\tests\tester.ts" />
-    <TypeScriptCompile Include="ts\Weapons\Bullet.ts" />
-    <TypeScriptCompile Include="ts\Weapons\Weapon.ts" />
+    <TypeScriptCompile Include="ts\Models\Weapons\Bullet.ts" />
+    <TypeScriptCompile Include="ts\Models\Weapons\Weapon.ts" />
     <TypeScriptCompile Include="ts\_includes.ts" />
   </ItemGroup>
   <ItemGroup>

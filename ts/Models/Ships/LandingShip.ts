@@ -1,13 +1,13 @@
 import { GameObject } from "../GameObjects/GameObject";
 import { IShip } from "./Ship";
-import { Coordinate, Vector } from "../Physics/Common";
-import { Polygon } from "../DisplayObjects/DisplayObject";
-import { Transforms } from "../Physics/Transforms";
-import { ForwardAccelerator } from "../Actors/Accelerators";
-import { IActor } from "../Actors/Actor";
-import { Mover } from "../Actors/Movers";
-import { PolyView, IView } from "../Views/PolyViews";
-import { GravityObjectModel } from "../Models/PolyModels";
+import { Coordinate, Vector } from "ts/Physics/Common";
+import { Polygon } from "ts/DisplayObjects/DisplayObject";
+import { Transforms } from "ts/Physics/Transforms";
+import { ForwardAccelerator } from "ts/Actors/Accelerators";
+import { IActor } from "ts/Actors/Actor";
+import { Mover } from "ts/Actors/Movers";
+import { PolyView, IView } from "ts/Views/PolyViews";
+import { GravityObjectModel } from "ts/Models/PolyModels";
 
 
 

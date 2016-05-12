@@ -17,9 +17,9 @@ export class Game {
         var canvas = new Canvas(512, 480, document);
 
         var asteroidState = AsteroidState.create();
-        //var landingState = LandingState.create();
-        var initialState = MenuState.create([asteroidState]);
-        //var initialState = MenuState.create([asteroidState, landingState]);
+        var landingState = LandingState.create();
+        //var initialState = MenuState.create([asteroidState]);
+        var initialState = MenuState.create([asteroidState, landingState]);
 
         var gameloop = new EventLoop(window, canvas, initialState);
 
