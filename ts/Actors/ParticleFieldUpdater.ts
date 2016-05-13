@@ -1,6 +1,6 @@
-﻿import { IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
-import { IActor } from "./Actor";
-import { Mover } from "./Movers";
+﻿import { IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IActor } from "ts/Actors/Actor";
+import { Mover } from "ts/Actors/Movers";
 
 export class ParticleFieldUpdater implements IActor {
 

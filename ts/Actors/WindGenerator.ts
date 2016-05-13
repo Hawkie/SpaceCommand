@@ -1,5 +1,5 @@
-﻿import { IActor } from "../Actors/Actor";
-import { WindModel, Direction } from "../Models/Land/WindModel";
+﻿import { IActor } from "ts/Actors/Actor";
+import { WindModel, Direction } from "ts/Models/Land/WindModel";
 
 export class WindGenerator implements IActor {
     constructor(private model: WindModel, private windChangeChance: number = 0.05) {

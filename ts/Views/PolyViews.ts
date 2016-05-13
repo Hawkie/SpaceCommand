@@ -1,8 +1,8 @@
-﻿import { DrawContext } from "../Common/DrawContext";
-import { ILocated, IShapeLocated, IShapeLocatedAngled, IShape } from "../Models/PolyModels";
-import { IParticleFieldModel } from "../Models/ParticleFieldModel";
-import { IDrawable } from "../DisplayObjects/DisplayObject";
-import { Polygon } from "../DisplayObjects/DisplayObject";
+﻿import { DrawContext } from "ts/Common/DrawContext";
+import { ILocated, IShapeLocated, IShapeLocatedAngled, IShape } from "ts/Models/PolyModels";
+import { IParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IDrawable } from "ts/DisplayObjects/DisplayObject";
+import { Polygon } from "ts/DisplayObjects/DisplayObject";
 
 
 export interface IView {

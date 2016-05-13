@@ -43,6 +43,9 @@
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Land\LandObjects.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Common\BaseObjects.ts" />
     <TypeScriptCompile Include="ts\Models\PolyModels.ts" />
     <TypeScriptCompile Include="ts\Models\TextModel.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
@@ -51,9 +54,9 @@
     <TypeScriptCompile Include="ts\Physics\Transforms.ts" />
     <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
     <TypeScriptCompile Include="ts\Game.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\SpaceObject.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Space\SpaceObject.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Gui\WindDirectionIndicator.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Land\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />
     <TypeScriptCompile Include="ts\Actors\Rotators.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\LandingShip.ts" />
@@ -87,6 +90,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ts\GameObjects\Gui\" />
     <Folder Include="ts\Interactors\" />
   </ItemGroup>
   <PropertyGroup>

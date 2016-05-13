@@ -1,16 +1,16 @@
-import {Coordinate } from "../../Physics/Common";
-import { IDrawable, Polygon, Rect } from "../../DisplayObjects/DisplayObject";
-import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "../../Models/PolyModels"
-import { MovingSpinningObject, MovingSpinningThrustingObject } from "../../GameObjects/SpaceObject";
-import { IView, GraphicView, PolyView, ParticleFieldView } from "../../Views/PolyViews";
-import { IActor } from "../../Actors/Actor";
-import { ForwardAccelerator } from "../../Actors/Accelerators";
-import { ParticleFieldUpdater } from "../../Actors/ParticleFieldUpdater";
-import { DrawContext } from "../../Common/DrawContext";
-import { Transforms } from "../../Physics/Transforms";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../../Models/ParticleFieldModel";
-import { BulletModel } from "../../Models/Weapons/Bullet";
-import { IWeapon, BasicGunModel } from "../../Models/Weapons/Weapon"
+import {Coordinate } from "ts/Physics/Common";
+import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
+import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels"
+import { MovingSpinningObject, MovingSpinningThrustingObject } from "ts/GameObjects/Common/BaseObjects";
+import { IView, GraphicView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IActor } from "ts/Actors/Actor";
+import { ForwardAccelerator } from "ts/Actors/Accelerators";
+import { ParticleFieldUpdater } from "ts/Actors/ParticleFieldUpdater";
+import { DrawContext } from "ts/Common/DrawContext";
+import { Transforms } from "ts/Physics/Transforms";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { BulletModel } from "ts/Models/Weapons/Bullet";
+import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon"
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 

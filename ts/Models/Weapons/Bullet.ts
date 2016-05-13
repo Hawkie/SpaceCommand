@@ -1,7 +1,6 @@
-import { ICoordinate, IVector } from "../../Physics/Common"
-import { Transforms } from "../../Physics/Transforms"
-import { DrawContext } from "../../Common/DrawContext"
-import { ParticleModel } from "../../Models/ParticleFieldModel";
+import { ICoordinate, IVector } from "ts/Physics/Common"
+import { Transforms } from "ts/Physics/Transforms"
+import { ParticleModel } from "ts/Models/ParticleFieldModel";
 
 export class BulletModel extends ParticleModel {
     

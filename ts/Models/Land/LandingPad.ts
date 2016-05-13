@@ -1,7 +1,7 @@
-import { ShapeLocatedModel } from "../../Models/PolyModels";
-import { LandingBasicShipModel } from "../../Models/Ships/LandingShip";
-import { Coordinate } from "../../Physics/Common";
-import { Transforms } from "../../Physics/Transforms";
+import { ShapeLocatedModel } from "ts/Models/PolyModels";
+import { LandingBasicShipModel } from "ts/Models/Ships/LandingShip";
+import { Coordinate } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
 
 export class LandingPadModel extends ShapeLocatedModel {
     

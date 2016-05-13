@@ -1,7 +1,7 @@
-﻿import { Canvas } from "./Canvas";
-import { IGameState } from "../States/GameState";
-import { DrawContext } from "./DrawContext";
-import { SparseArray } from "../Collections/SparseArray";
+﻿import { SparseArray } from "ts/Collections/SparseArray";
+import { Canvas } from "ts/Common/Canvas";
+import { IGameState } from "ts/States/GameState";
+
 
 export class KeyStateProvider {
     constructor(private window: Window) {

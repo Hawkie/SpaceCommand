@@ -1,5 +1,5 @@
-﻿import { ICoordinate, Coordinate, IVector, Vector } from "../Physics/Common";
-import { Transforms } from "../Physics/Transforms";
+﻿import { ICoordinate, Coordinate, IVector, Vector } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
 
 
 export interface IShape {

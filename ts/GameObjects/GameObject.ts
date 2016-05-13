@@ -1,7 +1,6 @@
-import { DrawContext } from "../Common/DrawContext";
-import { IActor } from "../Actors/Actor";
-import { IView } from "../Views/PolyViews";
-
+import { DrawContext } from "ts/Common/DrawContext";
+import { IActor } from "ts/Actors/Actor";
+import { IView } from "ts/Views/PolyViews";
 
 export interface IGameObject extends IActor, IView { }
 
@@ -17,3 +16,4 @@ export class GameObject<ModelT> implements IGameObject {
         this.views.forEach(e => e.display(drawContext));
     }
 }
+

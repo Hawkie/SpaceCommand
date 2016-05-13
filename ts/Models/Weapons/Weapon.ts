@@ -1,7 +1,6 @@
-import { DrawContext } from "../../Common/DrawContext";
-import { BulletModel } from "./Bullet"
-import { Coordinate, Vector } from "../../Physics/Common"
-import { IParticleFieldModel, ParticleFieldModel } from "../../Models/ParticleFieldModel";
+import { Coordinate, Vector } from "ts/Physics/Common"
+import { BulletModel } from "ts/Models/Weapons/Bullet"
+import { IParticleFieldModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 
 export interface IWeapon extends IParticleFieldModel{
     pullTrigger(x : number, y : number, angle : number);

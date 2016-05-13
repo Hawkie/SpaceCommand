@@ -1,9 +1,9 @@
-﻿import { IActor } from "../Actors/Actor";
-import { DrawContext } from "../Common/DrawContext";
-import { Coordinate } from "../Physics/Common";
-import { ILocated, IShapeAngled, IShapeAngledRotating } from "../Models/PolyModels";
-import { IDrawable, IRotatable } from "../DisplayObjects/DisplayObject";
-import { Transforms } from "../Physics/Transforms";
+﻿import { IActor } from "ts/Actors/Actor";
+import { DrawContext } from "ts/Common/DrawContext";
+import { Coordinate } from "ts/Physics/Common";
+import { ILocated, IShapeAngled, IShapeAngledRotating } from "ts/Models/PolyModels";
+import { IDrawable, IRotatable } from "ts/DisplayObjects/DisplayObject";
+import { Transforms } from "ts/Physics/Transforms";
 
 
 

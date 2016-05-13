@@ -1,8 +1,12 @@
-import { LandingPadModel } from "../../Models/Land/LandingPad";
-import { Coordinate } from "../../Physics/Common";
-import { IShapeLocated, IMoving, ShapeLocatedModel } from "../../Models/PolyModels";
+import { LandingPadModel } from "ts/Models/Land/LandingPad";
+import { Coordinate } from "ts/Physics/Common";
+import { IShapeLocated, IMoving, ShapeLocatedModel } from "ts/Models/PolyModels";
 
-export class PlanetSurfaceModel extends ShapeLocatedModel {
+export interface IPlanetSurfaceModel extends IShapeLocated {
+    landingPad: IShapeLocated;
+}
+
+export class PlanetSurfaceModel extends ShapeLocatedModel implements IPlanetSurfaceModel {
     landingPad : LandingPadModel;
     
     xMin: number;

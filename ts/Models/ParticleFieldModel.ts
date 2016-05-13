@@ -1,5 +1,6 @@
-﻿import { IShape, ILocatedMoving, LocatedMovingModel } from "../Models/PolyModels";
-import { ICoordinate, Coordinate } from "../Physics/Common";
+﻿import { ICoordinate, Coordinate } from "ts/Physics/Common";
+import { IShape, ILocatedMoving, LocatedMovingModel } from "ts/Models/PolyModels";
+
 
 
 export interface IParticleFieldModel {

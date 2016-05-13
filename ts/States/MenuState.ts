@@ -1,12 +1,16 @@
-﻿import { DrawContext} from "../Common/DrawContext";
-import { IGameObject } from "../GameObjects/GameObject";
-import { TextObject, ParticleField, Asteroid } from "../GameObjects/SpaceObject";
-import { SparseArray } from "../Collections/SparseArray";
-import { Coordinate } from "../Physics/Common";
-import { TextModel } from "../Models/TextModel";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
-import { IGameState } from "GameState";
-import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
+﻿import { DrawContext} from "ts/Common/DrawContext";
+
+import { SparseArray } from "ts/Collections/SparseArray";
+import { Coordinate } from "ts/Physics/Common";
+import { TextModel } from "ts/Models/TextModel";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IGameState } from "ts/States/GameState";
+import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
+
+import { IGameObject } from "ts/GameObjects/GameObject";
+import { Asteroid } from "ts/GameObjects/Space/SpaceObject";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
 export class MenuState implements IGameState {
 

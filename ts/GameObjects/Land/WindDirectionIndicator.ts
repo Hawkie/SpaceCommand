@@ -1,13 +1,13 @@
-import { StaticObject, TextObject } from "../../GameObjects/SpaceObject";
-import { Coordinate } from "../../Physics/Common";
-import { Polygon } from "../../DisplayObjects/DisplayObject";
-import { DrawContext } from "../../Common/DrawContext";
-import { IGravityObject, ShapeLocatedModel } from "../../Models/PolyModels";
-import { IView, PolyView } from "../../Views/PolyViews";
-import { TextView, ValueView } from "../../Views/TextView";
-import { WindModel, Direction } from "../../Models/Land/WindModel";
-import { IActor } from "../../Actors/Actor";
-import { WindGenerator } from "../../Actors/WindGenerator";
+import { StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { Coordinate } from "ts/Physics/Common";
+import { Polygon } from "ts/DisplayObjects/DisplayObject";
+import { DrawContext } from "ts/Common/DrawContext";
+import { IGravityObject, ShapeLocatedModel } from "ts/Models/PolyModels";
+import { IView, PolyView } from "ts/Views/PolyViews";
+import { TextView, ValueView } from "ts/Views/TextView";
+import { WindModel, Direction } from "ts/Models/Land/WindModel";
+import { IActor } from "ts/Actors/Actor";
+import { WindGenerator } from "ts/Actors/WindGenerator";
 
 // TODO: Display wind speed text next to arrow
 

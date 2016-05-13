@@ -1,14 +1,19 @@
-import { IGameState } from "./GameState";
-import { SparseArray } from "../Collections/SparseArray";
-import { DrawContext} from "../Common/DrawContext";
-import { IGameObject } from "../GameObjects/GameObject"
-import { TextObject, ParticleField, PlanetSurface, LandingPad, LandingBasicShip } from "../GameObjects/SpaceObject"
-import { WindDirectionIndicator } from "../GameObjects/Gui/WindDirectionIndicator";
-import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
-import { Coordinate } from "../Physics/Common";
+import { Coordinate } from "ts/Physics/Common";
+import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
+import { IGameState } from "ts/States/GameState";
+import { SparseArray } from "ts/Collections/SparseArray";
+import { DrawContext} from "ts/Common/DrawContext";
+
 import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
 import { LandingPadModel } from "../Models/Land/LandingPad";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
+
+import { IGameObject } from "ts/GameObjects/GameObject"
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { PlanetSurface, LandingPad, LandingBasicShip } from "ts/GameObjects/Land/LandObjects"
+import { WindDirectionIndicator } from "ts/GameObjects/Land/WindDirectionIndicator";
+
+import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
 export class LandingState implements IGameState {
     //player : LandingBasicShip;
@@ -43,9 +48,10 @@ export class LandingState implements IGameState {
         this.wind = new WindDirectionIndicator(new Coordinate(450,50));
         this.surface = new PlanetSurface(new Coordinate(0, 400));
         // todo placement
-        this.landingPad = new LandingPad(new Coordinate(0, 0)); 
+        this.landingPad = new LandingPad(this.surface.model.landingPad);
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
+        this.objects.push(this.landingPad);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
     }

@@ -1,7 +1,7 @@
-﻿import { IActor } from "../Actors/Actor";
-import { DrawContext } from "../Common/DrawContext";
-import { Coordinate } from "../Physics/Common";
-import { ILocated, IMoving, ILocatedMoving } from "../Models/PolyModels";
+﻿import { IActor } from "ts/Actors/Actor";
+import { DrawContext } from "ts/Common/DrawContext";
+import { Coordinate } from "ts/Physics/Common";
+import { ILocated, IMoving, ILocatedMoving } from "ts/Models/PolyModels";
 
 export class Mover implements IActor {
     constructor(private locatedMoving: ILocatedMoving) { }

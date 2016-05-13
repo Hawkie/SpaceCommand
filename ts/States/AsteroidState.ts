@@ -1,14 +1,16 @@
-import { DrawContext} from "../Common/DrawContext";
-import { IGameObject } from "../GameObjects/GameObject";
-import { TextObject, ParticleField, BasicShip, Asteroid } from "../GameObjects/SpaceObject";
-import { SparseArray } from "../Collections/SparseArray";
-import { ParticleFieldModel } from "../Models/ParticleFieldModel";
-import { Rect } from "../DisplayObjects/DisplayObject";
-import { Coordinate } from "../Physics/Common";
-import { TextModel } from "../Models/TextModel";
-import { TextView } from "../Views/TextView";
-import { IGameState } from "GameState";
-import { Keys, KeyStateProvider } from "../Common/KeyStateProvider";
+import { DrawContext} from "ts/Common/DrawContext";
+import { IGameObject } from "ts/GameObjects/GameObject";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { ParticleField } from "ts/GameObjects/Common/ParticleField";
+import { BasicShip, Asteroid } from "ts/GameObjects/Space/SpaceObject";
+import { SparseArray } from "ts/Collections/SparseArray";
+import { ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { Rect } from "ts/DisplayObjects/DisplayObject";
+import { Coordinate } from "ts/Physics/Common";
+import { TextModel } from "ts/Models/TextModel";
+import { TextView } from "ts/Views/TextView";
+import { IGameState } from "ts/States/GameState";
+import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 
 export class AsteroidState implements IGameState {

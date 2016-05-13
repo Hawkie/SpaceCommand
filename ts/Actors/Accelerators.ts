@@ -1,7 +1,7 @@
-﻿import { IVector, Vector } from "../Physics/Common";
-import { Transforms } from "../Physics/Transforms";
-import { IActor } from "./Actor";
-import { IShapeAngledMovingForwardAcc, IMoving } from "../Models/PolyModels";
+﻿import { IVector, Vector } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
+import { IActor } from "ts/Actors/Actor";
+import { IShapeAngledMovingForwardAcc, IMoving } from "ts/Models/PolyModels";
 
 
 export class ForwardAccelerator implements IActor {

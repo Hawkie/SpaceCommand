@@ -1,8 +1,8 @@
-import { Canvas } from "./Canvas";
-import { IGameState } from "../States/GameState";
-import { DrawContext } from "./DrawContext";
-import { SparseArray } from "../Collections/SparseArray";
-import { KeyStateProvider } from "./KeyStateProvider";
+import { Canvas } from "ts/Common/Canvas";
+import { IGameState } from "ts/States/GameState";
+import { DrawContext } from "ts/Common/DrawContext";
+import { SparseArray } from "ts/Collections/SparseArray";
+import { KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 export class EventLoop {
 
