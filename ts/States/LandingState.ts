@@ -6,13 +6,15 @@ import { DrawContext} from "ts/Common/DrawContext";
 
 import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
 import { LandingPadModel } from "../Models/Land/LandingPad";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "../Models/ParticleFieldModel";
+import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+
+import { IInteractor } from "ts/Interactors/Interactor";
+import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { IGameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { PlanetSurface, LandingPad, LandingBasicShip } from "ts/GameObjects/Land/LandObjects"
 import { WindDirectionIndicator } from "ts/GameObjects/Land/WindDirectionIndicator";
-
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
 export class LandingState implements IGameState {
@@ -22,6 +24,7 @@ export class LandingState implements IGameState {
     surface: PlanetSurface;
     landingPad: LandingPad;
     velocityText: TextObject;
+    interactors: IInteractor[];
 
     static create(): LandingState {
         // Background
@@ -54,6 +57,9 @@ export class LandingState implements IGameState {
         this.objects.push(this.landingPad);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
+
+        var shipSurfaceCollision: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.surface.hit, this.player);
+        this.interactors = [shipSurfaceCollision];
     }
     
     update(lastDrawModifier : number){
@@ -80,9 +86,10 @@ export class LandingState implements IGameState {
         this.wind.display(drawingContext);
     }
     
-    tests(){
-        if(this.surface.hitTest(this.player.model.location))
-            this.surface.hit(this.player);
+    tests() { 
+        this.interactors.forEach(interactor => interactor.test());
+        //if(this.surface.hitTest(this.player.model.location))
+        //    this.surface.hit(this.player);
         if(this.landingPad.hitTest(this.player.model.location)){
             this.landingPad.hit(this.player);
         }

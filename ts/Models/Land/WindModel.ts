@@ -7,8 +7,6 @@ export enum Direction {
     right
 }
 
-
-
 export class WindModel extends ShapeLocatedModel {
     pointsRight: Coordinate[];
     pointsLeft: Coordinate[];

@@ -52,10 +52,6 @@ export class PlanetSurface extends StaticObject<IPlanetSurfaceModel> {
         super(model, [], [view]);
     }
 
-    hitTest(playerPos: Coordinate): boolean {
-        return Transforms.hasPoint(this.model.points, this.model.location, playerPos);
-    }
-
     hit(player: LandingBasicShip) {
         player.model.velY = 0;
         player.model.velX = 0;

@@ -5,8 +5,6 @@ import { ILocated, IShapeAngled, IShapeAngledRotating } from "ts/Models/PolyMode
 import { IDrawable, IRotatable } from "ts/DisplayObjects/DisplayObject";
 import { Transforms } from "ts/Physics/Transforms";
 
-
-
 export class PolyRotator implements IActor {
     private previousAngle: number;
     

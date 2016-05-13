@@ -1,8 +1,6 @@
 ﻿import { ICoordinate, Coordinate } from "ts/Physics/Common";
 import { IShape, ILocatedMoving, LocatedMovingModel } from "ts/Models/PolyModels";
 
-
-
 export interface IParticleFieldModel {
     points: IParticleModel[];
     // how frequently a particle appears
@@ -32,8 +30,6 @@ export interface IParticleModel extends ILocatedMoving {
     originX: number;
     originY: number;
 }
-
-
 
 export class ParticleModel extends LocatedMovingModel implements IParticleModel {
     private origin: Coordinate;

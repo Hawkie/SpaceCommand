@@ -28,11 +28,6 @@ export interface IFiringShip extends IShip {
     shootPrimary();
 }
 
-export interface ICollisionDetection {
-    hitTest(point: Coordinate);
-    hit();
-}
-
 export interface IShipModel extends IShapeLocatedAngledMovingRotataingAccelerating {
     maxForwardForce: number;
     maxRotationalSpeed: number;

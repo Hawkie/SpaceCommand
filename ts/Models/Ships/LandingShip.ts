@@ -9,8 +9,6 @@ import { Mover } from "ts/Actors/Movers";
 import { PolyView, IView } from "ts/Views/PolyViews";
 import { GravityObjectModel } from "ts/Models/PolyModels";
 
-
-
 export class LandingBasicShipModel extends GravityObjectModel {
     maxForwardForce: number;
     forwardForce : number;
