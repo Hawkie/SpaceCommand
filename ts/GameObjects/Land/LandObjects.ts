@@ -61,11 +61,12 @@ export class PlanetSurface extends StaticObject<IPlanetSurfaceModel> {
         player.model.velX = 0;
         player.crash();
     }
-
 }
 
 
 export class LandingBasicShip extends GameObject<LandingBasicShipModel> implements IShip {
+
+    crashed: boolean;
     constructor(location: Coordinate) {
 
         let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
@@ -76,12 +77,15 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
         var thrust = new ForwardAccelerator(shipModel);
         var gravityForce = new VectorAccelerator(shipModel, new Vector(180, 10));
         super(shipModel, [mover, thrust, gravityForce], [shipView]);
+        this.crashed = false;
     }
 
     // Move to Model
     thrust() {
         // TODO: Play thrust sfx
-        this.model.forwardForce = this.model.maxForwardForce;
+        if (!this.crashed) {
+            this.model.forwardForce = this.model.maxForwardForce;
+        }
     }
 
     noThrust() {
@@ -89,6 +93,7 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
     }
 
     crash() {
+        this.crashed = true;
         console.log("Your crashed your ship while landing!");
     }
 
