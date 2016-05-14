@@ -10,7 +10,7 @@ import { IShapeLocated } from "ts/Models/PolyModels";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
-import { MultiMultiCollisionDetection } from "ts/Interactors/CollisionDetector";
+import { Multi2ShapeCollisionDetection, Multi2MultiCollisionDetection } from "ts/Interactors/CollisionDetector";
 
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject } from "ts/GameObjects/GameObject";
@@ -58,8 +58,9 @@ export class AsteroidState implements IGameState {
         this.objects = objects;
         this.asteroids = asteroids;
 
-        var asteroidBulletDetector = new MultiMultiCollisionDetection(this.asteroidModels.bind(this), () => this.player.weaponModel.points, this.asteroidBulletHit.bind(this), null);
-        this.interactors = [asteroidBulletDetector];
+        var asteroidBulletDetector = new Multi2MultiCollisionDetection(this.asteroidModels.bind(this), () => this.player.weaponModel.points, this.asteroidBulletHit.bind(this));
+        var asteroidPlayerDetector = new Multi2ShapeCollisionDetection(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
+        this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
     }
 
     
@@ -67,8 +68,6 @@ export class AsteroidState implements IGameState {
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
         this.player.update(lastDrawModifier);
-        //this.bulletHitAsteroidTest();
-        this.playerHitAsteroidTest();
     }
     
     // order is important. Like layers on top of each other.
@@ -106,37 +105,8 @@ export class AsteroidState implements IGameState {
 
     }
 
-    //bulletHitAsteroidTest(){
-    //    var bullets = this.player.weaponModel.points;
-    //    for (let i=0;i<bullets.length;i++)
-    //    {
-    //        let bullet = bullets[i];
-    //        for (let a=0; a < this.asteroids.length; a++){
-    //            let asteroid = this.asteroids[a];
-    //            // todo make this local function so we can remove bullet
-    //            if (asteroid.hitTest(bullet.location)){
-    //                asteroid.hit();
-    //                bullets.splice(i, 1);
-    //                this.asteroids.push(this.createAsteroid(asteroid.model.location));
-    //                break;
-    //            }
-    //        };
-    //    }
-    //}
-    
-    playerHitAsteroidTest() {
-        for (let a = 0; a < this.asteroids.length; a++) {
-            let asteroid = this.asteroids[a];
-            // todo make this local function so we can remove bullet
-            for (let p = 0; p < this.player.model.points.length - 2; p++) {
-                let point = this.player.model.points[p];
-                let location = new Coordinate(this.player.model.location.x + point.x, this.player.model.location.y + point.y);
-                if (asteroid.hitTest(location)) {
-                    this.player.crash();
-                    break;
-                }
-            }
-        }
+    asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
+        this.player.crash();
     }
 
     tests() {

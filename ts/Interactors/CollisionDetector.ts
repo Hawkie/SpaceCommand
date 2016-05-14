@@ -14,22 +14,34 @@ export class ObjectCollisionDetector<TArg> implements IInteractor {
     }
 }
 
-//export class MultiCollisionDetection<TArg> implements IInteractor {
-//    constructor(private models: IShapeLocated[], private model2: ILocated, private hit: (arg:TArg, i1: number, models: IShapeLocated[]) => void, private by: TArg) {
-//    }
+export class Multi2ShapeCollisionDetection implements IInteractor {
+    constructor(private model1s: () => IShapeLocated[], private model2: IShapeLocated, private hit: (i1: number, model1s: IShapeLocated[], i2: number, shape: IShapeLocated) => void, private searchFirstHitOnly: boolean = true) {
+    }
 
-//    test() {
-//        for (let i = this.models.length - 1; i >= 0; i--) {
-//            let model1 = this.models[i];
-//            if (Transforms.hasPoint(model1.points, model1.location, this.model2.location)) {
-//                this.hit(this.by, i, this.models);
-//                break;
-//            }
-//        };
-//    }
-//}
+    test() {
+        let found = false;
+        let targets = this.model1s();
+        let shape = this.model2;
+        for (let i1 = targets.length - 1; i1 >= 0; i1--) {
+            let target = targets[i1];
+            for (let i2 = shape.points.length - 1; i2 >= 0; i2--) {
+                let point = shape.points[i2];
+                if (Transforms.hasPoint(target.points, target.location, new Coordinate(shape.location.x + point.x, shape.location.y + point.y))) {
+                    this.hit(i1, targets, i2, shape);
+                    if (this.searchFirstHitOnly) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            // only hit one object (game speed optimisation)
+            if (found)
+                break;
+        }
+    }
+}
 
-export class MultiMultiCollisionDetection implements IInteractor {
+export class Multi2MultiCollisionDetection implements IInteractor {
     constructor(private model1s: () => IShapeLocated[], private model2s: () => ILocated[], private hit: (i1:number, model1s: IShapeLocated[], i2:number, model2s: ILocated[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
