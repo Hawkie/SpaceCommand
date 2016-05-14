@@ -25,5 +25,15 @@ export class LandingBasicShipModel extends GravityObjectModel {
         this.leftRightSlowing = 2;
     }
     
+    thrustVelX(): number {
+        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
+        return -velchange.x + this.velX + (Math.random() * 5);
+    }
+
+    thrustVelY(): number {
+        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
+        return -velchange.y + this.velY + (Math.random() * 5);
+    }
+
    
 }

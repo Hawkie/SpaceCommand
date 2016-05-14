@@ -14,7 +14,7 @@ export class ObjectCollisionDetector implements IInteractor {
     }
 }
 
-export class Multi2ShapeCollisionDetection implements IInteractor {
+export class Multi2ShapeCollisionDetector implements IInteractor {
     constructor(private model1s: () => IShapeLocated[], private model2: IShapeLocated, private hit: (i1: number, model1s: IShapeLocated[], i2: number, shape: IShapeLocated) => void, private searchFirstHitOnly: boolean = true) {
     }
 
@@ -41,7 +41,7 @@ export class Multi2ShapeCollisionDetection implements IInteractor {
     }
 }
 
-export class Multi2MultiCollisionDetection implements IInteractor {
+export class Multi2MultiCollisionDetector implements IInteractor {
     constructor(private model1s: () => IShapeLocated[], private model2s: () => ILocated[], private hit: (i1:number, model1s: IShapeLocated[], i2:number, model2s: ILocated[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 

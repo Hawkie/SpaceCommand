@@ -42,17 +42,26 @@ export class PlanetSurface extends StaticObject<IPlanetSurfaceModel> {
 export class LandingBasicShip extends GameObject<LandingBasicShipModel> implements IShip {
 
     crashed: boolean;
+    thrustParticles1: IParticleFieldModel;
+    explosionParticles1: IParticleFieldModel;
+
     constructor(location: Coordinate) {
 
         let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var shipModel: LandingBasicShipModel = new LandingBasicShipModel(triangleShip, location);
         var shipView: IView = new PolyView(shipModel);
 
+        var thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
+        var thrustView: ParticleFieldView = new ParticleFieldView(thrustParticles1, 1, 1);
+        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(thrustParticles1, () => shipModel.location.x, () => shipModel.location.y, shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
+
+
         var mover: IActor = new Mover(shipModel);
         var thrust = new ForwardAccelerator(shipModel);
         var gravityForce = new VectorAccelerator(shipModel, new Vector(180, 10));
-        super(shipModel, [mover, thrust, gravityForce], [shipView]);
+        super(shipModel, [mover, thrust, gravityForce, thrustFieldUpdater], [shipView, thrustView]);
         this.crashed = false;
+        this.thrustParticles1 = thrustParticles1;
     }
 
     // Move to Model
@@ -60,11 +69,13 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
         // TODO: Play thrust sfx
         if (!this.crashed) {
             this.model.forwardForce = this.model.maxForwardForce;
+            this.thrustParticles1.turnOn();
         }
     }
 
     noThrust() {
         this.model.forwardForce = 0;
+        this.thrustParticles1.turnOff();
     }
 
     crash() {

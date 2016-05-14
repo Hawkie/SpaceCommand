@@ -10,7 +10,7 @@ import { IShapeLocated } from "ts/Models/PolyModels";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
-import { Multi2ShapeCollisionDetection, Multi2MultiCollisionDetection } from "ts/Interactors/CollisionDetector";
+import { Multi2ShapeCollisionDetector, Multi2MultiCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject } from "ts/GameObjects/GameObject";
@@ -58,8 +58,8 @@ export class AsteroidState implements IGameState {
         this.objects = objects;
         this.asteroids = asteroids;
 
-        var asteroidBulletDetector = new Multi2MultiCollisionDetection(this.asteroidModels.bind(this), () => this.player.weaponModel.points, this.asteroidBulletHit.bind(this));
-        var asteroidPlayerDetector = new Multi2ShapeCollisionDetection(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
+        var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), () => this.player.weaponModel.points, this.asteroidBulletHit.bind(this));
+        var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
     }
 
