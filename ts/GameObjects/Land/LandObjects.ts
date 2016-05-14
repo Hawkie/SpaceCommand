@@ -26,18 +26,7 @@ export class LandingPad extends GameObject<LandingPadModel> {
         super(model, [], [view]);
     }
 
-    hit(player: LandingBasicShip) {
-        if (player.model.velY > 0) {
-            console.log("Land velocity: " + player.model.velY);
-
-            if (player.model.velY > 20) {
-                player.crash();
-            }
-
-            player.model.velY = 0;
-            player.model.velX = 0;
-        }
-    }
+    
 
 }
 // TODO need to add LandingPadView to PlanetSurface
@@ -46,12 +35,6 @@ export class PlanetSurface extends StaticObject<IPlanetSurfaceModel> {
         var model: PlanetSurfaceModel = new PlanetSurfaceModel(location);
         var view: IView = new PolyView(model);
         super(model, [], [view]);
-    }
-
-    hit(player: LandingBasicShip) {
-        player.model.velY = 0;
-        player.model.velX = 0;
-        player.crash();
     }
 }
 

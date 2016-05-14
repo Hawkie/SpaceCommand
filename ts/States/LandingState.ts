@@ -58,8 +58,8 @@ export class LandingState implements IGameState {
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
 
-        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.surface.hit, this.player);
-        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.landingPad.hit, this.player);
+        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.playerSurfaceCollision.bind(this));
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.playerLandingPadCollision.bind(this));
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector];
     }
     
@@ -89,11 +89,25 @@ export class LandingState implements IGameState {
     
     tests() { 
         this.interactors.forEach(interactor => interactor.test());
-        //if(this.surface.hitTest(this.player.model.location))
-        //    this.surface.hit(this.player);
-        //if(this.landingPad.hitTest(this.player.model.location)){
-        //   this.landingPad.hit(this.player);
-        //}
+    }
+
+    playerLandingPadCollision() {
+        if (this.player.model.velY > 0) {
+            console.log("Land velocity: " + this.player.model.velY);
+
+            if (this.player.model.velY > 20) {
+                this.player.crash();
+            }
+
+            this.player.model.velY = 0;
+            this.player.model.velX = 0;
+        }
+    }
+
+    playerSurfaceCollision() {
+        this.player.model.velY = 0;
+        this.player.model.velX = 0;
+        this.player.crash();
     }
     
     returnState() : IGameState {

@@ -4,13 +4,13 @@ import { Transforms } from "ts/Physics/Transforms";
 import { IShapeLocated, ILocated } from "ts/Models/PolyModels";
 
 
-export class ObjectCollisionDetector<TArg> implements IInteractor {
-    constructor(private model1: IShapeLocated, private model2: ILocated, private hit: (TArg) => void, private by: TArg){
+export class ObjectCollisionDetector implements IInteractor {
+    constructor(private model1: IShapeLocated, private model2: ILocated, private hit: () => void){
     }
 
     test() {
         if (Transforms.hasPoint(this.model1.points, this.model1.location, this.model2.location))
-            this.hit(this.by);
+            this.hit();
     }
 }
 
