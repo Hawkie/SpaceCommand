@@ -5,7 +5,7 @@ import { MovingSpinningObject, MovingSpinningThrustingObject } from "ts/GameObje
 import { IView, GraphicView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
-import { ParticleFieldUpdater } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator } from "ts/Actors/ParticleFieldUpdater";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Transforms } from "ts/Physics/Transforms";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -48,14 +48,6 @@ export class BasicShipModel extends ShapeLocatedAngledMovingRotatingModel {
         this.maxForwardForce = 16;
         this.maxRotationalSpeed = 64;
         this.crashed = false;
-    }
-  
-    startFromX(): number {
-        return this.location.x;
-    }
-
-    startFromY(): number {
-        return this.location.y;
     }
 
     thrustVelX(): number {

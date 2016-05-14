@@ -8,7 +8,7 @@ import { AsteroidModel } from "ts/Models/Space/Asteroid";
 import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
-import { ParticleFieldUpdater, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
@@ -40,14 +40,24 @@ export class BasicShip extends MovingSpinningThrustingObject<IShipModel> impleme
 
         var thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
         var thrustView: ParticleFieldView = new ParticleFieldView(thrustParticles1, 1, 1);
-        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(thrustParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
+        var thrustParticleGenerator: IActor = new ParticleGenerator(thrustParticles1,
+            () => shipModel.location.x,
+            () => shipModel.location.y,
+            shipModel.thrustVelX.bind(shipModel),
+            shipModel.thrustVelY.bind(shipModel));
+        var thrustMover: IActor = new ParticleFieldMover(thrustParticles1);
 
         var explosionParticles1 = new ParticleFieldModel(50, 5, 0.2, false);
         var explosionView: ParticleFieldView = new ParticleFieldView(explosionParticles1, 3, 3);
-        var explosionFieldUpdater: IActor = new ParticleFieldUpdater(explosionParticles1, shipModel.startFromX.bind(shipModel), shipModel.startFromY.bind(shipModel), shipModel.explosionX.bind(shipModel), shipModel.explosionY.bind(shipModel));
+        var explosionFieldUpdater: IActor = new ParticleGenerator(explosionParticles1,
+            () => shipModel.location.x,
+            () => shipModel.location.y,
+            shipModel.explosionX.bind(shipModel),
+            shipModel.explosionY.bind(shipModel));
+        var explosionMover: IActor = new ParticleFieldMover(explosionParticles1);
 
-        var actors: IActor[] = [weaponUpdater, thrustFieldUpdater, explosionFieldUpdater];
-        var views: IView[] = [shipView, weaponView, thrustView, explosionView]
+        var actors: IActor[] = [weaponUpdater, thrustParticleGenerator, thrustMover, explosionFieldUpdater, explosionMover];
+        var views: IView[] = [shipView, weaponView, thrustView, explosionView];
         super(shipModel, actors, views);
         this.weaponModel = weaponModel;
         this.thrustParticles1 = thrustParticles1;
@@ -128,15 +138,6 @@ export class Asteroid extends MovingSpinningObject<AsteroidModel> {
         var model: AsteroidModel = new AsteroidModel(rectangle1, location, velx, vely, angle, spin);
         var view: PolyView = new PolyView(model);
         super(model, [], [view]);
-    }
-
-    // move to collision actor
-    hitTest(bullet: Coordinate): boolean {
-        // for now, we accelerate and spin the asteroid when hit
-        if (Transforms.hasPoint(this.model.points, this.model.location, bullet)) {
-            return true;
-        }
-        return false;
     }
 }
 

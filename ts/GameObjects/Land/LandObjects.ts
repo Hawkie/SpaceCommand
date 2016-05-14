@@ -13,7 +13,7 @@ import { LandingPadModel } from "ts/Models/Land/LandingPad";
 import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
-import { ParticleFieldUpdater, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
@@ -53,15 +53,31 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
 
         var thrustParticles1 = new ParticleFieldModel(20, 1, 0, false);
         var thrustView: ParticleFieldView = new ParticleFieldView(thrustParticles1, 1, 1);
-        var thrustFieldUpdater: IActor = new ParticleFieldUpdater(thrustParticles1, () => shipModel.location.x, () => shipModel.location.y, shipModel.thrustVelX.bind(shipModel), shipModel.thrustVelY.bind(shipModel));
+        var thrustParticleGenerator: IActor = new ParticleGenerator(thrustParticles1,
+            () => shipModel.location.x,
+            () => shipModel.location.y,
+            shipModel.thrustVelX.bind(shipModel),
+            shipModel.thrustVelY.bind(shipModel));
+        var thrustMover: IActor = new ParticleFieldMover(thrustParticles1);
+
+        var explosionParticles1 = new ParticleFieldModel(100, 5, 0.2, false);
+        var explosionView: ParticleFieldView = new ParticleFieldView(explosionParticles1, 3, 3);
+        var explosionFieldUpdater: IActor = new ParticleGenerator(explosionParticles1,
+            () => shipModel.location.x,
+            () => shipModel.location.y,
+            () => ((Math.random() - 0.5) * 20),
+            () => ((Math.random()) * -30));
+        var explosionMover: IActor = new ParticleFieldMover(explosionParticles1, true);
 
 
         var mover: IActor = new Mover(shipModel);
         var thrust = new ForwardAccelerator(shipModel);
         var gravityForce = new VectorAccelerator(shipModel, new Vector(180, 10));
-        super(shipModel, [mover, thrust, gravityForce, thrustFieldUpdater], [shipView, thrustView]);
+
+        super(shipModel, [mover, thrust, gravityForce, thrustParticleGenerator, thrustMover, explosionFieldUpdater, explosionMover], [shipView, thrustView, explosionView]);
         this.crashed = false;
         this.thrustParticles1 = thrustParticles1;
+        this.explosionParticles1 = explosionParticles1;
     }
 
     // Move to Model
@@ -80,6 +96,7 @@ export class LandingBasicShip extends GameObject<LandingBasicShipModel> implemen
 
     crash() {
         this.crashed = true;
+        this.explosionParticles1.turnOn();
         console.log("Your crashed your ship while landing!");
     }
 

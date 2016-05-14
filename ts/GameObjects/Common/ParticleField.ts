@@ -11,7 +11,7 @@ import { AsteroidModel } from "ts/Models/Space/Asteroid";
 import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
-import { ParticleFieldUpdater, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
@@ -24,7 +24,8 @@ import { MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, Stat
 export class ParticleField extends GameObject<IParticleFieldModel> {
     constructor(model: IParticleFieldModel, startx: () => number, starty: () => number, velx: () => number, vely: () => number, sizeX: number = 1, sizeY: number = 1) {
         var view: ParticleFieldView = new ParticleFieldView(model, sizeX, sizeY);
-        var updater: IActor = new ParticleFieldUpdater(model, startx, starty, velx, vely);
-        super(model, [updater], [view]);
+        var generator: IActor = new ParticleGenerator(model, startx, starty, velx, vely);
+        var mover = new ParticleFieldMover(model);
+        super(model, [generator, mover], [view]);
     }
 }
