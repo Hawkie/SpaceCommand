@@ -138,10 +138,5 @@ export class Asteroid extends MovingSpinningObject<AsteroidModel> {
         }
         return false;
     }
-
-    hit() {
-        this.model.velX += 2;
-        this.model.spin += 1;
-    }
 }
 

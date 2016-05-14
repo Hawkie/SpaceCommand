@@ -30,6 +30,10 @@ export interface IGravity {
     gravityForce: Vector;
 }
 
+export interface IHittable {
+    hit();
+}
+
 export interface ILocatedMoving extends ILocated, IMoving { }
 
 export interface IShapeLocated extends IShape, ILocated { }

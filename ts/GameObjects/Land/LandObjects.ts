@@ -26,10 +26,6 @@ export class LandingPad extends GameObject<LandingPadModel> {
         super(model, [], [view]);
     }
 
-    hitTest(playerPos: Coordinate): boolean {
-        return Transforms.hasPoint(this.model.points, this.model.location, playerPos);
-    }
-
     hit(player: LandingBasicShip) {
         if (player.model.velY > 0) {
             console.log("Land velocity: " + player.model.velY);

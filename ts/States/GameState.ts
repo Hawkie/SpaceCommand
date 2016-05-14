@@ -13,3 +13,6 @@ export interface IGameState
     tests();
     returnState() : IGameState;
 }
+
+//export abstract class GameState {
+//}

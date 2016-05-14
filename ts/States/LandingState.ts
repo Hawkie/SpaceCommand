@@ -58,8 +58,9 @@ export class LandingState implements IGameState {
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
 
-        var shipSurfaceCollision: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.surface.hit, this.player);
-        this.interactors = [shipSurfaceCollision];
+        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.surface.hit, this.player);
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.landingPad.hit, this.player);
+        this.interactors = [shipSurfaceDetector, shipLandingPadDetector];
     }
     
     update(lastDrawModifier : number){
@@ -90,9 +91,9 @@ export class LandingState implements IGameState {
         this.interactors.forEach(interactor => interactor.test());
         //if(this.surface.hitTest(this.player.model.location))
         //    this.surface.hit(this.player);
-        if(this.landingPad.hitTest(this.player.model.location)){
-            this.landingPad.hit(this.player);
-        }
+        //if(this.landingPad.hitTest(this.player.model.location)){
+        //   this.landingPad.hit(this.player);
+        //}
     }
     
     returnState() : IGameState {
