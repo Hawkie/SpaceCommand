@@ -1,13 +1,11 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { IShip, IFiringShip, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { TextModel } from "ts/Models/TextModel";
 import { IPlanetSurfaceModel, PlanetSurfaceModel } from "ts/Models/Land/PlanetSurface";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { IShipModel } from "ts/Models/Ships/Ship";
-import { LandingBasicShipModel } from "ts/Models/Ships/LandingShip";
 import { LandingPadModel } from "ts/Models/Land/LandingPad";
 import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";

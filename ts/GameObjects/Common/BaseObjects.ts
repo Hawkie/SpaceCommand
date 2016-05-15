@@ -11,19 +11,6 @@ import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
 
-export interface IShip {
-    
-    // methods
-    left(timeModifier: number);
-    right(timeModifier: number);
-    thrust();
-    noThrust();
-    crash();
-}
-
-export interface IFiringShip extends IShip {
-    shootPrimary();
-}
 
 export class StaticObject<ModelT extends IShapeLocated> extends GameObject<ModelT>{
     constructor(model: ModelT, actors: IActor[], views: IView[]) {

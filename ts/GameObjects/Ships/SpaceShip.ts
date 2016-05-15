@@ -14,9 +14,10 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
-
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { IShip, IFiringShip, MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { IShip, IFiringShip } from "ts/GameObjects/Ships/Ship";
+
  
 // todo: break down into single objects and composite objects
 // single objects have simpler constructor

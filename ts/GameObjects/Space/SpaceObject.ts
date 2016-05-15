@@ -7,9 +7,8 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
-
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { IShip, IFiringShip, MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { MovingObject, MovingSpinningObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
  
 export class Asteroid extends MovingSpinningObject<AsteroidModel> {
     // 5 different asteroid shapes

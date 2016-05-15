@@ -1,5 +1,6 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { IShip, IFiringShip, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { IShip } from "ts/GameObjects/Ships/Ship";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
