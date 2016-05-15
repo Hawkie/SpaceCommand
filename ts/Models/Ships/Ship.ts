@@ -1,15 +1,15 @@
 import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, IShapeLocatedMovingAccelerating, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels"
 
 
-export interface IShipModel {
+export interface IShipData {
     maxForwardForce: number;
     crashed: boolean;
 }
 
-export interface IRotatingShipModel {
+export interface IRotatingShipData {
     maxRotationalSpeed: number;
 }
 
-export interface ISpaceShipModel extends IShapeLocatedAngledMovingRotataingAccelerating, IShipModel, IRotatingShipModel { }
+export interface ISpaceShipData extends IShapeLocatedAngledMovingRotataingAccelerating, IShipData, IRotatingShipData { }
 
-export interface ILandingShipModel extends IShapeLocatedMovingAccelerating, IShipModel { }
+export interface ILandingShipData extends IShapeLocatedMovingAccelerating, IShipData { }

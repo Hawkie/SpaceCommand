@@ -1,5 +1,5 @@
-﻿import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
-import { TextModel } from "ts/Models/TextModel";
+﻿import { ILocatedMoving, IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
+import { TextData } from "ts/Models/TextModel";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";
@@ -7,9 +7,12 @@ import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
+export interface IModel<TData> extends IActor {
+    data: TData;
+}
 
-export abstract class DynamicModel<ModelT> implements IActor {
-    constructor(public model: ModelT, private actors: IActor[]) {
+export class DynamicModel<TData> implements IModel<TData>, IActor {
+    constructor(public data: TData, private actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {
@@ -18,31 +21,47 @@ export abstract class DynamicModel<ModelT> implements IActor {
 }
 
 
-export class MovingObject<ModelT extends IShapeLocatedMoving> extends DynamicModel<ModelT> {
-    constructor(model: ModelT, actors: IActor[]) {
-        var mover: IActor = new Mover(model);
+export class ShapeMovingModel<TData extends IShapeLocatedMoving> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        var mover: IActor = new Mover(data);
         actors.push(mover);
-        super(model, actors);
+        super(data, actors);
     }
 }
 
-export class MovingSpinningObject<ModelT extends IShapeLocatedAngledMovingRotataing> extends DynamicModel<ModelT> {
-    constructor(model: ModelT, actors: IActor[]) {
-        var mover: IActor = new Mover(model);
-        var spinner: IActor = new Spinner(model);
-        var rotator = new PolyRotator(model);
+export class MovingModel<TData extends ILocatedMoving> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        var mover: IActor = new Mover(data);
+        actors.push(mover);
+        super(data, actors);
+    }
+}
+
+export class MovingGravityModel<TData extends ILocatedMoving> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        var mover: IActor = new Mover(data);
+        var vectorAccelerator = new VectorAccelerator(data, new Vector(180, 10));
+        actors.push(mover, vectorAccelerator);
+        super(data, actors);
+    }
+}
+
+export class ShapeMovingSpinningModel<TData extends IShapeLocatedAngledMovingRotataing> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        var mover: IActor = new Mover(data);
+        var spinner: IActor = new Spinner(data);
+        var rotator = new PolyRotator(data);
         actors.push(mover, spinner, rotator);
-        super(model, actors);
+        super(data, actors);
     }
 }
 
-export class MovingSpinningThrustingObject<ModelT extends IShapeLocatedAngledMovingRotataingAccelerating> extends DynamicModel<ModelT> {
-    constructor(model: ModelT, actors: IActor[]) {
-        var mover: IActor = new Mover(model);
-        var spinner: IActor = new Spinner(model);
-        var thrust = new ForwardAccelerator(model);
-        var rotator = new PolyRotator(model);
-        actors.push(mover, spinner, thrust, rotator);
-        super(model, actors);
+export class ShapeMovingThrustingModel<TData extends IShapeLocatedAngledMovingRotataingAccelerating> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        var mover: IActor = new Mover(data);
+        var thrust = new ForwardAccelerator(data);
+        var rotator = new PolyRotator(data);
+        actors.push(mover, thrust, rotator);
+        super(data, actors);
     }
 }

@@ -1,12 +1,13 @@
 import { DrawContext} from "ts/Common/DrawContext";
 
 import { SparseArray } from "ts/Collections/SparseArray";
-import { ParticleFieldModel, ParticleModel } from "ts/Models/ParticleFieldModel";
-import { AsteroidModel } from "ts/Models/Space/Asteroid";
+import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IModel, MovingModel } from "ts/Models/DynamicModels";
+import { AsteroidData, AsteroidModel } from "ts/Models/Space/Asteroid";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
-import { TextModel } from "ts/Models/TextModel";
-import { IShapeLocated } from "ts/Models/PolyModels";
+import { TextData } from "ts/Models/TextModel";
+import { ILocated, IShapeLocated } from "ts/Models/PolyModels";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -34,12 +35,10 @@ export class AsteroidState implements IGameState {
     
     static create(): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var particleFieldModel: ParticleFieldModel = new ParticleFieldModel(1);
-        var field: ParticleField = new ParticleField(particleFieldModel,
-            () => { return 512 * Math.random(); },
-            () => { return 0; },
-            () => { return 0; },
-            () => { return 16; }, 2, 2);
+        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
+        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
+            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+        var field: ParticleField = new ParticleField(pFieldModel,2, 2);
          
 
         // special
@@ -59,7 +58,7 @@ export class AsteroidState implements IGameState {
         this.objects = objects;
         this.asteroids = asteroids;
 
-        var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), () => this.player.weaponModel.points, this.asteroidBulletHit.bind(this));
+        var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
     }
@@ -89,24 +88,28 @@ export class AsteroidState implements IGameState {
         if (keys.isKeyDown(Keys.SpaceBar)) this.player.shootPrimary();
     }
 
-    asteroidModels(): IShapeLocated[] {
+    asteroidModels(): IModel<IShapeLocated>[] {
         return this.asteroids.map(a => a.model);
     }
 
-    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: ParticleModel[]) {
+    bulletModels(): IModel<ILocated>[] {
+        return this.player.weaponModel.particles;
+        }
+
+    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: MovingParticleModel[]) {
         // effect on asteroid
         
         let a = asteroids[i1];
-        a.hit();
+        a.data.hit();
         // remove bullet
         bullets.splice(i2, 1);
         // add two small asteroids
-        this.asteroids.push(this.createAsteroid(a.location));
+        this.asteroids.push(this.createAsteroid(a.data.location));
         // TODO remove original;
 
     }
 
-    asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
+    asteroidPlayerHit(i1: number, asteroids: AsteroidData[], i2: number, player: Coordinate[]) {
         this.player.crash();
     }
 

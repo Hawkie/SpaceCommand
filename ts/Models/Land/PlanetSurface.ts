@@ -1,13 +1,14 @@
-import { LandingPadModel } from "ts/Models/Land/LandingPad";
+import { LandingPadData } from "ts/Models/Land/LandingPad";
 import { Coordinate } from "ts/Physics/Common";
-import { IShapeLocated, IMoving, ShapeLocatedModel } from "ts/Models/PolyModels";
+import { IShapeLocated, IMoving, ShapeLocatedData } from "ts/Models/PolyModels";
+import { IModel } from "ts/Models/DynamicModels";
 
-export interface IPlanetSurfaceModel extends IShapeLocated {
+export interface IPlanetSurfaceData extends IShapeLocated {
     landingPad: IShapeLocated;
 }
 
-export class PlanetSurfaceModel extends ShapeLocatedModel implements IPlanetSurfaceModel {
-    landingPad : LandingPadModel;
+export class PlanetSurfaceData extends ShapeLocatedData implements IPlanetSurfaceData {
+    landingPad : LandingPadData;
     
     xMin: number;
     xMax: number;
@@ -20,7 +21,7 @@ export class PlanetSurfaceModel extends ShapeLocatedModel implements IPlanetSurf
         this.xMax = 40;
         this.yMin = -20;
         this.yMax = 20;
-        this.landingPad = new LandingPadModel(new Coordinate(0, 0)); // Temporarily place at (0,0) so this.generateSurface can position it
+        this.landingPad = new LandingPadData(new Coordinate(0, 0)); // Temporarily place at (0,0) so this.generateSurface can position it
         this.points = this.generateSurface(600);
     }
     
@@ -38,8 +39,8 @@ export class PlanetSurfaceModel extends ShapeLocatedModel implements IPlanetSurf
             if(sameY)
                 sameY = false;
             else
-                y = PlanetSurfaceModel.random(this.yMin, this.yMax);
-            x += PlanetSurfaceModel.random(this.xMin, this.xMax);
+                y = PlanetSurfaceData.random(this.yMin, this.yMax);
+            x += PlanetSurfaceData.random(this.xMin, this.xMax);
             
             if(x > (surfaceLength / 5) && this.landingPad.location.x == 0){ // Position the landing pad
                 this.landingPad.location = new Coordinate(x + 12, (this.location.y + y) - 10);
@@ -47,7 +48,7 @@ export class PlanetSurfaceModel extends ShapeLocatedModel implements IPlanetSurf
             }
             
             if(x > surfaceLength){
-                points.push(new Coordinate(surfaceLength, PlanetSurfaceModel.random(this.yMin, this.yMax)));
+                points.push(new Coordinate(surfaceLength, PlanetSurfaceData.random(this.yMin, this.yMax)));
                 break;
             }
         }

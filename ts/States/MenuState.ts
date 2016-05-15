@@ -2,8 +2,8 @@
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
-import { TextModel } from "ts/Models/TextModel";
-import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { TextData } from "ts/Models/TextModel";
+import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
@@ -24,18 +24,14 @@ export class MenuState implements IGameState {
 
     static create(states: Array<IGameState>): MenuState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var fModel1: IParticleFieldModel = new ParticleFieldModel(1);
-        var field1 = new ParticleField(fModel1,
-                () => { return 512 * Math.random(); },
-                () => { return 0; },
-                () => { return 0; },
-                () => { return 16; }, 2, 2);
-        var fModel2: IParticleFieldModel = new ParticleFieldModel(1);
-        var field2 = new ParticleField(fModel2,
-            () => { return 512 * Math.random(); },
-            () => { return 0; },
-            () => { return 0; },
-            () => { return 32; }, 2, 2);
+        var fData1: IParticleFieldData = new ParticleFieldData(1);
+        var fModel1: ParticleFieldModel = new ParticleFieldModel(fData1,
+            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+        var field1 = new ParticleField(fModel1, 1, 1);
+        var fData2: IParticleFieldData = new ParticleFieldData(1);
+        var fModel2: ParticleFieldModel = new ParticleFieldModel(fData2,
+            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 32, now)));
+        var field2 = new ParticleField(fModel2, 2, 2);
         
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field1, field2, text];
@@ -65,10 +61,10 @@ export class MenuState implements IGameState {
         for (let i: number = 0; i < this.menuItems.length; i++) {
             let item = this.menuItems[i];
             if (i == this.selectedItem) {
-                item.model.text = "<" + this.states[i].name + ">";
+                item.model.data.text = "<" + this.states[i].name + ">";
             }
             else {
-                item.model.text = " " + this.states[i].name + " ";
+                item.model.data.text = " " + this.states[i].name + " ";
             }
             item.display(drawingContext);
         }

@@ -1,21 +1,21 @@
 ﻿import { Coordinate } from "../Physics/Common";
 
-export interface ITextModel {
+export interface ITextData {
     text: string;
     location: Coordinate;
 }
 
-export class TextModel implements ITextModel {
+export class TextData implements ITextData {
     constructor(public text: string, public location: Coordinate) {
     }
 }
 
-export interface IValueModel {
+export interface IValueData {
     value: number;
     location: Coordinate;
 }
 
-export class ValueModel implements IValueModel {
+export class ValueData implements IValueData {
     constructor(public value: number, public location: Coordinate) {
     }
 }

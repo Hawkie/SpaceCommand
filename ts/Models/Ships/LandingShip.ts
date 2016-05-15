@@ -4,9 +4,9 @@ import { ForwardAccelerator } from "ts/Actors/Accelerators";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { PolyView, IView } from "ts/Views/PolyViews";
-import { GravityObjectModel } from "ts/Models/PolyModels";
+import { ShapeLocatedAngledMovingRotatingAcceleratingData } from "ts/Models/PolyModels";
 
-export class LandingBasicShipModel extends GravityObjectModel {
+export class LandingBasicShipData extends ShapeLocatedAngledMovingRotatingAcceleratingData {
     maxForwardForce: number;
     forwardForce : number;
     leftRightSpeed : number;

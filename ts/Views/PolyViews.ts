@@ -1,6 +1,6 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { ILocated, IShapeLocated, IShapeLocatedAngled, IShape } from "ts/Models/PolyModels";
-import { IParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleFieldData } from "ts/Models/ParticleFieldModel";
 import { IDrawable } from "ts/DisplayObjects/DisplayObject";
 import { Polygon } from "ts/DisplayObjects/DisplayObject";
 
@@ -27,10 +27,10 @@ export class PolyView implements IView {
 }
 
 export class ParticleFieldView implements IView {
-    constructor(private properties: IParticleFieldModel, private sizeX:number, private sizeY:number) { }
+    constructor(private properties: IParticleFieldData, private sizeX:number, private sizeY:number) { }
 
     display(drawContext: DrawContext) {
-        this.properties.points.forEach(point => drawContext.drawRect(point.location.x, point.location.y, this.sizeX, this.sizeY));
+        this.properties.particles.forEach(point => drawContext.drawRect(point.data.location.x, point.data.location.y, this.sizeX, this.sizeY));
     }
 }
 

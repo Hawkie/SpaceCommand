@@ -1,12 +1,12 @@
 import { Coordinate, Vector } from "ts/Physics/Common"
-import { BulletModel } from "ts/Models/Weapons/Bullet"
-import { IParticleFieldModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleDataVectorConstructor } from "ts/Models/Weapons/Bullet"
+import { IParticleFieldData, ParticleFieldData, MovingParticleModel } from "ts/Models/ParticleFieldModel";
 
-export interface IWeapon extends IParticleFieldModel{
+export interface IWeaponData extends IParticleFieldData{
     pullTrigger(x : number, y : number, angle : number);
 }
 
-export class BasicGunModel extends ParticleFieldModel implements IWeapon {
+export class WeaponData extends ParticleFieldData implements IWeaponData {
     constructor(private velocity: number = 128, firePerSec: number = 2, private offsetAngle: number = 0) {
         super(firePerSec);
     }
@@ -16,8 +16,8 @@ export class BasicGunModel extends ParticleFieldModel implements IWeapon {
         var secElapsed = (now - this.lastCheck)/1000;
         if (secElapsed >= 1/this.itemsPerSec)
         {
-            var b = new BulletModel(new Coordinate(x, y), new Vector(shipAngle + this.offsetAngle, this.velocity));
-            this.points.push(b);
+            var b = new ParticleDataVectorConstructor(new Coordinate(x, y), new Vector(shipAngle + this.offsetAngle, this.velocity));
+            this.particles.push(new MovingParticleModel(b));
             this.lastCheck = now;
         }
     }

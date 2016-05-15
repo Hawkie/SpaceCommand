@@ -1,11 +1,12 @@
 ﻿import { Vector } from "ts/Physics/Common";
-import { IParticleFieldModel, IParticleModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleFieldData, IParticleData, ParticleData, ParticleFieldData } from "ts/Models/ParticleFieldModel";
+import { DynamicModel } from "ts/Models/DynamicModels"; 
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
 
-export class ParticleGenerator<ParticleType> implements IActor {
-    constructor(private model: IParticleFieldModel, private startx: () => number, private starty: () => number, private velx: () => number, private vely: () => number) { }
+export class ParticleGenerator implements IActor {
+    constructor(private model: IParticleFieldData, private createParticle: (now:number) => DynamicModel<IParticleData>) { }
     
     update(lastTimeModifier: number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
@@ -23,9 +24,9 @@ export class ParticleGenerator<ParticleType> implements IActor {
                 // find the integer number of particles to add. conservatively round down
                 let toAdd = Math.floor(this.model.itemsPerSec * secSinceLast);
                 for (let i: number = 0; i < toAdd; i++) {
-                    var particleModel = new ParticleModel(this.startx(), this.starty(), this.velx(), this.vely(), now);
+                    var particleModel = this.createParticle(now);
                     //this.actors.forEach(a => particleModel.
-                    this.model.points.push(particleModel);
+                    this.model.particles.push(particleModel);
                     if (this.model.firstAdded == 0) this.model.firstAdded = now;
                     this.model.lastCheck = now;
                 }
@@ -35,33 +36,26 @@ export class ParticleGenerator<ParticleType> implements IActor {
 }
 
 export class ParticleFieldMover implements IActor {
-    constructor(private model: IParticleFieldModel, private gravity: boolean = false) { }
+    constructor(private model: IParticleFieldData) { }
 
     update(timeModifier: number) {
         var now = Date.now();
         // move objects
-        for (var i: number = this.model.points.length - 1; i >= 0; i--) {
-            var element = this.model.points[i];
+        for (var i: number = this.model.particles.length - 1; i >= 0; i--) {
+            var element = this.model.particles[i];
         
             // remove if too old
             let removed = false;
             if (this.model.lifeTimeInSec > 0) {
-                var ageInSec = (now - element.born) / 1000;
+                var ageInSec = (now - element.data.born) / 1000;
                 if (ageInSec > this.model.lifeTimeInSec) {
-                    this.model.points.splice(i, 1);
+                    this.model.particles.splice(i, 1);
                     removed = true;
                 }
             }
             // draw if still remains
             if (!removed) {
-            // TODO: change this so particle actors can be added during construction
-                var mover: IActor = new Mover(element);
-                mover.update(timeModifier);
-
-                if (this.gravity) {
-                    var gravityForce = new VectorAccelerator(element, new Vector(180, 10));
-                    gravityForce.update(timeModifier);
-                }
+                element.update(timeModifier);
             }
         }
     }
