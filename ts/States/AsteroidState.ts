@@ -16,7 +16,8 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
-import { BasicShip, Asteroid } from "ts/GameObjects/Space/SpaceObject";
+import { Asteroid } from "ts/GameObjects/Space/SpaceObject";
+import { BasicShip } from "ts/GameObjects/Ships/SpaceShip";
 
 export class AsteroidState implements IGameState {
 // data objects

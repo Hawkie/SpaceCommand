@@ -44,6 +44,8 @@ export interface IShapeLocatedAngled extends IShape, ILocated, IAngled { }
 
 export interface IShapeLocatedMoving extends IShape, ILocated, IMoving { }
 
+export interface IShapeLocatedMovingAccelerating extends IShape, ILocated, IMoving, IForwardAccelerator { }
+
 export interface IShapeAngledRotating extends IShape, IAngled, IRotating { }
 
 export interface IShapeAngledMovingForwardAcc extends IShape, IAngled, IMoving, IForwardAccelerator { }

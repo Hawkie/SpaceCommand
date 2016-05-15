@@ -1,5 +1,4 @@
-﻿
-import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
@@ -11,6 +10,20 @@ import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
+
+export interface IShip {
+    
+    // methods
+    left(timeModifier: number);
+    right(timeModifier: number);
+    thrust();
+    noThrust();
+    crash();
+}
+
+export interface IFiringShip extends IShip {
+    shootPrimary();
+}
 
 export class StaticObject<ModelT extends IShapeLocated> extends GameObject<ModelT>{
     constructor(model: ModelT, actors: IActor[], views: IView[]) {

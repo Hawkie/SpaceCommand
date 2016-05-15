@@ -1,7 +1,4 @@
-import { GameObject } from "../GameObjects/GameObject";
-import { IShip } from "./Ship";
 import { Coordinate, Vector } from "ts/Physics/Common";
-import { Polygon } from "ts/DisplayObjects/DisplayObject";
 import { Transforms } from "ts/Physics/Transforms";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
 import { IActor } from "ts/Actors/Actor";

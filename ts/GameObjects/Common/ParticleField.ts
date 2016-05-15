@@ -1,14 +1,7 @@
 ﻿
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
-import { TextView } from "ts/Views/TextView";
-import { TextModel } from "ts/Models/TextModel";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { IShipModel, BasicShipModel, IShip, IFiringShip } from "ts/Models/Ships/Ship";
-import { LandingBasicShipModel } from "ts/Models/Ships/LandingShip";
-import { LandingPadModel } from "ts/Models/Land/LandingPad";
-import { AsteroidModel } from "ts/Models/Space/Asteroid";
-import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";

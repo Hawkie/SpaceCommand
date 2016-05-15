@@ -13,9 +13,10 @@ import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { IGameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
-import { PlanetSurface, LandingPad, LandingBasicShip } from "ts/GameObjects/Land/LandObjects"
+import { PlanetSurface, LandingPad } from "ts/GameObjects/Land/LandObjects"
 import { WindDirectionIndicator } from "ts/GameObjects/Land/WindDirectionIndicator";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
+import { LandingBasicShip } from "ts/GameObjects/Ships/LandingShip";
 
 export class LandingState implements IGameState {
     //player : LandingBasicShip;
