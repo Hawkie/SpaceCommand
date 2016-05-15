@@ -11,7 +11,7 @@ import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 
 
 export class ParticleField extends GameObject<IParticleFieldModel> {
@@ -20,5 +20,12 @@ export class ParticleField extends GameObject<IParticleFieldModel> {
         var generator: IActor = new ParticleGenerator(model, startx, starty, velx, vely);
         var mover = new ParticleFieldMover(model);
         super(model, [generator, mover], [view]);
+    }
+}
+
+export class Particle extends GameObject<IParticleModel>{
+    constructor(model: IParticleModel) {
+        let actors: IActor[] = [new Mover(model)];
+        super(model, actors, []);
     }
 }

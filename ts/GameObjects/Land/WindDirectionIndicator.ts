@@ -1,4 +1,5 @@
-import { StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { GameObject } from "ts/GameObjects/GameObject";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { Coordinate } from "ts/Physics/Common";
 import { Polygon } from "ts/DisplayObjects/DisplayObject";
 import { DrawContext } from "ts/Common/DrawContext";
@@ -11,7 +12,7 @@ import { WindGenerator } from "ts/Actors/WindGenerator";
 
 // TODO: Display wind speed text next to arrow
 
-export class WindDirectionIndicator extends StaticObject<WindModel> {
+export class WindDirectionIndicator extends GameObject<WindModel> {
     constructor(location: Coordinate) {
         var model: WindModel = new WindModel(location);
         var viewArrow: IView = new PolyView(model);

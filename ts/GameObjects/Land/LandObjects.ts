@@ -1,5 +1,5 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
@@ -24,7 +24,7 @@ export class LandingPad extends GameObject<LandingPadModel> {
     }
 }
 
-export class PlanetSurface extends StaticObject<IPlanetSurfaceModel> {
+export class PlanetSurface extends GameObject<IPlanetSurfaceModel> {
     constructor(location: Coordinate) {
         var model: PlanetSurfaceModel = new PlanetSurfaceModel(location);
         var view: IView = new PolyView(model);

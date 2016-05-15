@@ -1,7 +1,7 @@
 ﻿import { Coordinate } from "ts/Physics/Common";
 import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
 import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingModel, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels"
-import { MovingSpinningObject, MovingSpinningThrustingObject } from "ts/GameObjects/Common/BaseObjects";
+import { MovingSpinningThrustingObject } from "ts/Models/DynamicModels";
 import { IView, GraphicView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
@@ -40,13 +40,10 @@ export class BasicShipModel extends ShapeLocatedAngledMovingRotatingModel implem
         let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
         return -velchange.y + this.velY + (Math.random() * 5);
     }
+}
 
-    explosionX(): number {
-        return this.velX + ((Math.random() - 0.5) * 20);
+export class BasicShipActors extends MovingSpinningThrustingObject<BasicShipModel>{
+    constructor(model: BasicShipModel) {
+        super(model, []);
     }
-
-    explosionY(): number {
-        return this.velY + ((Math.random() - 0.5) * 20);
-    }
-
 }

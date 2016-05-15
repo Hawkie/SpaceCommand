@@ -4,8 +4,7 @@ import { TextView } from "ts/Views/TextView";
 import { TextModel } from "ts/Models/TextModel";
 import { IParticleModel, IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ISpaceShipModel } from "ts/Models/Ships/Ship";
-import { BasicShipModel } from "ts/Models/Ships/SpaceShipModel";
-import { AsteroidModel } from "ts/Models/Space/Asteroid";
+import { BasicShipModel, BasicShipActors } from "ts/Models/Ships/SpaceShipModel";
 import { IWeapon, BasicGunModel } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
@@ -15,7 +14,7 @@ import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { MovingObject, MovingSpinningObject, MovingSpinningThrustingObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { IShip, IFiringShip } from "ts/GameObjects/Ships/Ship";
 
  
@@ -23,7 +22,7 @@ import { IShip, IFiringShip } from "ts/GameObjects/Ships/Ship";
 // single objects have simpler constructor
 // composite objects
 
-export class BasicShip extends MovingSpinningThrustingObject<ISpaceShipModel> implements IFiringShip {
+export class BasicShip extends GameObject<ISpaceShipModel> implements IFiringShip {
     weaponModel: IWeapon;
     thrustParticles1: IParticleFieldModel;
     explosionParticles1: IParticleFieldModel;
@@ -33,8 +32,8 @@ export class BasicShip extends MovingSpinningThrustingObject<ISpaceShipModel> im
 
         //data object
         var shipModel: BasicShipModel = new BasicShipModel(triangleShip, location, velx, vely, angle, spin);
+        var shipActors: BasicShipActors = new BasicShipActors(shipModel);
         var shipView: IView = new PolyView(shipModel);
-        var shipRotator
 
         var weaponModel = new BasicGunModel();
         var weaponView: IView = new ParticleFieldView(weaponModel, 1, 1);
@@ -54,11 +53,11 @@ export class BasicShip extends MovingSpinningThrustingObject<ISpaceShipModel> im
         var explosionFieldUpdater: IActor = new ParticleGenerator(explosionParticles1,
             () => shipModel.location.x,
             () => shipModel.location.y,
-            shipModel.explosionX.bind(shipModel),
-            shipModel.explosionY.bind(shipModel));
+            () => shipModel.velX + ((Math.random() - 0.5) * 20),
+            () => shipModel.velY + ((Math.random() - 0.5) * 20));
         var explosionMover: IActor = new ParticleFieldMover(explosionParticles1);
 
-        var actors: IActor[] = [weaponUpdater, thrustParticleGenerator, thrustMover, explosionFieldUpdater, explosionMover];
+        var actors: IActor[] = [shipActors, weaponUpdater, thrustParticleGenerator, thrustMover, explosionFieldUpdater, explosionMover];
         var views: IView[] = [shipView, weaponView, thrustView, explosionView];
         super(shipModel, actors, views);
         this.weaponModel = weaponModel;

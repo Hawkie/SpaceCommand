@@ -1,6 +1,6 @@
 ﻿import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
-import { AsteroidModel } from "ts/Models/Space/Asteroid";
+import { AsteroidModel, AsteroidActors } from "ts/Models/Space/Asteroid";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";
@@ -8,9 +8,9 @@ import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { MovingObject, MovingSpinningObject, StaticObject, TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
  
-export class Asteroid extends MovingSpinningObject<AsteroidModel> {
+export class Asteroid extends GameObject<AsteroidModel> {
     // 5 different asteroid shapes
     //  [-4,-2,-2,-4,0,-2,2,-4,4,-2,3,0,4,2,1,4,-2,4,-4,2,-4,-2],
     // 	[-3,0,-4,-2,-2,-4,0,-3,2,-4,4,-2,2,-1,4,1,2,4,-1,3,-2,4,-4,2,-3,0],
@@ -37,8 +37,9 @@ export class Asteroid extends MovingSpinningObject<AsteroidModel> {
             new Coordinate(-2, 20),
             new Coordinate(-2, -20)];
         var model: AsteroidModel = new AsteroidModel(rectangle1, location, velx, vely, angle, spin);
+        var asteroidActor: IActor = new AsteroidActors(model, []);
         var view: PolyView = new PolyView(model);
-        super(model, [], [view]);
+        super(model, [asteroidActor], [view]);
     }
 }
 

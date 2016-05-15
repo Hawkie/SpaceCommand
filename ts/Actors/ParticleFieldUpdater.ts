@@ -1,10 +1,10 @@
 ﻿import { Vector } from "ts/Physics/Common";
-import { IParticleFieldModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleFieldModel, IParticleModel, ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
 
-export class ParticleGenerator implements IActor {
+export class ParticleGenerator<ParticleType> implements IActor {
     constructor(private model: IParticleFieldModel, private startx: () => number, private starty: () => number, private velx: () => number, private vely: () => number) { }
     
     update(lastTimeModifier: number) {
@@ -24,6 +24,7 @@ export class ParticleGenerator implements IActor {
                 let toAdd = Math.floor(this.model.itemsPerSec * secSinceLast);
                 for (let i: number = 0; i < toAdd; i++) {
                     var particleModel = new ParticleModel(this.startx(), this.starty(), this.velx(), this.vely(), now);
+                    //this.actors.forEach(a => particleModel.
                     this.model.points.push(particleModel);
                     if (this.model.firstAdded == 0) this.model.firstAdded = now;
                     this.model.lastCheck = now;
