@@ -10,7 +10,7 @@ export interface IGameState
     update(lastDrawModifier : number);
     display(drawingContext : DrawContext);
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number);
-    tests();
+    tests(lastTestModifier: number);
     returnState() : IGameState;
 }
 

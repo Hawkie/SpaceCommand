@@ -8,8 +8,10 @@ import { PlanetSurfaceData } from "../Models/Land/PlanetSurface";
 import { LandingPadData } from "../Models/Land/LandingPad";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel } from "ts/Models/DynamicModels";
+import { WindModel, Direction } from "ts/Models/Land/WindModel";
+import { LandingShipModel } from "ts/Models/Ships/LandingShip";
 
-import { IInteractor } from "ts/Interactors/Interactor";
+import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { IGameObject } from "ts/GameObjects/GameObject"
@@ -62,7 +64,9 @@ export class LandingState implements IGameState {
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.playerSurfaceCollision.bind(this));
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.playerLandingPadCollision.bind(this));
-        this.interactors = [shipSurfaceDetector, shipLandingPadDetector];
+        var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
+        this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
+
     }
     
     update(lastDrawModifier : number){
@@ -70,7 +74,6 @@ export class LandingState implements IGameState {
         
         this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
-        this.wind.windEffect(lastDrawModifier, this.player.model.data);
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
@@ -89,8 +92,16 @@ export class LandingState implements IGameState {
         this.wind.display(drawingContext);
     }
     
-    tests() { 
-        this.interactors.forEach(interactor => interactor.test());
+    tests(lastTestModifier: number) { 
+        this.interactors.forEach(interactor => interactor.test(lastTestModifier));
+    }
+
+    windEffect(lastTestModifier: number, wind: WindModel, player: LandingShipModel) {
+        if (wind.data.windRightLeft == Direction.right) {
+            player.data.velX += (wind.data.windStrength.value * lastTestModifier);
+        } else {
+            player.data.velX -= (wind.data.windStrength.value * lastTestModifier);
+        }
     }
 
     playerLandingPadCollision() {

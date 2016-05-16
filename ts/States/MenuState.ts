@@ -80,7 +80,7 @@ export class MenuState implements IGameState {
         
     }
 
-    tests() { }
+    tests(lastTestModifier: number) { }
 
     returnState(): IGameState {
         return this.selectedState;

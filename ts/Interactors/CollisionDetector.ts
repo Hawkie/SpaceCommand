@@ -9,7 +9,7 @@ export class ObjectCollisionDetector implements IInteractor {
     constructor(private model1: IModel<IShapeLocated>, private model2: IModel<ILocated>, private hit: () => void){
     }
 
-    test() {
+    test(lastTestModifier: number) {
         if (Transforms.hasPoint(this.model1.data.points, this.model1.data.location, this.model2.data.location))
             this.hit();
     }
@@ -19,7 +19,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
     constructor(private model1s: () => IModel<IShapeLocated>[], private model2: IModel<IShapeLocated>, private hit: (i1: number, model1s: IModel<IShapeLocated>[], i2: number, shape: IModel<IShapeLocated>) => void, private searchFirstHitOnly: boolean = true) {
     }
 
-    test() {
+    test(lastTestModifier: number) {
         let found = false;
         let targets = this.model1s();
         let shape = this.model2;
@@ -46,7 +46,7 @@ export class Multi2MultiCollisionDetector implements IInteractor {
     constructor(private model1s: () => IModel<IShapeLocated>[], private model2s: () => IModel<ILocated>[], private hit: (i1:number, model1s: IModel<IShapeLocated>[], i2:number, model2s: IModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
-    test() {
+    test(lastTestModifier: number) {
         let found = false;
         let targets = this.model1s();
         let hitters = this.model2s();

@@ -27,7 +27,7 @@ export class EventLoop {
     processOneFrame(delta: number) {
         let gs : IGameState = this.currentGameState;
         gs.display(this.canvas.context());
-        gs.tests();
+        gs.tests(delta);
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);
         if (gs.returnState() != null)

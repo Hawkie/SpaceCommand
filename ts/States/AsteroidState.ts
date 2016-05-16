@@ -113,8 +113,8 @@ export class AsteroidState implements IGameState {
         this.player.model.crash();
     }
 
-    tests() {
-        this.interactors.forEach(i => i.test());
+    tests(lastTestModifier: number) {
+        this.interactors.forEach(i => i.test(lastTestModifier));
     }
 
     private createAsteroid(location : Coordinate) : Asteroid {
