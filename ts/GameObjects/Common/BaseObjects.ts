@@ -1,6 +1,6 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
-import { DynamicModel } from "ts/Models/DynamicModels";
+import { IModel, DynamicModel } from "ts/Models/DynamicModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { ITextData, TextData } from "ts/Models/TextModel";
@@ -13,7 +13,7 @@ import { Transforms } from "ts/Physics/Transforms";
 
 // ---
 
-export class TextObject extends GameObject<ITextData> {
+export class TextObject extends GameObject<IModel<ITextData>> {
     constructor(text: string, location: Coordinate, font: string, fontSize: number) {
         var textModel = new DynamicModel<ITextData>(new TextData(text, location));
         var view: IView = new TextView(textModel.data, font, fontSize);

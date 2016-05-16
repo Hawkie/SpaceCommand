@@ -7,15 +7,15 @@ import { IGravityObject, ShapeLocatedData } from "ts/Models/PolyModels";
 import { DynamicModel, IModel } from "ts/Models/DynamicModels";
 import { IView, PolyView } from "ts/Views/PolyViews";
 import { TextView, ValueView } from "ts/Views/TextView";
-import { WindModel, Direction } from "ts/Models/Land/WindModel";
+import { WindData, Direction } from "ts/Models/Land/WindModel";
 import { IActor } from "ts/Actors/Actor";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 
 // TODO: Display wind speed text next to arrow
 
-export class WindDirectionIndicator extends GameObject<WindModel> {
+export class WindDirectionIndicator extends GameObject<IModel<WindData>> {
     constructor(location: Coordinate) {
-        var model: IModel<WindModel> = new DynamicModel<WindModel>(new WindModel(location));
+        var model: IModel<WindData> = new DynamicModel<WindData>(new WindData(location));
         var viewArrow: IView = new PolyView(model.data);
         var viewText: IView = new ValueView(model.data.windStrength, "{0} mph", "monospace", 12);
         var windGenerator: IActor = new WindGenerator(model.data);

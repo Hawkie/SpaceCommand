@@ -44,7 +44,6 @@
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Ships\Ship.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Ships\LandingShip.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Land\LandObjects.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\BaseObjects.ts" />

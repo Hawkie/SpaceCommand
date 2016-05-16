@@ -1,8 +1,8 @@
 ﻿import { IActor } from "ts/Actors/Actor";
-import { WindModel, Direction } from "ts/Models/Land/WindModel";
+import { WindData, Direction } from "ts/Models/Land/WindModel";
 
 export class WindGenerator implements IActor {
-    constructor(private model: WindModel, private windChangeChance: number = 0.05) {
+    constructor(private model: WindData, private windChangeChance: number = 0.05) {
     }
 
     update(timeModifier: number) {

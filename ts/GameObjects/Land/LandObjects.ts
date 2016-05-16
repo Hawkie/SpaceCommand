@@ -18,14 +18,14 @@ import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
 
-export class LandingPad extends GameObject<LandingPadData> {
+export class LandingPad extends GameObject<IModel<LandingPadData>> {
     constructor(model: IModel<LandingPadData>) {
         var view: IView = new PolyView(model.data);
         super(model, [], [view]);
     }
 }
 
-export class PlanetSurface extends GameObject<IPlanetSurfaceData> {
+export class PlanetSurface extends GameObject<IModel<IPlanetSurfaceData>> {
     constructor(location: Coordinate) {
         var model: IModel<IPlanetSurfaceData> = new DynamicModel<IPlanetSurfaceData>(new PlanetSurfaceData(location));
         var view: IView = new PolyView(model.data);

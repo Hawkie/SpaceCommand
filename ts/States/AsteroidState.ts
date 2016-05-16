@@ -80,12 +80,12 @@ export class AsteroidState implements IGameState {
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
         if (keys.isKeyDown(Keys.UpArrow))
-            this.player.thrust();
+            this.player.model.thrust();
         else
-            this.player.noThrust();
-        if (keys.isKeyDown(Keys.LeftArrow)) this.player.left(lastDrawModifier);
-        if (keys.isKeyDown(Keys.RightArrow)) this.player.right(lastDrawModifier);
-        if (keys.isKeyDown(Keys.SpaceBar)) this.player.shootPrimary();
+            this.player.model.noThrust();
+        if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
+        if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
+        if (keys.isKeyDown(Keys.SpaceBar)) this.player.model.shootPrimary();
     }
 
     asteroidModels(): IModel<IShapeLocated>[] {
@@ -93,7 +93,7 @@ export class AsteroidState implements IGameState {
     }
 
     bulletModels(): IModel<ILocated>[] {
-        return this.player.weaponModel.particles;
+        return this.player.model.weaponModel.particles;
         }
 
     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: MovingParticleModel[]) {
@@ -110,7 +110,7 @@ export class AsteroidState implements IGameState {
     }
 
     asteroidPlayerHit(i1: number, asteroids: AsteroidData[], i2: number, player: Coordinate[]) {
-        this.player.crash();
+        this.player.model.crash();
     }
 
     tests() {

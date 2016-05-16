@@ -10,7 +10,7 @@ import { Transforms } from "ts/Physics/Transforms";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
  
-export class Asteroid extends GameObject<AsteroidData> {
+export class Asteroid extends GameObject<AsteroidModel> {
     // 5 different asteroid shapes
     //  [-4,-2,-2,-4,0,-2,2,-4,4,-2,3,0,4,2,1,4,-2,4,-4,2,-4,-2],
     // 	[-3,0,-4,-2,-2,-4,0,-3,2,-4,4,-2,2,-1,4,1,2,4,-1,3,-2,4,-4,2,-3,0],

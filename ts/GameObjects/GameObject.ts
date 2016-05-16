@@ -5,8 +5,8 @@ import { IModel } from "ts/Models/DynamicModels";
 
 export interface IGameObject extends IActor, IView { }
 
-export abstract class GameObject<TModel> implements IGameObject {    
-    constructor(public model: IModel<TModel>, private subActors: IActor[], private views: IView[]) {
+export abstract class GameObject<TModel extends IActor> implements IGameObject {    
+    constructor(public model: TModel, private subActors: IActor[], private views: IView[]) {
     }
 
     update(timeModifier: number) {

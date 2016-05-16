@@ -74,12 +74,12 @@ export class LandingState implements IGameState {
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
-        if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust();
-        else this.player.noThrust();
+        if (keys.isKeyDown(Keys.UpArrow)) this.player.model.thrust();
+        else this.player.model.noThrust();
 
-        if (keys.isKeyDown(Keys.LeftArrow)) this.player.left(lastDrawModifier);
-        else if (keys.isKeyDown(Keys.RightArrow)) this.player.right(lastDrawModifier);
-        else this.player.notMovingOnX(lastDrawModifier);
+        if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
+        else if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
+        else this.player.model.notMovingOnX(lastDrawModifier);
     }
     
     display(drawingContext : DrawContext) {
@@ -98,7 +98,7 @@ export class LandingState implements IGameState {
             console.log("Land velocity: " + this.player.model.data.velY);
 
             if (this.player.model.data.velY > 20) {
-                this.player.crash();
+                this.player.model.crash();
             }
 
             this.player.model.data.velY = 0;
@@ -109,7 +109,7 @@ export class LandingState implements IGameState {
     playerSurfaceCollision() {
         this.player.model.data.velY = 0;
         this.player.model.data.velX = 0;
-        this.player.crash();
+        this.player.model.crash();
     }
     
     returnState() : IGameState {

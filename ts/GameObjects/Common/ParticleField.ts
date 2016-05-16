@@ -14,7 +14,7 @@ import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 
 
-export class ParticleField extends GameObject<IParticleFieldData> {
+export class ParticleField extends GameObject<IModel<IParticleFieldData>> {
     constructor(model: IModel<IParticleFieldData>, sizeX: number = 1, sizeY: number = 1) {
         var view: ParticleFieldView = new ParticleFieldView(model.data, sizeX, sizeY);
         super(model, [], [view]);
