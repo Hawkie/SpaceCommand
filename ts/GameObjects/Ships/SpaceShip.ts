@@ -36,6 +36,6 @@ export class BasicShip extends GameObject<BasicShipModel> {
         var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticles1, 3, 3);
 
         var views: IView[] = [shipView, weaponView, thrustView, explosionView];
-        super(shipModel, [], views);
+        super(shipModel, views);
     }
 }

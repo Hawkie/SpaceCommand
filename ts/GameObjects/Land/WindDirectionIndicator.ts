@@ -7,21 +7,21 @@ import { IGravityObject, ShapeLocatedData } from "ts/Models/PolyModels";
 import { DynamicModel, IModel } from "ts/Models/DynamicModels";
 import { IView, PolyView } from "ts/Views/PolyViews";
 import { TextView, ValueView } from "ts/Views/TextView";
-import { WindData, Direction } from "ts/Models/Land/WindModel";
+import { WindData, Direction, WindModel } from "ts/Models/Land/WindModel";
 import { IActor } from "ts/Actors/Actor";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 
 // TODO: Display wind speed text next to arrow
 
-export class WindDirectionIndicator extends GameObject<IModel<WindData>> {
+export class WindDirectionIndicator extends GameObject<WindModel> {
     constructor(location: Coordinate) {
-        var model: IModel<WindData> = new DynamicModel<WindData>(new WindData(location));
+        var model: WindModel = new WindModel(new WindData(location));
         var viewArrow: IView = new PolyView(model.data);
         var viewText: IView = new ValueView(model.data.windStrength, "{0} mph", "monospace", 12);
-        var windGenerator: IActor = new WindGenerator(model.data);
-        super(model, [windGenerator], [viewArrow, viewText]);
+        super(model, [viewArrow, viewText]);
     }
 
+    // Put this in an interactor. A link between wind model and player/shipmodel
     windEffect(lastTimeModifier: number, player: IGravityObject) { // default to null so overloading works
             if (this.model.data.windRightLeft == Direction.right) {
                 player.velX += (this.model.data.windStrength.value * lastTimeModifier);

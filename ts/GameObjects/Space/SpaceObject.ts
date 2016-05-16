@@ -39,7 +39,7 @@ export class Asteroid extends GameObject<AsteroidModel> {
         var data: AsteroidData = new AsteroidData(rectangle1, location, velx, vely, angle, spin);
         var model: AsteroidModel = new AsteroidModel(data);
         var view: PolyView = new PolyView(data);
-        super(model, [], [view]);
+        super(model, [view]);
     }
 }
 

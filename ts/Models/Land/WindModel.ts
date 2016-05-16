@@ -1,6 +1,9 @@
 import { Coordinate } from "ts/Physics/Common";
 import { ShapeLocatedData } from "ts/Models/PolyModels";
 import { ValueData } from "ts/Models/TextModel";
+import { DynamicModel } from "ts/Models/DynamicModels";
+import { IActor } from "ts/Actors/Actor";
+import { WindGenerator } from "ts/Actors/WindGenerator";
 
 export enum Direction {
     left,
@@ -45,5 +48,12 @@ export class WindData extends ShapeLocatedData {
             this.points = this.pointsRight;
         else
             this.points = this.pointsLeft;
+    }
+}
+
+export class WindModel extends DynamicModel<WindData> {
+    constructor(data: WindData) {
+        var windGenerator:IActor = new WindGenerator(data);
+        super(data, [windGenerator]);
     }
 }

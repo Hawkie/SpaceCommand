@@ -17,6 +17,6 @@ export class TextObject extends GameObject<IModel<ITextData>> {
     constructor(text: string, location: Coordinate, font: string, fontSize: number) {
         var textModel = new DynamicModel<ITextData>(new TextData(text, location));
         var view: IView = new TextView(textModel.data, font, fontSize);
-        super(textModel, [], [view]);
+        super(textModel, [view]);
     }
 }
