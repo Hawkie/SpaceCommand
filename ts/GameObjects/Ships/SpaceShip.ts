@@ -17,9 +17,6 @@ import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 
  
-// todo: break down into single objects and composite objects
-// single objects have simpler constructor
-// composite objects
 
 export class BasicShip extends GameObject<BasicShipModel> {
     
@@ -27,13 +24,12 @@ export class BasicShip extends GameObject<BasicShipModel> {
     constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
 
-        //data object
         var shipModel: BasicShipModel = new BasicShipModel(new BasicShipData(triangleShip, location, velx, vely, angle, spin));
         var shipView: IView = new PolyView(shipModel.data);
 
         var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
-        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticles1, 1, 1);
-        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticles1, 3, 3);
+        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
+        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
         var views: IView[] = [shipView, weaponView, thrustView, explosionView];
         super(shipModel, views);

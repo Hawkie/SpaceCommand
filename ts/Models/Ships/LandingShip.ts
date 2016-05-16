@@ -6,7 +6,7 @@ import { Mover } from "ts/Actors/Movers";
 import { PolyView, IView } from "ts/Views/PolyViews";
 import { ShapeLocatedAngledMovingRotatingAcceleratingData } from "ts/Models/PolyModels";
 import { IModel, DynamicModel } from "ts/Models/DynamicModels";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingGravityParticleModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon";
@@ -46,37 +46,34 @@ export class LandingBasicShipData extends ShapeLocatedAngledMovingRotatingAccele
 export class LandingShipModel extends DynamicModel<LandingBasicShipData> {
 
     crashed: boolean;
-    thrustParticles1: IParticleFieldData;
-    explosionParticles1: IParticleFieldData;
+    thrustParticleModel: ParticleFieldModel;
+    explosionParticleModel: ParticleFieldModel;
 
     constructor(data: LandingBasicShipData) {
-        var thrustParticles1 = new ParticleFieldData(20, 1, 0, false);
-        
-        var thrustParticleGenerator: IActor = new ParticleGenerator(thrustParticles1,
+
+        var thrustParticlesData = new ParticleFieldData(20, 1, 0, false);
+        var thrustParticlesModel: ParticleFieldModel = new ParticleFieldModel(thrustParticlesData,
             (now: number) => new MovingGravityParticleModel(new ParticleData(data.location.x,
                 data.location.y,
                 data.thrustVelX(),
                 data.thrustVelY(),
                 now)));
-        var thrustMover: IActor = new ParticleFieldMover(thrustParticles1);
 
-        var explosionParticles1 = new ParticleFieldData(100, 5, 0.2, false);
-        var explosionGenerator: IActor = new ParticleGenerator(explosionParticles1,
+        var explosionParticlesData = new ParticleFieldData(100, 5, 0.2, false);
+        var explosionParticlesModel: ParticleFieldModel = new ParticleFieldModel(explosionParticlesData,
             (now: number) => new MovingGravityParticleModel(new ParticleData(data.location.x,
                 data.location.y,
                 (Math.random() - 0.5) * 20,
                 (Math.random() * -30),
                 now)));
-        var explosionMover: IActor = new ParticleFieldMover(explosionParticles1);
-
 
         var mover: IActor = new Mover(data);
         var thrust = new ForwardAccelerator(data);
         var gravityForce = new VectorAccelerator(data, new Vector(180, 10));
-        super(data, [mover, thrust, gravityForce, thrustParticleGenerator, thrustMover, explosionGenerator, explosionMover]);
+        super(data, [mover, thrust, gravityForce, thrustParticlesModel, explosionParticlesModel]);
         this.crashed = false;
-        this.thrustParticles1 = thrustParticles1;
-        this.explosionParticles1 = explosionParticles1;
+        this.thrustParticleModel = thrustParticlesModel;
+        this.explosionParticleModel = explosionParticlesModel;
 
     }
 
@@ -85,18 +82,18 @@ export class LandingShipModel extends DynamicModel<LandingBasicShipData> {
         // TODO: Play thrust sfx
         if (!this.crashed) {
             this.data.forwardForce = this.data.maxForwardForce;
-            this.thrustParticles1.turnOn();
+            this.thrustParticleModel.turnOn();
         }
     }
 
     noThrust() {
         this.data.forwardForce = 0;
-        this.thrustParticles1.turnOff();
+        this.thrustParticleModel.turnOff();
     }
 
     crash() {
         this.crashed = true;
-        this.explosionParticles1.turnOn();
+        this.explosionParticleModel.turnOn();
         console.log("Your crashed your ship while landing!");
     }
 

@@ -23,9 +23,6 @@ export interface IParticleFieldData {
     lastCheck: number;
 
     on: boolean;
-
-    turnOn();
-    turnOff();
 }
 
 export interface IParticleData extends ILocatedMoving {
@@ -88,14 +85,6 @@ export class ParticleFieldData implements IParticleFieldData {
         this.generationTimeInSec = fadeOutInSec;
         this.on = on;
     }
-
-    turnOn() {
-        this.on = true;
-    }
-
-    turnOff() {
-        this.on = false;
-    }
 }
 
 export class MovingParticleModel extends MovingModel<IParticleData> {
@@ -115,5 +104,13 @@ export class ParticleFieldModel extends DynamicModel<IParticleFieldData> {
         var generator: ParticleGenerator = new ParticleGenerator(data, createParticle);
         var mover: ParticleFieldMover = new ParticleFieldMover(data);
         super(data, [generator, mover]);
+    }
+
+    turnOn() {
+        this.data.on = true;
+    }
+
+    turnOff() {
+        this.data.on = false;
     }
 }

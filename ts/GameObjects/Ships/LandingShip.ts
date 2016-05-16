@@ -12,15 +12,14 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 
 export class LandingBasicShip extends GameObject<LandingShipModel> {
 
-
     constructor(location: Coordinate) {
 
         let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var shipModel: LandingShipModel = new LandingShipModel(new LandingBasicShipData(triangleShip, location));
         var shipView: IView = new PolyView(shipModel.data);
 
-        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticles1, 1, 1);
-        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticles1, 3, 3);
+        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
+        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
         super(shipModel, [shipView, thrustView, explosionView]);
 

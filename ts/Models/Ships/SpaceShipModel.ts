@@ -5,10 +5,10 @@ import { ShapeMovingThrustingModel } from "ts/Models/DynamicModels";
 import { IView, GraphicView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
-import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Transforms } from "ts/Physics/Transforms";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { ParticleDataVectorConstructor } from "ts/Models/Weapons/Bullet";
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon"
 import { IShipData, IFiringShipModel } from "ts/Models/Ships/Ship";
@@ -45,41 +45,38 @@ export class BasicShipData extends ShapeLocatedAngledMovingRotatingData implemen
 
 export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> implements IFiringShipModel {
     weaponModel: IWeaponData;
-    thrustParticles1: IParticleFieldData;
-    explosionParticles1: IParticleFieldData;
+    thrustParticleModel: ParticleFieldModel;
+    explosionParticleModel: ParticleFieldModel;
 
     constructor(data: BasicShipData) {
         var weaponModel: IWeaponData = new WeaponData();
         var weaponUpdater: IActor = new ParticleFieldMover(weaponModel);
         
-
-        var thrustParticles1 = new ParticleFieldData(20, 1, 0, false);
-        
-        var thrustParticleGenerator: IActor = new ParticleGenerator(thrustParticles1,
+        // use particle field model!
+        var thrustParticleData = new ParticleFieldData(20, 1, 0, false);
+        var thrustParticleModel: ParticleFieldModel = new ParticleFieldModel(thrustParticleData,
             (now: number) => new MovingParticleModel(new ParticleData(data.location.x,
                 data.location.y,
                 data.thrustVelX(),
                 data.thrustVelY(),
                 now)));
-        var thrustMover: IActor = new ParticleFieldMover(thrustParticles1);
-
-        var explosionParticles1 = new ParticleFieldData(50, 5, 0.2, false);
         
-        var explosionFieldUpdater: IActor = new ParticleGenerator(explosionParticles1,
+
+        var explosionParticleData = new ParticleFieldData(50, 5, 0.2, false);
+        var explosionParticleModel: ParticleFieldModel = new ParticleFieldModel(explosionParticleData,
             (now: number) => new MovingParticleModel(new ParticleData(data.location.x,
                 data.location.y,
                 data.velX + ((Math.random() - 0.5) * 20),
                 data.velY + ((Math.random() - 0.5) * 20),
                 now)));
-        var explosionMover: IActor = new ParticleFieldMover(explosionParticles1);
 
-        var actors: IActor[] = [weaponUpdater, thrustParticleGenerator, thrustMover, explosionFieldUpdater, explosionMover];
+        var actors: IActor[] = [weaponUpdater, thrustParticleModel, explosionParticleModel];
         
         super(data, actors);
 
         this.weaponModel = weaponModel;
-        this.thrustParticles1 = thrustParticles1;
-        this.explosionParticles1 = explosionParticles1;
+        this.thrustParticleModel = thrustParticleModel;
+        this.explosionParticleModel = explosionParticleModel;
     }
 
     // TODO: MOve these to model
@@ -88,13 +85,13 @@ export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> imp
         //audio.play();
         if (!this.data.crashed) {
             this.data.forwardForce = this.data.maxForwardForce;
-            this.thrustParticles1.turnOn();
+            this.thrustParticleModel.turnOn();
         }
     }
 
     noThrust() {
         this.data.forwardForce = 0;
-        this.thrustParticles1.turnOff();
+        this.thrustParticleModel.turnOff();
     }
     
     // TODO: flash screen white. 
@@ -102,7 +99,7 @@ export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> imp
     // turn on explosionParticles - done
     crash() {
         this.data.crashed = true;
-        this.explosionParticles1.turnOn();
+        this.explosionParticleModel.turnOn();
         console.log("Your ship crashed!");
     }
 
