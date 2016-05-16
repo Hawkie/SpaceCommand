@@ -8,17 +8,17 @@ import { Transforms } from "ts/Physics/Transforms";
 export class PolyRotator implements IActor {
     private previousAngle: number;
     
-    constructor(private properties: IShapeAngled) {
-        this.previousAngle = properties.angle;
+    constructor(private data: IShapeAngled) {
+        this.previousAngle = data.angle;
     }
 
     update(timeModifier: number) {
-        if (this.previousAngle != this.properties.angle) {
-            var rotateAngle = this.properties.angle - this.previousAngle
+        if (this.previousAngle != this.data.angle) {
+            var rotateAngle = this.data.angle - this.previousAngle
             // rotate the difference
-            var newPoints = Transforms.Rotate(this.properties.points, rotateAngle);
-            this.properties.points = newPoints;
-            this.previousAngle = this.properties.angle;
+            var newPoints = Transforms.Rotate(this.data.points, rotateAngle);
+            this.data.points = newPoints;
+            this.previousAngle = this.data.angle;
         }
     }
 }

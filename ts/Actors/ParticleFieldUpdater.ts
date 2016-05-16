@@ -6,29 +6,29 @@ import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
 
 export class ParticleGenerator implements IActor {
-    constructor(private model: IParticleFieldData, private createParticle: (now:number) => DynamicModel<IParticleData>) { }
+    constructor(private data: IParticleFieldData, private createParticle: (now:number) => DynamicModel<IParticleData>) { }
     
     update(lastTimeModifier: number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
         var now = Date.now();
-        if (!this.model.on) {
-            this.model.lastCheck = now;
-            this.model.firstAdded = 0;
+        if (!this.data.on) {
+            this.data.lastCheck = now;
+            this.data.firstAdded = 0;
         }
-        if (this.model.on) {
-            var secSinceLast = (now - this.model.lastCheck) / 1000;
+        if (this.data.on) {
+            var secSinceLast = (now - this.data.lastCheck) / 1000;
 
             // Don't add if past generation time
-            if (this.model.generationTimeInSec == 0 || this.model.firstAdded == 0 || ((now - this.model.firstAdded) / 1000) < this.model.generationTimeInSec) {
+            if (this.data.generationTimeInSec == 0 || this.data.firstAdded == 0 || ((now - this.data.firstAdded) / 1000) < this.data.generationTimeInSec) {
                 
                 // find the integer number of particles to add. conservatively round down
-                let toAdd = Math.floor(this.model.itemsPerSec * secSinceLast);
+                let toAdd = Math.floor(this.data.itemsPerSec * secSinceLast);
                 for (let i: number = 0; i < toAdd; i++) {
                     var particleModel = this.createParticle(now);
                     //this.actors.forEach(a => particleModel.
-                    this.model.particles.push(particleModel);
-                    if (this.model.firstAdded == 0) this.model.firstAdded = now;
-                    this.model.lastCheck = now;
+                    this.data.particles.push(particleModel);
+                    if (this.data.firstAdded == 0) this.data.firstAdded = now;
+                    this.data.lastCheck = now;
                 }
             }
         }

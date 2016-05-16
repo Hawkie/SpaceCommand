@@ -22,8 +22,6 @@ import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 import { LandingBasicShip } from "ts/GameObjects/Ships/LandingShip";
 
 export class LandingState implements IGameState {
-    //player : LandingBasicShip;
-    //objects : Array<IGameObject>;
     wind : WindDirectionIndicator;
     surface: PlanetSurface;
     landingPad: LandingPad;
@@ -97,11 +95,7 @@ export class LandingState implements IGameState {
     }
 
     windEffect(lastTestModifier: number, wind: WindModel, player: LandingShipModel) {
-        if (wind.data.windRightLeft == Direction.right) {
-            player.data.velX += (wind.data.windStrength.value * lastTestModifier);
-        } else {
-            player.data.velX -= (wind.data.windStrength.value * lastTestModifier);
-        }
+        player.data.velX += wind.data.windStrength.value * lastTestModifier;
     }
 
     playerLandingPadCollision() {
