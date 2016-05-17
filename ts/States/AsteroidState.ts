@@ -84,6 +84,10 @@ export class AsteroidState implements IGameState {
             sctx.playLaser();
             this.player.model.weaponModel.fired = false;
         }
+        if (this.player.model.data.crashed && !this.player.model.data.exploded) {
+            sctx.playExplosion();
+            this.player.model.data.exploded = true;
+        }
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {

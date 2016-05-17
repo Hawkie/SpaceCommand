@@ -45,7 +45,7 @@ export class SoundContext {
             0,           //random pitch range
             50,          //dissonance
             undefined,   //echo array: [delay, feedback, filter]
-            undefined,    //reverb array: [duration, decay, reverse?]
+            undefined,   //reverb array: [duration, decay, reverse?]
             0.1
         );
     }

@@ -21,6 +21,7 @@ export class BasicShipData extends ShapeLocatedAngledMovingRotatingData implemen
     forwardForce: number;
     maxRotationalSpeed: number;
     crashed: boolean;
+    exploded: boolean; // for explosion sound
 
     constructor(collisionPoly: Coordinate[], location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
         super(collisionPoly, location, velx, vely, angle, spin);
@@ -29,6 +30,7 @@ export class BasicShipData extends ShapeLocatedAngledMovingRotatingData implemen
         this.maxForwardForce = 16;
         this.maxRotationalSpeed = 64;
         this.crashed = false;
+        this.exploded = false;
     }
 
     thrustVelX(): number {
