@@ -1,4 +1,5 @@
 import { DrawContext} from "ts/Common/DrawContext";
+import { SoundContext } from "ts/Sound/SoundContext";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -76,6 +77,13 @@ export class AsteroidState implements IGameState {
         this.objects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
         this.player.display(drawingContext);
+    }
+
+    sound(sctx: SoundContext) {
+        if (this.player.model.weaponModel.fired) {
+            sctx.playLaser();
+            this.player.model.weaponModel.fired = false;
+        }
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {

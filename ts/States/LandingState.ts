@@ -1,8 +1,11 @@
+import { DrawContext} from "ts/Common/DrawContext";
+import { SoundContext } from "ts/Sound/SoundContext";
+
 import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { DrawContext} from "ts/Common/DrawContext";
+
 
 import { PlanetSurfaceData } from "../Models/Land/PlanetSurface";
 import { LandingPadData } from "../Models/Land/LandingPad";
@@ -89,6 +92,8 @@ export class LandingState implements IGameState {
         this.objects.forEach(o => o.display(drawingContext));
         this.wind.display(drawingContext);
     }
+
+    sound(sctx: SoundContext) { }
     
     tests(lastTestModifier: number) { 
         this.interactors.forEach(interactor => interactor.test(lastTestModifier));

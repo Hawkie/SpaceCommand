@@ -1,4 +1,5 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
+import { SoundContext } from "ts/Sound/SoundContext";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
@@ -20,7 +21,8 @@ export class MenuState implements IGameState {
     selectedItem: number = 0;
     objects: Array<IGameObject>;
     states: Array<IGameState>;
-    selectedState: IGameState = null
+    selectedState: IGameState = null;
+
 
     static create(states: Array<IGameState>): MenuState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -68,6 +70,9 @@ export class MenuState implements IGameState {
             }
             item.display(drawingContext);
         }
+    }
+
+    sound(sctx: SoundContext) {
         
     }
 

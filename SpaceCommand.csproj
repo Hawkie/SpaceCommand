@@ -54,6 +54,7 @@
     <TypeScriptCompile Include="ts\Models\PolyModels.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\SpaceShipModel.ts" />
     <TypeScriptCompile Include="ts\Models\TextModel.ts" />
+    <TypeScriptCompile Include="ts\Sound\SoundContext.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />
