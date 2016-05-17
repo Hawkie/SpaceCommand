@@ -1,5 +1,7 @@
 
 /*
+https://github.com/kittykatattack/sound.js
+
 Sound.js
 ===============
 

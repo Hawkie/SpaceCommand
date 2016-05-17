@@ -31,6 +31,23 @@ export class SoundContext {
 
     playThrust() { }
 
-    playExplosion() { }
+    playExplosion() {
+        this.sound.playEffect(
+            16,          //frequency
+            0,           //attack
+            1,           //decay
+            "sawtooth",  //waveform
+            1,           //volume
+            0,           //pan
+            0,           //wait before playing
+            0,           //pitch bend amount
+            false,       //reverse
+            0,           //random pitch range
+            50,          //dissonance
+            undefined,   //echo array: [delay, feedback, filter]
+            undefined,    //reverb array: [duration, decay, reverse?]
+            0.1
+        );
+    }
 
 }
