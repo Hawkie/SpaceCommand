@@ -28,7 +28,7 @@ export class Sound {
             data.timeout);
     }
 
-    playEffect(frequencyValue,      //The sound's fequency pitch in Hertz
+    playEffect(frequencyValue: number,      //The sound's fequency pitch in Hertz
         attack: number,              //The time, in seconds, to fade the sound in
         decay: number,               //The time, in seconds, to fade the sound out
         type: string,                //waveform type: "sine", "triangle", "square", "sawtooth"
