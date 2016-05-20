@@ -33,6 +33,8 @@ export class AsteroidState implements IGameState {
     //asteroids : Array<Asteroid>;
 
     interactors: IInteractor[] = [];
+
+    notPlayedThrust: boolean;
     
     static create(): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -58,6 +60,7 @@ export class AsteroidState implements IGameState {
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
+        this.notPlayedThrust = true;
 
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -87,6 +90,11 @@ export class AsteroidState implements IGameState {
         if (this.player.model.data.crashed && !this.player.model.data.exploded) {
             sctx.playExplosion();
             this.player.model.data.exploded = true;
+        }
+
+        if (this.player.model.thrustParticleModel.data.on) {
+            sctx.playThrust();
+            //this.notPlayedThrust = false;
         }
     }
     

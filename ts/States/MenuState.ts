@@ -4,13 +4,16 @@ import { SoundContext } from "ts/Sound/SoundContext";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+
+import { IGameObject } from "ts/GameObjects/GameObject";
+import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
-import { IGameObject } from "ts/GameObjects/GameObject";
+
 import { Asteroid } from "ts/GameObjects/Space/SpaceObject";
-import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
 export class MenuState implements IGameState {
@@ -22,6 +25,7 @@ export class MenuState implements IGameState {
     objects: Array<IGameObject>;
     states: Array<IGameState>;
     selectedState: IGameState = null;
+    lastMoved: number = Date.now();
 
 
     static create(states: Array<IGameState>): MenuState {
@@ -77,12 +81,15 @@ export class MenuState implements IGameState {
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number) {
-        if (keys.isKeyDown(Keys.UpArrow)) this.selectedItem -= 1;
-        if (keys.isKeyDown(Keys.DownArrow)) this.selectedItem += 1;
-        if (this.selectedItem < 0) this.selectedItem = 0;
-        if (this.selectedItem >= this.menuItems.length) this.selectedItem = this.menuItems.length - 1;
-        if (keys.isKeyDown(Keys.Enter)) this.selectedState = this.states[this.selectedItem];
-        
+        var now: number = Date.now();
+        if ((now - this.lastMoved) > 150) {
+            this.lastMoved = now;
+            if (keys.isKeyDown(Keys.UpArrow)) this.selectedItem -= 1;
+            if (keys.isKeyDown(Keys.DownArrow)) this.selectedItem += 1;
+            if (this.selectedItem < 0) this.selectedItem = 0;
+            if (this.selectedItem >= this.menuItems.length) this.selectedItem = this.menuItems.length - 1;
+            if (keys.isKeyDown(Keys.Enter)) this.selectedState = this.states[this.selectedItem];
+        }
     }
 
     tests(lastTestModifier: number) { }

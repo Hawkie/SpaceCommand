@@ -29,7 +29,24 @@ export class SoundContext {
         );
     }
 
-    playThrust() { }
+    playThrust() {
+        this.sound.playEffect(
+            50,          //frequency
+            0.01,           //attack
+            0.01,           //decay
+            "sawtooth",  //waveform
+            0.3,           //volume
+            0.1,           //pan
+            0,           //wait before playing
+            500,           //pitch bend amount
+            true,       //reverse
+            10,           //random pitch range
+            150,          //dissonance
+            undefined,   //echo array: [delay, feedback, filter]
+            undefined,   //reverb array: [duration, decay, reverse?]
+            0.05
+        );
+    }
 
     playExplosion() {
         this.sound.playEffect(
@@ -44,7 +61,7 @@ export class SoundContext {
             false,       //reverse
             0,           //random pitch range
             50,          //dissonance
-            undefined,   //echo array: [delay, feedback, filter]
+            [0, 0.2, 1000],   //echo array: [delay, feedback, filter]
             undefined,   //reverb array: [duration, decay, reverse?]
             0.1
         );

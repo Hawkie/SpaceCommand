@@ -6,7 +6,6 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
-
 import { PlanetSurfaceData } from "../Models/Land/PlanetSurface";
 import { LandingPadData } from "../Models/Land/LandingPad";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -39,7 +38,6 @@ export class LandingState implements IGameState {
             (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
         var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
         
-
         // ships        
         let landingShip = new LandingBasicShip(new Coordinate(256, 240));
 

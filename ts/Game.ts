@@ -5,6 +5,7 @@ import { EventLoop } from "ts/Common/EventLoop";
 import { IGameState } from "ts/States/GameState";
 import { AsteroidState } from "ts/States/AsteroidState";
 import { LandingState } from "ts/States/LandingState";
+import { SoundDesignerState } from "ts/States/SoundDesignerState";
 import { MenuState } from "ts/States/MenuState";
 
 
@@ -20,7 +21,8 @@ export class Game {
 
         var asteroidState = AsteroidState.create();
         var landingState = LandingState.create();
-        var initialState = MenuState.create([asteroidState, landingState]);
+        var soundDesigner = SoundDesignerState.create();
+        var initialState = MenuState.create([asteroidState, landingState, soundDesigner]);
 
         var gameloop = new EventLoop(window, canvas, soundContext, initialState);
 

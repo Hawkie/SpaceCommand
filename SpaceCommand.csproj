@@ -44,6 +44,7 @@
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Controls\ControlPanel.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Ships\LandingShip.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Land\LandObjects.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\BaseObjects.ts" />
@@ -51,10 +52,14 @@
     <TypeScriptCompile Include="ts\Interactors\CollisionDetector.ts" />
     <TypeScriptCompile Include="ts\Interactors\Interactor.ts" />
     <TypeScriptCompile Include="ts\Models\DynamicModels.ts" />
+    <TypeScriptCompile Include="ts\Models\Controls\ControlPanelModel.ts" />
     <TypeScriptCompile Include="ts\Models\PolyModels.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\SpaceShipModel.ts" />
+    <TypeScriptCompile Include="ts\Models\Sound\SoundEffectsModel.ts" />
     <TypeScriptCompile Include="ts\Models\TextModel.ts" />
     <TypeScriptCompile Include="ts\Sound\SoundContext.ts" />
+    <TypeScriptCompile Include="ts\States\SoundDesignerState.ts" />
+    <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />

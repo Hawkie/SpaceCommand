@@ -16,5 +16,21 @@ export interface IGameState
     returnState() : IGameState;
 }
 
-//export abstract class GameState {
-//}
+
+export abstract class GameState implements IGameState {
+
+    constructor(public name: string = "Base State") { }
+
+    update(timeModifier: number) { }
+
+    display(drawContext: DrawContext) { }
+
+    sound(sctx: SoundContext) { }
+
+    tests() { }
+
+    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number) { }
+
+    returnState(): IGameState { return null; }
+
+}

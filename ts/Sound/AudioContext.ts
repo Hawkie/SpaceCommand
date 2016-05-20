@@ -1,4 +1,4 @@
-﻿
+﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 //function fixSetTarget(param) {
 //    if (!param)	// if NYI, just return
 //        return;
@@ -9,6 +9,23 @@
 export class Sound {
 
     constructor(private audioContext: AudioContext) {
+    }
+
+    playWithData(data: SoundEffectData) {
+        this.playEffect(data.frequencyValue,
+            data.attack,
+            data.decay,
+            data.type,
+            data.volumeValue,
+            data.panValue,
+            data.wait,
+            data.pitchBendAmount,
+            data.reverse,
+            data.randomValue,
+            data.dissonance,
+            data.echo,
+            data.reverb,
+            data.timeout);
     }
 
     playEffect(frequencyValue,      //The sound's fequency pitch in Hertz
