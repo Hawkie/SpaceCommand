@@ -201,6 +201,19 @@ export class Sound {
             );
         }
 
+        //If `reverse` is false, make the note rise in pitch. Useful for
+        //jumping sounds
+        else {
+            oscillatorNode.frequency.linearRampToValueAtTime(
+                frequency,
+                actx.currentTime + wait
+            );
+            oscillatorNode.frequency.linearRampToValueAtTime(
+                frequency + pitchBendAmount,
+                actx.currentTime + wait + attack + decay
+            );
+        }
+
     }
 
     addDissonance(volumeValue: number, frequency: number, dissonance: number, attack: number, decay: number, pitchBendAmount: number, echo: number[], reverb: number[], wait: number, reverse: boolean, pan:any) {
