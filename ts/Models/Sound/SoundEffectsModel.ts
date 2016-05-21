@@ -33,24 +33,24 @@ export class SoundEffectsModel extends ControlPanelModel {
 
     sliders: Slider[]
     constructor() {
-        var sliders = [new Slider("frequency(Hz)", 1000, 0, 10000, 10),
-            new Slider("attack(sec)", 0.5, 0, 10, 0.05),
-            new Slider("decay(sec)", 0.5, 0, 10, 0.05),
-            new Slider("type", 0, 0, 3, 1), // "sine", "triangle", "square", "sawtooth"
+        var sliders = [new Slider("frequency(Hz)", 1046, 0, 10000, 10),
+            new Slider("attack(sec)", 0, 0, 10, 0.05),
+            new Slider("decay(sec)", 0.3, 0, 10, 0.05),
+            new Slider("type", 3, 0, 3, 1), // "sine", "triangle", "square", "sawtooth"
             new Slider("volume", 1, 0, 1, 0.01),
-            new Slider("pan", 0, -1, 1, 0.1),
+            new Slider("pan", -0.8, -1, 1, 0.1),
             new Slider("wait(sec)", 0, 0, 10, 0.1),
-            new Slider("pitchBend", 0, 0, 10000, 200),
-            new Slider("reverse", 0, 0, 1, 1),
+            new Slider("pitchBend", 1200, 0, 10000, 200),
+            new Slider("pitchBendUpDown", 0, 0, 1, 1),
             new Slider("random(Hz)", 0, 0, 10000, 10),
-            new Slider("dissonance(Hz)", 0, 0, 10000, 10),
-            new Slider("echoDelay(sec)", 0.2, 0, 10, 0.05, false),
-            new Slider("echoFeedback(sec)", 0.2, 0, 10, 0.05, false),
-            new Slider("echo(Hz)", 1000, 0, 10000, 10, false),
+            new Slider("dissonance(Hz)", 25, 0, 10000, 10),
+            new Slider("echoDelay(sec)", 0.2, 0, 10, 0.05, true),
+            new Slider("echoFeedback(sec)", 0.2, 0, 10, 0.05, true),
+            new Slider("echo(Hz)", 2000, 0, 10000, 10, false),
             new Slider("reverbDuration(sec)", 0.1, 0, 10, 0.05, false),
             new Slider("reverbDecay(sec)", 0.1, 0, 10, 0.05, false),
             new Slider("reverbReverse", 0, 0, 1, 1, false),
-            new Slider("timeout(sec)", 1, 0, 20, 0.05)];
+            new Slider("timeout(sec)", 3, 0, 20, 0.05)];
         super(sliders);
         this.typeNames = ["sine", "triangle", "square", "sawtooth"];
     }
