@@ -1,6 +1,8 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
 
+import { Assets } from "ts/Resources/Assets";
+
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
@@ -27,8 +29,10 @@ export class MenuState implements IGameState {
     selectedState: IGameState = null;
     lastMoved: number = Date.now();
 
+    private loadAssets: boolean = true;
+    private assetsLoaded: boolean = false;
 
-    static create(states: Array<IGameState>): MenuState {
+    static create(assets: Assets, actx:AudioContext, states: Array<IGameState>): MenuState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var fData1: IParticleFieldData = new ParticleFieldData(1);
         var fModel1: ParticleFieldModel = new ParticleFieldModel(fData1,
@@ -42,10 +46,10 @@ export class MenuState implements IGameState {
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field1, field2, text];
 
-        return new MenuState("Menu", objects, states);
+        return new MenuState("Menu", assets, actx, objects, states);
     }
 
-    constructor(public name: string, objects : Array<IGameObject>, states : Array<IGameState>) {
+    constructor(public name: string, private assets: Assets, private actx:AudioContext, objects : Array<IGameObject>, states : Array<IGameState>) {
         let x: number = 200;
         let y: number = 100;
 
@@ -59,6 +63,8 @@ export class MenuState implements IGameState {
 
     update(lastDrawModifier: number) {
         this.objects.forEach(object => object.update(lastDrawModifier));
+
+
     }
 
     display(drawingContext: DrawContext) {
@@ -77,7 +83,18 @@ export class MenuState implements IGameState {
     }
 
     sound(sctx: SoundContext) {
-        
+        // load assets
+        //if (this.loadAssets) {
+        //    this.loadAssets = false;
+        //    this.assets.load(this.actx, ["res/sound/TimePortal.mp3"], () => {
+        //        sctx.playSound(this.assets.soundData[0].data);
+        //    });
+        //    console.log("Waiting for resources to load");
+        //}
+        if (this.loadAssets) {
+            this.loadAssets = false;
+            this.assets.loadLocal("res/sound/TimePortal.mp3");
+        }
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number) {

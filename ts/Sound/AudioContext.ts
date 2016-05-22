@@ -11,6 +11,128 @@ export class Sound {
     constructor(private audioContext: AudioContext) {
     }
 
+    playBuffer(buffer: AudioBuffer) {
+        var actx = this.audioContext;
+        var volumeNode = actx.createGain();
+
+        //Create the pan node using the efficient `createStereoPanner`
+        //method, if it's available.
+        var panNode;
+        if (!actx.createStereoPanner) {
+            panNode = actx.createPanner();
+        } else {
+            panNode = actx.createStereoPanner();
+        }
+        //delayNode = actx.createDelay();
+        //feedbackNode = actx.createGain();
+        //o.filterNode = actx.createBiquadFilter();
+        var convolverNode = actx.createConvolver();
+        //o.soundNode = null;
+        //o.buffer = null;
+        //o.source = source;
+        var loop = true;
+        var playing = false;
+
+        //The function that should run when the sound is loaded.
+        //o.loadHandler = undefined;
+
+        //Values for the `pan` and `volume` getters/setters.
+        //o.panValue = 0;
+        var volumeValue = 1;
+
+        //Values to help track and set the start and pause times.
+        var startTime = 0;
+        var startOffset = 0;
+
+        //Set the playback rate.
+        var playbackRate = 1;
+
+        //Echo properties.
+        //o.echo = false;
+        //o.delayValue = 0.3;
+        //o.feebackValue = 0.3;
+        //o.filterValue = 0;
+
+        ////Reverb properties
+        //o.reverb = false;
+        //o.reverbImpulse = null;
+  
+        //The sound object's methods.
+        //o.play = function () {
+
+        //Set the start time (it will be `0` when the sound
+        //first starts.
+        startTime = actx.currentTime;
+
+        //Create a sound node.
+        var soundNode = actx.createBufferSource();
+
+        //Set the sound node's buffer property to the loaded sound.
+        soundNode.buffer = buffer;
+
+        //Set the playback rate
+        soundNode.playbackRate.value = playbackRate;
+
+        //Connect the sound to the pan, connect the pan to the
+        //volume, and connect the volume to the destination.
+        soundNode.connect(volumeNode);
+
+        //If there's no reverb, bypass the convolverNode
+        //if (o.reverb === false) {
+            volumeNode.connect(panNode);
+        //} 
+
+        //If there is reverb, connect the `convolverNode` and apply
+        //the impulse response
+        //else {
+        //    o.volumeNode.connect(o.convolverNode);
+        //    o.convolverNode.connect(o.panNode);
+        //    o.convolverNode.buffer = o.reverbImpulse;
+        //}
+    
+        //Connect the `panNode` to the destination to complete the chain.
+        panNode.connect(actx.destination);
+
+        //Add optional echo.
+        //if (o.echo) {
+
+        //    //Set the values.
+        //    o.feedbackNode.gain.value = o.feebackValue;
+        //    o.delayNode.delayTime.value = o.delayValue;
+        //    o.filterNode.frequency.value = o.filterValue;
+
+        //    //Create the delay loop, with optional filtering.
+        //    o.delayNode.connect(o.feedbackNode);
+        //    if (o.filterValue > 0) {
+        //        o.feedbackNode.connect(o.filterNode);
+        //        o.filterNode.connect(o.delayNode);
+        //    } else {
+        //        o.feedbackNode.connect(o.delayNode);
+        //    }
+
+        //    //Capture the sound from the main node chain, send it to the
+        //    //delay loop, and send the final echo effect to the `panNode` which
+        //    //will then route it to the destination.
+        //    o.volumeNode.connect(o.delayNode);
+        //    o.delayNode.connect(o.panNode);
+        //}
+
+        //Will the sound loop? This can be `true` or `false`.
+        soundNode.loop = loop;
+
+        //Finally, use the `start` method to play the sound.
+        //The start time will either be `0`,
+        //or a later time if the sound was paused.
+        soundNode.start(
+            0, startOffset % buffer.duration
+        );
+
+        //Set `playing` to `true` to help control the
+        //`pause` and `restart` methods.
+        playing = true;
+    
+    }
+
     playWithData(data: SoundEffectData) {
         this.playEffect(data.frequencyValue,
             data.attack,
@@ -62,7 +184,11 @@ export class Sound {
 
         //Create an oscillator, gain and pan nodes, and connect them
         //together to the destination
-        var oscillator: OscillatorNode, volume: GainNode, stereoPan: StereoPannerNode, Panner: PannerNode, pan: any;
+        var oscillator: OscillatorNode,
+            volume: GainNode,
+            stereoPan: StereoPannerNode,
+            Panner: PannerNode,
+            pan: any;
         
         oscillator = actx.createOscillator();
         volume = actx.createGain();

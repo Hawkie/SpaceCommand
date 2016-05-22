@@ -10,6 +10,10 @@ export class SoundContext {
         this.sound = new Sound(this.actx);
     }
 
+    playSound(buffer:AudioBuffer) {
+        this.sound.playBuffer(buffer);
+    }
+
     playLaser() {
         this.sound.playEffect(
             1046.5,           //frequency
