@@ -1,5 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
+import { Assets } from "ts/Resources/Assets";
 
 import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
@@ -30,7 +31,9 @@ export class LandingState implements IGameState {
     velocityText: TextObject;
     interactors: IInteractor[];
 
-    static create(): LandingState {
+    playExploded: boolean;
+
+    static create(assets:Assets): LandingState {
         // Background
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
@@ -43,11 +46,11 @@ export class LandingState implements IGameState {
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
-        var landingState = new LandingState("Lander", landingShip, objects);
+        var landingState = new LandingState("Lander", assets, landingShip, objects);
         return landingState;
     }
     
-    constructor(public name: string, private player : LandingBasicShip, private objects : Array<IGameObject>){
+    constructor(public name: string, private assets:Assets, private player : LandingBasicShip, private objects : Array<IGameObject>){
         this.player = player;
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
@@ -65,7 +68,7 @@ export class LandingState implements IGameState {
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
-
+        this.playExploded = false;
     }
     
     update(lastDrawModifier : number){
@@ -91,7 +94,12 @@ export class LandingState implements IGameState {
         this.wind.display(drawingContext);
     }
 
-    sound(sctx: SoundContext) { }
+    sound(sctx: SoundContext) {
+        if (this.player.model.crashed && !this.playExploded) {
+            this.assets.playLocal("res/sound/explosion.wav");
+            this.playExploded = true;
+        }
+    }
     
     tests(lastTestModifier: number) { 
         this.interactors.forEach(interactor => interactor.test(lastTestModifier));

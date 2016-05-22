@@ -22,7 +22,7 @@ export class Game {
         var assets = new Assets();
 
         var asteroidState = AsteroidState.create(assets);
-        var landingState = LandingState.create();
+        var landingState = LandingState.create(assets);
         var soundDesigner = SoundDesignerState.create();
         var initialState = MenuState.create(assets, soundContext.actx, [asteroidState, landingState, soundDesigner]);
 
