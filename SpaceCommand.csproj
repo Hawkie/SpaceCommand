@@ -28,6 +28,9 @@
     <Content Include="res\img\star.png" />
     <Content Include="index.html" />
     <Content Include="js\sound.js" />
+    <Content Include="res\sound\blast.wav" />
+    <Content Include="res\sound\explosion.wav" />
+    <Content Include="res\sound\Mercury.mp3" />
     <Content Include="res\sound\thrust.wav" />
     <Content Include="res\sound\TimePortal.mp3" />
     <Content Include="web.config" />

@@ -21,7 +21,7 @@ export class Game {
         var soundContext = new SoundContext();
         var assets = new Assets();
 
-        var asteroidState = AsteroidState.create();
+        var asteroidState = AsteroidState.create(assets);
         var landingState = LandingState.create();
         var soundDesigner = SoundDesignerState.create();
         var initialState = MenuState.create(assets, soundContext.actx, [asteroidState, landingState, soundDesigner]);

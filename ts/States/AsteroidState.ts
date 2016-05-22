@@ -1,5 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
+import { Assets } from "ts/Resources/Assets";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -35,8 +36,9 @@ export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];
 
     notPlayedThrust: boolean;
+    asteroidNoise: boolean;
     
-    static create(): AsteroidState {
+    static create(assets:Assets): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
@@ -52,15 +54,16 @@ export class AsteroidState implements IGameState {
         var objects: IGameObject[] = [field, text];
         var asteroids: Asteroid[] = [asteroid1];
 
-        var asteroidState = new AsteroidState("Asteroids", ship, objects, asteroids);
+        var asteroidState = new AsteroidState("Asteroids", assets, ship, objects, asteroids);
         return asteroidState;
     }
     
-    constructor(public name: string, private player : BasicShip, private objects : IGameObject[], private asteroids : Asteroid[]) {
+    constructor(public name: string, private assets: Assets, private player : BasicShip, private objects : IGameObject[], private asteroids : Asteroid[]) {
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
         this.notPlayedThrust = true;
+        this.asteroidNoise = false;
 
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -88,14 +91,19 @@ export class AsteroidState implements IGameState {
             this.player.model.weaponModel.fired = false;
         }
         if (this.player.model.data.crashed && !this.player.model.data.exploded) {
-            sctx.playExplosion();
+            this.assets.playLocal("res/sound/explosion.wav");
             this.player.model.data.exploded = true;
         }
 
-        if (this.player.model.thrustParticleModel.data.on) {
-            sctx.playThrust();
-            //this.notPlayedThrust = false;
+        if (this.asteroidNoise) {
+            this.asteroidNoise = false;
+            this.assets.playLocal("res/sound/blast.wav");
         }
+
+        //if (this.player.model.thrustParticleModel.data.on) {
+        //    sctx.playThrust();
+            //this.notPlayedThrust = false;
+        //}
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
@@ -121,6 +129,7 @@ export class AsteroidState implements IGameState {
         
         let a = asteroids[i1];
         a.data.hit();
+        this.asteroidNoise = true;
         // remove bullet
         bullets.splice(i2, 1);
         // add two small asteroids

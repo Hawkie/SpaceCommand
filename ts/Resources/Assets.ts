@@ -16,9 +16,9 @@ export class Assets {
     audioExtensions: string[] = ["mp3", "ogg", "wav", "webm"];
 
 
-    loadLocal(source) {
+    playLocal(source) {
         var audio_file = new Audio(source);
-        audio_file.playbackRate = 0.9;
+        audio_file.playbackRate = 1;
         audio_file.play();
         
         //audio_file.onchange = () => {

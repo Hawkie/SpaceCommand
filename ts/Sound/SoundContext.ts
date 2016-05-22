@@ -48,7 +48,7 @@ export class SoundContext {
             150,          //dissonance
             undefined,   //echo array: [delay, feedback, filter]
             undefined,   //reverb array: [duration, decay, reverse?]
-            0.05
+            0.05 // time out
         );
     }
 
@@ -67,7 +67,7 @@ export class SoundContext {
             50,          //dissonance
             [0, 0.2, 1000],   //echo array: [delay, feedback, filter]
             undefined,   //reverb array: [duration, decay, reverse?]
-            0.1
+            0.1 // timeout
         );
     }
 

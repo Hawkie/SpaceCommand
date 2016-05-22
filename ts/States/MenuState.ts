@@ -93,7 +93,7 @@ export class MenuState implements IGameState {
         //}
         if (this.loadAssets) {
             this.loadAssets = false;
-            this.assets.loadLocal("res/sound/TimePortal.mp3");
+            this.assets.playLocal("res/sound/TimePortal.mp3");
         }
     }
 
