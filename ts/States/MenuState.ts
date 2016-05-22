@@ -1,5 +1,6 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
+import { SoundObject  } from "ts/Sound/SoundObject";
 
 import { Assets } from "ts/Resources/Assets";
 
@@ -93,7 +94,7 @@ export class MenuState implements IGameState {
         //}
         if (this.loadAssets) {
             this.loadAssets = false;
-            this.assets.playLocal("res/sound/TimePortal.mp3");
+            sctx.playFromFile("res/sound/TimePortal.mp3");
         }
     }
 

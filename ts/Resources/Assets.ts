@@ -15,18 +15,6 @@ export class Assets {
     //File extensions for different types of sounds.
     audioExtensions: string[] = ["mp3", "ogg", "wav", "webm"];
 
-
-    playLocal(source) {
-        var audio_file = new Audio(source);
-        audio_file.playbackRate = 1;
-        audio_file.play();
-        
-        //audio_file.onchange = () => {
-        //    var file = URL.createObjectURL(files[0]);
-        //    audio_player.src = file;
-        //} 
-    }
-
     load(actx: AudioContext, sources: string[], whenAllLoaded: () => void) {
         console.log("Loading sounds..");
 

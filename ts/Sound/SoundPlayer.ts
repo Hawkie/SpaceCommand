@@ -6,14 +6,42 @@
 //        param.setTargetAtTime = param.setTargetValueAtTime;
 //}
 
-export class Sound {
+export class SoundPlayer {
 
     constructor(private audioContext: AudioContext) {
     }
 
-    playBuffer(buffer: AudioBuffer) {
+    playWithEffect(source) {
         var actx = this.audioContext;
-        var volumeNode = actx.createGain();
+        var audioElement = new Audio(source);
+        var sourceNode: MediaElementAudioSourceNode = actx.createMediaElementSource(audioElement);
+        var gainNode: GainNode = actx.createGain();
+        gainNode.gain.value = 1;
+        sourceNode.connect(gainNode);
+        gainNode.connect(actx.destination);
+        audioElement.play();
+    }
+
+    private createSourceBuffer() {
+        var actx = this.audioContext;
+        var node: AudioBufferSourceNode = actx.createBufferSource();
+        
+    }
+
+    private createSourceOscillator() {
+        var actx = this.audioContext;
+        var node: OscillatorNode = actx.createOscillator();
+    }
+
+    private createSourceMedia(source) {
+        var actx = this.audioContext;
+        var node: MediaElementAudioSourceNode = actx.createMediaElementSource(source);
+        
+    }
+
+    playBuffer(volumeNode: GainNode) {
+        var actx = this.audioContext;
+        //var volumeNode = actx.createGain();
 
         //Create the pan node using the efficient `createStereoPanner`
         //method, if it's available.
@@ -65,17 +93,18 @@ export class Sound {
         startTime = actx.currentTime;
 
         //Create a sound node.
-        var soundNode = actx.createBufferSource();
+        //o.soundNode = actx.createBufferSource();
 
         //Set the sound node's buffer property to the loaded sound.
-        soundNode.buffer = buffer;
+        //o.soundNode.buffer = o.buffer;
+
 
         //Set the playback rate
-        soundNode.playbackRate.value = playbackRate;
+        //soundNode.playbackRate.value = playbackRate;
 
         //Connect the sound to the pan, connect the pan to the
         //volume, and connect the volume to the destination.
-        soundNode.connect(volumeNode);
+        //soundNode.connect(volumeNode);
 
         //If there's no reverb, bypass the convolverNode
         //if (o.reverb === false) {
@@ -118,14 +147,14 @@ export class Sound {
         //}
 
         //Will the sound loop? This can be `true` or `false`.
-        soundNode.loop = loop;
+        //soundNode.loop = loop;
 
         //Finally, use the `start` method to play the sound.
         //The start time will either be `0`,
         //or a later time if the sound was paused.
-        soundNode.start(
-            0, startOffset % buffer.duration
-        );
+        //soundNode.start(
+        //    0, startOffset % soundNode.buffer.duration
+        //);
 
         //Set `playing` to `true` to help control the
         //`pause` and `restart` methods.
@@ -191,6 +220,7 @@ export class Sound {
             pan: any;
         
         oscillator = actx.createOscillator();
+        oscillator.type = type;
         volume = actx.createGain();
         if (!actx.createStereoPanner) {
             pan = actx.createPanner();
@@ -208,7 +238,7 @@ export class Sound {
         } else {
             pan.pan.value = panValue;
         }
-        oscillator.type = type;
+        
 
         //Optionally randomize the pitch. If the `randomValue` is greater
         //than zero, a random pitch is selected that's within the range
@@ -345,8 +375,8 @@ export class Sound {
     addDissonance(volumeValue: number, frequency: number, dissonance: number, attack: number, decay: number, pitchBendAmount: number, echo: number[], reverb: number[], wait: number, reverse: boolean, pan:any) {
         var actx = this.audioContext;
         //Create two more oscillators and gain nodes
-        var d1 = actx.createOscillator(),
-            d2 = actx.createOscillator(),
+        var d1: OscillatorNode = actx.createOscillator(),
+            d2: OscillatorNode = actx.createOscillator(),
             d1Volume = actx.createGain(),
             d2Volume = actx.createGain();
 
@@ -397,7 +427,7 @@ export class Sound {
     }
 
     //The `play` function
-    play(node, wait) {
+    play(node: OscillatorNode, wait) {
         var actx = this.audioContext;
         node.start(actx.currentTime + wait);
 
@@ -420,7 +450,7 @@ export class Sound {
     and `soundEffect` if you need to use the reverb feature.
     */
 
-    impulseResponse(duration:number, decay: number, reverse: boolean, actx: AudioContext) {
+    impulseResponse(duration:number, decay: number, reverse: boolean, actx: AudioContext) :AudioBuffer {
 
         //The length of the buffer.
         var length = actx.sampleRate * duration;

@@ -1,17 +1,32 @@
-﻿import { Sound } from "ts/Sound/AudioContext";
+﻿import { SoundPlayer } from "ts/Sound/SoundPlayer";
 
 export class SoundContext {
 
     actx: AudioContext;
-    sound: Sound;
+    sound: SoundPlayer;
 
     constructor() {
         this.actx = new AudioContext();
-        this.sound = new Sound(this.actx);
+        this.sound = new SoundPlayer(this.actx);
     }
 
-    playSound(buffer:AudioBuffer) {
-        this.sound.playBuffer(buffer);
+    playFromFile(source) {
+        var audioElement = new Audio(source);
+        audioElement.play();
+    }
+
+    playWithEffect(source) {
+        this.sound.playWithEffect(source);
+    }
+
+    playSound(buffer: AudioBuffer) {
+        //Create a sound node.
+        var actx = this.actx;
+        var soundNode: AudioBufferSourceNode = actx.createBufferSource();
+
+        //Set the sound node's buffer property to the loaded sound.
+        soundNode.buffer = buffer;
+        //this.sound.playBuffer(soundNode);
     }
 
     playLaser() {

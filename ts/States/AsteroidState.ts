@@ -1,6 +1,7 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
 import { Assets } from "ts/Resources/Assets";
+import { SoundObject } from "ts/Sound/SoundObject";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -35,8 +36,9 @@ export class AsteroidState implements IGameState {
 
     interactors: IInteractor[] = [];
 
-    notPlayedThrust: boolean;
     asteroidNoise: boolean;
+    thrustNoiseStarted: boolean;
+    thrustSound: SoundObject;
     
     static create(assets:Assets): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -62,8 +64,10 @@ export class AsteroidState implements IGameState {
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
-        this.notPlayedThrust = true;
+        this.thrustNoiseStarted = false;
         this.asteroidNoise = false;
+        this.thrustSound = new SoundObject("res/sound/thrust.wav", true);
+
 
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -91,19 +95,23 @@ export class AsteroidState implements IGameState {
             this.player.model.weaponModel.fired = false;
         }
         if (this.player.model.data.crashed && !this.player.model.data.exploded) {
-            this.assets.playLocal("res/sound/explosion.wav");
+            sctx.playFromFile("res/sound/explosion.wav");
             this.player.model.data.exploded = true;
         }
 
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
-            this.assets.playLocal("res/sound/blast.wav");
+            sctx.playFromFile("res/sound/blast.wav");
         }
 
-        //if (this.player.model.thrustParticleModel.data.on) {
-        //    sctx.playThrust();
-            //this.notPlayedThrust = false;
-        //}
+        if (this.player.model.thrustParticleModel.data.on && !this.thrustNoiseStarted) {
+            this.thrustSound.play();
+            this.thrustNoiseStarted = true;
+        }
+        if (!this.player.model.thrustParticleModel.data.on && this.thrustNoiseStarted) {
+            this.thrustSound.pause();
+            this.thrustNoiseStarted = false;
+        }
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {

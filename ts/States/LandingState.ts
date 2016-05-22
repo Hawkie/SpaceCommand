@@ -96,7 +96,7 @@ export class LandingState implements IGameState {
 
     sound(sctx: SoundContext) {
         if (this.player.model.crashed && !this.playExploded) {
-            this.assets.playLocal("res/sound/explosion.wav");
+            sctx.playFromFile("res/sound/explosion.wav");
             this.playExploded = true;
         }
     }
