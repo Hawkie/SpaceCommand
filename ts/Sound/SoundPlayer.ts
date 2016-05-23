@@ -11,32 +11,85 @@ export class SoundPlayer {
     constructor(private audioContext: AudioContext) {
     }
 
-    playWithEffect(source) {
+    //playWithEffect(source: string) {
+    //    var actx = this.audioContext;
+    //    var audioElement = new Audio(source);
+    //    var sourceNode: MediaElementAudioSourceNode = actx.createMediaElementSource(audioElement);
+
+
+    //    var gainNode: GainNode = actx.createGain();
+    //    gainNode.gain.value = 1;
+    //    sourceNode.connect(gainNode);
+
+    //    var echo: number[] = [0.2, 0.2, 1000];
+    //    var echoNode = this.createEcho(echo);
+    //    this.insertNode(gainNode, echoNode, actx.destination);
+    //    // connect each separately
+        
+
+    //    audioElement.play();
+    //}
+
+    createEffect(data: SoundEffectData): AudioNode {
         var actx = this.audioContext;
-        var audioElement = new Audio(source);
-        var sourceNode: MediaElementAudioSourceNode = actx.createMediaElementSource(audioElement);
+        
+        
         var gainNode: GainNode = actx.createGain();
-        gainNode.gain.value = 1;
-        sourceNode.connect(gainNode);
-        gainNode.connect(actx.destination);
-        audioElement.play();
-    }
-
-    private createSourceBuffer() {
-        var actx = this.audioContext;
-        var node: AudioBufferSourceNode = actx.createBufferSource();
+        gainNode.gain.value = data.volumeValue;
+        var startNode: AudioNode = gainNode;
         
+        var panNode: AudioNode = this.createPanNode(actx, data.panValue);
+        panNode.connect(actx.destination);
+        startNode.connect(panNode);
+        var endNode: AudioNode = panNode;
+
+        if (data.attack > 0) this.fadeIn(gainNode, data.wait, data.volumeValue, data.attack);
+        if (data.decay > 0) this.fadeOut(gainNode, data.volumeValue, data.attack, data.wait, data.decay);
+
+        if (data.echo !== undefined) {
+            var echoNode = this.createEcho(data.echo);
+            this.insertNode(startNode, echoNode, endNode);
+        }
+
+        if (data.reverb !== undefined) {
+            this.addReverb(startNode, data.reverb, data.reverse, endNode);
+        }
+        if (data.dissonance > 0) {
+            this.addDissonance(data.volumeValue,
+                data.frequencyValue,
+                data.dissonance,
+                data.attack,
+                data.decay,
+                data.pitchBendAmount,
+                data.echo,
+                data.reverb,
+                data.wait,
+                data.reverse,
+                endNode);
+        }
+
+        return startNode;
     }
 
-    private createSourceOscillator() {
-        var actx = this.audioContext;
-        var node: OscillatorNode = actx.createOscillator();
-    }
+    createPanNode(actx:AudioContext, panValue:number): AudioNode {
+        // Pan
+        //Create an oscillator, gain and pan nodes, and connect them
+        //together to the destination
+        var stereoPan: StereoPannerNode,
+            Panner: PannerNode,
+            pan: any;
+        if (!actx.createStereoPanner) {
+            pan = actx.createPanner();
+        } else {
+            pan = actx.createStereoPanner();
+        }
+        if (!actx.createStereoPanner) {
+            pan.setPosition(panValue, 0, 1 - Math.abs(panValue));
+        } else {
+            pan.pan.value = panValue;
+        }
 
-    private createSourceMedia(source) {
-        var actx = this.audioContext;
-        var node: MediaElementAudioSourceNode = actx.createMediaElementSource(source);
-        
+        return pan;
     }
 
     playBuffer(volumeNode: GainNode) {
@@ -210,36 +263,10 @@ export class SoundPlayer {
         if (echo === undefined) echo = undefined;
         if (reverb === undefined) reverb = undefined;
         if (timeout === undefined) timeout = undefined;
-
-        //Create an oscillator, gain and pan nodes, and connect them
-        //together to the destination
-        var oscillator: OscillatorNode,
-            volume: GainNode,
-            stereoPan: StereoPannerNode,
-            Panner: PannerNode,
-            pan: any;
         
-        oscillator = actx.createOscillator();
+        // source
+        var oscillator: OscillatorNode = actx.createOscillator();
         oscillator.type = type;
-        volume = actx.createGain();
-        if (!actx.createStereoPanner) {
-            pan = actx.createPanner();
-        } else {
-            pan = actx.createStereoPanner();
-        }
-        oscillator.connect(volume);
-        volume.connect(pan);
-        pan.connect(actx.destination);
-
-        //Set the supplied values
-        volume.gain.value = volumeValue;
-        if (!actx.createStereoPanner) {
-            pan.setPosition(panValue, 0, 1 - Math.abs(panValue));
-        } else {
-            pan.pan.value = panValue;
-        }
-        
-
         //Optionally randomize the pitch. If the `randomValue` is greater
         //than zero, a random pitch is selected that's within the range
         //specified by `frequencyValue`. The random pitch will be either
@@ -258,11 +285,44 @@ export class SoundPlayer {
         }
         oscillator.frequency.value = frequency;
 
+        // gain node
+        var volume: GainNode = actx.createGain();
+        volume.gain.value = volumeValue;
+
+        // connect osc -> gain
+        oscillator.connect(volume);
+  
+        // Pan
+        //Create an oscillator, gain and pan nodes, and connect them
+        //together to the destination
+        var stereoPan: StereoPannerNode,
+            Panner: PannerNode,
+            pan: any;
+        if (!actx.createStereoPanner) {
+            pan = actx.createPanner();
+        } else {
+            pan = actx.createStereoPanner();
+        }
+        if (!actx.createStereoPanner) {
+            pan.setPosition(panValue, 0, 1 - Math.abs(panValue));
+        } else {
+            pan.pan.value = panValue;
+        }
+
+        // connect pan -> destination
+        pan.connect(actx.destination);
+
+        // connect vol -> pan
+        volume.connect(pan);
+
         //Apply effects
         if (attack > 0) this.fadeIn(volume, wait, volumeValue, attack);
         this.fadeOut(volume, volumeValue, attack, wait, decay);
         if (pitchBendAmount > 0) this.pitchBend(oscillator, reverse, wait, pitchBendAmount, attack, decay);
-        if (echo) this.addEcho(volume, echo, pan);
+        if (echo) {
+            let echoNode:AudioNode = this.createEcho(echo);
+            this.insertNode(volume, echoNode, pan);
+        }
         if (reverb) this.addReverb(volume, reverb, reverse, pan);
         if (dissonance > 0) this.addDissonance(volumeValue, frequency, dissonance, attack, decay, pitchBendAmount, echo, reverb, wait, reverse, pan);
 
@@ -270,15 +330,15 @@ export class SoundPlayer {
         this.play(oscillator, wait);
     }
 
-    addReverb(volumeNode: GainNode, reverb: number[], reverse: boolean, pan) {
+    addReverb(startNode: AudioNode, reverb: number[], reverse: boolean, pan:AudioNode) {
         var actx = this.audioContext;
         var convolver = actx.createConvolver();
         convolver.buffer = this.impulseResponse(reverb[0], reverb[1], reverse, actx);
-        volumeNode.connect(convolver);
+        startNode.connect(convolver);
         convolver.connect(pan);
     }
 
-    addEcho(volumeNode: GainNode, echo: number[], pan) {
+    createEcho(echo: number[]) : AudioNode {
         var actx = this.audioContext;
         //Create the nodes
         var feedback = actx.createGain(),
@@ -300,14 +360,7 @@ export class SoundPlayer {
             feedback.connect(delay);
         }
 
-        //Connect the delay loop to the oscillator's volume
-        //node, and then to the destination
-        volumeNode.connect(delay);
-
-        //Connect the delay loop to the main sound chain's
-        //pan node, so that the echo effect is directed to
-        //the correct speaker
-        delay.connect(pan);
+        return delay;
     }
 
     //The `fadeIn` function
@@ -372,7 +425,7 @@ export class SoundPlayer {
 
     }
 
-    addDissonance(volumeValue: number, frequency: number, dissonance: number, attack: number, decay: number, pitchBendAmount: number, echo: number[], reverb: number[], wait: number, reverse: boolean, pan:any) {
+    addDissonance(volumeValue: number, frequency: number, dissonance: number, attack: number, decay: number, pitchBendAmount: number, echo: number[], reverb: number[], wait: number, reverse: boolean, pan:AudioNode) {
         var actx = this.audioContext;
         //Create two more oscillators and gain nodes
         var d1: OscillatorNode = actx.createOscillator(),
@@ -415,8 +468,10 @@ export class SoundPlayer {
             this.pitchBend(d2, reverse, wait, pitchBendAmount, attack, decay);
         }
         if (echo) {
-            this.addEcho(d1Volume, echo, pan);
-            this.addEcho(d2Volume, echo, pan);
+            var echoNode1:AudioNode = this.createEcho(echo);
+            this.insertNode(d1Volume, echoNode1, pan);
+            var echoNode2:AudioNode = this.createEcho(echo);
+            this.insertNode(d2Volume, echoNode2, pan);
         }
         if (reverb) {
             this.addReverb(d1Volume, reverb, reverse, pan);
@@ -424,6 +479,17 @@ export class SoundPlayer {
         }
         this.play(d1, wait);
         this.play(d2, wait);
+    }
+
+    insertNode(nodeIn: AudioNode, node: AudioNode, nodeOut: AudioNode) {
+        //Connect the delay loop to the oscillator's volume
+        //node, and then to the destination
+        nodeIn.connect(node);
+
+        //Connect the delay loop to the main sound chain's
+        //pan node, so that the echo effect is directed to
+        //the correct speaker
+        node.connect(nodeOut);
     }
 
     //The `play` function

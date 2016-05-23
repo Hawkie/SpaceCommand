@@ -1,6 +1,8 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
 import { SoundContext } from "ts/Sound/SoundContext";
-import { SoundObject  } from "ts/Sound/SoundObject";
+import { SoundObject, AudioWithEffects  } from "ts/Sound/SoundObject";
+import { SoundPlayer  } from "ts/Sound/SoundPlayer";
+import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { Assets } from "ts/Resources/Assets";
 
@@ -29,8 +31,10 @@ export class MenuState implements IGameState {
     states: Array<IGameState>;
     selectedState: IGameState = null;
     lastMoved: number = Date.now();
+    musicObject: AudioWithEffects;
 
-    private loadAssets: boolean = true;
+
+    private playingMusic: boolean = false;
     private assetsLoaded: boolean = false;
 
     static create(assets: Assets, actx:AudioContext, states: Array<IGameState>): MenuState {
@@ -60,6 +64,16 @@ export class MenuState implements IGameState {
         });
         this.objects = objects;
         this.states = states;
+        // music params
+        var effects: SoundEffectData = new SoundEffectData();
+        effects.echo = [0.2, 0.2, 1000];
+        effects.panValue = 0;
+        effects.volumeValue = 1;
+        this.musicObject = new AudioWithEffects("res/sound/TimePortal.mp3",
+            true,
+            this.actx,
+            new SoundPlayer(this.actx),
+            effects);
     }
 
     update(lastDrawModifier: number) {
@@ -92,9 +106,9 @@ export class MenuState implements IGameState {
         //    });
         //    console.log("Waiting for resources to load");
         //}
-        if (this.loadAssets) {
-            this.loadAssets = false;
-            sctx.playFromFile("res/sound/TimePortal.mp3");
+        if (!this.playingMusic) {
+            this.playingMusic = true;
+            this.musicObject.play();
         }
     }
 

@@ -39,6 +39,7 @@ export class AsteroidState implements IGameState {
     asteroidNoise: boolean;
     thrustNoiseStarted: boolean;
     thrustSound: SoundObject;
+
     
     static create(assets:Assets): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);

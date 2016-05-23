@@ -15,9 +15,9 @@ export class SoundContext {
         audioElement.play();
     }
 
-    playWithEffect(source) {
-        this.sound.playWithEffect(source);
-    }
+    //playWithEffect(source) {
+    //    this.sound.playWithEffect(source);
+    //}
 
     playSound(buffer: AudioBuffer) {
         //Create a sound node.

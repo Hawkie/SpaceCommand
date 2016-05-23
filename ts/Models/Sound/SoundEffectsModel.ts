@@ -18,7 +18,23 @@ export class SoundEffectData {
     public reverb: number[];            //An array: [durationInSeconds, decayRateInSeconds, reverse]
     public timeout: number;             // How long to play for
 
-    constructor() {}
+    constructor() {
+
+        this.frequencyValue = 200;
+        this.attack = 0;
+        this.decay = 0;
+        this.type = "sine";
+        this.volumeValue = 1;
+        this.panValue = 0;
+        this.wait = 0;
+        this.pitchBendAmount = 0;
+        this.reverse = false;
+        this.randomValue = 0;
+        this.dissonance = 0;
+        this.echo = undefined;
+        this.reverb = undefined;
+        this.timeout = undefined;
+    }
 }
 
 export enum SoundType {
