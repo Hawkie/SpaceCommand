@@ -1,5 +1,4 @@
 import { Canvas } from "ts/Common/Canvas";
-import { SoundContext } from "ts/Sound/SoundContext";
 import { EventLoop } from "ts/Common/EventLoop";
 import { Assets } from "ts/Resources/Assets";
 
@@ -18,15 +17,15 @@ export class Game {
         
 
         var canvas = new Canvas(512, 480, document);
-        var soundContext = new SoundContext();
+        var audioContext = new AudioContext();
         var assets = new Assets();
 
-        var asteroidState = AsteroidState.create(assets);
+        var asteroidState = AsteroidState.create(assets, audioContext);
         var landingState = LandingState.create(assets);
         var soundDesigner = SoundDesignerState.create();
-        var initialState = MenuState.create(assets, soundContext.actx, [asteroidState, landingState, soundDesigner]);
+        var initialState = MenuState.create(assets, audioContext, [asteroidState, landingState, soundDesigner]);
 
-        var gameloop = new EventLoop(window, canvas, soundContext, initialState);
+        var gameloop = new EventLoop(window, canvas, audioContext, initialState);
 
         gameloop.loop();
     }

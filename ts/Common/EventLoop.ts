@@ -1,5 +1,4 @@
 import { DrawContext } from "ts/Common/DrawContext";
-import { SoundContext } from "ts/Sound/SoundContext";
 import { Canvas } from "ts/Common/Canvas";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
@@ -8,7 +7,7 @@ import { KeyStateProvider } from "ts/Common/KeyStateProvider";
 export class EventLoop {
 
     private currentGameState: IGameState = null;
-    constructor(private window: Window, private canvas: Canvas, private soundContext: SoundContext, private initialGameState: IGameState) {
+    constructor(private window: Window, private canvas: Canvas, private audioContext: AudioContext, private initialGameState: IGameState) {
         this.keyStateProvider = new KeyStateProvider(this.window);
         this.currentGameState = initialGameState;
     }
@@ -28,7 +27,7 @@ export class EventLoop {
     processOneFrame(delta: number) {
         let gs : IGameState = this.currentGameState;
         gs.display(this.canvas.context());
-        gs.sound(this.soundContext);
+        gs.sound(this.audioContext);
         gs.tests(delta);
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);

@@ -3,44 +3,43 @@ import { DynamicModel } from "ts/Models/DynamicModels";
 
 export class SoundEffectData {
 
-    public frequencyValue: number;      //The sound's fequency pitch in Hertz
-    public attack: number;              //The time, in seconds, to fade the sound in
-    public decay: number;               //The time, in seconds, to fade the sound out
-    public type: string;                //waveform type: "sine", "triangle", "square", "sawtooth"
-    public volumeValue: number;         //The sound's maximum volume
-    public panValue: number;            //The speaker pan. left: -1, middle: 0, right: 1
-    public wait: number;                //The time, in seconds, to wait before playing the sound
-    public pitchBendAmount: number;     //The number of Hz in which to bend the sound's pitch down
-    public reverse: boolean;            //If `reverse` is true the pitch will bend up
-    public randomValue: number;         //A range, in Hz, within which to randomize the pitch
-    public dissonance: number;          //A value in Hz. It creates 2 dissonant frequencies above and below the target pitch
-    public echo: number[];              //An array: [delayTimeInSeconds, feedbackTimeInSeconds, filterValueInHz]
-    public reverb: number[];            //An array: [durationInSeconds, decayRateInSeconds, reverse]
-    public timeout: number;             // How long to play for
+    //public frequencyValue: number;      //The sound's fequency pitch in Hertz
+    //public attack:number;              //The time, in seconds, to fade the sound in
+    //public decay: number;               //The time, in seconds, to fade the sound out
+    //public type: string;                //waveform type: "sine", "triangle", "square", "sawtooth"
+    //public volumeValue: number;         //The sound's maximum volume
+    //public panValue: number;            //The speaker pan. left: -1, middle: 0, right: 1
+    //public wait: number;                //The time, in seconds, to wait before playing the sound
+    //public pitchBendAmount: number;     //The number of Hz in which to bend the sound's pitch down
+    //public reverse: boolean;            //If `reverse` is true the pitch will bend up
+    //public randomValue: number;         //A range, in Hz, within which to randomize the pitch
+    //public dissonance: number;          //A value in Hz. It creates 2 dissonant frequencies above and below the target pitch
+    //public echo: number[];              //An array: [delayTimeInSeconds, feedbackTimeInSeconds, filterValueInHz]
+    //public reverb: number[];            //An array: [durationInSeconds, decayRateInSeconds, reverse]
+    //public timeout: number;             // How long to play for
 
-    constructor() {
-
-        this.frequencyValue = 200;
-        this.attack = 0;
-        this.decay = 0;
-        this.type = "sine";
-        this.volumeValue = 1;
-        this.panValue = 0;
-        this.wait = 0;
-        this.pitchBendAmount = 0;
-        this.reverse = false;
-        this.randomValue = 0;
-        this.dissonance = 0;
-        this.echo = undefined;
-        this.reverb = undefined;
-        this.timeout = undefined;
+    constructor(public frequencyValue: number = 200,
+        public attack: number = 0,
+        public decay: number = 0,
+        public type: string = "sine",
+        public volumeValue: number = 1,
+        public panValue: number = 0,
+        public wait: number = 0,
+        public pitchBendAmount: number = 0,
+        public reverse = false,
+        public randomValue: number = 0,
+        public dissonance: number = 0,
+        public echo: number[] = undefined,
+        public reverb: number[] = undefined,
+        public timeout:number = undefined) {
     }
 }
 
 export enum SoundType {
-    sawtooth,
     sine,
-    square,  
+    triangle,
+    square, 
+    sawtooth, 
 }
 
 export class SoundEffectsModel extends ControlPanelModel {

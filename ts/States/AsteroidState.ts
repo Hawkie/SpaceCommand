@@ -1,7 +1,8 @@
 import { DrawContext} from "ts/Common/DrawContext";
-import { SoundContext } from "ts/Sound/SoundContext";
 import { Assets } from "ts/Resources/Assets";
-import { SoundObject } from "ts/Sound/SoundObject";
+import { SoundObject, FXObject } from "ts/Sound/SoundObject";
+import { SoundPlayer  } from "ts/Sound/SoundPlayer";
+import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
@@ -39,9 +40,11 @@ export class AsteroidState implements IGameState {
     asteroidNoise: boolean;
     thrustNoiseStarted: boolean;
     thrustSound: SoundObject;
-
+    explosionSound: SoundObject;
+    asteroidHitSound: SoundObject;
+    laserSound: FXObject;
     
-    static create(assets:Assets): AsteroidState {
+    static create(assets: Assets, actx: AudioContext): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
@@ -57,19 +60,39 @@ export class AsteroidState implements IGameState {
         var objects: IGameObject[] = [field, text];
         var asteroids: Asteroid[] = [asteroid1];
 
-        var asteroidState = new AsteroidState("Asteroids", assets, ship, objects, asteroids);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids);
         return asteroidState;
     }
     
-    constructor(public name: string, private assets: Assets, private player : BasicShip, private objects : IGameObject[], private asteroids : Asteroid[]) {
+    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player : BasicShip, private objects : IGameObject[], private asteroids : Asteroid[]) {
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
         this.thrustNoiseStarted = false;
         this.asteroidNoise = false;
         this.thrustSound = new SoundObject("res/sound/thrust.wav", true);
+        this.explosionSound = new SoundObject("res/sound/explosion.wav");
+        this.asteroidHitSound = new SoundObject("res/sound/blast.wav");
+        var laserEffect = new SoundEffectData(
+            1046.5,           //frequency
+            0,                //attack
+            0.3,              //decay
+            "sawtooth",       //waveform
+            1,                //Volume
+            -0.8,             //pan
+            0,                //wait before playing
+            1200,             //pitch bend amount
+            false,            //reverse bend
+            0,                //random pitch range
+            25,               //dissonance
+            [0.1, 0.2, 2000], //echo: [delay, feedback, filter]
+            undefined,        //reverb: [duration, decay, reverse?]
+            3);                 //Maximum duration of sound, in seconds
 
-
+        this.laserSound = new FXObject(actx,
+            new SoundPlayer(actx),
+            laserEffect);
+            
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
@@ -90,19 +113,19 @@ export class AsteroidState implements IGameState {
         this.player.display(drawingContext);
     }
 
-    sound(sctx: SoundContext) {
+    sound(actx: AudioContext) {
         if (this.player.model.weaponModel.fired) {
-            sctx.playLaser();
+            this.laserSound.play();
             this.player.model.weaponModel.fired = false;
         }
         if (this.player.model.data.crashed && !this.player.model.data.exploded) {
-            sctx.playFromFile("res/sound/explosion.wav");
+            this.explosionSound.play();
             this.player.model.data.exploded = true;
         }
 
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
-            sctx.playFromFile("res/sound/blast.wav");
+            this.asteroidHitSound.play();
         }
 
         if (this.player.model.thrustParticleModel.data.on && !this.thrustNoiseStarted) {

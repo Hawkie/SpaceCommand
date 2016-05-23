@@ -9,12 +9,13 @@ export interface ISoundObject {
 export class SoundObject implements ISoundObject {
     private audioElement: HTMLAudioElement;
 
-    constructor(private source: string, private loop: boolean) {
+    constructor(private source: string,
+        private loop: boolean = false) {
         this.audioElement = new Audio(this.source);
+        this.audioElement.loop = this.loop;
     }
 
     play() {
-        this.audioElement.loop = this.loop;
         this.audioElement.play();
     }
 
@@ -26,12 +27,13 @@ export class SoundObject implements ISoundObject {
 export class AudioWithEffects implements ISoundObject {
     private audioElement: HTMLAudioElement;
     constructor(private source: string,
-        private loop: boolean,
         private audioContext: AudioContext,
         private player: SoundPlayer,
-        private effect: SoundEffectData) {
+        private effect: SoundEffectData,
+        private loop: boolean = false) {
 
         this.audioElement = new Audio(this.source);
+        this.audioElement.loop = loop;
         var sourceNode: MediaElementAudioSourceNode = this.audioContext.createMediaElementSource(this.audioElement);
 
         // connect effect
@@ -57,19 +59,7 @@ export class FXObject implements ISoundObject {
         //private randomValue: number,
         //private frequencyValue:number) {
         // source
-        this.sourceNode = this.createSource(audioContext,
-            effect.type,
-            effect.randomValue,
-            effect.frequencyValue,
-            effect.wait,
-            effect.pitchBendAmount,
-            effect.reverse,
-            effect.attack,
-            effect.decay);
-            // update data with source random frequency for dissonance
-        this.effect.frequencyValue = this.adjFrequency;
-        var effectNode = this.player.createEffect(this.effect);
-        this.sourceNode.connect(effectNode);
+        
     }
 
     private createSource(actx: AudioContext,
@@ -141,12 +131,23 @@ export class FXObject implements ISoundObject {
                 actx.currentTime + wait + attack + decay
             );
         }
-
     }
-
 
     play(wait:number = 0, duration:number = 2) {
         var actx = this.audioContext;
+        this.sourceNode = this.createSource(actx,
+            this.effect.type,
+            this.effect.randomValue,
+            this.effect.frequencyValue,
+            this.effect.wait,
+            this.effect.pitchBendAmount,
+            this.effect.reverse,
+            this.effect.attack,
+            this.effect.decay);
+        // update data with source random frequency for dissonance
+        this.effect.frequencyValue = this.adjFrequency;
+        var effectNode = this.player.createEffect(this.effect);
+        this.sourceNode.connect(effectNode);
         this.sourceNode.start(actx.currentTime + wait);
 
         //Oscillators have to be stopped otherwise they accumulate in 
@@ -162,3 +163,13 @@ export class FXObject implements ISoundObject {
     }
 }
 
+// buffer object
+//playSound(buffer: AudioBuffer) {
+//    //Create a sound node.
+//    var actx = this.actx;
+//    var soundNode: AudioBufferSourceNode = actx.createBufferSource();
+
+//    //Set the sound node's buffer property to the loaded sound.
+//    soundNode.buffer = buffer;
+//    //this.sound.playBuffer(soundNode);
+//}

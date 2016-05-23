@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
-import { SoundContext } from "ts/Sound/SoundContext";
 import { Assets } from "ts/Resources/Assets";
+import { SoundObject } from "ts/Sound/SoundObject";
 
 import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
@@ -32,6 +32,7 @@ export class LandingState implements IGameState {
     interactors: IInteractor[];
 
     playExploded: boolean;
+    explosionSound: SoundObject;
 
     static create(assets:Assets): LandingState {
         // Background
@@ -69,6 +70,7 @@ export class LandingState implements IGameState {
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
+        this.explosionSound = new SoundObject("res/sound/explosion.wav");
     }
     
     update(lastDrawModifier : number){
@@ -94,9 +96,9 @@ export class LandingState implements IGameState {
         this.wind.display(drawingContext);
     }
 
-    sound(sctx: SoundContext) {
+    sound(actx: AudioContext) {
         if (this.player.model.crashed && !this.playExploded) {
-            sctx.playFromFile("res/sound/explosion.wav");
+            this.explosionSound.play();
             this.playExploded = true;
         }
     }

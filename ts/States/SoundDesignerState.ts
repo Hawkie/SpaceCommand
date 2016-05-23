@@ -1,6 +1,7 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
-import { SoundContext } from "ts/Sound/SoundContext";
 import { SoundEffectData, SoundEffectsModel } from "ts/Models/Sound/SoundEffectsModel";
+import { SoundPlayer  } from "ts/Sound/SoundPlayer";
+import { FXObject } from "ts/Sound/SoundObject";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
@@ -44,9 +45,11 @@ export class SoundDesignerState extends GameState {
         this.controls.display(drawContext);
     }
 
-    sound(sctx: SoundContext) {
+    sound(actx: AudioContext) {
         if (!this.playedSound) {
-            sctx.sound.playWithData(this.controls.model.sfxData);
+            var sound: FXObject = new FXObject(actx, new SoundPlayer(actx), this.controls.model.sfxData);
+            sound.play();
+            //sctx.sound.playWithData(this.controls.model.sfxData);
             this.playedSound = true;
         }
     }
