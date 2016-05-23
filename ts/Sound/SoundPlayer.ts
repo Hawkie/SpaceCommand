@@ -11,25 +11,6 @@ export class SoundPlayer {
     constructor(private audioContext: AudioContext) {
     }
 
-    //playWithEffect(source: string) {
-    //    var actx = this.audioContext;
-    //    var audioElement = new Audio(source);
-    //    var sourceNode: MediaElementAudioSourceNode = actx.createMediaElementSource(audioElement);
-
-
-    //    var gainNode: GainNode = actx.createGain();
-    //    gainNode.gain.value = 1;
-    //    sourceNode.connect(gainNode);
-
-    //    var echo: number[] = [0.2, 0.2, 1000];
-    //    var echoNode = this.createEcho(echo);
-    //    this.insertNode(gainNode, echoNode, actx.destination);
-    //    // connect each separately
-        
-
-    //    audioElement.play();
-    //}
-
     createEffect(data: SoundEffectData): AudioNode {
         var actx = this.audioContext;
         
@@ -281,6 +262,7 @@ export class SoundPlayer {
     impulseResponse(duration:number, decay: number, reverse: boolean, actx: AudioContext) :AudioBuffer {
 
         //The length of the buffer.
+        // TODO check you can do this with audio buffered data?!
         var length = actx.sampleRate * duration;
 
         //Create an audio buffer (an empty sound container) to store the reverb effect.

@@ -26,22 +26,26 @@ export class SoundObject implements ISoundObject {
 
 export class AudioWithEffects implements ISoundObject {
     private audioElement: HTMLAudioElement;
+    private sourceNode: MediaElementAudioSourceNode;
     constructor(private source: string,
         private audioContext: AudioContext,
-        private player: SoundPlayer,
+        private soundPlayer: SoundPlayer,
         private effect: SoundEffectData,
         private loop: boolean = false) {
 
         this.audioElement = new Audio(this.source);
         this.audioElement.loop = loop;
-        var sourceNode: MediaElementAudioSourceNode = this.audioContext.createMediaElementSource(this.audioElement);
+        this.sourceNode = this.audioContext.createMediaElementSource(this.audioElement);
 
         // connect effect
-        var effectNode = this.player.createEffect(this.effect);
-        sourceNode.connect(effectNode);
+        //var effectNode = this.player.createEffect(this.effect);
+        //sourceNode.connect(effectNode);
     }
 
     play() {
+        // connect effect
+        var effectNode = this.soundPlayer.createEffect(this.effect);
+        this.sourceNode.connect(effectNode);
         this.audioElement.play();
     }
     pause() {

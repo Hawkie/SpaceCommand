@@ -67,7 +67,6 @@ export class MenuState implements IGameState {
         var effects: SoundEffectData = new SoundEffectData();
         //effects.echo = [0.2, 0.2, 1000];
         //effects.panValue = 0;
-        //effects.volumeValue = 1;
         this.musicObject = new AudioWithEffects("res/sound/TimePortal.mp3",
             this.actx,
             new SoundPlayer(this.actx),

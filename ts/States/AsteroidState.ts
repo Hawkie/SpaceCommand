@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
-import { SoundObject, FXObject } from "ts/Sound/SoundObject";
+import { SoundObject, FXObject, AudioWithEffects } from "ts/Sound/SoundObject";
 import { SoundPlayer  } from "ts/Sound/SoundPlayer";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
@@ -43,6 +43,7 @@ export class AsteroidState implements IGameState {
     explosionSound: SoundObject;
     asteroidHitSound: SoundObject;
     laserSound: FXObject;
+    helloSound: AudioWithEffects;
     
     static create(assets: Assets, actx: AudioContext): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -92,6 +93,9 @@ export class AsteroidState implements IGameState {
         this.laserSound = new FXObject(actx,
             new SoundPlayer(actx),
             laserEffect);
+        
+        var helloEffect: SoundEffectData = new SoundEffectData(0, 0, 0, "sine", 1, 0.1, 0, 0, false, 0, 250, [0.3, 0.3, 2000], [1,0.1,0], 2);
+        this.helloSound = new AudioWithEffects("res/sound/hello.wav", actx, new SoundPlayer(actx), helloEffect);
             
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -126,6 +130,7 @@ export class AsteroidState implements IGameState {
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
             this.asteroidHitSound.play();
+            //this.helloSound.play();
         }
 
         if (this.player.model.thrustParticleModel.data.on && !this.thrustNoiseStarted) {

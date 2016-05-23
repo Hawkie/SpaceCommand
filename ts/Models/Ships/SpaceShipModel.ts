@@ -88,6 +88,8 @@ export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> imp
         if (!this.data.crashed) {
             this.data.forwardForce = this.data.maxForwardForce;
             this.thrustParticleModel.turnOn();
+        } else {
+            this.noThrust();
         }
     }
 
