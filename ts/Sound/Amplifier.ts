@@ -47,7 +47,7 @@ export class Amplifier {
         }
 
         if (data.reverb !== undefined) {
-            this.addReverb(gainNode, data.reverb, data.reverse, endNode);
+            this.addReverb(gainNode, data.reverb, data.pitchBendUp, endNode);
         }
         if (data.dissonance > 0) {
             controllerNodes = this.addDissonance(data.volumeValue,
@@ -59,7 +59,7 @@ export class Amplifier {
                 data.echo,
                 data.reverb,
                 data.wait,
-                data.reverse,
+                data.pitchBendUp,
                 endNode);
         }
 

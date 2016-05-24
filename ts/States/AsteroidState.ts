@@ -84,7 +84,6 @@ export class AsteroidState implements IGameState {
             0,                //wait before playing
             1200,             //pitch bend amount
             false,            //reverse bend
-            0,                //random pitch range
             25,               //dissonance
             [0.1, 0.2, 2000], //echo: [delay, feedback, filter]
             undefined,        //reverb: [duration, decay, reverse?]
@@ -94,7 +93,7 @@ export class AsteroidState implements IGameState {
             new Amplifier(actx),
             laserEffect);
         
-        var helloEffect: SoundEffectData = new SoundEffectData(0, 0, 0, "sine", 1, 0.1, 0, 0, false, 0, 250, [0.3, 0.3, 2000], [1,0.1,0], 2);
+        var helloEffect: SoundEffectData = new SoundEffectData(0, 0, 0, "sine", 1, 0.1, 0, 0, false, 250, [0.3, 0.3, 2000], [1,0.1,0], 2);
         this.helloSound = new AudioWithEffects("res/sound/hello.wav", actx, new Amplifier(actx), helloEffect);
             
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));

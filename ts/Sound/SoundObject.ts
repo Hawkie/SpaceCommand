@@ -54,7 +54,7 @@ export class AudioWithEffects implements ISoundObject {
             this.effect.attack,
             this.effect.decay,
             this.effect.pitchBendAmount,
-            this.effect.reverse));
+            this.effect.pitchBendUp));
     }
     pause() {
         this.audioElement.pause();
@@ -102,7 +102,7 @@ export class FXObject implements ISoundObject {
             this.effect.attack,
             this.effect.decay,
             this.effect.pitchBendAmount,
-            this.effect.reverse);
+            this.effect.pitchBendUp);
         this.effectNodes.forEach(n => this.amplifier.play(n.sourceNode,
             n.gainNode,
             this.effect.wait,
@@ -111,7 +111,7 @@ export class FXObject implements ISoundObject {
             this.effect.attack,
             this.effect.decay,
             this.effect.pitchBendAmount,
-            this.effect.reverse));
+            this.effect.pitchBendUp));
     }
 
     

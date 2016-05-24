@@ -26,8 +26,7 @@ export class SoundEffectData {
         public panValue: number = 0,
         public wait: number = 0,
         public pitchBendAmount: number = 0,
-        public reverse = false,
-        public randomValue: number = 0,
+        public pitchBendUp = false,
         public dissonance: number = 0,
         public echo: number[] = undefined,
         public reverb: number[] = undefined,
@@ -56,8 +55,7 @@ export class SoundEffectsModel extends ControlPanelModel {
             new Slider("pan", -0.8, -1, 1, 0.1),
             new Slider("wait(sec)", 0, 0, 10, 0.1),
             new Slider("pitchBend", 1200, 0, 10000, 200),
-            new Slider("pitchBendUpDown", 0, 0, 1, 1),
-            new Slider("random(Hz)", 0, 0, 10000, 10),
+            new Slider("pitchBendUp", 0, 0, 1, 1),
             new Slider("dissonance(Hz)", 25, 0, 10000, 10),
             new Slider("echoDelay(sec)", 0.2, 0, 10, 0.05, true),
             new Slider("echoFeedback(sec)", 0.2, 0, 10, 0.05, true),
@@ -81,24 +79,24 @@ export class SoundEffectsModel extends ControlPanelModel {
         sfxData.panValue = this.sliders[5].value;
         sfxData.wait = this.sliders[6].value;
         sfxData.pitchBendAmount = this.sliders[7].value;
-        sfxData.reverse = (this.sliders[8].value === 1);
-        sfxData.randomValue = this.sliders[9].value;
-        sfxData.dissonance = this.sliders[10].value;
-        if (this.sliders[11].enabled) {
-            sfxData.echo = [this.sliders[11].value,
-                this.sliders[12].value,
-                this.sliders[13].value];
+        sfxData.pitchBendUp = (this.sliders[8].value === 1);
+        
+        sfxData.dissonance = this.sliders[9].value;
+        if (this.sliders[10].enabled) {
+            sfxData.echo = [this.sliders[10].value,
+                this.sliders[11].value,
+                this.sliders[12].value];
         } else {
             sfxData.echo = undefined;
         }
-        if (this.sliders[14].enabled) {
-            sfxData.reverb = [this.sliders[14].value,
-                this.sliders[15].value,
-                this.sliders[16].value];
+        if (this.sliders[13].enabled) {
+            sfxData.reverb = [this.sliders[13].value,
+                this.sliders[14].value,
+                this.sliders[15].value];
         } else {
             sfxData.reverb = undefined;
         }
-        sfxData.timeout = this.sliders[17].value;
+        sfxData.timeout = this.sliders[16].value;
         return sfxData;
     }
 }
