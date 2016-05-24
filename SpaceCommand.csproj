@@ -79,7 +79,7 @@
     <TypeScriptCompile Include="ts\Actors\Rotators.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\LandingShip.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\Ship.ts" />
-    <TypeScriptCompile Include="ts\Sound\SoundPlayer.ts" />
+    <TypeScriptCompile Include="ts\Sound\Amplifier.ts" />
     <TypeScriptCompile Include="ts\Models\Space\Asteroid.ts" />
     <TypeScriptCompile Include="ts\Models\Land\LandingPad.ts" />
     <TypeScriptCompile Include="ts\Models\ParticleFieldModel.ts" />

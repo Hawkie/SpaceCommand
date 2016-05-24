@@ -1,6 +1,6 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
-import { SoundObject, AudioWithEffects  } from "ts/Sound/SoundObject";
-import { SoundPlayer  } from "ts/Sound/SoundPlayer";
+import { AudioObject, AudioWithEffects  } from "ts/Sound/SoundObject";
+import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { Assets } from "ts/Resources/Assets";
@@ -30,7 +30,7 @@ export class MenuState implements IGameState {
     states: Array<IGameState>;
     selectedState: IGameState = null;
     lastMoved: number = Date.now();
-    musicObject: AudioWithEffects;
+    musicObject: AudioObject;
 
 
     private playingMusic: boolean = false;
@@ -64,13 +64,13 @@ export class MenuState implements IGameState {
         this.objects = objects;
         this.states = states;
         // music params
-        var effects: SoundEffectData = new SoundEffectData();
+        //var effects: SoundEffectData = new SoundEffectData();
         //effects.echo = [0.2, 0.2, 1000];
         //effects.panValue = 0;
-        this.musicObject = new AudioWithEffects("res/sound/TimePortal.mp3",
-            this.actx,
-            new SoundPlayer(this.actx),
-            effects,
+        this.musicObject = new AudioObject("res/sound/TimePortal.mp3",
+            //this.actx,
+            //new SoundPlayer(this.actx),
+            //effects,
             true);
     }
 

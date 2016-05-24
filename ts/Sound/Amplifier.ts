@@ -6,37 +6,51 @@
 //        param.setTargetAtTime = param.setTargetValueAtTime;
 //}
 
-export class SoundPlayer {
+export class ControllerNodes {
+    constructor(public gainNode: GainNode,
+        public sourceNode: OscillatorNode) { }
+}
+
+export class Amplifier {
 
     constructor(private audioContext: AudioContext) {
     }
 
-    createEffect(data: SoundEffectData): AudioNode {
+    play(node: OscillatorNode, gainNode:GainNode, wait: number, duration:number, volumeValue:number, attack:number, decay:number, pitchBendAmount:number, pitchDown:boolean) {
         var actx = this.audioContext;
-        
-        
-        var gainNode: GainNode = actx.createGain();
-        gainNode.gain.value = data.volumeValue;
-        var startNode: AudioNode = gainNode;
-        
+        if (pitchBendAmount > 0) this.pitchBend(node, pitchDown, wait, pitchBendAmount, attack, decay);
+        if (attack > 0) this.fadeIn(gainNode, wait, volumeValue, attack);
+        if (decay > 0) this.fadeOut(gainNode, volumeValue, attack, wait, decay);
+        node.start(actx.currentTime + wait);
+
+        //Oscillators have to be stopped otherwise they accumulate in 
+        //memory and tax the CPU. They'll be stopped after a default
+        //timeout of 2 seconds, which should be enough for most sound 
+        //effects. Override this in the `soundEffect` parameters if you
+        //need a longer sound
+        node.stop(actx.currentTime + wait + duration);
+    }
+
+
+    addEffect(gainNode:GainNode, data: SoundEffectData): ControllerNodes[] {
+        var actx = this.audioContext;
+        var controllerNodes: ControllerNodes[] = [];
+
         var panNode: AudioNode = this.createPanNode(actx, data.panValue);
         panNode.connect(actx.destination);
-        startNode.connect(panNode);
+        gainNode.connect(panNode);
         var endNode: AudioNode = panNode;
-
-        if (data.attack > 0) this.fadeIn(gainNode, data.wait, data.volumeValue, data.attack);
-        if (data.decay > 0) this.fadeOut(gainNode, data.volumeValue, data.attack, data.wait, data.decay);
 
         if (data.echo !== undefined) {
             var echoNode = this.createEcho(data.echo);
-            this.insertNode(startNode, echoNode, endNode);
+            this.insertNode(gainNode, echoNode, endNode);
         }
 
         if (data.reverb !== undefined) {
-            this.addReverb(startNode, data.reverb, data.reverse, endNode);
+            this.addReverb(gainNode, data.reverb, data.reverse, endNode);
         }
         if (data.dissonance > 0) {
-            this.addDissonance(data.volumeValue,
+            controllerNodes = this.addDissonance(data.volumeValue,
                 data.frequencyValue,
                 data.dissonance,
                 data.attack,
@@ -49,13 +63,11 @@ export class SoundPlayer {
                 endNode);
         }
 
-        return startNode;
+        return controllerNodes;
     }
 
     createPanNode(actx:AudioContext, panValue:number): AudioNode {
         // Pan
-        //Create an oscillator, gain and pan nodes, and connect them
-        //together to the destination
         var stereoPan: StereoPannerNode,
             Panner: PannerNode,
             pan: any;
@@ -121,7 +133,7 @@ export class SoundPlayer {
         );
     }
 
-    //The `fadeOut` function
+    ////The `fadeOut` function
     fadeOut(volumeNode: GainNode, volumeValue: number, attack: number, wait: number, decay:number) {
         var actx = this.audioContext;
         volumeNode.gain.linearRampToValueAtTime(
@@ -132,8 +144,8 @@ export class SoundPlayer {
         );
     }
 
-    //The `pitchBend` function
-    pitchBend(oscillatorNode: OscillatorNode, reverse: boolean, wait: number, pitchBendAmount: number, attack: number, decay: number) {
+    ////The `pitchBend` function
+    pitchBend(oscillatorNode: OscillatorNode, pitchUp: boolean, wait: number, pitchBendAmount: number, attack: number, decay: number) {
         var actx = this.audioContext;
         //If `reverse` is true, make the note drop in frequency. Useful for
         //shooting sounds
@@ -141,8 +153,8 @@ export class SoundPlayer {
         //Get the frequency of the current oscillator
         var frequency = oscillatorNode.frequency.value;
 
-        //If `reverse` is true, make the sound drop in pitch
-        if (!reverse) {
+        //If `pitchUp` is false, make the sound drop in pitch
+        if (!pitchUp) {
             oscillatorNode.frequency.linearRampToValueAtTime(
                 frequency,
                 actx.currentTime + wait
@@ -153,7 +165,7 @@ export class SoundPlayer {
             );
         }
 
-        //If `reverse` is false, make the note rise in pitch. Useful for
+        //If `pitchUp` is true, make the note rise in pitch. Useful for
         //jumping sounds
         else {
             oscillatorNode.frequency.linearRampToValueAtTime(
@@ -165,10 +177,19 @@ export class SoundPlayer {
                 actx.currentTime + wait + attack + decay
             );
         }
-
     }
 
-    addDissonance(volumeValue: number, frequency: number, dissonance: number, attack: number, decay: number, pitchBendAmount: number, echo: number[], reverb: number[], wait: number, reverse: boolean, pan:AudioNode) {
+    addDissonance(volumeValue: number,
+        frequency: number,
+        dissonance: number,
+        attack: number,
+        decay: number,
+        pitchBendAmount: number,
+        echo: number[],
+        reverb: number[],
+        wait: number,
+        reverse: boolean,
+        pan: AudioNode): ControllerNodes[]{
         var actx = this.audioContext;
         //Create two more oscillators and gain nodes
         var d1: OscillatorNode = actx.createOscillator(),
@@ -196,20 +217,20 @@ export class SoundPlayer {
         d1.frequency.value = frequency + dissonance;
         d2.frequency.value = frequency - dissonance;
 
-        //Fade in/out, pitch bend and play the oscillators
-        //to match the main sound
-        if (attack > 0) {
-            this.fadeIn(d1Volume, wait, volumeValue, attack);
-            this.fadeIn(d2Volume, wait, volumeValue, attack);
-        }
-        if (decay > 0) {
-            this.fadeOut(d1Volume, volumeValue, attack, wait, decay);
-            this.fadeOut(d2Volume, volumeValue, attack, wait, decay);
-        }
-        if (pitchBendAmount > 0) {
-            this.pitchBend(d1, reverse, wait, pitchBendAmount, attack, decay);
-            this.pitchBend(d2, reverse, wait, pitchBendAmount, attack, decay);
-        }
+        ////Fade in/out, pitch bend and play the oscillators
+        ////to match the main sound
+        //if (attack > 0) {
+        //    this.fadeIn(d1Volume, wait, volumeValue, attack);
+        //    this.fadeIn(d2Volume, wait, volumeValue, attack);
+        //}
+        //if (decay > 0) {
+        //    this.fadeOut(d1Volume, volumeValue, attack, wait, decay);
+        //    this.fadeOut(d2Volume, volumeValue, attack, wait, decay);
+        //}
+        //if (pitchBendAmount > 0) {
+        //    this.pitchBend(d1, reverse, wait, pitchBendAmount, attack, decay);
+        //    this.pitchBend(d2, reverse, wait, pitchBendAmount, attack, decay);
+        //}
         if (echo) {
             var echoNode1:AudioNode = this.createEcho(echo);
             this.insertNode(d1Volume, echoNode1, pan);
@@ -220,8 +241,7 @@ export class SoundPlayer {
             this.addReverb(d1Volume, reverb, reverse, pan);
             this.addReverb(d2Volume, reverb, reverse, pan);
         }
-        this.play(d1, wait);
-        this.play(d2, wait);
+        return [new ControllerNodes(d1Volume, d1), new ControllerNodes(d2Volume, d2)];
     }
 
     insertNode(nodeIn: AudioNode, node: AudioNode, nodeOut: AudioNode) {
@@ -233,19 +253,6 @@ export class SoundPlayer {
         //pan node, so that the echo effect is directed to
         //the correct speaker
         node.connect(nodeOut);
-    }
-
-    //The `play` function
-    play(node: OscillatorNode, wait) {
-        var actx = this.audioContext;
-        node.start(actx.currentTime + wait);
-
-        //Oscillators have to be stopped otherwise they accumulate in 
-        //memory and tax the CPU. They'll be stopped after a default
-        //timeout of 2 seconds, which should be enough for most sound 
-        //effects. Override this in the `soundEffect` parameters if you
-        //need a longer sound
-        node.stop(actx.currentTime + wait + 2);
     }
 
 

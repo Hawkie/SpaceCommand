@@ -1,7 +1,7 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
-import { SoundObject, FXObject, AudioWithEffects } from "ts/Sound/SoundObject";
-import { SoundPlayer  } from "ts/Sound/SoundPlayer";
+import { AudioObject, FXObject, AudioWithEffects } from "ts/Sound/SoundObject";
+import { Amplifier  } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
@@ -39,9 +39,9 @@ export class AsteroidState implements IGameState {
 
     asteroidNoise: boolean;
     thrustNoiseStarted: boolean;
-    thrustSound: SoundObject;
-    explosionSound: SoundObject;
-    asteroidHitSound: SoundObject;
+    thrustSound: AudioObject;
+    explosionSound: AudioObject;
+    asteroidHitSound: AudioObject;
     laserSound: FXObject;
     helloSound: AudioWithEffects;
     
@@ -71,9 +71,9 @@ export class AsteroidState implements IGameState {
         this.asteroids = asteroids;
         this.thrustNoiseStarted = false;
         this.asteroidNoise = false;
-        this.thrustSound = new SoundObject("res/sound/thrust.wav", true);
-        this.explosionSound = new SoundObject("res/sound/explosion.wav");
-        this.asteroidHitSound = new SoundObject("res/sound/blast.wav");
+        this.thrustSound = new AudioObject("res/sound/thrust.wav", true);
+        this.explosionSound = new AudioObject("res/sound/explosion.wav");
+        this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
         var laserEffect = new SoundEffectData(
             1046.5,           //frequency
             0,                //attack
@@ -91,11 +91,11 @@ export class AsteroidState implements IGameState {
             3);                 //Maximum duration of sound, in seconds
 
         this.laserSound = new FXObject(actx,
-            new SoundPlayer(actx),
+            new Amplifier(actx),
             laserEffect);
         
         var helloEffect: SoundEffectData = new SoundEffectData(0, 0, 0, "sine", 1, 0.1, 0, 0, false, 0, 250, [0.3, 0.3, 2000], [1,0.1,0], 2);
-        this.helloSound = new AudioWithEffects("res/sound/hello.wav", actx, new SoundPlayer(actx), helloEffect);
+        this.helloSound = new AudioWithEffects("res/sound/hello.wav", actx, new Amplifier(actx), helloEffect);
             
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));

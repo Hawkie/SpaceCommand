@@ -1,12 +1,12 @@
 ﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
-import { SoundPlayer } from "ts/Sound/SoundPlayer";
+import { Amplifier, ControllerNodes } from "ts/Sound/Amplifier";
 
 export interface ISoundObject {
     play();
     pause();
 }
 
-export class SoundObject implements ISoundObject {
+export class AudioObject implements ISoundObject {
     private audioElement: HTMLAudioElement;
 
     constructor(private source: string,
@@ -27,26 +27,34 @@ export class SoundObject implements ISoundObject {
 export class AudioWithEffects implements ISoundObject {
     private audioElement: HTMLAudioElement;
     private sourceNode: MediaElementAudioSourceNode;
+    private gainNode: GainNode;
     constructor(private source: string,
         private audioContext: AudioContext,
-        private soundPlayer: SoundPlayer,
+        private amplifier: Amplifier,
         private effect: SoundEffectData,
         private loop: boolean = false) {
 
         this.audioElement = new Audio(this.source);
         this.audioElement.loop = loop;
         this.sourceNode = this.audioContext.createMediaElementSource(this.audioElement);
-
-        // connect effect
-        //var effectNode = this.player.createEffect(this.effect);
-        //sourceNode.connect(effectNode);
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.gain.value = effect.volumeValue;
+        this.sourceNode.connect(this.gainNode);
     }
 
     play() {
         // connect effect
-        var effectNode = this.soundPlayer.createEffect(this.effect);
-        this.sourceNode.connect(effectNode);
+        var controllerNodes:ControllerNodes[] = this.amplifier.addEffect(this.gainNode, this.effect);
         this.audioElement.play();
+        controllerNodes.forEach(n => this.amplifier.play(n.sourceNode,
+            n.gainNode,
+            this.effect.wait,
+            this.effect.timeout,
+            this.effect.volumeValue,
+            this.effect.attack,
+            this.effect.decay,
+            this.effect.pitchBendAmount,
+            this.effect.reverse));
     }
     pause() {
         this.audioElement.pause();
@@ -55,115 +63,61 @@ export class AudioWithEffects implements ISoundObject {
 
 export class FXObject implements ISoundObject {
     private sourceNode: OscillatorNode;
-    private adjFrequency: number;
+    private gainNode: GainNode;
+    private effectNodes: ControllerNodes[];
+
     constructor(private audioContext: AudioContext,
-        private player: SoundPlayer,
+        private amplifier: Amplifier,
         private effect: SoundEffectData) {
-        //private type: string,
-        //private randomValue: number,
-        //private frequencyValue:number) {
-        // source
         
     }
 
     private createSource(actx: AudioContext,
-        type: string = "sine",
-        randomValue: number= 0,
-        frequencyValue: number = 200,
-        wait:number = 0,
-        pitchBendAmount: number = 0,
-        pitchDown: boolean = false,
-        attack: number = 0,
-        decay:number = 1): OscillatorNode {
+        type: string,
+        frequencyValue: number): OscillatorNode {
         var actx = this.audioContext;
-        this.sourceNode = actx.createOscillator();
-        var oscillator: OscillatorNode = this.sourceNode;
+        var oscillator: OscillatorNode = actx.createOscillator();
         oscillator.type = type;
-        //Optionally randomize the pitch. If the `randomValue` is greater
-        //than zero, a random pitch is selected that's within the range
-        //specified by `frequencyValue`. The random pitch will be either
-        //above or below the target frequency.
-        var frequency;
-        var randomInt = function (min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min
-        };
-        if (randomValue > 0) {
-            frequency = randomInt(
-                frequencyValue - randomValue / 2,
-                frequencyValue + randomValue / 2
-            );
-        } else {
-            frequency = frequencyValue;
-        }
-        oscillator.frequency.value = frequency;
-        this.adjFrequency = frequency;
-        // add pitchbend
-        if (pitchBendAmount > 0) this.pitchBend(oscillator, pitchDown, wait, pitchBendAmount, attack, decay);
+        oscillator.frequency.value = frequencyValue;
         return oscillator;
     }
 
-    //The `pitchBend` function
-    pitchBend(oscillatorNode: OscillatorNode, reverse: boolean, wait: number, pitchBendAmount: number, attack: number, decay: number) {
+    play() {
         var actx = this.audioContext;
-        //If `reverse` is true, make the note drop in frequency. Useful for
-        //shooting sounds
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.gain.value = this.effect.volumeValue;
 
-        //Get the frequency of the current oscillator
-        var frequency = oscillatorNode.frequency.value;
-
-        //If `reverse` is true, make the sound drop in pitch
-        if (!reverse) {
-            oscillatorNode.frequency.linearRampToValueAtTime(
-                frequency,
-                actx.currentTime + wait
-            );
-            oscillatorNode.frequency.linearRampToValueAtTime(
-                frequency - pitchBendAmount,
-                actx.currentTime + wait + attack + decay
-            );
-        }
-
-        //If `reverse` is false, make the note rise in pitch. Useful for
-        //jumping sounds
-        else {
-            oscillatorNode.frequency.linearRampToValueAtTime(
-                frequency,
-                actx.currentTime + wait
-            );
-            oscillatorNode.frequency.linearRampToValueAtTime(
-                frequency + pitchBendAmount,
-                actx.currentTime + wait + attack + decay
-            );
-        }
-    }
-
-    play(wait:number = 0, duration:number = 2) {
-        var actx = this.audioContext;
-        this.sourceNode = this.createSource(actx,
+        this.sourceNode = this.createSource(this.audioContext,
             this.effect.type,
-            this.effect.randomValue,
-            this.effect.frequencyValue,
-            this.effect.wait,
-            this.effect.pitchBendAmount,
-            this.effect.reverse,
-            this.effect.attack,
-            this.effect.decay);
-        // update data with source random frequency for dissonance
-        this.effect.frequencyValue = this.adjFrequency;
-        var effectNode = this.player.createEffect(this.effect);
-        this.sourceNode.connect(effectNode);
-        this.sourceNode.start(actx.currentTime + wait);
+            this.effect.frequencyValue);
+        this.sourceNode.connect(this.gainNode);
 
-        //Oscillators have to be stopped otherwise they accumulate in 
-        //memory and tax the CPU. They'll be stopped after a default
-        //timeout of 2 seconds, which should be enough for most sound 
-        //effects. Override this in the `soundEffect` parameters if you
-        //need a longer sound
-        this.sourceNode.stop(actx.currentTime + wait + duration);
+        this.effectNodes = this.amplifier.addEffect(this.gainNode, this.effect);
+        
+        this.amplifier.play(this.sourceNode,
+            this.gainNode,
+            this.effect.wait,
+            this.effect.timeout,
+            this.effect.volumeValue,
+            this.effect.attack,
+            this.effect.decay,
+            this.effect.pitchBendAmount,
+            this.effect.reverse);
+        this.effectNodes.forEach(n => this.amplifier.play(n.sourceNode,
+            n.gainNode,
+            this.effect.wait,
+            this.effect.timeout,
+            this.effect.volumeValue,
+            this.effect.attack,
+            this.effect.decay,
+            this.effect.pitchBendAmount,
+            this.effect.reverse));
     }
 
+    
     pause() {
         this.sourceNode.stop(this.audioContext.currentTime);
+        this.effectNodes.forEach(n => n.sourceNode.stop(this.audioContext.currentTime));
     }
 }
 

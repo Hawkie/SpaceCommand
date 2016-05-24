@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
-import { SoundObject } from "ts/Sound/SoundObject";
+import { AudioObject } from "ts/Sound/SoundObject";
 
 import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
@@ -32,7 +32,7 @@ export class LandingState implements IGameState {
     interactors: IInteractor[];
 
     playExploded: boolean;
-    explosionSound: SoundObject;
+    explosionSound: AudioObject;
 
     static create(assets:Assets): LandingState {
         // Background
@@ -70,7 +70,7 @@ export class LandingState implements IGameState {
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
-        this.explosionSound = new SoundObject("res/sound/explosion.wav");
+        this.explosionSound = new AudioObject("res/sound/explosion.wav");
     }
     
     update(lastDrawModifier : number){
