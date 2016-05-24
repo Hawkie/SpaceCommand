@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
-import { AudioObject, FXObject, AudioWithEffects } from "ts/Sound/SoundObject";
+import { AudioObject, FXObject, AudioWithEffects, BufferObject } from "ts/Sound/SoundObject";
 import { Amplifier  } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
@@ -43,7 +43,8 @@ export class AsteroidState implements IGameState {
     explosionSound: AudioObject;
     asteroidHitSound: AudioObject;
     laserSound: FXObject;
-    helloSound: AudioWithEffects;
+    helloSound: BufferObject = undefined;
+    loaded: boolean;
     
     static create(assets: Assets, actx: AudioContext): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -62,6 +63,7 @@ export class AsteroidState implements IGameState {
         var asteroids: Asteroid[] = [asteroid1];
 
         var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids);
+        
         return asteroidState;
     }
     
@@ -93,8 +95,11 @@ export class AsteroidState implements IGameState {
             new Amplifier(actx),
             laserEffect);
         
-        var helloEffect: SoundEffectData = new SoundEffectData(0, 0, 0, "sine", 1, 0.1, 0, 0, false, 250, [0.3, 0.3, 2000], [1,0.1,0], 2);
-        this.helloSound = new AudioWithEffects("res/sound/hello.wav", actx, new Amplifier(actx), helloEffect);
+        assets.load(actx, ["res/sound/blast.wav"], () => {
+            this.helloSound = new BufferObject(actx, assets.soundData[0].data);
+        });
+        //var helloEffect: SoundEffectData = new SoundEffectData(0, 1, 1, "sine", 1, 0.1, 0, 0, false, 0, [0.3, 0.3, 2000], [1,0.1,0], 2);
+        
             
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -128,8 +133,9 @@ export class AsteroidState implements IGameState {
 
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
-            this.asteroidHitSound.play();
-            //this.helloSound.play();
+            //this.asteroidHitSound.play();
+            if (this.helloSound !== undefined)
+                this.helloSound.play();
         }
 
         if (this.player.model.thrustParticleModel.data.on && !this.thrustNoiseStarted) {

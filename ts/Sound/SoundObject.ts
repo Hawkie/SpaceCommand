@@ -37,14 +37,17 @@ export class AudioWithEffects implements ISoundObject {
         this.audioElement = new Audio(this.source);
         this.audioElement.loop = loop;
         this.sourceNode = this.audioContext.createMediaElementSource(this.audioElement);
-        this.gainNode = this.audioContext.createGain();
-        this.gainNode.gain.value = effect.volumeValue;
-        this.sourceNode.connect(this.gainNode);
+        
     }
 
     play() {
         // connect effect
+        
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.gain.value = this.effect.volumeValue;
+        this.sourceNode.connect(this.gainNode);
         var controllerNodes:ControllerNodes[] = this.amplifier.addEffect(this.gainNode, this.effect);
+        this.amplifier.reset(this.gainNode, this.effect.wait, this.effect.timeout, this.effect.volumeValue, this.effect.attack, this.effect.decay);
         this.audioElement.play();
         controllerNodes.forEach(n => this.amplifier.play(n.sourceNode,
             n.gainNode,
@@ -121,13 +124,24 @@ export class FXObject implements ISoundObject {
     }
 }
 
-// buffer object
-//playSound(buffer: AudioBuffer) {
-//    //Create a sound node.
-//    var actx = this.actx;
-//    var soundNode: AudioBufferSourceNode = actx.createBufferSource();
+export class BufferObject implements ISoundObject {
 
-//    //Set the sound node's buffer property to the loaded sound.
-//    soundNode.buffer = buffer;
-//    //this.sound.playBuffer(soundNode);
-//}
+    constructor(private actx:AudioContext, private buffer: AudioBuffer) {
+    }
+
+    play() {
+        //Create a sound node.
+        var actx = this.actx;
+        var soundNode: AudioBufferSourceNode = actx.createBufferSource();
+
+        //Set the sound node's buffer property to the loaded sound.
+        soundNode.buffer = this.buffer;
+        
+        var gainNode = actx.createGain();
+        soundNode.connect(gainNode);
+        gainNode.connect(actx.destination);
+        soundNode.start(actx.currentTime);
+    }
+
+    pause() { }
+}

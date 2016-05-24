@@ -16,11 +16,17 @@ export class Amplifier {
     constructor(private audioContext: AudioContext) {
     }
 
-    play(node: OscillatorNode, gainNode:GainNode, wait: number, duration:number, volumeValue:number, attack:number, decay:number, pitchBendAmount:number, pitchDown:boolean) {
+    reset(gainNode: GainNode, wait: number, duration: number, volumeValue: number, attack: number, decay: number) {
         var actx = this.audioContext;
-        if (pitchBendAmount > 0) this.pitchBend(node, pitchDown, wait, pitchBendAmount, attack, decay);
         if (attack > 0) this.fadeIn(gainNode, wait, volumeValue, attack);
         if (decay > 0) this.fadeOut(gainNode, volumeValue, attack, wait, decay);
+    }
+
+    play(node: OscillatorNode, gainNode:GainNode, wait: number, duration:number, volumeValue:number, attack:number, decay:number, pitchBendAmount:number, pitchDown:boolean) {
+        var actx = this.audioContext;
+        this.reset(gainNode, wait, duration, volumeValue, attack, decay);
+        if (pitchBendAmount > 0) this.pitchBend(node, pitchDown, wait, pitchBendAmount, attack, decay);
+        
         node.start(actx.currentTime + wait);
 
         //Oscillators have to be stopped otherwise they accumulate in 
