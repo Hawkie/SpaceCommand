@@ -1,7 +1,6 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
 import { SoundEffectData, SoundEffectsModel } from "ts/Models/Sound/SoundEffectsModel";
-import { Amplifier  } from "ts/Sound/Amplifier";
-import { FXObject } from "ts/Sound/SoundObject";
+import { FXObject } from "ts/Sound/FXObject";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
@@ -47,7 +46,7 @@ export class SoundDesignerState extends GameState {
 
     sound(actx: AudioContext) {
         if (!this.playedSound) {
-            var sound: FXObject = new FXObject(actx, new Amplifier(actx), this.controls.model.sfxData);
+            var sound: FXObject = new FXObject(actx, this.controls.model.sfxData);
             sound.play();
             //sctx.sound.playWithData(this.controls.model.sfxData);
             this.playedSound = true;

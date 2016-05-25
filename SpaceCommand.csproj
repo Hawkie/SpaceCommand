@@ -63,6 +63,7 @@
     <TypeScriptCompile Include="ts\Models\Sound\SoundEffectsModel.ts" />
     <TypeScriptCompile Include="ts\Models\TextModel.ts" />
     <TypeScriptCompile Include="ts\Resources\Assets.ts" />
+    <TypeScriptCompile Include="ts\Sound\FXObject.ts" />
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesignerState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />

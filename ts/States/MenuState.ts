@@ -1,5 +1,5 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
-import { AudioObject, AudioWithEffects  } from "ts/Sound/SoundObject";
+import { AudioObject, AudioWithAmplifier  } from "ts/Sound/SoundObject";
 import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
