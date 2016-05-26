@@ -1,6 +1,6 @@
-import { DrawContext } from "../Common/DrawContext";
-import { Coordinate } from "../Physics/Common";
-import { Transforms } from "../Physics/Transforms";
+import { DrawContext } from "ts/Common/DrawContext";
+import { Coordinate } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
 
 // Display objects are simple objects that only have the single responsibility to render to the screen.
 // This therefore fulfills the S of SOLID design principle.
@@ -15,6 +15,7 @@ export interface IRotatable{
 }
 
 export interface IDrawableAndRotatable extends IDrawable, IRotatable { }
+
 
 export class Polygon implements IRotatable {
     private points: Coordinate[];

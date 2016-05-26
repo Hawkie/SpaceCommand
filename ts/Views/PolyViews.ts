@@ -9,14 +9,7 @@ export interface IView {
     display(drawContext: DrawContext);
 }
 
-// Binds data object to drawable item
-export class GraphicView implements IView {
-    constructor(private properties: ILocated, private drawable: IDrawable) { }
 
-    display(drawContext: DrawContext) {
-        this.drawable.draw(this.properties.location, drawContext);
-    }
-}
 
 export class PolyView implements IView {
     constructor(private properties: IShapeLocated) { }
@@ -31,21 +24,5 @@ export class ParticleFieldView implements IView {
 
     display(drawContext: DrawContext) {
         this.properties.particles.forEach(point => drawContext.drawRect(point.data.location.x, point.data.location.y, this.sizeX, this.sizeY));
-    }
-}
-
-export class AngledView implements IView {
-    constructor(private properties: IShapeLocatedAngled, private drawable: IDrawable) { }
-
-    display(drawContext: DrawContext) {
-        drawContext.translate(this.properties.location.x, this.properties.location.y);
-        drawContext.rotate(this.properties.angle);
-        drawContext.translate(-this.properties.location.x, -this.properties.location.y);
-
-        this.drawable.draw(this.properties.location, drawContext);
-
-        drawContext.translate(this.properties.location.x, this.properties.location.y);
-        drawContext.rotate(-this.properties.angle);
-        drawContext.translate(-this.properties.location.x, -this.properties.location.y);
     }
 }

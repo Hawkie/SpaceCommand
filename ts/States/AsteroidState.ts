@@ -1,17 +1,18 @@
 import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
+import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { IModel, MovingModel } from "ts/Models/DynamicModels";
+import { IModel, MovingModel, DynamicModel } from "ts/Models/DynamicModels";
 import { AsteroidData, AsteroidModel } from "ts/Models/Space/Asteroid";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
-import { ILocated, IShapeLocated } from "ts/Models/PolyModels";
+import { ILocated, IShapeLocated, ILocatedAngled } from "ts/Models/PolyModels";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -46,13 +47,15 @@ export class AsteroidState implements IGameState {
     helloSound: BufferObject = undefined;
     loaded: boolean;
     
+    
     static create(assets: Assets, actx: AudioContext): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
             (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
         var field: ParticleField = new ParticleField(pFieldModel,2, 2);
-         
+    
+        //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
 
         // special
         let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
@@ -93,9 +96,10 @@ export class AsteroidState implements IGameState {
         this.laserSound = new FXObject(actx,
             laserEffect);
         
-        var echoEffect: SoundEffectData = new SoundEffectData(0, 1, 1, "sine", 1, 0.1, 0, 0, false, 0, [0.3, 0.3, 2000], [1, 0.1, 0], 2);
-        assets.load(actx, ["res/sound/blast.wav"], () => {
-            this.asteroidHitSound = new BufferObject(actx, assets.soundData[0].data);
+        var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
+        assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
+            this.asteroidHitSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/blast.wav")[0].data);
+            this.helloSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/hello.wav")[0].data, echoEffect);
         });
         
             
@@ -126,11 +130,14 @@ export class AsteroidState implements IGameState {
         }
         if (this.player.model.data.crashed && !this.player.model.data.exploded) {
             this.explosionSound.play();
+            
             this.player.model.data.exploded = true;
         }
 
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
+            //if (this.helloSound !== undefined)
+            //    this.helloSound.play();
             if (this.asteroidHitSound !== undefined)
                 this.asteroidHitSound.play();
         }

@@ -1,4 +1,4 @@
-﻿import { ILocatedMoving, IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
+﻿import { ILocatedMoving, ILocatedAngled, ILocatedAngledMoving, IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
 import { TextData } from "ts/Models/TextModel";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
@@ -26,6 +26,22 @@ export class ShapeMovingModel<TData extends IShapeLocatedMoving> extends Dynamic
         var mover: IActor = new Mover(data);
         actors.push(mover);
         super(data, actors);
+    }
+}
+
+export class AngledModel<TData extends ILocatedAngled> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        //var mover: IActor = new Mover(data);
+        //actors.push(mover);
+        super(data);
+    }
+}
+
+export class AngledMovingModel<TData extends ILocatedAngledMoving> extends DynamicModel<TData> {
+    constructor(data: TData, actors: IActor[] = []) {
+        //var mover: IActor = new Mover(data);
+        //actors.push(mover);
+        super(data);
     }
 }
 

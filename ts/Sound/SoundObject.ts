@@ -1,5 +1,5 @@
 ﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
-import { Amplifier } from "ts/Sound/Amplifier";
+import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 
 export interface ISoundObject {
     play();
@@ -29,7 +29,7 @@ export class AudioWithAmplifier implements ISoundObject {
     private sourceNode: MediaElementAudioSourceNode;
     constructor(private source: string,
         private audioContext: AudioContext,
-        private effect: SoundEffectData = undefined,
+        private settings: AmplifierSettings = undefined,
         private loop: boolean = false) {
 
         this.audioElement = new Audio(this.source);
@@ -39,9 +39,9 @@ export class AudioWithAmplifier implements ISoundObject {
 
     play() {
         // connect effect
-        if (this.effect !== undefined) {
-            var amplifier = new Amplifier(this.audioContext, this.sourceNode, this.effect);
-            amplifier.reset(this.effect.wait, this.effect.timeout, this.effect.volumeValue, this.effect.attack, this.effect.decay);
+        if (this.settings !== undefined) {
+            var amplifier = new Amplifier(this.audioContext, this.sourceNode, this.settings);
+            amplifier.reset();
         }
         this.audioElement.play();
     }
@@ -56,7 +56,7 @@ export class BufferObject implements ISoundObject {
 
     constructor(private actx: AudioContext,
         private buffer: AudioBuffer,
-        private effect: SoundEffectData = undefined,
+        private settings: AmplifierSettings = undefined,
         private loop:boolean = false) {
     }
 
@@ -68,9 +68,9 @@ export class BufferObject implements ISoundObject {
         //Set the sound node's buffer property to the loaded sound.
         sourceNode.buffer = this.buffer;
         sourceNode.loop = this.loop;
-        if (this.effect !== undefined) {
-            var amplifier = new Amplifier(actx, sourceNode, this.effect);
-            amplifier.reset(this.effect.wait, this.effect.timeout, this.effect.volumeValue, this.effect.attack, this.effect.decay);
+        if (this.settings !== undefined) {
+            var amplifier = new Amplifier(actx, sourceNode, this.settings);
+            amplifier.reset();
         } else {
             sourceNode.connect(actx.destination);
         }

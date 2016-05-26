@@ -48,6 +48,7 @@
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
+    <TypeScriptCompile Include="ts\Data\Sprite.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Controls\ControlPanel.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Ships\LandingShip.ts" />
@@ -74,6 +75,7 @@
     <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
     <TypeScriptCompile Include="ts\Game.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Space\SpaceObject.ts" />
+    <TypeScriptCompile Include="ts\Views\SpriteView.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Land\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />

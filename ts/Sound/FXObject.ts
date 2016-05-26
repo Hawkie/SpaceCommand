@@ -1,5 +1,5 @@
 ﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
-import { Amplifier } from "ts/Sound/Amplifier";
+import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 import { ISoundObject } from "ts/Sound/SoundObject";
 
 export class ControllerNode {
@@ -9,10 +9,17 @@ export class ControllerNode {
 
 
 export class FXObject implements ISoundObject {
-
+    private ampSettings: AmplifierSettings;
     constructor(private audioContext: AudioContext,
         private effect: SoundEffectData) {
-
+        this.ampSettings = new AmplifierSettings(effect.attack,
+            effect.decay,
+            effect.volumeValue,
+            effect.panValue,
+            effect.wait,
+            effect.pitchBendUp,
+            effect.echo,
+            effect.reverb);
     }
 
     play() {
@@ -21,20 +28,20 @@ export class FXObject implements ISoundObject {
         var sourceNode = this.createOscillator(this.audioContext,
             this.effect.type,
             this.effect.frequencyValue);
-        var amplifier: Amplifier = new Amplifier(actx, sourceNode, this.effect);
+        var amplifier: Amplifier = new Amplifier(actx, sourceNode, this.ampSettings);
         oscillators.push(new ControllerNode(sourceNode, amplifier));
 
         if (this.effect.dissonance > 0) {
             var dOsc1 = this.createOscillator(this.audioContext,
                 "sawtooth",
                 this.effect.frequencyValue + this.effect.dissonance);
-            var amplifier1: Amplifier = new Amplifier(actx, dOsc1, this.effect);
+            var amplifier1: Amplifier = new Amplifier(actx, dOsc1, this.ampSettings);
             oscillators.push(new ControllerNode(dOsc1, amplifier1));
                 
             var dOsc2 = this.createOscillator(this.audioContext,
                 "sawtooth",
                 this.effect.frequencyValue - this.effect.dissonance);
-            var amplifier2: Amplifier = new Amplifier(actx, dOsc2, this.effect);
+            var amplifier2: Amplifier = new Amplifier(actx, dOsc2, this.ampSettings);
             oscillators.push(new ControllerNode(dOsc2, amplifier2));
                  
         }
@@ -57,7 +64,7 @@ export class FXObject implements ISoundObject {
 
     private playOscillator(node: OscillatorNode, amplifier: Amplifier, wait: number, duration: number, volumeValue: number, attack: number, decay: number, pitchBendAmount: number, pitchDown: boolean) {
         var actx = this.audioContext;
-        amplifier.reset(wait, duration, volumeValue, attack, decay);
+        amplifier.reset();
         if (pitchBendAmount > 0) this.pitchBend(node, pitchDown, wait, pitchBendAmount, attack, decay);
 
         node.start(actx.currentTime + wait);

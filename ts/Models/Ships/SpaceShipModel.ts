@@ -2,7 +2,7 @@
 import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
 import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingData, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels"
 import { ShapeMovingThrustingModel } from "ts/Models/DynamicModels";
-import { IView, GraphicView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
 import { DrawContext } from "ts/Common/DrawContext";

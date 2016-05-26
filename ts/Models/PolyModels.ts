@@ -34,6 +34,10 @@ export interface IHittable {
     hit();
 }
 
+export interface ILocatedAngled extends ILocated, IAngled { }
+
+export interface ILocatedAngledMoving extends ILocated, IAngled, IMoving { }
+
 export interface ILocatedMoving extends ILocated, IMoving { }
 
 export interface IShapeLocated extends IShape, ILocated { }
@@ -56,9 +60,6 @@ export interface IShapeLocatedAngledMovingRotataingAccelerating extends IShape, 
 
 export interface IGravityObject extends IShape, ILocated, IAngled, IMoving, IRotating, IForwardAccelerator, IGravity { }
 
-export class LocatedMovingData implements ILocatedMoving {
-    constructor(public location:Coordinate, public velX: number, public velY: number) { }
-}
 
 export class ShapeData implements IShape {
     constructor(public points: Coordinate[]) { }

@@ -45,6 +45,32 @@ export class Assets {
         });
     }
 
+    // create and send request to load source with callback 
+    loadSound(actx: AudioContext, source: string,
+        dataHandler: (data: BufferData<AudioBuffer>, whenLoaded: () => void) => void,
+        whenLoaded: () => void) {
+
+        var xhr = new XMLHttpRequest();
+
+        //Use xhr to load the sound file.
+        xhr.open("GET", source, true);
+        xhr.responseType = "arraybuffer";
+
+        //When the sound has finished loading, decode it using the
+        //`decodeAudio` function (which you'll see ahead)
+        xhr.addEventListener("load", this.decodeAudio(actx, xhr, (buffer: AudioBuffer) => {
+            let sd = new BufferData<AudioBuffer>();
+            sd.source = source;
+            sd.data = buffer;
+            this.soundData.push(sd);
+            dataHandler(sd, whenLoaded);
+        })); 
+
+        //Send the request to load the file.
+        xhr.send();
+    }
+
+
     //#### loadHandler
     //The `loadHandler` will be called each time an asset finishes loading.
     private loadHandler(data: BufferData<AudioBuffer>, whenLoaded: () => void) {
@@ -65,29 +91,6 @@ export class Assets {
             if (whenLoaded !== undefined) whenLoaded();
         }
     }
-
-// create and send request to load source with callback 
- loadSound(actx: AudioContext, source: string, dataHandler: (data: BufferData<AudioBuffer>) => void, whenLoaded: () => void) {
-    var xhr = new XMLHttpRequest();
-
-    //Use xhr to load the sound file.
-    xhr.open("GET", source, true);
-    xhr.responseType = "arraybuffer";
-
-    //When the sound has finished loading, decode it using the
-    //`decodeAudio` function (which you'll see ahead)
-    xhr.addEventListener("load", this.decodeAudio(actx, xhr, (buffer: AudioBuffer) => {
-        let sd = new BufferData<AudioBuffer>();
-        sd.source = source;
-        sd.data = buffer;
-        this.soundData.push(sd);
-        dataHandler(sd);
-        whenLoaded();
-    })); 
-
-    //Send the request to load the file.
-    xhr.send();
-}
 
 //The `decodeAudio` function decodes the audio file for you and 
 //launches the `loadHandler` when it's done

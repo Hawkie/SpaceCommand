@@ -1,5 +1,6 @@
 ﻿import { ICoordinate, Coordinate } from "ts/Physics/Common";
-import { IShape, ILocatedMoving, LocatedMovingData } from "ts/Models/PolyModels";
+import { IShape, ILocatedMoving } from "ts/Models/PolyModels";
+import { LocatedMovingData } from "ts/Data/Sprite";
 import { IActor } from "ts/Actors/Actor"
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { DynamicModel, MovingModel, MovingGravityModel } from "ts/Models/DynamicModels";

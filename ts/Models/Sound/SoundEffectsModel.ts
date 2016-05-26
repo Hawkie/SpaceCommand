@@ -1,5 +1,6 @@
 ﻿import { Slider, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
 import { DynamicModel } from "ts/Models/DynamicModels";
+import { AmplifierSettings } from "ts/Sound/Amplifier";
 
 export class SoundEffectData {
 
@@ -66,6 +67,29 @@ export class SoundEffectsModel extends ControlPanelModel {
             new Slider("timeout(sec)", 3, 0, 20, 0.05)];
         super(sliders);
         this.typeNames = ["sine", "triangle", "square", "sawtooth"];
+    }
+
+    get ampSettings(): AmplifierSettings {
+        var echo = undefined;
+        if (this.sliders[10].enabled) {
+            echo = [this.sliders[10].value,
+                this.sliders[11].value,
+                this.sliders[12].value];
+        }
+        var reverb = undefined;
+        if (this.sliders[13].enabled) {
+            reverb = [this.sliders[13].value,
+                this.sliders[14].value,
+                this.sliders[15].value];
+        }
+        return new AmplifierSettings(this.sliders[1].value,
+            this.sliders[2].value,
+            this.sliders[4].value,
+            this.sliders[5].value,
+            this.sliders[6].value,
+            (this.sliders[8].value === 1),
+            echo,
+            reverb);
     }
 
     get sfxData(): SoundEffectData {

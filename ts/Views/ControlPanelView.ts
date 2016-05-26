@@ -1,5 +1,5 @@
-﻿import { Coordinate } from "../Physics/Common";
-import { DrawContext } from "../Common/DrawContext";
+﻿import { Coordinate } from "ts/Physics/Common";
+import { DrawContext } from "ts/Common/DrawContext";
 import { IView } from "ts/Views/PolyViews";
 import { IControlPanelModel, ControlPanelModel, ISlider, Slider } from "ts/Models/Controls/ControlPanelModel";
 

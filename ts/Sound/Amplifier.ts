@@ -1,42 +1,45 @@
-﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
-//function fixSetTarget(param) {
-//    if (!param)	// if NYI, just return
-//        return;
-//    if (!param.setTargetAtTime)
-//        param.setTargetAtTime = param.setTargetValueAtTime;
-//}
-
-
+﻿export class AmplifierSettings {
+    
+    constructor(public attack: number = 0,
+        public decay: number = 0,
+        public volumeValue: number = 1,
+        public panValue: number = 0,
+        public wait: number = 0,
+        public reverbReverse = false,
+        public echo: number[] = undefined,
+        public reverb: number[] = undefined) { }
+}
 
 export class Amplifier {
 
     private gainNode: GainNode;
 
-    constructor(private audioContext: AudioContext, source: AudioNode, data: SoundEffectData) {
+    constructor(private audioContext: AudioContext, source: AudioNode, private settings: AmplifierSettings) {
         var actx = this.audioContext;
         this.gainNode = this.audioContext.createGain();
-        this.gainNode.gain.value = data.volumeValue;
+        this.gainNode.gain.value = settings.volumeValue;
         source.connect(this.gainNode);
 
-        var panNode: AudioNode = this.createPanNode(actx, data.panValue);
+        var panNode: AudioNode = this.createPanNode(actx, settings.panValue);
         panNode.connect(actx.destination);
         this.gainNode.connect(panNode);
         var endNode: AudioNode = panNode;
 
-        if (data.echo !== undefined) {
-            var echoNode = this.createEcho(data.echo);
-            this.insertNode(this.gainNode, echoNode, endNode);
+        if (settings.echo !== undefined) {
+            var echoNode = this.createEcho(settings.echo);
+            this.gainNode.connect(echoNode);
+            echoNode.connect(endNode);
         }
 
-        if (data.reverb !== undefined) {
-            this.addReverb(this.gainNode, data.reverb, data.pitchBendUp, endNode);
+        if (settings.reverb !== undefined) {
+            this.addReverb(this.gainNode, settings.reverb, settings.reverbReverse, endNode);
         }
     }
 
-    reset(wait: number, duration: number, volumeValue: number, attack: number, decay: number) {
+    reset() {
         var actx = this.audioContext;
-        if (attack > 0) this.fadeIn(this.gainNode, wait, volumeValue, attack);
-        if (decay > 0) this.fadeOut(this.gainNode, volumeValue, attack, wait, decay);
+        if (this.settings.attack > 0) this.fadeIn(this.gainNode, this.settings.wait, this.settings.volumeValue, this.settings.attack);
+        if (this.settings.decay > 0) this.fadeOut(this.gainNode, this.settings.volumeValue, this.settings.attack, this.settings.wait, this.settings.decay);
     }
 
 
@@ -117,19 +120,6 @@ export class Amplifier {
             0, actx.currentTime + wait + attack + decay
         );
     }
-
-    
-    insertNode(nodeIn: AudioNode, node: AudioNode, nodeOut: AudioNode) {
-        //Connect the delay loop to the oscillator's volume
-        //node, and then to the destination
-        nodeIn.connect(node);
-
-        //Connect the delay loop to the main sound chain's
-        //pan node, so that the echo effect is directed to
-        //the correct speaker
-        node.connect(nodeOut);
-    }
-
 
     /*
     impulseResponse
