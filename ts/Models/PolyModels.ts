@@ -34,11 +34,7 @@ export interface IHittable {
     hit();
 }
 
-export interface ILocatedAngled extends ILocated, IAngled { }
 
-export interface ILocatedAngledMoving extends ILocated, IAngled, IMoving { }
-
-export interface ILocatedMoving extends ILocated, IMoving { }
 
 export interface IShapeLocated extends IShape, ILocated { }
 

@@ -1,4 +1,5 @@
-﻿import { ILocatedMoving, ILocatedAngled, ILocatedAngledMoving, IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
+﻿import { ILocated, IMoving, IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "../Models/PolyModels";
+import { ILocatedMoving, ILocatedAngled, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc} from "ts/Data/PhysicsData";
 import { TextData } from "ts/Models/TextModel";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
@@ -20,27 +21,37 @@ export class DynamicModel<TData> implements IModel<TData>, IActor {
     }
 }
 
-
-export class ShapeMovingModel<TData extends IShapeLocatedMoving> extends DynamicModel<TData> {
-    constructor(data: TData, actors: IActor[] = []) {
+export class DisplayModel<TPhysics extends ILocatedAngledMovingRotatingForwardAcc, TDraw> implements IModel<TPhysics>, IActor {
+    constructor(public data: TPhysics, public drawable: TDraw, private actors: IActor[] = []) {
         var mover: IActor = new Mover(data);
-        actors.push(mover);
-        super(data, actors);
+        var spinner: IActor = new Spinner(data);
+        var thrust: IActor = new ForwardAccelerator(data);
+        this.actors = [mover, spinner, thrust];
+    }
+
+    update(timeModifier: number) {
+        this.actors.forEach(a => a.update(timeModifier));
     }
 }
 
+//export class ShapeMovingModel<TData extends IShapeLocatedMoving> extends DynamicModel<TData> {
+//    constructor(data: TData, actors: IActor[] = []) {
+//        var mover: IActor = new Mover(data);
+//        actors.push(mover);
+//        super(data, actors);
+//    }
+//}
+
 export class AngledModel<TData extends ILocatedAngled> extends DynamicModel<TData> {
     constructor(data: TData, actors: IActor[] = []) {
-        //var mover: IActor = new Mover(data);
-        //actors.push(mover);
         super(data);
     }
 }
 
 export class AngledMovingModel<TData extends ILocatedAngledMoving> extends DynamicModel<TData> {
     constructor(data: TData, actors: IActor[] = []) {
-        //var mover: IActor = new Mover(data);
-        //actors.push(mover);
+        var mover: IActor = new Mover(data);
+        actors.push(mover);
         super(data);
     }
 }

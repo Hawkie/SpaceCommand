@@ -9,8 +9,6 @@ export interface IView {
     display(drawContext: DrawContext);
 }
 
-
-
 export class PolyView implements IView {
     constructor(private properties: IShapeLocated) { }
 

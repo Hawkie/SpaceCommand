@@ -1,12 +1,13 @@
 ﻿import { IVector, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
-import { IShapeAngledMovingForwardAcc, IMoving } from "ts/Models/PolyModels";
+import { IMoving } from "ts/Models/PolyModels";
+import { IAngledMovingForwardAcc } from "ts/Data/PhysicsData";
 
 
 export class ForwardAccelerator implements IActor {
 
-    constructor(private properties: IShapeAngledMovingForwardAcc) { }
+    constructor(private properties: IAngledMovingForwardAcc) { }
 
     update(timeModifer: number) {
         let velChange = Transforms.VectorToCartesian(this.properties.angle, this.properties.forwardForce * timeModifer);

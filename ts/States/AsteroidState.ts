@@ -12,7 +12,7 @@ import { AsteroidData, AsteroidModel } from "ts/Models/Space/Asteroid";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
-import { ILocated, IShapeLocated, ILocatedAngled } from "ts/Models/PolyModels";
+import { ILocated, IShapeLocated  } from "ts/Models/PolyModels";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -24,6 +24,7 @@ import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 import { Asteroid } from "ts/GameObjects/Space/SpaceObject";
 import { BasicShip } from "ts/GameObjects/Ships/SpaceShip";
+import { GraphicShip } from "ts/GameObjects/Ships/GraphicShip";
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -53,7 +54,7 @@ export class AsteroidState implements IGameState {
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
             (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
-        var field: ParticleField = new ParticleField(pFieldModel,2, 2);
+        var field: IGameObject = new ParticleField(pFieldModel,2, 2);
     
         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
 
@@ -61,8 +62,10 @@ export class AsteroidState implements IGameState {
         let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
         let asteroid1 = new Asteroid(new Coordinate(200, 230), 2, 2, 40, -2);
 
+        let alien: IGameObject = new GraphicShip(new Coordinate(200, 100));
+
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: IGameObject[] = [field, text];
+        var objects: IGameObject[] = [field, text, alien];
         var asteroids: Asteroid[] = [asteroid1];
 
         var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids);
