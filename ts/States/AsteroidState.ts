@@ -7,12 +7,12 @@ import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { IModel, MovingModel, DynamicModel } from "ts/Models/DynamicModels";
-import { AsteroidData, AsteroidModel } from "ts/Models/Space/Asteroid";
+import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
+import { AsteroidModel } from "ts/Models/Space/Asteroid";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
-import { ILocated, IShapeLocated  } from "ts/Models/PolyModels";
+import { ILocated  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -22,7 +22,7 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
-import { Asteroid } from "ts/GameObjects/Space/SpaceObject";
+import { Asteroid } from "ts/GameObjects/Space/Asteroid";
 import { BasicShip } from "ts/GameObjects/Ships/SpaceShip";
 import { GraphicShip } from "ts/GameObjects/Ships/GraphicShip";
 
@@ -165,11 +165,11 @@ export class AsteroidState implements IGameState {
         if (keys.isKeyDown(Keys.SpaceBar)) this.player.model.shootPrimary();
     }
 
-    asteroidModels(): IModel<IShapeLocated>[] {
+    asteroidModels(): ShapedModel<ILocated>[] {
         return this.asteroids.map(a => a.model);
     }
 
-    bulletModels(): IModel<ILocated>[] {
+    bulletModels(): DynamicModel<ILocated>[] {
         return this.player.model.weaponModel.particles;
         }
 
@@ -177,7 +177,7 @@ export class AsteroidState implements IGameState {
         // effect on asteroid
         
         let a = asteroids[i1];
-        a.data.hit();
+        a.hit();
         this.asteroidNoise = true;
         // remove bullet
         bullets.splice(i2, 1);
@@ -187,7 +187,7 @@ export class AsteroidState implements IGameState {
 
     }
 
-    asteroidPlayerHit(i1: number, asteroids: AsteroidData[], i2: number, player: Coordinate[]) {
+    asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
         this.player.model.crash();
     }
 

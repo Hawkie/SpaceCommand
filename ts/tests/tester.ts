@@ -1,7 +1,7 @@
 import { Coordinate } from "../Physics/Common"
 import { Transforms } from "../Physics/Transforms";
 //import { Polygon } from "../DisplayObjects/DisplayObject";
-import { PlanetSurfaceData } from "../Models/Land/PlanetSurface";
+import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
 
 
 export class Tester {
@@ -32,8 +32,9 @@ export class Tester {
     }
 
      testPlanetSurfaceGenerator() {
-         var surface = new PlanetSurfaceData(new Coordinate(0, 0));
-         surface.generateSurface(600);
+         var s = new Coordinate(0, 0); 
+         var surface = new PlanetSurfaceModel(s);
+         surface.generateSurface(s, 600);
      }
     
     static pass(expected : boolean, actual : boolean) : string{

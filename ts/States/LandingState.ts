@@ -7,11 +7,14 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
-import { PlanetSurfaceData } from "../Models/Land/PlanetSurface";
-import { LandingPadData } from "../Models/Land/LandingPad";
+import { LocatedData } from "ts/Data/PhysicsData";
+import { ShapeData } from "ts/Data/ShapeData";
+import { Direction } from "ts/Data/WindData";
+import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { DynamicModel } from "ts/Models/DynamicModels";
-import { WindModel, Direction } from "ts/Models/Land/WindModel";
+import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
+import { WindModel } from "ts/Models/Land/WindModel";
+import { LandingPadModel } from "../Models/Land/LandingPad";
 import { LandingShipModel } from "ts/Models/Ships/LandingShip";
 
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
@@ -19,7 +22,7 @@ import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { IGameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
-import { PlanetSurface, LandingPad } from "ts/GameObjects/Land/LandObjects"
+import { PlanetSurface } from "ts/GameObjects/Land/PlanetSurface"
 import { WindDirectionIndicator } from "ts/GameObjects/Land/WindDirectionIndicator";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 import { LandingBasicShip } from "ts/GameObjects/Ships/LandingShip";
@@ -27,7 +30,7 @@ import { LandingBasicShip } from "ts/GameObjects/Ships/LandingShip";
 export class LandingState implements IGameState {
     wind : WindDirectionIndicator;
     surface: PlanetSurface;
-    landingPad: LandingPad;
+    landingPad: LandingPadModel;
     velocityText: TextObject;
     interactors: IInteractor[];
 
@@ -57,16 +60,17 @@ export class LandingState implements IGameState {
         this.objects.concat(objects);
         this.wind = new WindDirectionIndicator(new Coordinate(450,50));
         this.surface = new PlanetSurface(new Coordinate(0, 400));
+        this.landingPad = this.surface.model.landingPad;
         // todo placement
-        this.landingPad = new LandingPad(new DynamicModel<LandingPadData>(this.surface.model.data.landingPad));
+        
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
-        this.objects.push(this.landingPad);
+        //this.objects.push(this.landingPad);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
 
-        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model, this.playerSurfaceCollision.bind(this));
-        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model, this.playerLandingPadCollision.bind(this));
+        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad, this.player.model.data, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
@@ -108,7 +112,7 @@ export class LandingState implements IGameState {
     }
 
     windEffect(lastTestModifier: number, wind: WindModel, player: LandingShipModel) {
-        player.data.velX += wind.data.windStrength.value * lastTestModifier;
+        player.data.velX += wind.data.value * lastTestModifier;
     }
 
     playerLandingPadCollision() {

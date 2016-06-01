@@ -1,6 +1,11 @@
 import { Coordinate } from "../Physics/Common";
 
 export class Transforms {
+
+    static random(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
     static Rotate(points: Coordinate[], degrees: number): Coordinate[]{
         var radians = degrees / 360 * Math.PI * 2;
         // simplifying computition of 2x2 matrix

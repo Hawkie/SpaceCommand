@@ -1,8 +1,10 @@
-﻿import { ICoordinate, Coordinate } from "ts/Physics/Common";
+﻿import { ICoordinate, Coordinate, Vector } from "ts/Physics/Common";
 import { ILocatedMoving, LocatedMovingData } from "ts/Data/PhysicsData";
 import { IActor } from "ts/Actors/Actor"
+import { Mover } from "ts/Actors/Movers";
+import { VectorAccelerator } from "ts/Actors/Accelerators";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
-import { DynamicModel, MovingModel, MovingGravityModel } from "ts/Models/DynamicModels";
+import { DynamicModel } from "ts/Models/DynamicModels";
 
 export interface IParticleFieldData {
     particles: DynamicModel<IParticleData>[];
@@ -87,15 +89,18 @@ export class ParticleFieldData implements IParticleFieldData {
     }
 }
 
-export class MovingParticleModel extends MovingModel<IParticleData> {
+export class MovingParticleModel extends DynamicModel<IParticleData> {
     constructor(model: IParticleData) {
-        super(model, []);
+        var mover = new Mover(model);
+        super(model, [mover]);
     }
 }
 
-export class MovingGravityParticleModel extends MovingGravityModel<IParticleData>{
+export class MovingGravityParticleModel extends DynamicModel<IParticleData>{
     constructor(model: IParticleData) {
-        super(model, []);
+        var mover = new Mover(model);
+        var vectorAccelerator = new VectorAccelerator(model, new Vector(180, 10));
+        super(model, [mover, vectorAccelerator]);
     }
 }
 

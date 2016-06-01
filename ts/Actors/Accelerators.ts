@@ -1,7 +1,7 @@
 ﻿import { IVector, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
-import { IMoving } from "ts/Models/PolyModels";
+import { IMoving } from "ts/Data/PhysicsData";
 import { IAngledMovingForwardAcc } from "ts/Data/PhysicsData";
 
 

@@ -1,4 +1,4 @@
-﻿import { Coordinate } from "../Physics/Common";
+﻿import { Coordinate } from "ts/Physics/Common";
 
 export interface ITextData {
     text: string;

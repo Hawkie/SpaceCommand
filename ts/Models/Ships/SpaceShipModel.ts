@@ -1,56 +1,31 @@
 ﻿import { Coordinate } from "ts/Physics/Common";
 import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
-import { ILocated, IMoving, IAngled, IRotating, IForwardAccelerator, ShapeLocatedAngledMovingRotatingData, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels"
-import { ShapeMovingThrustingModel } from "ts/Models/DynamicModels";
+import { BasicShipData } from "ts/Data/ShipData";
+import { ShapeData } from "ts/Data/ShapeData";
+import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
+import { Mover } from "ts/Actors/Movers";
+import { PolyRotator } from "ts/Actors/Rotators";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Transforms } from "ts/Physics/Transforms";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { ParticleDataVectorConstructor } from "ts/Models/Weapons/Bullet";
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon"
-import { IShipData, IFiringShipModel } from "ts/Models/Ships/Ship";
+import { IFiringShipModel } from "ts/Models/Ships/Ship";
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 
-
-export class BasicShipData extends ShapeLocatedAngledMovingRotatingData implements IShipData {
-    maxForwardForce: number;
-    forwardForce: number;
-    maxRotationalSpeed: number;
-    crashed: boolean;
-    exploded: boolean; // for explosion sound
-
-    constructor(collisionPoly: Coordinate[], location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        super(collisionPoly, location, velx, vely, angle, spin);
-        this.points = collisionPoly;
-        this.forwardForce = 0;
-        this.maxForwardForce = 16;
-        this.maxRotationalSpeed = 64;
-        this.crashed = false;
-        this.exploded = false;
-    }
-
-    thrustVelX(): number {
-        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
-        return -velchange.x + this.velX + (Math.random() * 5);
-    }
-
-    thrustVelY(): number {
-        let velchange = Transforms.VectorToCartesian(this.angle, this.forwardForce);
-        return -velchange.y + this.velY + (Math.random() * 5);
-    }
-
-}
-
-export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> implements IFiringShipModel {
+export class BasicShipModel extends ShapedModel<BasicShipData> implements IFiringShipModel {
     weaponModel: IWeaponData;
     thrustParticleModel: ParticleFieldModel;
     explosionParticleModel: ParticleFieldModel;
 
     constructor(data: BasicShipData) {
+        var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        var shape = new ShapeData(triangleShip);
         var weaponModel: IWeaponData = new WeaponData();
         var weaponUpdater: IActor = new ParticleFieldMover(weaponModel);
         
@@ -72,16 +47,20 @@ export class BasicShipModel extends ShapeMovingThrustingModel<BasicShipData> imp
                 data.velY + ((Math.random() - 0.5) * 20),
                 now)));
 
-        var actors: IActor[] = [weaponUpdater, thrustParticleModel, explosionParticleModel];
+
+        var mover: IActor = new Mover(data);
+        var thrust = new ForwardAccelerator(data);
+        var rotator = new PolyRotator(data, shape);
+
+        var actors: IActor[] = [mover, thrust, rotator, weaponUpdater, thrustParticleModel, explosionParticleModel];
         
-        super(data, actors);
+        super(data, shape, actors);
 
         this.weaponModel = weaponModel;
         this.thrustParticleModel = thrustParticleModel;
         this.explosionParticleModel = explosionParticleModel;
     }
 
-    // TODO: MOve these to model
     thrust() {
         //var audio = new Audio("./wav/thrust.wav");
         //audio.play();

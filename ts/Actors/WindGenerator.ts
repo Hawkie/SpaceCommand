@@ -1,8 +1,30 @@
-﻿import { IActor } from "ts/Actors/Actor";
-import { WindData, Direction } from "ts/Models/Land/WindModel";
+﻿import { Coordinate } from "ts/Physics/Common";
+import { IActor } from "ts/Actors/Actor";
+import { IWind, Direction } from "ts/Data/WindData";
+import { IShape, ShapeData } from "ts/Data/ShapeData";
 
 export class WindGenerator implements IActor {
-    constructor(private data: WindData, private windChangeChance: number = 0.05) {
+    pointsRight: Coordinate[];
+    pointsLeft: Coordinate[];
+
+    constructor(private data: IWind, private shape:IShape, private windChangeChance: number = 0.05) {
+        this.pointsRight = [new Coordinate(-15, 10),
+            new Coordinate(15, 10),
+            new Coordinate(15, 20),
+            new Coordinate(30, 0),
+            new Coordinate(15, -20),
+            new Coordinate(15, -10),
+            new Coordinate(-15, -10),
+            new Coordinate(-15, 10)];
+
+        this.pointsLeft = [new Coordinate(20, 10),
+            new Coordinate(-10, 10),
+            new Coordinate(-10, 20),
+            new Coordinate(-25, 0),
+            new Coordinate(-10, -20),
+            new Coordinate(-10, -10),
+            new Coordinate(20, -10),
+            new Coordinate(20, 10)];
     }
 
     update(timeModifier: number) {
@@ -10,19 +32,19 @@ export class WindGenerator implements IActor {
         if (Math.random() < this.windChangeChance) {
             console.log("Changing wind!");
 
-            var wind = this.data.windStrength.value;
+            var wind = this.data.value;
             var newWind = wind + Math.round((Math.random() * 8)) - 4;
             var maxWind = Math.min(newWind, 20);
             var minWind = Math.max(maxWind, -20);
-            this.data.windStrength.value = minWind;
+            this.data.value = minWind;
 
-            // change polygon
-            if (this.data.windStrength.value < 0) {
-                this.data.windRightLeft = Direction.left;
+            if (this.data.value < 0) {
+                this.data.windDirection = Direction.left;
+                this.shape.points = this.pointsLeft;
             } else {
-                this.data.windRightLeft = Direction.right;
+                this.data.windDirection = Direction.right;
+                this.shape.points = this.pointsRight;
             }
-            this.data.updatePolygon();
         }
     }
 }

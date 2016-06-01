@@ -1,21 +1,19 @@
-import { ShapeLocatedData } from "ts/Models/PolyModels";
-import { LandingBasicShipData } from "ts/Models/Ships/LandingShip";
-import { Coordinate } from "ts/Physics/Common";
-import { Transforms } from "ts/Physics/Transforms";
+﻿import { Coordinate } from "ts/Physics/Common";
+import { ILocated, LocatedData } from "ts/Data/PhysicsData";
+import { IShape, ShapeData } from "ts/Data/ShapeData";
+import { ShapedModel } from "ts/Models/DynamicModels";
 
-export class LandingPadData extends ShapeLocatedData {
-    
-    constructor(location : Coordinate){
-        var points = [
+export class LandingPadModel extends ShapedModel<LocatedData> {
+    constructor(location: Coordinate) {
+        var located = new LocatedData(location);
+        var shape = new ShapeData([
             new Coordinate(-10, -2),
             new Coordinate(-13, 10),
             new Coordinate(-10, 0),
             new Coordinate(10, 0),
             new Coordinate(13, 10),
             new Coordinate(10, -2)
-        ];
-        //var polygon = new Polygon(points);
-        super(points, location);
+        ]);
+        super(located, shape, []);
     }
-    
 }

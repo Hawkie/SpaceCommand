@@ -1,15 +1,15 @@
 ﻿import { IActor } from "ts/Actors/Actor";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
-import { ILocated, IShapeAngled } from "ts/Models/PolyModels";
-import { IAngledRotating } from "ts/Data/PhysicsData";
+import { IShape } from "ts/Data/ShapeData";
+import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
 import { IDrawable, IRotatable } from "ts/DisplayObjects/DisplayObject";
 import { Transforms } from "ts/Physics/Transforms";
 
 export class PolyRotator implements IActor {
     private previousAngle: number;
     
-    constructor(private data: IShapeAngled) {
+    constructor(private data: IAngled, private shape: IShape) {
         this.previousAngle = data.angle;
     }
 
@@ -17,8 +17,8 @@ export class PolyRotator implements IActor {
         if (this.previousAngle != this.data.angle) {
             var rotateAngle = this.data.angle - this.previousAngle
             // rotate the difference
-            var newPoints = Transforms.Rotate(this.data.points, rotateAngle);
-            this.data.points = newPoints;
+            var newPoints = Transforms.Rotate(this.shape.points, rotateAngle);
+            this.shape.points = newPoints;
             this.previousAngle = this.data.angle;
         }
     }

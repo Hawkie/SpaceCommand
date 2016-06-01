@@ -1,8 +1,9 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { ILocated, IShapeLocated, IShapeLocatedAngled, IShape } from "ts/Models/PolyModels";
+import { Coordinate } from "ts/Physics/Common";
+import { ILocated } from "ts/Data/PhysicsData";
+import { IShape } from "ts/Data/ShapeData";
 import { IParticleFieldData } from "ts/Models/ParticleFieldModel";
-import { IDrawable } from "ts/DisplayObjects/DisplayObject";
-import { Polygon } from "ts/DisplayObjects/DisplayObject";
+
 
 
 export interface IView {
@@ -10,10 +11,10 @@ export interface IView {
 }
 
 export class PolyView implements IView {
-    constructor(private properties: IShapeLocated) { }
+    constructor(private properties: ILocated, private shape: IShape) { }
 
     display(drawContext: DrawContext) {
-        drawContext.drawP(this.properties.location, this.properties.points);
+        drawContext.drawP(this.properties.location, this.shape.points);
     }
 }
 

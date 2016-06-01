@@ -1,6 +1,5 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { ILocated, IAngled  } from "ts/Models/PolyModels";
-import { ILocatedAngled } from "ts/Data/PhysicsData";
+import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
 import { IGraphic } from "ts/Data/GraphicData";
 import { IParticleFieldData } from "ts/Models/ParticleFieldModel";
 import { IDrawable } from "ts/DisplayObjects/DisplayObject";

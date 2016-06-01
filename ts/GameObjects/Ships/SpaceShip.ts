@@ -1,10 +1,11 @@
-﻿import { IShapeLocated, IShapeLocatedMoving, IShapeLocatedAngledMovingRotataing, IShapeLocatedAngledMovingRotataingAccelerating } from "ts/Models/PolyModels";
+﻿
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { TextData } from "ts/Models/TextModel";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel } from "ts/Models/ParticleFieldModel";
-import { ISpaceShipData, IFiringShipModel } from "ts/Models/Ships/Ship";
-import { BasicShipData, BasicShipModel } from "ts/Models/Ships/SpaceShipModel";
+import { ISpaceShipData, BasicShipData } from "ts/Data/ShipData";
+import { ShapeData } from "ts/Data/ShapeData";
+import { BasicShipModel } from "ts/Models/Ships/SpaceShipModel";
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
@@ -22,10 +23,9 @@ export class BasicShip extends GameObject<BasicShipModel> {
     
 
     constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-
-        var shipModel: BasicShipModel = new BasicShipModel(new BasicShipData(triangleShip, location, velx, vely, angle, spin));
-        var shipView: IView = new PolyView(shipModel.data);
+        
+        var shipModel: BasicShipModel = new BasicShipModel(new BasicShipData(location, velx, vely, angle, spin));
+        var shipView: IView = new PolyView(shipModel.data, shipModel.shape);
 
         var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
         var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);

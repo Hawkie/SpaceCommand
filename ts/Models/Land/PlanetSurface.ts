@@ -1,32 +1,32 @@
-import { LandingPadData } from "ts/Models/Land/LandingPad";
 import { Coordinate } from "ts/Physics/Common";
-import { IShapeLocated, IMoving, ShapeLocatedData } from "ts/Models/PolyModels";
-import { IModel } from "ts/Models/DynamicModels";
+import { ILocated, LocatedData } from "ts/Data/PhysicsData";
+import { IShape, ShapeData } from "ts/Data/ShapeData";
+import { LandingPadModel } from "ts/Models/Land/LandingPad";
+import { ShapedModel } from "ts/Models/DynamicModels";
+import { Transforms } from "ts/Physics/Transforms";
 
-export interface IPlanetSurfaceData extends IShapeLocated {
-    landingPad: IShapeLocated;
-}
 
-export class PlanetSurfaceData extends ShapeLocatedData implements IPlanetSurfaceData {
-    landingPad : LandingPadData;
+export class PlanetSurfaceModel extends ShapedModel<ILocated> {
+    landingPad: LandingPadModel;
     
     xMin: number;
     xMax: number;
     yMin: number;
     yMax: number;
     
-    constructor(surfaceStartingPoint: Coordinate) {
-        super([], surfaceStartingPoint);
+    constructor(startingPoint: Coordinate) {
+        var located = new LocatedData(startingPoint);
+        this.landingPad = undefined;
         this.xMin = 20;
         this.xMax = 40;
         this.yMin = -20;
         this.yMax = 20;
-        this.landingPad = new LandingPadData(new Coordinate(0, 0)); // Temporarily place at (0,0) so this.generateSurface can position it
-        this.points = this.generateSurface(600);
+        
+        var shape = new ShapeData(this.generateSurface(startingPoint, 600));
+        super(located, shape, []);
     }
     
-    generateSurface(surfaceLength : number) : Coordinate[]{
-        // Could probably be nicer code but works for now
+    generateSurface(startingPoint: Coordinate, surfaceLength : number) : Coordinate[]{
         
         var points : Coordinate[] = [];
         
@@ -39,25 +39,21 @@ export class PlanetSurfaceData extends ShapeLocatedData implements IPlanetSurfac
             if(sameY)
                 sameY = false;
             else
-                y = PlanetSurfaceData.random(this.yMin, this.yMax);
-            x += PlanetSurfaceData.random(this.xMin, this.xMax);
+                y = Transforms.random(this.yMin, this.yMax);
+            x += Transforms.random(this.xMin, this.xMax);
             
-            if(x > (surfaceLength / 5) && this.landingPad.location.x == 0){ // Position the landing pad
-                this.landingPad.location = new Coordinate(x + 12, (this.location.y + y) - 10);
+            if (x > (surfaceLength / 5) && this.landingPad === undefined) { // Position the landing pad
+                var xy = new Coordinate(x + 12, (startingPoint.y + y) - 10);
+                this.landingPad = new LandingPadModel(xy);
                 sameY = true;
             }
             
             if(x > surfaceLength){
-                points.push(new Coordinate(surfaceLength, PlanetSurfaceData.random(this.yMin, this.yMax)));
+                points.push(new Coordinate(surfaceLength, Transforms.random(this.yMin, this.yMax)));
                 break;
             }
         }
         points.push(new Coordinate(512,200));
         return points;
-    }
-  
-    
-    static random(min : number, max : number){
-        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 }

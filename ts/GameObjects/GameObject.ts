@@ -1,7 +1,6 @@
 import { DrawContext } from "ts/Common/DrawContext";
 import { IActor } from "ts/Actors/Actor";
 import { IView } from "ts/Views/PolyViews";
-import { IModel } from "ts/Models/DynamicModels";
 
 export interface IGameObject extends IActor, IView { }
 

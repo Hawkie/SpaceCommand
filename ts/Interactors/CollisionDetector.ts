@@ -1,34 +1,35 @@
 ﻿import { IInteractor } from "ts/Interactors/Interactor";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { IShapeLocated, ILocated } from "ts/Models/PolyModels";
-import { IModel, DynamicModel } from "ts/Models/DynamicModels";
+import { ILocated } from "ts/Data/PhysicsData";
+import { IShape } from "ts/Data/ShapeData";
+import { DynamicModel, ShapedModel, IShapedModel } from "ts/Models/DynamicModels";
 
 
 export class ObjectCollisionDetector implements IInteractor {
-    constructor(private model1: IModel<IShapeLocated>, private model2: IModel<ILocated>, private hit: () => void){
+    constructor(private model1: IShapedModel, private point: ILocated, private hit: () => void){
     }
 
     test(lastTestModifier: number) {
-        if (Transforms.hasPoint(this.model1.data.points, this.model1.data.location, this.model2.data.location))
+        if (Transforms.hasPoint(this.model1.shape.points, this.model1.data.location, this.point.location))
             this.hit();
     }
 }
 
 export class Multi2ShapeCollisionDetector implements IInteractor {
-    constructor(private model1s: () => IModel<IShapeLocated>[], private model2: IModel<IShapeLocated>, private hit: (i1: number, model1s: IModel<IShapeLocated>[], i2: number, shape: IModel<IShapeLocated>) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => ShapedModel<ILocated>[], private model2: ShapedModel<ILocated>, private hit: (i1: number, model1s: ShapedModel<ILocated>[], i2: number, shape: ShapedModel<ILocated>) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
         let found = false;
         let targets = this.model1s();
-        let shape = this.model2;
+        let shapeModel = this.model2;
         for (let i1 = targets.length - 1; i1 >= 0; i1--) {
             let target = targets[i1];
-            for (let i2 = shape.data.points.length - 1; i2 >= 0; i2--) {
-                let point = shape.data.points[i2];
-                if (Transforms.hasPoint(target.data.points, target.data.location, new Coordinate(shape.data.location.x + point.x, shape.data.location.y + point.y))) {
-                    this.hit(i1, targets, i2, shape);
+            for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
+                let point = shapeModel.shape.points[i2];
+                if (Transforms.hasPoint(target.shape.points, target.data.location, new Coordinate(shapeModel.data.location.x + point.x, shapeModel.data.location.y + point.y))) {
+                    this.hit(i1, targets, i2, shapeModel);
                     if (this.searchFirstHitOnly) {
                         found = true;
                         break;
@@ -43,7 +44,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
 }
 
 export class Multi2MultiCollisionDetector implements IInteractor {
-    constructor(private model1s: () => IModel<IShapeLocated>[], private model2s: () => IModel<ILocated>[], private hit: (i1:number, model1s: IModel<IShapeLocated>[], i2:number, model2s: IModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => ShapedModel<ILocated>[], private model2s: () => DynamicModel<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated>[], i2:number, model2s: DynamicModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
@@ -54,7 +55,7 @@ export class Multi2MultiCollisionDetector implements IInteractor {
             let target = targets[i1];
             for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
                 let hitter = hitters[i2];
-                if (Transforms.hasPoint(target.data.points, target.data.location, hitter.data.location)) {
+                if (Transforms.hasPoint(target.shape.points, target.data.location, hitter.data.location)) {
                     this.hit(i1, targets, i2, hitters);
                     if (this.searchFirstHitOnly) {
                         found = true;
