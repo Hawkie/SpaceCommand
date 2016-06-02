@@ -43,7 +43,7 @@ export class AsteroidState implements IGameState {
     thrustNoiseStarted: boolean;
     thrustSound: AudioObject;
     explosionSound: AudioObject;
-    asteroidHitSound: BufferObject = undefined;
+    asteroidHitSound: AudioObject = undefined;
     laserSound: FXObject;
     helloSound: BufferObject = undefined;
     loaded: boolean;
@@ -99,12 +99,12 @@ export class AsteroidState implements IGameState {
         this.laserSound = new FXObject(actx,
             laserEffect);
         
-        var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
-        assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
-            this.asteroidHitSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/blast.wav")[0].data);
-            this.helloSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/hello.wav")[0].data, echoEffect);
-        });
-        
+        // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
+        // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
+        //     this.asteroidHitSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/blast.wav")[0].data);
+        //     this.helloSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/hello.wav")[0].data, echoEffect);
+        // });
+        this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
             
         var asteroidBulletDetector = new Multi2MultiCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.model, this.asteroidPlayerHit.bind(this));
@@ -141,8 +141,8 @@ export class AsteroidState implements IGameState {
             this.asteroidNoise = false;
             //if (this.helloSound !== undefined)
             //    this.helloSound.play();
-            if (this.asteroidHitSound !== undefined)
-                this.asteroidHitSound.play();
+            var asteroidHitSound = new AudioObject("res/sound/blast.wav");
+                asteroidHitSound.play();
         }
 
         if (this.player.model.thrustParticleModel.data.on && !this.thrustNoiseStarted) {

@@ -34,7 +34,7 @@ export class Tester {
      testPlanetSurfaceGenerator() {
          var s = new Coordinate(0, 0); 
          var surface = new PlanetSurfaceModel(s);
-         surface.generateSurface(s, 600);
+         PlanetSurfaceModel.generateSurface(s, 600);
      }
     
     static pass(expected : boolean, actual : boolean) : string{

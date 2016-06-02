@@ -54,6 +54,7 @@ export class Assets {
 
         //Use xhr to load the sound file.
         xhr.open("GET", source, true);
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
         xhr.responseType = "arraybuffer";
 
         //When the sound has finished loading, decode it using the
