@@ -41,8 +41,8 @@ export class AudioWithAmplifier implements ISoundObject {
         // connect effect
         if (this.settings !== undefined) {
             var amplifier = new Amplifier(this.audioContext, this.sourceNode, this.settings);
-            amplifier.reset();
         }
+        amplifier.reset();
         this.audioElement.play();
     }
 

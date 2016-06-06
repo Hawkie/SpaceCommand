@@ -24,6 +24,7 @@
   <ItemGroup>
     <Content Include="css\style.css" />
     <Content Include="res\img\ship.png" />
+    <Content Include="res\img\spinningCoin.png" />
     <Content Include="res\img\sprite1.png" />
     <Content Include="res\img\star.png" />
     <Content Include="index.html" />
@@ -42,6 +43,7 @@
     <TypeScriptCompile Include="ts\Actors\Accelerators.ts" />
     <TypeScriptCompile Include="ts\Actors\Actor.ts" />
     <TypeScriptCompile Include="ts\Actors\ParticleFieldUpdater.ts" />
+    <TypeScriptCompile Include="ts\Actors\SpriteAnimator.ts" />
     <TypeScriptCompile Include="ts\Actors\WindGenerator.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
     <TypeScriptCompile Include="ts\Common\Canvas.ts" />
@@ -52,8 +54,10 @@
     <TypeScriptCompile Include="ts\Data\PhysicsData.ts" />
     <TypeScriptCompile Include="ts\Data\ShapeData.ts" />
     <TypeScriptCompile Include="ts\Data\ShipData.ts" />
+    <TypeScriptCompile Include="ts\Data\SpriteData.ts" />
     <TypeScriptCompile Include="ts\Data\WindData.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
+    <TypeScriptCompile Include="ts\GameObjects\Common\SpriteObject.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Controls\ControlPanel.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Ships\GraphicShip.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Ships\LandingShip.ts" />
@@ -64,6 +68,7 @@
     <TypeScriptCompile Include="ts\Interactors\Interactor.ts" />
     <TypeScriptCompile Include="ts\Models\DynamicModels.ts" />
     <TypeScriptCompile Include="ts\Models\Controls\ControlPanelModel.ts" />
+    <TypeScriptCompile Include="ts\Models\Graphic\SpriteModel.ts" />
     <TypeScriptCompile Include="ts\Models\Land\LandingPad.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\SpaceShipModel.ts" />
     <TypeScriptCompile Include="ts\Models\Sound\SoundEffectsModel.ts" />
@@ -81,6 +86,7 @@
     <TypeScriptCompile Include="ts\Game.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Space\Asteroid.ts" />
     <TypeScriptCompile Include="ts\Views\GraphicView.ts" />
+    <TypeScriptCompile Include="ts\Views\SpriteView.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Land\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />

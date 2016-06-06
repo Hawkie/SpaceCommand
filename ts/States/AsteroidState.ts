@@ -8,11 +8,12 @@ import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
+import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { AsteroidModel } from "ts/Models/Space/Asteroid";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
-import { ILocated  } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -21,10 +22,14 @@ import { Multi2ShapeCollisionDetector, Multi2MultiCollisionDetector } from "ts/I
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { SpriteObject } from "ts/GameObjects/Common/SpriteObject";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 import { Asteroid } from "ts/GameObjects/Space/Asteroid";
 import { BasicShip } from "ts/GameObjects/Ships/SpaceShip";
 import { GraphicShip } from "ts/GameObjects/Ships/GraphicShip";
+import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
+import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
+import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -47,7 +52,14 @@ export class AsteroidState implements IGameState {
     laserSound: FXObject;
     helloSound: BufferObject = undefined;
     loaded: boolean;
-    
+
+    static createCoin(location: Coordinate): IGameObject {
+        var l = new LocatedData(location);
+        var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+        var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+        var coinObj = new SpriteObject(l, s, [a]);
+        return coinObj;
+    }
     
     static create(assets: Assets, actx: AudioContext): AsteroidState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
@@ -57,7 +69,8 @@ export class AsteroidState implements IGameState {
         var field: IGameObject = new ParticleField(pFieldModel,2, 2);
     
         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
-
+        var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
+        
         // special
         let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
         let asteroid1 = new Asteroid(new Coordinate(200, 230), 2, 2, 40, -2);
@@ -65,7 +78,7 @@ export class AsteroidState implements IGameState {
         let alien: IGameObject = new GraphicShip(new Coordinate(200, 100));
 
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: IGameObject[] = [field, text, alien];
+        var objects: IGameObject[] = [field, text, alien, coinObj];
         var asteroids: Asteroid[] = [asteroid1];
 
         var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids);

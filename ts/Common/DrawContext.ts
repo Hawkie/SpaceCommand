@@ -31,9 +31,9 @@ export class DrawContext {
         this.ctx.drawImage(img, x, y);
     }
 
-    // drawSprite(img, x, y, frame) {
-    //     this.ctx.drawImage(img, spriteX, spriteY, spriteW, spriteH, x, y, screenWidth, screenHeight)
-    // }
+    drawSprite(img: HTMLImageElement, spriteX: number, spriteY: number, spriteW:number, spriteH:number, x: number, y: number, screenWidth:number, screenHeight: number) {
+         this.ctx.drawImage(img, spriteX, spriteY, spriteW, spriteH, x, y, screenWidth, screenHeight)
+     }
 
     drawText(x : number, y : number, text : string, fontSize : number, font : string) {
         this.ctx.font = String(fontSize) + "px " + font;

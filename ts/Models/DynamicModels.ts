@@ -45,3 +45,13 @@ export class DisplayModel<TPhysics extends ILocated> implements IActor, ILocated
         this.actors.forEach(a => a.update(timeModifier));
     }
 }
+
+
+export class Model<TPhysics extends ILocated, TDraw> implements IActor, ILocatedModel {
+    constructor(public data: TPhysics, public graphic: TDraw, private actors: IActor[] = []) {
+    }
+
+    update(timeModifier: number) {
+        this.actors.forEach(a => a.update(timeModifier));
+    }
+}
