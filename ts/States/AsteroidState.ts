@@ -202,7 +202,7 @@ export class AsteroidState implements IGameState {
             this.viewScale = -0.01;
         }
         else this.viewScale = 0;
-        this.zoom += this.viewScale;
+        this.zoom *= 1+ this.viewScale;
     }
 
     asteroidModels(): ShapedModel<ILocated>[] {

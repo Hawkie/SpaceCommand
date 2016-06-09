@@ -33,8 +33,8 @@ export class BasicShipModel extends ShapedModel<BasicShipData> implements IFirin
         // use particle field model!
         var thrustParticleData = new ParticleFieldData(20, 1, 0, false);
         var thrustParticleModel: ParticleFieldModel = new ParticleFieldModel(thrustParticleData,
-            (now: number) => new MovingParticleModel(new ParticleData(data.location.x,
-                data.location.y,
+            (now: number) => new MovingParticleModel(new ParticleData(data.location.x + shape.points[2].x,
+                data.location.y + shape.points[2].y,
                 data.thrustVelX(),
                 data.thrustVelY(),
                 now)));
