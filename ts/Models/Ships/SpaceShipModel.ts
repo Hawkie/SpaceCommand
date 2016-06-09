@@ -25,6 +25,7 @@ export class BasicShipModel extends ShapedModel<BasicShipData> implements IFirin
 
     constructor(data: BasicShipData) {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        Transforms.scale(triangleShip, 2, 2);
         var shape = new ShapeData(triangleShip);
         var weaponModel: IWeaponData = new WeaponData();
         var weaponUpdater: IActor = new ParticleFieldMover(weaponModel);

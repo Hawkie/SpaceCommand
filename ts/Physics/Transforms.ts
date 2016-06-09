@@ -31,6 +31,9 @@ export class Transforms {
         return new Coordinate(x, y);
     }
 
+    static scale(points: Coordinate[], scaleX: number, scaleY:number) {
+        points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });
+    }
 
 
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html

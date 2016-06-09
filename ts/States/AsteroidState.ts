@@ -52,6 +52,9 @@ export class AsteroidState implements IGameState {
     laserSound: FXObject;
     helloSound: BufferObject = undefined;
     loaded: boolean;
+    viewScale: number;
+    zoom: number;
+    zoomOrigin: Coordinate;
 
     static createCoin(location: Coordinate): IGameObject {
         var l = new LocatedData(location);
@@ -86,7 +89,10 @@ export class AsteroidState implements IGameState {
         return asteroidState;
     }
     
-    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player : BasicShip, private objects : IGameObject[], private asteroids : Asteroid[]) {
+    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[]) {
+        this.viewScale = 1;
+        this.zoom = 1;
+        this.zoomOrigin = new Coordinate(0, 0);
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
@@ -132,11 +138,24 @@ export class AsteroidState implements IGameState {
     }
     
     // order is important. Like layers on top of each other.
-    display(drawingContext : DrawContext) {
+    display(drawingContext: DrawContext) {
+
+
+        
         drawingContext.clear();
+        drawingContext.translate(this.player.model.data.location.x * (1 - this.zoom),
+            this.player.model.data.location.y * (1 - this.zoom));
+        drawingContext.zoom(this.zoom, this.zoom);
+        
         this.objects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
+        //drawingContext.translate(, 240
         this.player.display(drawingContext);
+        drawingContext.zoom(1 / this.zoom, 1 / this.zoom);
+        drawingContext.translate(-this.player.model.data.location.x * (1-this.zoom),
+            -this.player.model.data.location.y * (1-this.zoom));
+        
+        
     }
 
     sound(actx: AudioContext) {
@@ -176,6 +195,14 @@ export class AsteroidState implements IGameState {
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
         if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
         if (keys.isKeyDown(Keys.SpaceBar)) this.player.model.shootPrimary();
+        if (keys.isKeyDown(Keys.Z)) {
+            this.viewScale = 0.01;
+        }
+        else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
+            this.viewScale = -0.01;
+        }
+        else this.viewScale = 0;
+        this.zoom += this.viewScale;
     }
 
     asteroidModels(): ShapedModel<ILocated>[] {

@@ -26,6 +26,7 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData>
             new Coordinate(2, 20),
             new Coordinate(-2, 20),
             new Coordinate(-2, -20)];
+        Transforms.scale(asteroid1, 2, 2);
         var shape: IShape = new ShapeData(asteroid1);
         var data = new LocatedMovingAngledRotatingData(location, velX, velY, angle, spin);
         var mover = new Mover(data);

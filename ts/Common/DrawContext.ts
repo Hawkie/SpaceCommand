@@ -2,15 +2,19 @@ import { Coordinate } from "ts/Physics/Common";
 //import { Polygon } from "./DisplayObject";
 
 export class DrawContext {
-    private ctx: any;
-    constructor(ctx) {
-        this.ctx = ctx;
+    constructor(private ctx: CanvasRenderingContext2D) {
         this.ctx.strokeStyle = "#fff";
         this.ctx.fillStyle = "#fff";
     }
 
+    zoom(scaleX:number, scaleY:number) {
+        var ctx = this.ctx;
+        ctx.scale(scaleX, scaleY);
+    }
+
     drawP(location: Coordinate, points: Coordinate[]) {
         var ctx = this.ctx;
+        //ctx.scale(2, 2);
         var p = points;
         let origFillStyle = ctx.fillStyle;
         ctx.fillStyle = "#111";
@@ -24,6 +28,7 @@ export class DrawContext {
             ctx.stroke();
             ctx.fill();
         }
+        //ctx.scale(0.5, 0.5);
         this.ctx.fillStyle = origFillStyle;
     }
 
@@ -56,6 +61,10 @@ export class DrawContext {
 
     clear() {
         var ctx = this.ctx;
-        ctx.clearRect(0, 0, 512, 480);
+        var l = ctx.canvas.clientLeft;
+        var t = ctx.canvas.clientTop;
+        var w = ctx.canvas.clientWidth;
+        var h = ctx.canvas.clientHeight;
+        ctx.clearRect(l, t, w, h);
     }
 }

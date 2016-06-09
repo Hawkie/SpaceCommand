@@ -42,5 +42,7 @@ export enum Keys {
     End = 35,
     Home = 36,
     PageUp = 33,
-    PageDown = 34
+    PageDown = 34,
+    Z = 90,
+    X = 88
 }
