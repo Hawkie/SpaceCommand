@@ -1,4 +1,4 @@
-# SpaceCommand
+#  SpaceCommand
 The start of a two dimensional, strategic highly playable, space adventure game involving asteroids, space combat, planetry landings, planetry combat. 
 
 Player starts with small ship, building a fleet, where each ship can be controlled directly or commanded with high level commands
