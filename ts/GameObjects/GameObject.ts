@@ -4,7 +4,7 @@ import { IView } from "ts/Views/PolyViews";
 
 export interface IGameObject extends IActor, IView { }
 
-export abstract class GameObject<TModel extends IActor> implements IGameObject {    
+export class GameObject<TModel extends IActor> implements IGameObject {    
     constructor(public model: TModel, private views: IView[]) {
     }
 

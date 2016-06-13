@@ -19,7 +19,6 @@ export class LandingBasicShip extends GameObject<LandingShipModel> {
         var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
         super(shipModel, [shipView, thrustView, explosionView]);
-
     }
 
     

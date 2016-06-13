@@ -8,7 +8,9 @@ import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 
 
 export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData> implements IHittable {
-    constructor(location: Coordinate, velX:number, velY:number, angle:number, spin:number) {
+
+    size: number;
+    constructor(location: Coordinate, velX:number, velY:number, angle:number, spin:number, size:number) {
         var asteroid1 = [new Coordinate(-4, -2),
             new Coordinate(-2, -4),
             new Coordinate(0, -2),
@@ -21,17 +23,18 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData>
             new Coordinate(-4, 2),
             new Coordinate(-4, -2),
         ];
-        var rectangle1 = [new Coordinate(- 2, -20),
-            new Coordinate(2, -20),
-            new Coordinate(2, 20),
-            new Coordinate(-2, 20),
-            new Coordinate(-2, -20)];
-        Transforms.scale(asteroid1, 2, 2);
+        //var rectangle1 = [new Coordinate(- 2, -20),
+        //    new Coordinate(2, -20),
+        //    new Coordinate(2, 20),
+        //    new Coordinate(-2, 20),
+        //    new Coordinate(-2, -20)];
+        Transforms.scale(asteroid1, size, size);
         var shape: IShape = new ShapeData(asteroid1);
         var data = new LocatedMovingAngledRotatingData(location, velX, velY, angle, spin);
         var mover = new Mover(data);
         var spinner = new Spinner(data);
         super(data, shape, [mover, spinner]);
+        this.size = size;
     }
 
     hit() {
