@@ -19,14 +19,21 @@ export class Game {
         var canvas = new Canvas(512, 480, document);
         var audioContext = new AudioContext();
         var assets = new Assets();
+        var states = Game.createStates(assets, audioContext);
+        var gameloop = new EventLoop(window, canvas, audioContext, states);
 
+        gameloop.loop();
+    }
+
+    static createStates(assets: Assets, audioContext:AudioContext): IGameState[] {
+
+        var menuState = MenuState.create(assets, audioContext);
         var asteroidState = AsteroidState.create(assets, audioContext);
         var landingState = LandingState.create(assets);
         var soundDesigner = SoundDesignerState.create();
-        var initialState = MenuState.create(assets, audioContext, [asteroidState, landingState, soundDesigner]);
 
-        var gameloop = new EventLoop(window, canvas, audioContext, initialState);
+        var states = [menuState, asteroidState, landingState, soundDesigner];
 
-        gameloop.loop();
+        return states;
     }
 };

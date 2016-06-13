@@ -55,6 +55,7 @@ export class AsteroidState implements IGameState {
     viewScale: number;
     zoom: number;
     zoomOrigin: Coordinate;
+    exitState: boolean = false;
 
     static createCoin(location: Coordinate): IGameObject {
         var l = new LocatedData(location);
@@ -139,8 +140,6 @@ export class AsteroidState implements IGameState {
     
     // order is important. Like layers on top of each other.
     display(drawingContext: DrawContext) {
-
-
         
         drawingContext.clear();
         drawingContext.translate(this.player.model.data.location.x * (1 - this.zoom),
@@ -202,7 +201,8 @@ export class AsteroidState implements IGameState {
             this.viewScale = -0.01;
         }
         else this.viewScale = 0;
-        this.zoom *= 1+ this.viewScale;
+        this.zoom *= 1 + this.viewScale;
+        if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
 
     asteroidModels(): ShapedModel<ILocated>[] {
@@ -239,8 +239,13 @@ export class AsteroidState implements IGameState {
         return new Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
     }
     
-    returnState() : IGameState {
-        return null;
+    returnState() : number {
+        let s = undefined;
+        if (this.exitState) {
+            this.exitState = false;
+            s = 0;
+        }
+        return s;
     }
 
 }

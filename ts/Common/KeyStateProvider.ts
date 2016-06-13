@@ -32,17 +32,22 @@ export class KeyStateProvider {
 
 export enum Keys {
     // Some handy key codes
+    Tab = 9,
+    Enter = 13,
+    Esc = 27, // exit state
+
     LeftArrow = 37,
     UpArrow = 38,
     RightArrow = 39,
     DownArrow = 40,
     SpaceBar = 32,
-    Tab = 9,
-    Enter = 13,
-    End = 35,
-    Home = 36,
+
     PageUp = 33,
     PageDown = 34,
-    Z = 90,
-    X = 88
+    End = 35,
+    Home = 36,
+
+    X = 88, // zoom out
+    Z = 90, // zoom in
+    
 }

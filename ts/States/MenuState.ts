@@ -20,6 +20,10 @@ import { Asteroid } from "ts/GameObjects/Space/Asteroid";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
+export class MenuItem {
+    constructor(public name: string, public id: number) { }
+}
+
 export class MenuState implements IGameState {
 
     menuItems: SparseArray<TextObject> = new SparseArray<TextObject>(10);
@@ -27,8 +31,8 @@ export class MenuState implements IGameState {
     size: number = 16;
     selectedItem: number = 0;
     objects: Array<IGameObject>;
-    states: Array<IGameState>;
-    selectedState: IGameState = null;
+    items: Array<MenuItem>;
+    selected: boolean = false;
     lastMoved: number = Date.now();
     musicObject: AudioObject;
 
@@ -36,7 +40,7 @@ export class MenuState implements IGameState {
     private playingMusic: boolean = false;
     private assetsLoaded: boolean = false;
 
-    static create(assets: Assets, actx:AudioContext, states: Array<IGameState>): MenuState {
+    static create(assets: Assets, actx:AudioContext): MenuState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var fData1: IParticleFieldData = new ParticleFieldData(1);
         var fModel1: ParticleFieldModel = new ParticleFieldModel(fData1,
@@ -49,20 +53,21 @@ export class MenuState implements IGameState {
         
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field1, field2, text];
+        let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Sound Designer", 3)];
 
-        return new MenuState("Menu", assets, actx, objects, states);
+        return new MenuState("Menu", assets, actx, objects, items);
     }
 
-    constructor(public name: string, private assets: Assets, private actx:AudioContext, objects : Array<IGameObject>, states : Array<IGameState>) {
+    constructor(public name: string, private assets: Assets, private actx:AudioContext, objects : Array<IGameObject>, items : Array<MenuItem>) {
         let x: number = 200;
         let y: number = 100;
 
-        states.forEach(state => {
-            this.menuItems.add(new TextObject(state.name, new Coordinate(x, y), this.font, this.size));
+        items.forEach(item => {
+            this.menuItems.add(new TextObject(item.name, new Coordinate(x, y), this.font, this.size));
             y += 50;
         });
         this.objects = objects;
-        this.states = states;
+        this.items = items;
         // music params
         //var effects: SoundEffectData = new SoundEffectData();
         //effects.echo = [0.2, 0.2, 1000];
@@ -84,10 +89,10 @@ export class MenuState implements IGameState {
         for (let i: number = 0; i < this.menuItems.length; i++) {
             let item = this.menuItems[i];
             if (i == this.selectedItem) {
-                item.model.data.text = "<" + this.states[i].name + ">";
+                item.model.data.text = "<" + this.items[i].name + ">";
             }
             else {
-                item.model.data.text = " " + this.states[i].name + " ";
+                item.model.data.text = " " + this.items[i].name + " ";
             }
             item.display(drawingContext);
         }
@@ -116,13 +121,18 @@ export class MenuState implements IGameState {
             if (keys.isKeyDown(Keys.DownArrow)) this.selectedItem += 1;
             if (this.selectedItem < 0) this.selectedItem = 0;
             if (this.selectedItem >= this.menuItems.length) this.selectedItem = this.menuItems.length - 1;
-            if (keys.isKeyDown(Keys.Enter)) this.selectedState = this.states[this.selectedItem];
+            if (keys.isKeyDown(Keys.Enter)) this.selected = true;
         }
     }
 
     tests(lastTestModifier: number) { }
 
-    returnState(): IGameState {
-        return this.selectedState;
+    returnState(): number {
+        let newState = undefined;
+        if (this.selected) {
+            this.selected = false;
+            newState = this.items[this.selectedItem].id;
+        }
+        return newState;
     }
 }

@@ -6,10 +6,10 @@ import { KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 export class EventLoop {
 
-    private currentGameState: IGameState = null;
-    constructor(private window: Window, private canvas: Canvas, private audioContext: AudioContext, private initialGameState: IGameState) {
+    currentState: IGameState;
+    constructor(private window: Window, private canvas: Canvas, private audioContext: AudioContext, private states: IGameState[]) {
         this.keyStateProvider = new KeyStateProvider(this.window);
-        this.currentGameState = initialGameState;
+        this.currentState = states[0];
     }
 
     loop() {
@@ -25,14 +25,15 @@ export class EventLoop {
     }
 
     processOneFrame(delta: number) {
-        let gs : IGameState = this.currentGameState;
+        let gs : IGameState = this.currentState;
         gs.display(this.canvas.context());
         gs.sound(this.audioContext);
         gs.tests(delta);
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);
-        if (gs.returnState() != null)
-            this.currentGameState = gs.returnState();
+        var newState = gs.returnState();
+        if (newState != undefined)
+            this.currentState = this.states[newState];
     }
 
     keyStateProvider: KeyStateProvider;

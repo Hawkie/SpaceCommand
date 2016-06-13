@@ -12,8 +12,9 @@ export interface IGameState
     sound(audioContext: AudioContext);
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number);
     tests(lastTestModifier: number);
-    returnState() : IGameState;
+    returnState() : number;
 }
+
 
 
 export abstract class GameState implements IGameState {
@@ -30,6 +31,6 @@ export abstract class GameState implements IGameState {
 
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number) { }
 
-    returnState(): IGameState { return null; }
+    returnState(): number { return undefined; }
 
 }

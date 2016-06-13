@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\style.css" />
+    <Content Include="js\land.js" />
     <Content Include="res\img\ship.png" />
     <Content Include="res\img\spinningCoin.png" />
     <Content Include="res\img\sprite1.png" />

@@ -134,7 +134,7 @@ export class LandingState implements IGameState {
         this.player.model.crash();
     }
     
-    returnState() : IGameState {
-        return null;
+    returnState() : number {
+        return undefined;
     }
 }

@@ -72,5 +72,5 @@ export class SoundDesignerState extends GameState {
         }
     }
 
-    returnState(): IGameState { return null; }
+    returnState(): number { return undefined; }
 }
