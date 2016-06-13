@@ -1,23 +1,21 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
 import { SoundEffectData, SoundEffectsModel } from "ts/Models/Sound/SoundEffectsModel";
 import { FXObject } from "ts/Sound/FXObject";
-
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
 import { ControlPanel } from "ts/GameObjects/Controls/ControlPanel";
 import { Slider } from "ts/Models/Controls/ControlPanelModel";
 import { TextData } from "ts/Models/TextModel";
-
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
-
 import { IGameState, GameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 
 export class SoundDesignerState extends GameState {
 
-    lastMoved:number;
+    lastMoved: number;
+    exitState: boolean = false;
 
     static create(): IGameState {
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
@@ -67,10 +65,16 @@ export class SoundDesignerState extends GameState {
                 this.controls.model.onToggle();
             }
             if (keyStateProvider.isKeyDown(Keys.SpaceBar)) { this.playedSound = false; }
-            //if (keyStateProvider.isKeyDown(Keys.Home)) {
-            //this.exitState = this.parentState;
+            if (keyStateProvider.isKeyDown(Keys.Esc)) this.exitState = true;
         }
     }
 
-    returnState(): number { return undefined; }
+    returnState(): number {
+        let s = undefined;
+        if (this.exitState) {
+            this.exitState = false;
+            s = 0;
+        }
+        return s;
+    }
 }

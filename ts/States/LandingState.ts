@@ -36,6 +36,7 @@ export class LandingState implements IGameState {
 
     playExploded: boolean;
     explosionSound: AudioObject;
+    exitState: boolean = false;
 
     static create(assets:Assets): LandingState {
         // Background
@@ -91,6 +92,7 @@ export class LandingState implements IGameState {
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
         else if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
         else this.player.model.notMovingOnX(lastDrawModifier);
+        if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
     
     display(drawingContext : DrawContext) {
@@ -135,6 +137,11 @@ export class LandingState implements IGameState {
     }
     
     returnState() : number {
-        return undefined;
+        let s = undefined;
+        if (this.exitState) {
+            this.exitState = false;
+            s = 0;
+        }
+        return s;
     }
 }

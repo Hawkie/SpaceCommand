@@ -215,7 +215,6 @@ export class AsteroidState implements IGameState {
 
     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: MovingParticleModel[]) {
         // effect on asteroid
-        
         let a = asteroids[i1];
         a.hit();
         this.asteroidNoise = true;
