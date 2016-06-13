@@ -59,44 +59,7 @@ export class AsteroidState implements IGameState {
     zoom: number;
     zoomOrigin: Coordinate;
     exitState: boolean = false;
-
-    static createCoin(location: Coordinate): IGameObject {
-        var l = new LocatedData(location);
-        var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-        var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-        var coinObj = new SpriteObject(l, s, [a]);
-        return coinObj;
-    }
-    
-    static create(assets: Assets, actx: AudioContext): AsteroidState {
-        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
-        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
-        var field: IGameObject = new ParticleField(pFieldModel,2, 2);
-    
-        //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
-        var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
-        
-        // special
-        let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
-        let asteroid1 = AsteroidState.createAsteroid(new Coordinate(200, 230), 5, 5, 40, -2, 3);
-        let asteroid2 = AsteroidState.createAsteroid(new Coordinate(100, 180), 6, 7, 40, -2, 3);
-        let asteroid3 = AsteroidState.createAsteroid(new Coordinate(150, 130), 9, 8, 40, -2, 3);
-
-        let alien: IGameObject = new GraphicShip(new Coordinate(200, 100));
-
-        var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
-        var valueDisplay: ValueController = new ValueController(0, new Coordinate(460, 20), "Arial", 18);
-
-        var objects: IGameObject[] = [field, text, score, valueDisplay, alien, coinObj];
-        var asteroids: Asteroid[] = [asteroid1, asteroid2, asteroid3];
-
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids, valueDisplay);
-        
-        return asteroidState;
-    }
+    level: number = 3;
     
     constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueController) {
         this.viewScale = 1;
@@ -148,6 +111,10 @@ export class AsteroidState implements IGameState {
         // keep objects in screen
         this.asteroids.forEach(x => this.keepIn(x.model.data));
         this.keepIn(this.player.model.data);
+        if (this.asteroids.length == 0) {
+            this.level += 1;
+            this.asteroids = AsteroidState.createLevel(this.level);
+        }
     }
 
     private keepIn(l: ILocated) {
@@ -259,6 +226,51 @@ export class AsteroidState implements IGameState {
         this.interactors.forEach(i => i.test(lastTestModifier));
     }
 
+    returnState(): number {
+        let s = undefined;
+        if (this.exitState) {
+            this.exitState = false;
+            s = 0;
+        }
+        return s;
+    }
+
+    static createState(assets: Assets, actx: AudioContext): AsteroidState {
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
+        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
+            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+        var field: IGameObject = new ParticleField(pFieldModel, 2, 2);
+
+        //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
+        var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
+
+        // special
+        let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
+        let asteroids = AsteroidState.createLevel(3);
+
+        let alien: IGameObject = new GraphicShip(new Coordinate(200, 100));
+
+        var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
+        var valueDisplay: ValueController = new ValueController(0, new Coordinate(460, 20), "Arial", 18);
+
+        var objects: IGameObject[] = [field, text, score, valueDisplay, alien, coinObj];
+
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids, valueDisplay);
+
+        return asteroidState;
+    }
+
+    private static createLevel(level:number): Asteroid[]{
+        let a: Asteroid[] = [];
+        for (var i = 0; i < level; i++) {
+            let asteroid = AsteroidState.createAsteroid(new Coordinate(Math.random() *512, Math.random() * 480), Math.random() * 15, Math.random() * 15, Math.random() * 360, Math.random() * 10, 3);
+            a.push(asteroid);
+        }
+        return a;
+    }
+
     //return Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
     private static createAsteroid(location: Coordinate, velX: number, velY: number, angle: number, spin: number, size: number): Asteroid {
         let l = new Coordinate(location.x, location.y);
@@ -268,13 +280,13 @@ export class AsteroidState implements IGameState {
         return asteroidObject;
         
     }
-    
-    returnState() : number {
-        let s = undefined;
-        if (this.exitState) {
-            this.exitState = false;
-            s = 0;
-        }
-        return s;
+
+    static createCoin(location: Coordinate): IGameObject {
+        var l = new LocatedData(location);
+        var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+        var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+        var coinObj = new SpriteObject(l, s, [a]);
+        return coinObj;
     }
+   
 }
