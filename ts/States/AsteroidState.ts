@@ -144,6 +144,17 @@ export class AsteroidState implements IGameState {
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
         this.player.update(lastDrawModifier);
+
+        // keep objects in screen
+        this.asteroids.forEach(x => this.keepIn(x.model.data));
+        this.keepIn(this.player.model.data);
+    }
+
+    private keepIn(l: ILocated) {
+        if (l.location.x > 512) l.location.x = 0;
+        if (l.location.x < 0) l.location.x = 512;
+        if (l.location.y > 480) l.location.y = 0;
+        if (l.location.y < 0) l.location.y = 480;
     }
     
     // order is important. Like layers on top of each other.
