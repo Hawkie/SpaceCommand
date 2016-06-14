@@ -1,7 +1,6 @@
 ﻿import { ILocated, IMoving } from "ts/Data/PhysicsData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
-//import { ILocatedMoving, ILocatedAngled, ILocatedAngledMoving, ILocatedMovingAngledRotatingData, ILocatedAngledMovingRotatingForwardAcc} from "ts/Data/PhysicsData";
 import { TextData } from "ts/Models/TextModel";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";

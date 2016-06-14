@@ -1,7 +1,7 @@
 import { Coordinate } from "../Physics/Common"
 import { Transforms } from "../Physics/Transforms";
 //import { Polygon } from "../DisplayObjects/DisplayObject";
-import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
+import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 
 
 export class Tester {

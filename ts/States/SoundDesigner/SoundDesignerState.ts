@@ -1,5 +1,5 @@
 ﻿import { DrawContext} from "ts/Common/DrawContext";
-import { SoundEffectData, SoundEffectsModel } from "ts/Models/Sound/SoundEffectsModel";
+import { SoundEffectData, SoundEffectsModel } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { FXObject } from "ts/Sound/FXObject";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";

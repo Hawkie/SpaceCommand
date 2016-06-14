@@ -60,25 +60,21 @@
     <TypeScriptCompile Include="ts\GameObjects\Common\ParticleField.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\SpriteObject.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Controls\ControlPanel.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Ships\GraphicShip.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Ships\LandingShip.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Land\PlanetSurface.ts" />
     <TypeScriptCompile Include="ts\GameObjects\Common\BaseObjects.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Ships\SpaceShip.ts" />
     <TypeScriptCompile Include="ts\Interactors\CollisionDetector.ts" />
     <TypeScriptCompile Include="ts\Interactors\Interactor.ts" />
     <TypeScriptCompile Include="ts\Models\DynamicModels.ts" />
     <TypeScriptCompile Include="ts\Models\Controls\ControlPanelModel.ts" />
     <TypeScriptCompile Include="ts\Models\Graphic\SpriteModel.ts" />
-    <TypeScriptCompile Include="ts\Models\Land\LandingPad.ts" />
-    <TypeScriptCompile Include="ts\Models\Ships\SpaceShipModel.ts" />
-    <TypeScriptCompile Include="ts\Models\Sound\SoundEffectsModel.ts" />
-    <TypeScriptCompile Include="ts\Models\Space\Asteroid.ts" />
+    <TypeScriptCompile Include="ts\States\Land\LandingPad.ts" />
+    <TypeScriptCompile Include="ts\States\Asteroids\SpaceShipModel.ts" />
+    <TypeScriptCompile Include="ts\States\SoundDesigner\SoundEffectsModel.ts" />
+    <TypeScriptCompile Include="ts\States\Asteroids\AsteroidModel.ts" />
     <TypeScriptCompile Include="ts\Models\TextModel.ts" />
     <TypeScriptCompile Include="ts\Resources\Assets.ts" />
     <TypeScriptCompile Include="ts\Sound\FXObject.ts" />
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
-    <TypeScriptCompile Include="ts\States\SoundDesignerState.ts" />
+    <TypeScriptCompile Include="ts\States\SoundDesigner\SoundDesignerState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
@@ -89,18 +85,17 @@
     <TypeScriptCompile Include="ts\Views\GraphicView.ts" />
     <TypeScriptCompile Include="ts\Views\SpriteView.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Land\WindDirectionIndicator.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />
     <TypeScriptCompile Include="ts\Actors\Rotators.ts" />
-    <TypeScriptCompile Include="ts\Models\Ships\LandingShip.ts" />
+    <TypeScriptCompile Include="ts\States\Land\LandingShip.ts" />
     <TypeScriptCompile Include="ts\Models\Ships\Ship.ts" />
     <TypeScriptCompile Include="ts\Sound\Amplifier.ts" />
     <TypeScriptCompile Include="ts\Models\ParticleFieldModel.ts" />
-    <TypeScriptCompile Include="ts\Models\Land\PlanetSurface.ts" />
-    <TypeScriptCompile Include="ts\Models\Land\WindModel.ts" />
-    <TypeScriptCompile Include="ts\States\AsteroidState.ts" />
+    <TypeScriptCompile Include="ts\States\Land\PlanetSurface.ts" />
+    <TypeScriptCompile Include="ts\States\Land\WindModel.ts" />
+    <TypeScriptCompile Include="ts\States\Asteroids\AsteroidState.ts" />
     <TypeScriptCompile Include="ts\States\GameState.ts" />
-    <TypeScriptCompile Include="ts\States\LandingState.ts" />
+    <TypeScriptCompile Include="ts\States\Land\LandingState.ts" />
     <TypeScriptCompile Include="ts\States\MenuState.ts" />
     <TypeScriptCompile Include="ts\tests\tester.ts" />
     <TypeScriptCompile Include="ts\Models\Weapons\Bullet.ts" />
@@ -122,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\json\" />
-    <Folder Include="ts\GameObjects\Space\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

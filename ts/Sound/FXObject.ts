@@ -1,4 +1,4 @@
-﻿import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
+﻿import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 import { ISoundObject } from "ts/Sound/SoundObject";
 

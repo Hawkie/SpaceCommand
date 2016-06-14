@@ -1,7 +1,7 @@
 import { Coordinate } from "ts/Physics/Common";
 import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
-import { LandingPadModel } from "ts/Models/Land/LandingPad";
+import { LandingPadModel } from "ts/States/Land/LandingPad";
 import { ShapedModel } from "ts/Models/DynamicModels";
 import { Transforms } from "ts/Physics/Transforms";
 

@@ -10,22 +10,29 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { LocatedData } from "ts/Data/PhysicsData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
-import { PlanetSurfaceModel } from "../Models/Land/PlanetSurface";
+import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
-import { WindModel } from "ts/Models/Land/WindModel";
-import { LandingPadModel } from "../Models/Land/LandingPad";
-import { LandingShipModel } from "ts/Models/Ships/LandingShip";
+import { WindModel } from "ts/States/Land/WindModel";
+import { LandingPadModel } from "ts/States/Land/LandingPad";
+import { LandingShipModel } from "ts/States/Land/LandingShip";
 
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
-import { IGameObject } from "ts/GameObjects/GameObject"
+import { IGameObject, GameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/Common/BaseObjects";
-import { PlanetSurface } from "ts/GameObjects/Land/PlanetSurface"
-import { WindDirectionIndicator } from "ts/GameObjects/Land/WindDirectionIndicator";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
-import { LandingBasicShip } from "ts/GameObjects/Ships/LandingShip";
+import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { ValueView } from "ts/Views/TextView";
+import { LandingBasicShipData } from "ts/Data/ShipData";
+
+
+class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
+
+class WindDirectionIndicator extends GameObject<WindModel> { }
+
+class LandingBasicShip extends GameObject<LandingShipModel> { }
 
 export class LandingState implements IGameState {
     wind : WindDirectionIndicator;
@@ -47,7 +54,7 @@ export class LandingState implements IGameState {
         var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
         
         // ships        
-        let landingShip = new LandingBasicShip(new Coordinate(256, 240));
+        let landingShip = LandingState.createLandingShip(new Coordinate(256, 240));
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
@@ -59,8 +66,8 @@ export class LandingState implements IGameState {
         this.player = player;
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
-        this.wind = new WindDirectionIndicator(new Coordinate(450,50));
-        this.surface = new PlanetSurface(new Coordinate(0, 400));
+        this.wind = LandingState.createWindDirectionIndicator(new Coordinate(450,50));
+        this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 400));
         this.landingPad = this.surface.model.landingPad;
         // todo placement
         
@@ -143,5 +150,32 @@ export class LandingState implements IGameState {
             s = 0;
         }
         return s;
+    }
+
+    static createPlanetSurfaceObject(location: Coordinate) :PlanetSurface {
+            var model = new PlanetSurfaceModel(location);
+            var surface: IView = new PolyView(model.data, model.shape);
+            var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape)
+            var obj = new PlanetSurface(model, [surface, pad]);
+            return obj;
+    }
+
+    static createWindDirectionIndicator(location: Coordinate): WindDirectionIndicator {
+        var model: WindModel = new WindModel(location);
+        var viewArrow: IView = new PolyView(model.data, model.shape); // arrow shape
+        var viewText: IView = new ValueView(model.data, "{0} mph", "monospace", 12);
+        var obj = new WindDirectionIndicator(model, [viewArrow, viewText]);
+        return obj;
+    }
+
+    static createLandingShip(location: Coordinate): LandingBasicShip {
+        var shipModel: LandingShipModel = new LandingShipModel(new LandingBasicShipData(location));
+        var shipView: IView = new PolyView(shipModel.data, shipModel.shape);
+
+        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
+        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
+
+        var obj = new LandingBasicShip(shipModel, [shipView, thrustView, explosionView]);
+        return obj;
     }
 }

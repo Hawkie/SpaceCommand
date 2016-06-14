@@ -3,9 +3,9 @@ import { EventLoop } from "ts/Common/EventLoop";
 import { Assets } from "ts/Resources/Assets";
 
 import { IGameState } from "ts/States/GameState";
-import { AsteroidState } from "ts/States/AsteroidState";
-import { LandingState } from "ts/States/LandingState";
-import { SoundDesignerState } from "ts/States/SoundDesignerState";
+import { AsteroidState } from "ts/States/Asteroids/AsteroidState";
+import { LandingState } from "ts/States/Land/LandingState";
+import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
 import { MenuState } from "ts/States/MenuState";
 
 

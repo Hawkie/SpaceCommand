@@ -3,36 +3,41 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { FXObject } from "ts/Sound/FXObject";
-import { SoundEffectData } from "ts/Models/Sound/SoundEffectsModel";
+import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
+import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Models/TextModel";
-import { ILocated, LocatedData  } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData, LocatedMovingAngledRotatingForwardAccData  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
-import { PolyView } from "ts/Views/PolyViews";
+import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
 import { Multi2ShapeCollisionDetector, Multi2MultiCollisionDetector } from "ts/Interactors/CollisionDetector";
-
+import { BasicShipData } from "ts/Data/ShipData";
+import { BasicShipModel } from "ts/States/Asteroids/SpaceShipModel";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { TextObject, ValueController } from "ts/GameObjects/Common/BaseObjects";
 import { SpriteObject } from "ts/GameObjects/Common/SpriteObject";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
-import { AsteroidModel } from "ts/Models/Space/Asteroid";
-import { BasicShip } from "ts/GameObjects/Ships/SpaceShip";
-import { GraphicShip } from "ts/GameObjects/Ships/GraphicShip";
+import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
+import { GraphicData } from "ts/Data/GraphicData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
 
 export class Asteroid extends GameObject<AsteroidModel> { }
+
+export class BasicShip extends GameObject<BasicShipModel> { }
+
+export class GraphicShip extends GameObject<DisplayModel<LocatedMovingAngledRotatingForwardAccData>> { }
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -247,10 +252,10 @@ export class AsteroidState implements IGameState {
         var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
 
         // special
-        let ship = new BasicShip(new Coordinate(256, 240), 0, 0, 0, 0);
+        let ship = AsteroidState.createShip(new Coordinate(256, 240), 0, 0, 0, 0);
         let asteroids = AsteroidState.createLevel(3);
 
-        let alien: IGameObject = new GraphicShip(new Coordinate(200, 100));
+        let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
 
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
@@ -294,6 +299,34 @@ export class AsteroidState implements IGameState {
         return asteroidObject;
         
     }
+
+    static createShip(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
+
+        var shipModel: BasicShipModel = new BasicShipModel(new BasicShipData(location, velx, vely, angle, spin));
+        var shipView: IView = new PolyView(shipModel.data, shipModel.shape);
+
+        var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
+        var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
+        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
+
+        var views: IView[] = [shipView, weaponView, thrustView, explosionView];
+        var obj = new BasicShip(shipModel, views);
+        return obj;
+    }
+
+    static createGraphicShip(location: Coordinate): GraphicShip {
+
+        //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        var shipModel: DisplayModel<LocatedMovingAngledRotatingForwardAccData> = new DisplayModel<LocatedMovingAngledRotatingForwardAccData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
+        var shipView: IView = new GraphicAngledView(shipModel.data, shipModel.graphic);
+
+        //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
+        //var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
+
+        var obj = new GraphicShip(shipModel, [shipView]);
+        return obj;
+    }
+
 
     static createCoin(location: Coordinate): IGameObject {
         var l = new LocatedData(location);
