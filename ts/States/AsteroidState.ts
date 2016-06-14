@@ -211,8 +211,9 @@ export class AsteroidState implements IGameState {
         
         this.asteroids.splice(i1, 1);
         if (a.size > 1) {
-            this.asteroids.push(AsteroidState.createAsteroid(a.data.location, a.data.velX + Math.random() * 10, a.data.velY + Math.random() * 10, a.data.angle, a.data.spin + Math.random() * 10, a.size - 1));
-            this.asteroids.push(AsteroidState.createAsteroid(a.data.location, a.data.velX + Math.random() * 10, a.data.velY + Math.random() * 10, a.data.angle, a.data.spin + Math.random() * 10, a.size - 1));
+            for (let n = 0; n < 2; n++) {
+                this.asteroids.push(AsteroidState.createAsteroid(a.data.location.x, a.data.location.y, a.data.velX + Math.random() * 10, a.data.velY + Math.random() * 10, Transforms.random(0, 359), a.data.spin + Math.random() * 10, a.size - 1, Transforms.random(0, 4)));
+            }
         }
         // TODO remove original;
         this.score.model.data.value += 10;
@@ -265,16 +266,29 @@ export class AsteroidState implements IGameState {
     private static createLevel(level:number): Asteroid[]{
         let a: Asteroid[] = [];
         for (var i = 0; i < level; i++) {
-            let asteroid = AsteroidState.createAsteroid(new Coordinate(Math.random() *512, Math.random() * 480), Math.random() * 15, Math.random() * 15, Math.random() * 360, Math.random() * 10, 3);
+            let xy = Transforms.random(0, 3);
+            let x = Transforms.random(0,512), y = Transforms.random(0, 480);
+            if (xy === 0) x = Transforms.random(0, 100);
+            else if (xy === 1) x = Transforms.random(412, 512);
+            else if (xy === 2) y = Transforms.random(0, 100);
+            else if (xy === 3) y = Transforms.random(380, 480);
+
+            let asteroid = AsteroidState.createAsteroid(x, y, Transforms.random(-20, 20), Transforms.random(-20, 20), Transforms.random(0, 359), Transforms.random(-10, 10), 3, Transforms.random(0, 4));
             a.push(asteroid);
         }
         return a;
     }
 
     //return Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
-    private static createAsteroid(location: Coordinate, velX: number, velY: number, angle: number, spin: number, size: number): Asteroid {
-        let l = new Coordinate(location.x, location.y);
-        var model = new AsteroidModel(l, velX, velY, angle, spin, size);
+    private static createAsteroid(x: number, y:number, velX: number, velY: number, angle: number, spin: number, size: number, type: number): Asteroid {
+        
+            //var rectangle1 = [new Coordinate(- 2, -20),
+        //    new Coordinate(2, -20),
+        //    new Coordinate(2, 20),
+        //    new Coordinate(-2, 20),
+        //    new Coordinate(-2, -20)];
+        let l = new Coordinate(x, y);
+        var model = new AsteroidModel(l, velX, velY, angle, spin, size, type);
         var view: PolyView = new PolyView(model.data, model.shape);
         var asteroidObject = new Asteroid(model, [view]);
         return asteroidObject;

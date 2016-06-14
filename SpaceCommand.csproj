@@ -86,7 +86,6 @@
     <TypeScriptCompile Include="ts\Physics\Transforms.ts" />
     <TypeScriptCompile Include="ts\DisplayObjects\DisplayObject.ts" />
     <TypeScriptCompile Include="ts\Game.ts" />
-    <TypeScriptCompile Include="ts\GameObjects\Space\Asteroid.ts" />
     <TypeScriptCompile Include="ts\Views\GraphicView.ts" />
     <TypeScriptCompile Include="ts\Views\SpriteView.ts" />
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
@@ -123,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\json\" />
+    <Folder Include="ts\GameObjects\Space\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

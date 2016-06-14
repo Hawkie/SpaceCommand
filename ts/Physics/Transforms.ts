@@ -6,6 +6,14 @@ export class Transforms {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    static ArrayToPoints(array: number[]): Coordinate[] {
+        let points: Coordinate[] = [];
+        for (let i = 0; i < array.length - 1; i+=2){
+            points.push(new Coordinate(array[i], array[i + 1]));
+        }
+        return points;
+    }
+
     static Rotate(points: Coordinate[], degrees: number): Coordinate[]{
         var radians = degrees / 360 * Math.PI * 2;
         // simplifying computition of 2x2 matrix

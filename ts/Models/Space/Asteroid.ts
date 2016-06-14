@@ -9,27 +9,23 @@ import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 
 export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData> implements IHittable {
 
+    // 5 different asteroid shapes
+    private static a1 = [-4, -2, -2, -4, 0, -2, 2, -4, 4, -2, 3, 0, 4, 2, 1, 4, -2, 4, -4, 2, -4, -2];
+    private static a2 = [-3, 0, -4, -2, -2, -4, 0, -3, 2, -4, 4, -2, 2, -1, 4, 1, 2, 4, -1, 3, -2, 4, -4, 2, -3, 0];
+    private static a3 = [-2, 0, -4, -1, -1, -4, 2, -4, 4, -1, 4, 1, 2, 4, 0, 4, 0, 1, -2, 4, -4, 1, -2, 0];
+    private static a4 = [-1, -2, -2, -4, 1, -4, 4, -2, 4, -1, 1, 0, 4, 2, 2, 4, 1, 3, -2, 4, -4, 1, -4, -2, -1, -2];
+    private static a5 = [-4, -2, -2, -4, 2, -4, 4, -2, 4, 2, 2, 4, -2, 4, -4, 2, -4, -2];
+    static as = [AsteroidModel.a1, AsteroidModel.a2, AsteroidModel.a3, AsteroidModel.a4, AsteroidModel.a5];
+    
+
+
     size: number;
-    constructor(location: Coordinate, velX:number, velY:number, angle:number, spin:number, size:number) {
-        var asteroid1 = [new Coordinate(-4, -2),
-            new Coordinate(-2, -4),
-            new Coordinate(0, -2),
-            new Coordinate(2, -4),
-            new Coordinate(4, -2),
-            new Coordinate(3, 0),
-            new Coordinate(4, 2),
-            new Coordinate(1, 3),
-            new Coordinate(-2, 4),
-            new Coordinate(-4, 2),
-            new Coordinate(-4, -2),
-        ];
-        //var rectangle1 = [new Coordinate(- 2, -20),
-        //    new Coordinate(2, -20),
-        //    new Coordinate(2, 20),
-        //    new Coordinate(-2, 20),
-        //    new Coordinate(-2, -20)];
-        Transforms.scale(asteroid1, size, size);
-        var shape: IShape = new ShapeData(asteroid1);
+    constructor(location: Coordinate, velX:number, velY:number, angle:number, spin:number, size:number, type:number) {
+        var asteroid1 = AsteroidModel.as[type];
+        var asteroidShape = Transforms.ArrayToPoints(asteroid1);
+
+        Transforms.scale(asteroidShape, size, size);
+        var shape: IShape = new ShapeData(asteroidShape);
         var data = new LocatedMovingAngledRotatingData(location, velX, velY, angle, spin);
         var mover = new Mover(data);
         var spinner = new Spinner(data);

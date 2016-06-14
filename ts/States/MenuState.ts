@@ -16,7 +16,6 @@ import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 
-import { Asteroid } from "ts/GameObjects/Space/Asteroid";
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleField } from "ts/GameObjects/Common/ParticleField";
 
