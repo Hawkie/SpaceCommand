@@ -1,6 +1,6 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
-import { ILocated } from "ts/Data/PhysicsData";
+import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
 import { IView } from "ts/Views/View";
 import { IGraphic } from "ts/Data/GraphicData";
@@ -11,6 +11,7 @@ export class PolyView implements IView {
 
     display(drawContext: DrawContext) {
         drawContext.drawP(this.properties.location, this.shape.points);
+        drawContext.fill();
     }
 }
 
@@ -19,8 +20,26 @@ export class PolyGraphic implements IView {
 
     display(drawContext: DrawContext) {
         if (this.graphic.loaded) {
-            let fillStyle :CanvasPattern = drawContext.createPattern(this.graphic.img);
-            drawContext.drawP(this.properties.location, this.shape.points, fillStyle);
+            drawContext.drawP(this.properties.location, this.shape.points);
+            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
+            drawContext.fill(fillStyle);
+        }
+    }
+}
+
+export class PolyGraphicAngled implements IView {
+    constructor(private properties: ILocatedAngled, private shape: IShape, private graphic: IGraphic) { }
+
+    display(drawContext: DrawContext) {
+        if (this.graphic.loaded) {
+            drawContext.drawP(this.properties.location, this.shape.points);
+            drawContext.save();
+            drawContext.translate(this.properties.location.x, this.properties.location.y);
+            drawContext.rotate(this.properties.angle);
+            //drawContext.translate(-this.properties.location.x, -this.properties.location.y);
+            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
+            drawContext.fill(fillStyle);
+            drawContext.restore();
         }
     }
 }

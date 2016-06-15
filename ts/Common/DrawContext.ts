@@ -12,17 +12,28 @@ export class DrawContext {
         ctx.scale(scaleX, scaleY);
     }
 
-    //setFill() {
-    //    ctx.fillStyle = terrainPattern;
-    //    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    //}
+    save() {
+        this.ctx.save();
+        //* The current transformation matrix.
+        //* The current clipping region.
+        //* The current values of the following attributes: strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation, font, textAlign, textBaseline.
+    }
 
-    drawP(location: Coordinate, points: Coordinate[], fill:any = "#111") {
+    restore() {
+        this.ctx.restore();
+    }
+
+    fill(fillStyle: any = "#111") {
         var ctx = this.ctx;
-        //ctx.scale(2, 2);
+        ctx.save();
+        ctx.fillStyle = fillStyle;
+        ctx.fill();
+        ctx.restore();
+    }
+
+    drawP(location: Coordinate, points: Coordinate[]) {
+        var ctx = this.ctx;
         var p = points;
-        let origFillStyle = ctx.fillStyle;
-        ctx.fillStyle = fill;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
@@ -31,10 +42,7 @@ export class DrawContext {
                 ctx.lineTo(p[i].x + location.x, p[i].y + location.y);
             }
             ctx.stroke();
-            ctx.fill();
         }
-        //ctx.scale(0.5, 0.5);
-        this.ctx.fillStyle = origFillStyle;
     }
 
     drawImage(img: HTMLImageElement, x, y) {
@@ -43,10 +51,18 @@ export class DrawContext {
 
     createPattern(img: HTMLImageElement) : CanvasPattern {
         return this.ctx.createPattern(img, 'repeat');
+        //repeat	Default.The pattern repeats both horizontally and vertically	Play it »
+        //repeat - x	The pattern repeats only horizontally	Play it »
+        //repeat - y	The pattern repeats only vertically	Play it »
+        //no - repeat	The pattern will be displayed only once (no repeat)
     }
 
     creatGradient(x0: number, y0: number, x1:number, y1:number) : CanvasGradient {
         return this.ctx.createLinearGradient(x0, y0, x1, y1);
+        //var grd = ctx.createLinearGradient(0, 0, 200, 200);
+        //grd.addColorStop(0, "black");
+        //grd.addColorStop(0.1, "#5f3");
+        //grd.addColorStop(1, "#f45");
     }
 
     drawSprite(img: HTMLImageElement, spriteX: number, spriteY: number, spriteW:number, spriteH:number, x: number, y: number, screenWidth:number, screenHeight: number) {

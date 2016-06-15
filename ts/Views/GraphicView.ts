@@ -20,16 +20,16 @@ export class GraphicAngledView implements IView {
     display(drawContext: DrawContext) {
 
         if (this.graphic.loaded) {
+            drawContext.save();
             drawContext.translate(this.properties.location.x, this.properties.location.y);
             drawContext.rotate(this.properties.angle);
             drawContext.translate(-this.properties.location.x, -this.properties.location.y);
 
             drawContext.drawImage(this.graphic.img, this.properties.location.x, this.properties.location.y);
-            //this.drawable.draw(this.properties.location, drawContext);
-
-            drawContext.translate(this.properties.location.x, this.properties.location.y);
-            drawContext.rotate(-this.properties.angle);
-            drawContext.translate(-this.properties.location.x, -this.properties.location.y);
+            drawContext.restore();
+            //drawContext.translate(this.properties.location.x, this.properties.location.y);
+            //drawContext.rotate(-this.properties.angle);
+            //drawContext.translate(-this.properties.location.x, -this.properties.location.y);
         }
     }
 }
