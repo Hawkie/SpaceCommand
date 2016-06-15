@@ -23,13 +23,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\style.css" />
-    <Content Include="js\land.js" />
+    <Content Include="js\land.html" />
     <Content Include="res\img\ship.png" />
     <Content Include="res\img\spinningCoin.png" />
     <Content Include="res\img\sprite1.png" />
     <Content Include="res\img\star.png" />
     <Content Include="index.html" />
     <Content Include="js\sound.js" />
+    <Content Include="res\img\terrain.png" />
     <Content Include="res\sound\blast.wav" />
     <Content Include="res\sound\explosion.wav" />
     <Content Include="res\sound\hello.wav" />

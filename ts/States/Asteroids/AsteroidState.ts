@@ -19,7 +19,7 @@ import { ILocated, LocatedData, LocatedMovingAngledRotatingForwardAccData  } fro
 import { TextView } from "ts/Views/TextView";
 import { IView } from "ts/Views/View";
 import { ParticleFieldView } from "ts/Views/ParticleFieldView";
-import { PolyView } from "ts/Views/PolyViews";
+import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
 import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -300,6 +300,8 @@ export class AsteroidState implements IGameState {
         let l = new Coordinate(x, y);
         var model = new AsteroidModel(l, velX, velY, angle, spin, size, type);
         var view: PolyView = new PolyView(model.data, model.shape);
+        //var star = new GraphicData("res/img/star.png");
+        //var view: PolyGraphic = new PolyGraphic(model.data, model.shape, star);
         var asteroidObject = new Asteroid(model, [view]);
         return asteroidObject;
         

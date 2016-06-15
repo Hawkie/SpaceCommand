@@ -27,9 +27,10 @@ import { TextObject } from "ts/GameObjects/TextObject";
 import { ParticleField } from "ts/GameObjects/ParticleField";
 import { IView } from "ts/Views/View";
 import { ParticleFieldView } from "ts/Views/ParticleFieldView";
-import { PolyView } from "ts/Views/PolyViews";
+import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData } from "ts/Data/ShipData";
+import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -158,8 +159,10 @@ export class LandingState implements IGameState {
 
     static createPlanetSurfaceObject(location: Coordinate) :PlanetSurface {
             var model = new PlanetSurfaceModel(location);
-            var surface: IView = new PolyView(model.data, model.shape);
-            var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape)
+            //var surface: IView = new PolyView(model.data, model.shape);
+            var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
+            var terrain = new GraphicData("res/img/terrain.png");
+            var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
             var obj = new PlanetSurface(model, [surface, pad]);
             return obj;
     }

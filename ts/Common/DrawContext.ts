@@ -12,12 +12,17 @@ export class DrawContext {
         ctx.scale(scaleX, scaleY);
     }
 
-    drawP(location: Coordinate, points: Coordinate[]) {
+    //setFill() {
+    //    ctx.fillStyle = terrainPattern;
+    //    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    //}
+
+    drawP(location: Coordinate, points: Coordinate[], fill:any = "#111") {
         var ctx = this.ctx;
         //ctx.scale(2, 2);
         var p = points;
         let origFillStyle = ctx.fillStyle;
-        ctx.fillStyle = "#111";
+        ctx.fillStyle = fill;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
@@ -32,8 +37,16 @@ export class DrawContext {
         this.ctx.fillStyle = origFillStyle;
     }
 
-    drawImage(img, x, y) {
+    drawImage(img: HTMLImageElement, x, y) {
         this.ctx.drawImage(img, x, y);
+    }
+
+    createPattern(img: HTMLImageElement) : CanvasPattern {
+        return this.ctx.createPattern(img, 'repeat');
+    }
+
+    creatGradient(x0: number, y0: number, x1:number, y1:number) : CanvasGradient {
+        return this.ctx.createLinearGradient(x0, y0, x1, y1);
     }
 
     drawSprite(img: HTMLImageElement, spriteX: number, spriteY: number, spriteW:number, spriteH:number, x: number, y: number, screenWidth:number, screenHeight: number) {
