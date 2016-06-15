@@ -29,7 +29,8 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData>
         var data = new LocatedMovingAngledRotatingData(location, velX, velY, angle, spin);
         var mover = new Mover(data);
         var spinner = new Spinner(data);
-        super(data, shape, [mover, spinner]);
+        var rotator = new PolyRotator(data, shape);
+        super(data, shape, [mover, spinner, rotator]);
         this.size = size;
     }
 
