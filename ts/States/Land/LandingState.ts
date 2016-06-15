@@ -21,8 +21,8 @@ import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject"
-import { TextObject } from "ts/GameObjects/Common/BaseObjects";
-import { ParticleField } from "ts/GameObjects/Common/ParticleField";
+import { TextObject } from "ts/GameObjects/TextObject";
+import { ParticleField } from "ts/GameObjects/ParticleField";
 import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData } from "ts/Data/ShipData";

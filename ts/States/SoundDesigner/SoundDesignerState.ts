@@ -3,11 +3,11 @@ import { SoundEffectData, SoundEffectsModel } from "ts/States/SoundDesigner/Soun
 import { FXObject } from "ts/Sound/FXObject";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
-import { ControlPanel } from "ts/GameObjects/Controls/ControlPanel";
+import { ControlPanel } from "ts/GameObjects/ControlPanel";
 import { Slider } from "ts/Models/Controls/ControlPanelModel";
 import { TextData } from "ts/Models/TextModel";
 import { IGameObject } from "ts/GameObjects/GameObject";
-import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/TextObject";
 import { IGameState, GameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 

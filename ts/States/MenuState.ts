@@ -10,14 +10,14 @@ import { Coordinate } from "ts/Physics/Common";
 import { TextData } from "ts/Models/TextModel";
 
 import { IGameObject } from "ts/GameObjects/GameObject";
-import { TextObject } from "ts/GameObjects/Common/BaseObjects";
+import { TextObject } from "ts/GameObjects/TextObject";
 
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 
 import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { ParticleField } from "ts/GameObjects/Common/ParticleField";
+import { ParticleField } from "ts/GameObjects/ParticleField";
 
 export class MenuItem {
     constructor(public name: string, public id: number) { }

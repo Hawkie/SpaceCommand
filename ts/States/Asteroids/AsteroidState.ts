@@ -24,9 +24,10 @@ import { BasicShipData } from "ts/Data/ShipData";
 import { BasicShipModel } from "ts/States/Asteroids/SpaceShipModel";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { TextObject, ValueController } from "ts/GameObjects/Common/BaseObjects";
-import { SpriteObject } from "ts/GameObjects/Common/SpriteObject";
-import { ParticleField } from "ts/GameObjects/Common/ParticleField";
+import { TextObject } from "ts/GameObjects/TextObject";
+import { ValueObject } from "ts/GameObjects/ValueObject";
+import { SpriteObject } from "ts/GameObjects/SpriteObject";
+import { ParticleField } from "ts/GameObjects/ParticleField";
 import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData } from "ts/Data/GraphicData";
@@ -66,7 +67,7 @@ export class AsteroidState implements IGameState {
     exitState: boolean = false;
     level: number = 3;
     
-    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueController) {
+    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueObject) {
         this.viewScale = 1;
         this.zoom = 1;
         this.zoomOrigin = new Coordinate(0, 0);
@@ -259,7 +260,7 @@ export class AsteroidState implements IGameState {
 
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
-        var valueDisplay: ValueController = new ValueController(0, new Coordinate(460, 20), "Arial", 18);
+        var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
         var objects: IGameObject[] = [field, text, score, valueDisplay, alien, coinObj];
 
