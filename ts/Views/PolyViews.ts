@@ -36,7 +36,6 @@ export class PolyGraphicAngled implements IView {
             drawContext.save();
             drawContext.translate(this.properties.location.x, this.properties.location.y);
             drawContext.rotate(this.properties.angle);
-            //drawContext.translate(-this.properties.location.x, -this.properties.location.y);
             let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
             drawContext.fill(fillStyle);
             drawContext.restore();
