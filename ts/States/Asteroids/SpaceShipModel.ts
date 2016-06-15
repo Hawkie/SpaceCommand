@@ -1,5 +1,4 @@
 ﻿import { Coordinate } from "ts/Physics/Common";
-import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
 import { BasicShipData } from "ts/Data/ShipData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";

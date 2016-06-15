@@ -11,7 +11,6 @@ import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData
 import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel, DisplayModel, Model } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
-import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
@@ -344,7 +343,7 @@ export class AsteroidState implements IGameState {
 
         var model = new Model<LocatedMovingAngledRotatingData, ISprite>(l, s, [a, spinner]);
         var view: IView = new SpriteAngledView(model.data, model.graphic);
-        var coinObj = new GameObject<SpriteModel>(model, [view]);
+        var coinObj = new GameObject<Model<LocatedMovingAngledRotatingData, ISprite>>(model, [view]);
         return coinObj;
     }
    

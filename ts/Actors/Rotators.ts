@@ -3,7 +3,6 @@ import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
 import { IShape } from "ts/Data/ShapeData";
 import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
-import { IDrawable, IRotatable } from "ts/DisplayObjects/DisplayObject";
 import { Transforms } from "ts/Physics/Transforms";
 
 export class PolyRotator implements IActor {
