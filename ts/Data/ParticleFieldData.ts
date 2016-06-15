@@ -1,10 +1,10 @@
 ﻿import { ICoordinate, Coordinate, Vector } from "ts/Physics/Common";
 import { ILocatedMoving, LocatedMovingData } from "ts/Data/PhysicsData";
-import { DynamicModel } from "ts/Models/DynamicModels";
+import { IModel, DynamicModel } from "ts/Models/DynamicModels";
 import { IParticleData, ParticleData} from "ts/Data/ParticleData";
 
 export interface IParticleFieldData {
-    particles: DynamicModel<IParticleData>[];
+    particles: IModel<IParticleData>[];
     // how frequently a particle appears
     itemsPerSec: number;
     //lastAdded: number;

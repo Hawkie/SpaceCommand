@@ -1,13 +1,13 @@
 ﻿import { Vector } from "ts/Physics/Common";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { DynamicModel } from "ts/Models/DynamicModels"; 
+import { IModel } from "ts/Models/DynamicModels"; 
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
 
 export class ParticleGenerator implements IActor {
-    constructor(private data: IParticleFieldData, private createParticle: (now:number) => DynamicModel<IParticleData>) { }
+    constructor(private data: IParticleFieldData, private createParticle: (now:number) => IModel<IParticleData>) { }
     
     update(lastTimeModifier: number) {
         /// TODO: use distribution pattern for start instead of absolute x,y (canvas size
@@ -41,7 +41,7 @@ export class ParticleFieldMover implements IActor {
 
     update(timeModifier: number) {
         var now = Date.now();
-        // move objects
+        // loop through objects
         for (var i: number = this.model.particles.length - 1; i >= 0; i--) {
             var element = this.model.particles[i];
         
@@ -54,7 +54,7 @@ export class ParticleFieldMover implements IActor {
                     removed = true;
                 }
             }
-            // draw if still remains
+            // update if still remains
             if (!removed) {
                 element.update(timeModifier);
             }

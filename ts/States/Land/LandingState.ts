@@ -14,7 +14,7 @@ import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
+import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 import { LandingShipModel } from "ts/States/Land/LandingShip";

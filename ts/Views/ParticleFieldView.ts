@@ -12,3 +12,4 @@ export class ParticleFieldView implements IView {
         this.properties.particles.forEach(point => drawContext.drawRect(point.data.location.x, point.data.location.y, this.sizeX, this.sizeY));
     }
 }
+

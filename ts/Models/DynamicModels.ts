@@ -17,7 +17,11 @@ export class IShapedModel {
     shape: IShape;
 }
 
-export class DynamicModel<TData> implements IActor {
+export interface IModel<TData> extends IActor {
+    data: TData;
+}
+
+export class DynamicModel<TData> implements IActor, IModel<TData> {
     constructor(public data: TData, private actors: IActor[] = []) {
     }
 
@@ -26,7 +30,7 @@ export class DynamicModel<TData> implements IActor {
     }
 }
 
-export class ShapedModel<TPhysics extends ILocated> implements IActor, ILocatedModel, IShapedModel {
+export class ShapedModel<TPhysics extends ILocated> implements IActor, ILocatedModel, IShapedModel, IModel<TPhysics>  {
     constructor(public data: TPhysics, public shape: IShape, private actors: IActor[] = []) {
     }
 
@@ -35,17 +39,8 @@ export class ShapedModel<TPhysics extends ILocated> implements IActor, ILocatedM
     }
 }
 
-export class DisplayModel<TPhysics extends ILocated> implements IActor, ILocatedModel {
-    constructor(public data: TPhysics, public graphic: IGraphic, private actors: IActor[] = []) {
-    }
 
-    update(timeModifier: number) {
-        this.actors.forEach(a => a.update(timeModifier));
-    }
-}
-
-
-export class Model<TPhysics extends ILocated, TDraw> implements IActor, ILocatedModel {
+export class Model<TPhysics extends ILocated, TDraw> implements IActor, ILocatedModel, IModel<TPhysics> {
     constructor(public data: TPhysics, public graphic: TDraw, private actors: IActor[] = []) {
     }
 

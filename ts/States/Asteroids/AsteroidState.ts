@@ -9,7 +9,7 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { DynamicModel, ShapedModel, DisplayModel, Model } from "ts/Models/DynamicModels";
+import { IModel, DynamicModel, ShapedModel, Model } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
@@ -33,7 +33,7 @@ import { ValueObject } from "ts/GameObjects/ValueObject";
 import { ParticleField } from "ts/GameObjects/ParticleField";
 import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
-import { GraphicData } from "ts/Data/GraphicData";
+import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
 import { Spinner } from "ts/Actors/Rotators"
@@ -42,7 +42,7 @@ export class Asteroid extends GameObject<AsteroidModel> { }
 
 export class BasicShip extends GameObject<BasicShipModel> { }
 
-export class GraphicShip extends GameObject<DisplayModel<LocatedMovingAngledRotatingForwardAccData>> { }
+export class GraphicShip extends GameObject<Model<LocatedMovingAngledRotatingForwardAccData, GraphicData>> { }
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -205,7 +205,7 @@ export class AsteroidState implements IGameState {
         return this.asteroids.map(a => a.model);
     }
 
-    bulletModels(): DynamicModel<ILocated>[] {
+    bulletModels(): IModel<ILocated>[] {
         return this.player.model.weaponModel.particles;
         }
 
@@ -324,7 +324,7 @@ export class AsteroidState implements IGameState {
     static createGraphicShip(location: Coordinate): GraphicShip {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: DisplayModel<LocatedMovingAngledRotatingForwardAccData> = new DisplayModel<LocatedMovingAngledRotatingForwardAccData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
+        var shipModel: Model<LocatedMovingAngledRotatingForwardAccData, GraphicData> = new Model<LocatedMovingAngledRotatingForwardAccData, GraphicData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
         var shipView: IView = new GraphicAngledView(shipModel.data, shipModel.graphic);
 
         //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
