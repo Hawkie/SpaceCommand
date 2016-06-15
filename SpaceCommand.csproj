@@ -52,6 +52,8 @@
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
     <TypeScriptCompile Include="ts\Data\GraphicData.ts" />
+    <TypeScriptCompile Include="ts\Data\ParticleData.ts" />
+    <TypeScriptCompile Include="ts\Data\ParticleFieldData.ts" />
     <TypeScriptCompile Include="ts\Data\PhysicsData.ts" />
     <TypeScriptCompile Include="ts\Data\ShapeData.ts" />
     <TypeScriptCompile Include="ts\Data\ShipData.ts" />
@@ -71,12 +73,13 @@
     <TypeScriptCompile Include="ts\States\Asteroids\SpaceShipModel.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundEffectsModel.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\AsteroidModel.ts" />
-    <TypeScriptCompile Include="ts\Models\TextModel.ts" />
+    <TypeScriptCompile Include="ts\Data\TextData.ts" />
     <TypeScriptCompile Include="ts\Resources\Assets.ts" />
     <TypeScriptCompile Include="ts\Sound\FXObject.ts" />
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundDesignerState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
+    <TypeScriptCompile Include="ts\Views\ParticleFieldView.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />
@@ -99,8 +102,8 @@
     <TypeScriptCompile Include="ts\States\Land\LandingState.ts" />
     <TypeScriptCompile Include="ts\States\MenuState.ts" />
     <TypeScriptCompile Include="ts\tests\tester.ts" />
-    <TypeScriptCompile Include="ts\Models\Weapons\Bullet.ts" />
     <TypeScriptCompile Include="ts\Models\Weapons\Weapon.ts" />
+    <TypeScriptCompile Include="ts\Views\View.ts" />
     <TypeScriptCompile Include="ts\_includes.ts" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@ import { Assets } from "ts/Resources/Assets";
 
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
-import { TextData } from "ts/Models/TextModel";
+import { TextData } from "ts/Data/TextData";
 
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/TextObject";
@@ -15,8 +15,9 @@ import { TextObject } from "ts/GameObjects/TextObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
-
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleField } from "ts/GameObjects/ParticleField";
 
 export class MenuItem {

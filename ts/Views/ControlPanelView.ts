@@ -1,6 +1,6 @@
 ﻿import { Coordinate } from "ts/Physics/Common";
 import { DrawContext } from "ts/Common/DrawContext";
-import { IView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 import { IControlPanelModel, ControlPanelModel, ISlider, Slider } from "ts/Models/Controls/ControlPanelModel";
 
 export class ControlPanelView implements IView {

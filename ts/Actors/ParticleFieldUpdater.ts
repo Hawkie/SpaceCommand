@@ -1,5 +1,6 @@
 ﻿import { Vector } from "ts/Physics/Common";
-import { IParticleFieldData, IParticleData, ParticleData, ParticleFieldData } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { DynamicModel } from "ts/Models/DynamicModels"; 
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";

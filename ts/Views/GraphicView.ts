@@ -1,9 +1,8 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
 import { IGraphic } from "ts/Data/GraphicData";
-import { IParticleFieldData } from "ts/Models/ParticleFieldModel";
 import { IDrawable } from "ts/DisplayObjects/DisplayObject";
-import { IView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 
 // Binds data object to drawable item
 export class GraphicView implements IView {

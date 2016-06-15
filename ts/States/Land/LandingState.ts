@@ -11,7 +11,9 @@ import { LocatedData } from "ts/Data/PhysicsData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+import { MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
@@ -23,7 +25,9 @@ import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { IGameObject, GameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/TextObject";
 import { ParticleField } from "ts/GameObjects/ParticleField";
-import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
+import { ParticleFieldView } from "ts/Views/ParticleFieldView";
+import { PolyView } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData } from "ts/Data/ShipData";
 

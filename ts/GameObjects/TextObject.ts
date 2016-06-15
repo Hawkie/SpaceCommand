@@ -1,8 +1,8 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
 import { DynamicModel } from "ts/Models/DynamicModels";
-import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 import { TextView, ValueView } from "ts/Views/TextView";
-import { ITextData, TextData, IValueData, ValueData } from "ts/Models/TextModel";
+import { ITextData, TextData, IValueData, ValueData } from "ts/Data/TextData";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";

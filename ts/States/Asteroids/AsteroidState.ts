@@ -6,16 +6,20 @@ import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 
 import { SparseArray } from "ts/Collections/SparseArray";
-import { ParticleFieldData, ParticleData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel, DisplayModel } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { Rect } from "ts/DisplayObjects/DisplayObject";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { TextData } from "ts/Models/TextModel";
+import { TextData } from "ts/Data/TextData";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingForwardAccData  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
-import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
+import { ParticleFieldView } from "ts/Views/ParticleFieldView";
+import { PolyView } from "ts/Views/PolyViews";
 import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"

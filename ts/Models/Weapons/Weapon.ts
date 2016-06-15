@@ -1,6 +1,8 @@
 import { Coordinate, Vector } from "ts/Physics/Common"
-import { ParticleDataVectorConstructor } from "ts/Models/Weapons/Bullet"
-import { IParticleFieldData, ParticleFieldData, MovingParticleModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+
+import { MovingParticleModel } from "ts/Models/ParticleFieldModel";
 
 export interface IWeaponData extends IParticleFieldData{
     fired: boolean;

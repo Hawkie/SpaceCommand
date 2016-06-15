@@ -3,11 +3,13 @@ import { Transforms } from "ts/Physics/Transforms";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
-import { PolyView, IView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 import { LandingBasicShipData } from "ts/Data/ShipData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+import { MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon";

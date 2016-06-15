@@ -3,16 +3,17 @@ import { IDrawable, Polygon, Rect } from "ts/DisplayObjects/DisplayObject";
 import { BasicShipData } from "ts/Data/ShipData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
-import { IView, PolyView, ParticleFieldView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Transforms } from "ts/Physics/Transforms";
-import { IParticleData, IParticleFieldData, ParticleData, ParticleFieldData, MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
+import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
+import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
-import { ParticleDataVectorConstructor } from "ts/Models/Weapons/Bullet";
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon"
 import { IFiringShipModel } from "ts/Models/Ships/Ship";
 

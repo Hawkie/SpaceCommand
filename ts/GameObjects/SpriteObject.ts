@@ -1,5 +1,5 @@
 ﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
-import { IView } from "ts/Views/PolyViews";
+import { IView } from "ts/Views/View";
 import { ISprite } from "ts/Data/SpriteData";
 import { ILocated } from "ts/Data/PhysicsData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";

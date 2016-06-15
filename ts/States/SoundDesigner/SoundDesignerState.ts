@@ -5,7 +5,7 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
 import { ControlPanel } from "ts/GameObjects/ControlPanel";
 import { Slider } from "ts/Models/Controls/ControlPanelModel";
-import { TextData } from "ts/Models/TextModel";
+import { TextData } from "ts/Data/TextData";
 import { IGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/TextObject";
 import { IGameState, GameState } from "ts/States/GameState";
