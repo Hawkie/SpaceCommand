@@ -68,14 +68,12 @@ export class AsteroidState implements IGameState {
     loaded: boolean;
     viewScale: number;
     zoom: number;
-    zoomOrigin: Coordinate;
     exitState: boolean = false;
     level: number = 3;
     
     constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueObject) {
         this.viewScale = 1;
         this.zoom = 1;
-        this.zoomOrigin = new Coordinate(0, 0);
         this.player = player;
         this.objects = objects;
         this.asteroids = asteroids;
@@ -139,6 +137,7 @@ export class AsteroidState implements IGameState {
     display(drawingContext: DrawContext) {
         
         drawingContext.clear();
+        drawingContext.save();
         drawingContext.translate(this.player.model.data.location.x * (1 - this.zoom),
             this.player.model.data.location.y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
@@ -147,9 +146,10 @@ export class AsteroidState implements IGameState {
         this.asteroids.forEach(x => x.display(drawingContext));
         //drawingContext.translate(, 240
         this.player.display(drawingContext);
-        drawingContext.zoom(1 / this.zoom, 1 / this.zoom);
-        drawingContext.translate(-this.player.model.data.location.x * (1-this.zoom),
-            -this.player.model.data.location.y * (1-this.zoom));
+        drawingContext.restore()
+        //drawingContext.zoom(1 / this.zoom, 1 / this.zoom);
+        //drawingContext.translate(-this.player.model.data.location.x * (1-this.zoom),
+        //    -this.player.model.data.location.y * (1-this.zoom));
         
         
     }

@@ -52,42 +52,29 @@ export class LandExplorerState implements IGameState {
 
     playExploded: boolean;
     explosionSound: AudioObject;
+    viewScale: number;
+    zoom: number;
     exitState: boolean = false;
-
-    static create(assets: Assets): LandExplorerState {
-        // Background
-        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
-        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
-        var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
-        
-        // ships        
-        let ship = LandExplorerState.createShip(new Coordinate(256, 240), 0, 0, 0, 0);
-
-        var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: Array<IGameObject> = [field, text];
-        var landingState = new LandExplorerState("Lander", assets, ship, objects);
-        return landingState;
-    }
     
-    constructor(public name: string, private assets:Assets, private player : BasicShip, private objects : Array<IGameObject>){
+    constructor(public name: string, private assets: Assets, private player: BasicShip, private guiObjects: Array<IGameObject>, private sceneObjects: Array<IGameObject>) {
+        this.viewScale = 1;
+        this.zoom = 1;
         this.player = player;
-        this.objects = new Array<IGameObject>();
-        this.objects.concat(objects);
-        this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450,50));
+        
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 400));
         this.landingPad = this.surface.model.landingPad;
         // todo placement
-        
+        this.sceneObjects.push(this.surface);
+
+        // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
-        this.objects.push(this.surface);
-        this.objects.push(this.velocityText);
-        this.objects.push(this.wind);
+        this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450, 50));
+        this.guiObjects.push(this.velocityText);
+        this.guiObjects.push(this.wind);
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad, this.player.model.data, this.playerLandingPadCollision.bind(this));
-        var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
+        var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffectCallback);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
         this.explosionSound = new AudioObject("res/sound/explosion.wav");
@@ -97,7 +84,8 @@ export class LandExplorerState implements IGameState {
         this.velocityText.model.data.text = "Velocity: " + Math.abs(Math.round(this.player.model.data.velY));
         
         this.player.update(lastDrawModifier);
-        this.objects.forEach(o => o.update(lastDrawModifier));
+        this.sceneObjects.forEach(o => o.update(lastDrawModifier));
+        this.guiObjects.forEach(o => o.update(lastDrawModifier));
     }
     
     input(keys: KeyStateProvider, lastDrawModifier: number) {
@@ -106,14 +94,29 @@ export class LandExplorerState implements IGameState {
 
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
         if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
+        if (keys.isKeyDown(Keys.SpaceBar)) this.player.model.shootPrimary();
+        if (keys.isKeyDown(Keys.Z)) {
+            this.viewScale = 0.01;
+        }
+        else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
+            this.viewScale = -0.01;
+        }
+        else this.viewScale = 0;
+        this.zoom *= 1 + this.viewScale;
         if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
     
     display(drawingContext : DrawContext) {
         drawingContext.clear();
+        this.guiObjects.forEach(o => o.display(drawingContext));
+        //this.wind.display(drawingContext);
+        drawingContext.save();
+        drawingContext.translate((256 - this.player.model.data.location.x) + this.player.model.data.location.x * (1 - this.zoom),
+            (240 - this.player.model.data.location.y) + this.player.model.data.location.y * (1 - this.zoom));
+        drawingContext.zoom(this.zoom, this.zoom);
         this.player.display(drawingContext);
-        this.objects.forEach(o => o.display(drawingContext));
-        this.wind.display(drawingContext);
+        this.sceneObjects.forEach(o => o.display(drawingContext));
+        drawingContext.restore();
     }
 
     sound(actx: AudioContext) {
@@ -127,7 +130,7 @@ export class LandExplorerState implements IGameState {
         this.interactors.forEach(interactor => interactor.test(lastTestModifier));
     }
 
-    windEffect(lastTestModifier: number, wind: WindModel, player: LandingShipModel) {
+    windEffectCallback(lastTestModifier: number, wind: WindModel, player: LandingShipModel) {
         player.data.velX += wind.data.value * lastTestModifier;
     }
 
@@ -159,14 +162,29 @@ export class LandExplorerState implements IGameState {
         return s;
     }
 
-    static createPlanetSurfaceObject(location: Coordinate) :PlanetSurface {
-            var model = new PlanetSurfaceModel(location);
-            //var surface: IView = new PolyView(model.data, model.shape);
-            var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
-            var terrain = new GraphicData("res/img/terrain.png");
-            var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
-            var obj = new PlanetSurface(model, [surface, pad]);
-            return obj;
+    static create(assets: Assets): LandExplorerState {
+        // Background
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
+        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
+            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+        var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
+
+        // ships        
+        let ship = LandExplorerState.createShip(new Coordinate(256, 240), 0, 0, 0, 0);
+        var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var landingState = new LandExplorerState("Lander", assets, ship, [text], [field]);
+        return landingState;
+    }
+
+    static createPlanetSurfaceObject(location: Coordinate): PlanetSurface {
+        var model = new PlanetSurfaceModel(location);
+        //var surface: IView = new PolyView(model.data, model.shape);
+        var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
+        var terrain = new GraphicData("res/img/terrain.png");
+        var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
+        var obj = new PlanetSurface(model, [surface, pad]);
+        return obj;
     }
 
     static createWindDirectionIndicator(location: Coordinate): WindDirectionIndicator {
