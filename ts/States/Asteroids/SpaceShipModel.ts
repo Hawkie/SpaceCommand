@@ -18,7 +18,7 @@ import { IFiringShipModel } from "ts/Models/Ships/Ship";
 
 //var SHIPPOINTS = [0, -4, -2, 2, 0, 1, 2, 2, 0, -4];
 
-export class BasicShipModel extends ShapedModel<BasicShipData> implements IFiringShipModel {
+export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implements IFiringShipModel {
     weaponModel: IWeaponData;
     thrustParticleModel: ParticleFieldModel;
     explosionParticleModel: ParticleFieldModel;

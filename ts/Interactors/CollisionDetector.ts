@@ -3,11 +3,11 @@ import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
-import { DynamicModel, ShapedModel, IShapedModel } from "ts/Models/DynamicModels";
+import { DynamicModel, IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
 
 
 export class ObjectCollisionDetector implements IInteractor {
-    constructor(private model1: IShapedModel, private point: ILocated, private hit: () => void){
+    constructor(private model1: IShapedModel<ILocated, IShape>, private point: ILocated, private hit: () => void){
     }
 
     test(lastTestModifier: number) {
@@ -17,13 +17,16 @@ export class ObjectCollisionDetector implements IInteractor {
 }
 
 export class Multi2ShapeCollisionDetector implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated>[], private model2: ShapedModel<ILocated>, private hit: (i1: number, model1s: ShapedModel<ILocated>[], i2: number, shape: ShapedModel<ILocated>) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => IShapedModel<ILocated, IShape>[],
+        private sourceModel: IShapedModel<ILocated, IShape>,
+        private hit: (i1: number, targets: IShapedModel<ILocated, IShape>[], i2: number, sourceModel: IShapedModel<ILocated, IShape>) => void,
+        private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
         let found = false;
         let targets = this.model1s();
-        let shapeModel = this.model2;
+        let shapeModel = this.sourceModel;
         for (let i1 = targets.length - 1; i1 >= 0; i1--) {
             let target = targets[i1];
             for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
@@ -44,7 +47,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
 }
 
 export class Multi2MultiCollisionDetector implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated>[], private model2s: () => DynamicModel<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated>[], i2:number, model2s: DynamicModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => DynamicModel<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: DynamicModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {

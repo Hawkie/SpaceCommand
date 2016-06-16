@@ -3,9 +3,9 @@ import { IActor } from "ts/Actors/Actor"
 
 import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { ISprite, SpriteFrame, Sprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
-import { Model } from "ts/Models/DynamicModels";
+import { GraphicModel } from "ts/Models/DynamicModels";
 
-export class SpriteModel extends Model<ILocated, ISprite> {
+export class SpriteModel extends GraphicModel<ILocated, ISprite> {
     constructor(data: ILocated, sprite: ISprite, animators: IActor[]) {
         super(data, sprite, animators);
     }

@@ -12,13 +12,18 @@ export interface ILocatedModel {
     data: ILocated;
 }
 
-export class IShapedModel {
-    data: ILocated;
-    shape: IShape;
-}
-
 export interface IModel<TData> extends IActor {
     data: TData;
+}
+
+export interface IGraphicModel<TData1, TData2> extends IActor {
+    data: TData1;
+    graphic: TData2;
+}
+
+export interface IShapedModel<TData1, TData2> extends IActor {
+    data: TData1;
+    shape: TData2;
 }
 
 export class DynamicModel<TData> implements IActor, IModel<TData> {
@@ -30,8 +35,8 @@ export class DynamicModel<TData> implements IActor, IModel<TData> {
     }
 }
 
-export class ShapedModel<TPhysics extends ILocated> implements IActor, ILocatedModel, IShapedModel, IModel<TPhysics>  {
-    constructor(public data: TPhysics, public shape: IShape, private actors: IActor[] = []) {
+export class GraphicModel<TPhysics extends ILocated, TDraw extends IGraphic> implements IActor, ILocatedModel, IModel<TPhysics> {
+    constructor(public data: TPhysics, public graphic: TDraw, private actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {
@@ -39,9 +44,8 @@ export class ShapedModel<TPhysics extends ILocated> implements IActor, ILocatedM
     }
 }
 
-
-export class Model<TPhysics extends ILocated, TDraw> implements IActor, ILocatedModel, IModel<TPhysics> {
-    constructor(public data: TPhysics, public graphic: TDraw, private actors: IActor[] = []) {
+export class ShapedModel<TPhysics extends ILocated, TShape extends IShape> implements IActor, ILocatedModel, IModel<TPhysics>, IShapedModel<TPhysics, TShape> {
+    constructor(public data: TPhysics, public shape: TShape, private actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {

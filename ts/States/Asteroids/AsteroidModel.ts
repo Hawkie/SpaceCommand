@@ -7,7 +7,7 @@ import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 
 
-export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData> implements IHittable {
+export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData, IShape> implements IHittable {
 
     // 5 different asteroid shapes
     private static a1 = [-4, -2, -2, -4, 0, -2, 2, -4, 4, -2, 3, 0, 4, 2, 1, 4, -2, 4, -4, 2, -4, -2];

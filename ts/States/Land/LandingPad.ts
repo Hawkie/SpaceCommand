@@ -3,7 +3,7 @@ import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { ShapedModel } from "ts/Models/DynamicModels";
 
-export class LandingPadModel extends ShapedModel<LocatedData> {
+export class LandingPadModel extends ShapedModel<LocatedData, IShape> {
     constructor(location: Coordinate) {
         var located = new LocatedData(location);
         var shape = new ShapeData([

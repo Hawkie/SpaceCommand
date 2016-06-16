@@ -9,7 +9,7 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { IModel, DynamicModel, ShapedModel, Model } from "ts/Models/DynamicModels";
+import { IModel, DynamicModel, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
@@ -34,6 +34,7 @@ import { ParticleField } from "ts/GameObjects/ParticleField";
 import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
+import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
 import { Spinner } from "ts/Actors/Rotators"
@@ -42,7 +43,7 @@ export class Asteroid extends GameObject<AsteroidModel> { }
 
 export class BasicShip extends GameObject<BasicShipModel> { }
 
-export class GraphicShip extends GameObject<Model<LocatedMovingAngledRotatingForwardAccData, GraphicData>> { }
+export class GraphicShip extends GameObject<GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData>> { }
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -201,7 +202,7 @@ export class AsteroidState implements IGameState {
         if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
 
-    asteroidModels(): ShapedModel<ILocated>[] {
+    asteroidModels(): ShapedModel<ILocated, IShape>[] {
         return this.asteroids.map(a => a.model);
     }
 
@@ -324,7 +325,7 @@ export class AsteroidState implements IGameState {
     static createGraphicShip(location: Coordinate): GraphicShip {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: Model<LocatedMovingAngledRotatingForwardAccData, GraphicData> = new Model<LocatedMovingAngledRotatingForwardAccData, GraphicData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
+        var shipModel: GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData> = new GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
         var shipView: IView = new GraphicAngledView(shipModel.data, shipModel.graphic);
 
         //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
@@ -341,9 +342,9 @@ export class AsteroidState implements IGameState {
         var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
         var spinner = new Spinner(l);
 
-        var model = new Model<LocatedMovingAngledRotatingData, ISprite>(l, s, [a, spinner]);
+        var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s, [a, spinner]);
         var view: IView = new SpriteAngledView(model.data, model.graphic);
-        var coinObj = new GameObject<Model<LocatedMovingAngledRotatingData, ISprite>>(model, [view]);
+        var coinObj = new GameObject<GraphicModel<LocatedMovingAngledRotatingData, ISprite>>(model, [view]);
         return coinObj;
     }
    

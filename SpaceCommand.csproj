@@ -70,6 +70,7 @@
     <TypeScriptCompile Include="ts\Models\DynamicModels.ts" />
     <TypeScriptCompile Include="ts\Models\Controls\ControlPanelModel.ts" />
     <TypeScriptCompile Include="ts\Models\Graphic\SpriteModel.ts" />
+    <TypeScriptCompile Include="ts\States\LandExplorer\LandExplorerState.ts" />
     <TypeScriptCompile Include="ts\States\Land\LandingPad.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\SpaceShipModel.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundEffectsModel.ts" />
@@ -121,7 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\json\" />
-    <Folder Include="ts\States\LandExplorer\" />
     <Folder Include="ts\States\SpaceExplorer\" />
   </ItemGroup>
   <PropertyGroup>

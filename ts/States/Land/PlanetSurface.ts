@@ -6,7 +6,7 @@ import { ShapedModel } from "ts/Models/DynamicModels";
 import { Transforms } from "ts/Physics/Transforms";
 
 
-export class PlanetSurfaceModel extends ShapedModel<ILocated> {
+export class PlanetSurfaceModel extends ShapedModel<ILocated, IShape> {
     // internal model
     landingPad: LandingPadModel;
     
