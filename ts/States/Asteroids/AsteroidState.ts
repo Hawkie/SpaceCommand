@@ -43,7 +43,7 @@ export class Asteroid extends GameObject<AsteroidModel> { }
 
 export class BasicShip extends GameObject<BasicShipModel> { }
 
-export class GraphicShip extends GameObject<GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData>> { }
+export class GraphicShip extends GameObject<DynamicModel<LocatedMovingAngledRotatingForwardAccData>> { }
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -325,8 +325,8 @@ export class AsteroidState implements IGameState {
     static createGraphicShip(location: Coordinate): GraphicShip {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData> = new GraphicModel<LocatedMovingAngledRotatingForwardAccData, GraphicData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0), new GraphicData("res/img/ship.png"));
-        var shipView: IView = new GraphicAngledView(shipModel.data, shipModel.graphic);
+        var shipModel: DynamicModel<LocatedMovingAngledRotatingForwardAccData> = new DynamicModel<LocatedMovingAngledRotatingForwardAccData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0));
+        var shipView: IView = new GraphicAngledView(shipModel.data, new GraphicData("res/img/ship.png"));
 
         //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
         //var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);

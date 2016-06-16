@@ -27,7 +27,7 @@ export interface IShapedModel<TData1, TData2> extends IActor {
 }
 
 export class DynamicModel<TData> implements IActor, IModel<TData> {
-    constructor(public data: TData, private actors: IActor[] = []) {
+    constructor(public data: TData, public actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {
@@ -36,7 +36,7 @@ export class DynamicModel<TData> implements IActor, IModel<TData> {
 }
 
 export class GraphicModel<TPhysics extends ILocated, TDraw extends IGraphic> implements IActor, ILocatedModel, IModel<TPhysics> {
-    constructor(public data: TPhysics, public graphic: TDraw, private actors: IActor[] = []) {
+    constructor(public data: TPhysics, public graphic: TDraw, public actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {
@@ -45,7 +45,7 @@ export class GraphicModel<TPhysics extends ILocated, TDraw extends IGraphic> imp
 }
 
 export class ShapedModel<TPhysics extends ILocated, TShape extends IShape> implements IActor, ILocatedModel, IModel<TPhysics>, IShapedModel<TPhysics, TShape> {
-    constructor(public data: TPhysics, public shape: TShape, private actors: IActor[] = []) {
+    constructor(public data: TPhysics, public shape: TShape, public actors: IActor[] = []) {
     }
 
     update(timeModifier: number) {

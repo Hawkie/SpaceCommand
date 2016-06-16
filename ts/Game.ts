@@ -6,6 +6,7 @@ import { IGameState } from "ts/States/GameState";
 import { AsteroidState } from "ts/States/Asteroids/AsteroidState";
 import { LandingState } from "ts/States/Land/LandingState";
 import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
+import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
 import { MenuState } from "ts/States/MenuState";
 
 
@@ -31,8 +32,9 @@ export class Game {
         var asteroidState = AsteroidState.createState(assets, audioContext);
         var landingState = LandingState.create(assets);
         var soundDesigner = SoundDesignerState.create();
+        var landExplorer = LandExplorerState.create(assets);
 
-        var states = [menuState, asteroidState, landingState, soundDesigner];
+        var states = [menuState, asteroidState, landingState, soundDesigner, landExplorer];
 
         return states;
     }

@@ -2,7 +2,7 @@
 import { Assets } from "ts/Resources/Assets";
 import { AudioObject } from "ts/Sound/SoundObject";
 
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate, Vector } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
@@ -18,6 +18,7 @@ import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 import { LandingShipModel } from "ts/States/Land/LandingShip";
+import { BasicShipModel } from "ts/States/Asteroids/SpaceShipModel";
 
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
@@ -29,8 +30,9 @@ import { IView } from "ts/Views/View";
 import { ParticleFieldView } from "ts/Views/ParticleFieldView";
 import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
-import { LandingBasicShipData } from "ts/Data/ShipData";
+import { LandingBasicShipData, BasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
+import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -38,6 +40,8 @@ class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
 class WindDirectionIndicator extends GameObject<WindModel> { }
 
 class LandingBasicShip extends GameObject<LandingShipModel> { }
+
+export class BasicShip extends GameObject<BasicShipModel> { }
 
 export class LandExplorerState implements IGameState {
     wind : WindDirectionIndicator;
@@ -59,15 +63,15 @@ export class LandExplorerState implements IGameState {
         var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
         
         // ships        
-        let landingShip = LandExplorerState.createLandingShip(new Coordinate(256, 240));
+        let ship = LandExplorerState.createShip(new Coordinate(256, 240), 0, 0, 0, 0);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
-        var landingState = new LandExplorerState("Lander", assets, landingShip, objects);
+        var landingState = new LandExplorerState("Lander", assets, ship, objects);
         return landingState;
     }
     
-    constructor(public name: string, private assets:Assets, private player : LandingBasicShip, private objects : Array<IGameObject>){
+    constructor(public name: string, private assets:Assets, private player : BasicShip, private objects : Array<IGameObject>){
         this.player = player;
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
@@ -101,8 +105,7 @@ export class LandExplorerState implements IGameState {
         else this.player.model.noThrust();
 
         if (keys.isKeyDown(Keys.LeftArrow)) this.player.model.left(lastDrawModifier);
-        else if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
-        else this.player.model.notMovingOnX(lastDrawModifier);
+        if (keys.isKeyDown(Keys.RightArrow)) this.player.model.right(lastDrawModifier);
         if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
     
@@ -114,7 +117,7 @@ export class LandExplorerState implements IGameState {
     }
 
     sound(actx: AudioContext) {
-        if (this.player.model.crashed && !this.playExploded) {
+        if (this.player.model.data.crashed && !this.playExploded) {
             this.explosionSound.play();
             this.playExploded = true;
         }
@@ -174,14 +177,19 @@ export class LandExplorerState implements IGameState {
         return obj;
     }
 
-    static createLandingShip(location: Coordinate): LandingBasicShip {
-        var shipModel: LandingShipModel = new LandingShipModel(new LandingBasicShipData(location));
+    static createShip(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
+
+        var shipModel: BasicShipModel = new BasicShipModel(new BasicShipData(location, velx, vely, angle, spin));
+        var gravityForce = new VectorAccelerator(shipModel.data, new Vector(180, 10));
+        shipModel.actors.push(gravityForce);
         var shipView: IView = new PolyView(shipModel.data, shipModel.shape);
 
+        var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
         var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
         var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
-        var obj = new LandingBasicShip(shipModel, [shipView, thrustView, explosionView]);
+        var views: IView[] = [shipView, weaponView, thrustView, explosionView];
+        var obj = new BasicShip(shipModel, views);
         return obj;
     }
 }

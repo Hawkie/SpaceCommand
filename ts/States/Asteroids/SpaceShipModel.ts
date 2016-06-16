@@ -38,7 +38,6 @@ export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implem
                 data.thrustVelX(),
                 data.thrustVelY(),
                 now)));
-        
 
         var explosionParticleData = new ParticleFieldData(50, 5, 0.2, false);
         var explosionParticleModel: ParticleFieldModel = new ParticleFieldModel(explosionParticleData,
