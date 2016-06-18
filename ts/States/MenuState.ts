@@ -17,8 +17,9 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleField } from "ts/GameObjects/ParticleField";
+import { Mover } from "ts/Actors/Movers";
 
 export class MenuItem {
     constructor(public name: string, public id: number) { }
@@ -36,19 +37,27 @@ export class MenuState implements IGameState {
     lastMoved: number = Date.now();
     musicObject: AudioObject;
 
-
     private playingMusic: boolean = false;
     private assetsLoaded: boolean = false;
 
     static create(assets: Assets, actx:AudioContext): MenuState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var fData1: IParticleFieldData = new ParticleFieldData(1);
-        var fModel1: ParticleFieldModel = new ParticleFieldModel(fData1,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
-        var field1 = new ParticleField(fModel1, 1, 1);
+        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(fData1,
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
+        var field1 = new ParticleField(pFieldModel, 1, 1);
+
         var fData2: IParticleFieldData = new ParticleFieldData(1);
         var fModel2: ParticleFieldModel = new ParticleFieldModel(fData2,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 32, now)));
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 32, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
         var field2 = new ParticleField(fModel2, 2, 2);
         
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);

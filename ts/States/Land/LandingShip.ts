@@ -9,7 +9,7 @@ import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon";
@@ -28,19 +28,30 @@ export class LandingShipModel extends ShapedModel<LandingBasicShipData, IShape> 
         var shape = new ShapeData(triangleShip);
         var thrustParticlesData = new ParticleFieldData(20, 1, 0, false);
         var thrustParticlesModel: ParticleFieldModel = new ParticleFieldModel(thrustParticlesData,
-            (now: number) => new MovingGravityParticleModel(new ParticleData(data.location.x,
-                data.location.y,
-                data.thrustVelX(),
-                data.thrustVelY(),
-                now)));
+            (now: number) => {
+                var p = new ParticleData(data.location.x,
+                    data.location.y,
+                    data.thrustVelX(),
+                    data.thrustVelY(),
+                    now);
+                var mover = new Mover(p);
+                var gravity = new VectorAccelerator(p, new Vector(180, 10));
+                return new ParticleModel(p, [mover, gravity]);
+            }
+        );
 
         var explosionParticlesData = new ParticleFieldData(100, 5, 0.2, false);
         var explosionParticlesModel: ParticleFieldModel = new ParticleFieldModel(explosionParticlesData,
-            (now: number) => new MovingGravityParticleModel(new ParticleData(data.location.x,
-                data.location.y,
-                (Math.random() - 0.5) * 20,
-                (Math.random() * -30),
-                now)));
+            (now: number) => {
+                var p = new ParticleData(data.location.x,
+                    data.location.y,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() * -30),
+                    now);
+                var mover = new Mover(p);
+                var gravity = new VectorAccelerator(p, new Vector(180, 10));
+                return new ParticleModel(p, [mover, gravity]);
+            });
 
         var mover: IActor = new Mover(data);
         var thrust = new ForwardAccelerator(data);

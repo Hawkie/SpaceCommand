@@ -8,7 +8,7 @@ import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { MovingParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { IModel, DynamicModel, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
 import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
 import { Coordinate } from "ts/Physics/Common";
@@ -38,6 +38,7 @@ import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
 import { Spinner } from "ts/Actors/Rotators"
+import { Mover } from "ts/Actors/Movers"
 
 export class Asteroid extends GameObject<AsteroidModel> { }
 
@@ -210,7 +211,7 @@ export class AsteroidState implements IGameState {
         return this.player.model.weaponModel.particles;
         }
 
-    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: MovingParticleModel[]) {
+    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: ParticleModel[]) {
         // effect on asteroid
         let a = asteroids[i1];
         a.data.velX += 2;
@@ -251,7 +252,11 @@ export class AsteroidState implements IGameState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
         var field: IGameObject = new ParticleField(pFieldModel, 2, 2);
 
         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();

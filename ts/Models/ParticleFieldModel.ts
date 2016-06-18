@@ -8,20 +8,12 @@ import { VectorAccelerator } from "ts/Actors/Accelerators";
 import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
 import { DynamicModel } from "ts/Models/DynamicModels";
 
-export class MovingParticleModel extends DynamicModel<IParticleData> {
-    constructor(model: IParticleData) {
-        var mover = new Mover(model);
-        super(model, [mover]);
+export class ParticleModel extends DynamicModel<IParticleData> {
+    constructor(model: IParticleData, actors:IActor[]) {
+        super(model, actors);
     }
 }
 
-export class MovingGravityParticleModel extends DynamicModel<IParticleData>{
-    constructor(model: IParticleData) {
-        var mover = new Mover(model);
-        var vectorAccelerator = new VectorAccelerator(model, new Vector(180, 10));
-        super(model, [mover, vectorAccelerator]);
-    }
-}
 
 export class ParticleFieldModel extends DynamicModel<IParticleFieldData> {
     constructor(data: IParticleFieldData, createParticle: (now: number) => DynamicModel<IParticleData>) {

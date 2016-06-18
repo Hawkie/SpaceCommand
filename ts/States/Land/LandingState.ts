@@ -14,7 +14,7 @@ import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
@@ -33,6 +33,7 @@ import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
+import { Mover } from "ts/Actors/Movers";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -57,7 +58,11 @@ export class LandingState implements IGameState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
         var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
         
         // ships        
@@ -81,6 +86,7 @@ export class LandingState implements IGameState {
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
         this.objects.push(this.landingPad);
+        this.objects.push(this.player);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
 
@@ -95,7 +101,7 @@ export class LandingState implements IGameState {
     update(lastDrawModifier : number){
         this.velocityText.model.data.text = "Velocity: " + Math.abs(Math.round(this.player.model.data.velY));
         
-        this.player.update(lastDrawModifier);
+        //this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
     }
     
@@ -111,9 +117,7 @@ export class LandingState implements IGameState {
     
     display(drawingContext : DrawContext) {
         drawingContext.clear();
-        this.player.display(drawingContext);
         this.objects.forEach(o => o.display(drawingContext));
-        this.wind.display(drawingContext);
     }
 
     sound(actx: AudioContext) {

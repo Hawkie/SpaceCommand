@@ -14,7 +14,7 @@ import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { MovingParticleModel, MovingGravityParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
+import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
@@ -35,6 +35,7 @@ import { LandingBasicShipData, BasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
+import { Mover } from "ts/Actors/Movers";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -66,7 +67,7 @@ export class LandExplorerState implements IGameState {
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.model.data);
         this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
         // todo placement
-        this.sceneObjects.push(this.surface, this.landingPad);
+        this.sceneObjects.push(this.surface, this.landingPad, this.player);
 
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -85,7 +86,6 @@ export class LandExplorerState implements IGameState {
     update(lastDrawModifier : number){
         this.velocityText.model.data.text = "Velocity: " + Math.abs(Math.round(this.player.model.data.velY));
         
-        this.player.update(lastDrawModifier);
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
         this.guiObjects.forEach(o => o.update(lastDrawModifier));
     }
@@ -118,7 +118,6 @@ export class LandExplorerState implements IGameState {
         drawingContext.translate((256 - this.player.model.data.location.x) + this.player.model.data.location.x * (1 - this.zoom),
             (240 - this.player.model.data.location.y) + this.player.model.data.location.y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
-        this.player.display(drawingContext);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         drawingContext.restore();
     }
@@ -171,7 +170,11 @@ export class LandExplorerState implements IGameState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var pFieldData: ParticleFieldData = new ParticleFieldData(1);
         var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => new MovingParticleModel(new ParticleData(512 * Math.random(), 0, 0, 16, now)));
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
         var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
 
         // ships        
