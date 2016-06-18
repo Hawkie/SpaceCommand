@@ -35,6 +35,7 @@ import { LandingBasicShipData, BasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
+import { ExplosionEnactment } from "ts/States/Ship/ExplosionEnactment";
 import { Mover } from "ts/Actors/Movers";
 
 
@@ -49,12 +50,11 @@ export class BasicShip extends GameObject<BasicShipModel> { }
 export class LandExplorerState implements IGameState {
     wind : WindDirectionIndicator;
     surface: PlanetSurface;
+    explosion: ExplosionEnactment;
     landingPad: GameObject<LandingPadModel>;
     velocityText: TextObject;
     interactors: IInteractor[];
-
-    playExploded: boolean;
-    explosionSound: AudioObject;
+    
     viewScale: number;
     zoom: number;
     exitState: boolean = false;
@@ -63,11 +63,14 @@ export class LandExplorerState implements IGameState {
         this.viewScale = 1;
         this.zoom = 1;
         this.player = player;
+
+        let eModel: ParticleFieldModel = ExplosionEnactment.createGroundExplosion(player.model.data);
+        this.explosion = new ExplosionEnactment(eModel);
         
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.model.data);
         this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
         // todo placement
-        this.sceneObjects.push(this.surface, this.landingPad, this.player);
+        this.sceneObjects.push(this.surface, this.landingPad, this.player, this.explosion);
 
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -79,8 +82,6 @@ export class LandExplorerState implements IGameState {
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model.data, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffectCallback);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
-        this.playExploded = false;
-        this.explosionSound = new AudioObject("res/sound/explosion.wav");
     }
     
     update(lastDrawModifier : number){
@@ -123,10 +124,6 @@ export class LandExplorerState implements IGameState {
     }
 
     sound(actx: AudioContext) {
-        if (this.player.model.data.crashed && !this.playExploded) {
-            this.explosionSound.play();
-            this.playExploded = true;
-        }
     }
     
     tests(lastTestModifier: number) { 
@@ -143,6 +140,7 @@ export class LandExplorerState implements IGameState {
 
             if (this.player.model.data.velY > 20) {
                 this.player.model.crash();
+                this.explosion.on();
             }
 
             this.player.model.data.velY = 0;
@@ -154,6 +152,7 @@ export class LandExplorerState implements IGameState {
         this.player.model.data.velY = 0;
         this.player.model.data.velX = 0;
         this.player.model.crash();
+        this.explosion.on();
     }
     
     returnState() : number {
@@ -190,8 +189,6 @@ export class LandExplorerState implements IGameState {
         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
         surfaceGenerator.initSurface();
         model.actors.push(surfaceGenerator);
-        //var surface: IView = new PolyView(model.data, model.shape);
-        //var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
         var obj = new PlanetSurface(model, [surface]);
@@ -225,9 +222,8 @@ export class LandExplorerState implements IGameState {
 
         var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
         var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
-        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
-        var views: IView[] = [shipView, weaponView, thrustView, explosionView];
+        var views: IView[] = [shipView, weaponView, thrustView];
         var obj = new BasicShip(shipModel, views);
         return obj;
     }

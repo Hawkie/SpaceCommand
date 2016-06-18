@@ -21,14 +21,12 @@ export class BasicShipData extends LocatedMovingAngledRotatingForwardAccData imp
     maxForwardForce: number;
     maxRotationalSpeed: number;
     crashed: boolean;
-    exploded: boolean; // for explosion sound
 
     constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
         super(location, velx, vely, angle, spin, 0);
         this.maxForwardForce = 16;
         this.maxRotationalSpeed = 64;
         this.crashed = false;
-        this.exploded = false;
     }
 
     thrustVelX(): number {

@@ -74,6 +74,7 @@
     <TypeScriptCompile Include="ts\States\LandExplorer\SurfaceGenerator.ts" />
     <TypeScriptCompile Include="ts\States\Land\LandingPad.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\SpaceShipModel.ts" />
+    <TypeScriptCompile Include="ts\States\Ship\ExplosionEnactment.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundEffectsModel.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\AsteroidModel.ts" />
     <TypeScriptCompile Include="ts\Data\TextData.ts" />

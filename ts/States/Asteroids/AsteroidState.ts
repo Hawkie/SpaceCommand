@@ -36,9 +36,10 @@ import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
-import { SpriteAnimator } from "ts/Actors/SpriteAnimator"
-import { Spinner } from "ts/Actors/Rotators"
-import { Mover } from "ts/Actors/Movers"
+import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
+import { Spinner } from "ts/Actors/Rotators";
+import { Mover } from "ts/Actors/Movers";
+import { ExplosionEnactment } from "ts/States/Ship/ExplosionEnactment";
 
 export class Asteroid extends GameObject<AsteroidModel> { }
 
@@ -62,7 +63,6 @@ export class AsteroidState implements IGameState {
     asteroidNoise: boolean;
     thrustNoiseStarted: boolean;
     thrustSound: AudioObject;
-    explosionSound: AudioObject;
     asteroidHitSound: AudioObject = undefined;
     laserSound: FXObject;
     helloSound: BufferObject = undefined;
@@ -71,17 +71,16 @@ export class AsteroidState implements IGameState {
     zoom: number;
     exitState: boolean = false;
     level: number = 3;
+    explosion: ExplosionEnactment;
     
     constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueObject) {
         this.viewScale = 1;
         this.zoom = 1;
         this.player = player;
-        this.objects = objects;
         this.asteroids = asteroids;
         this.thrustNoiseStarted = false;
         this.asteroidNoise = false;
         this.thrustSound = new AudioObject("res/sound/thrust.wav", true);
-        this.explosionSound = new AudioObject("res/sound/explosion.wav");
         var laserEffect = new SoundEffectData(
             1046.5,           //frequency
             0,                //attack
@@ -99,6 +98,11 @@ export class AsteroidState implements IGameState {
 
         this.laserSound = new FXObject(actx,
             laserEffect);
+
+        let eModel: ParticleFieldModel = ExplosionEnactment.createSpaceExplosion(player.model.data);
+        this.explosion = new ExplosionEnactment(eModel);
+        this.objects.push(this.explosion);
+        this.objects.push(this.player);
         
         // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
         // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
@@ -116,7 +120,6 @@ export class AsteroidState implements IGameState {
     update(lastDrawModifier : number) {
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
-        this.player.update(lastDrawModifier);
 
         // keep objects in screen
         this.asteroids.forEach(x => this.keepIn(x.model.data));
@@ -145,25 +148,13 @@ export class AsteroidState implements IGameState {
         
         this.objects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
-        //drawingContext.translate(, 240
-        this.player.display(drawingContext);
-        drawingContext.restore()
-        //drawingContext.zoom(1 / this.zoom, 1 / this.zoom);
-        //drawingContext.translate(-this.player.model.data.location.x * (1-this.zoom),
-        //    -this.player.model.data.location.y * (1-this.zoom));
-        
-        
+        drawingContext.restore();
     }
 
     sound(actx: AudioContext) {
         if (this.player.model.weaponModel.fired) {
             this.laserSound.play();
             this.player.model.weaponModel.fired = false;
-        }
-        if (this.player.model.data.crashed && !this.player.model.data.exploded) {
-            this.explosionSound.play();
-            
-            this.player.model.data.exploded = true;
         }
 
         if (this.asteroidNoise) {
@@ -233,6 +224,7 @@ export class AsteroidState implements IGameState {
 
     asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
         this.player.model.crash();
+        this.explosion.on();
     }
 
     tests(lastTestModifier: number) {
@@ -320,9 +312,8 @@ export class AsteroidState implements IGameState {
 
         var weaponView: IView = new ParticleFieldView(shipModel.weaponModel, 1, 1);
         var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
-        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
-        var views: IView[] = [shipView, weaponView, thrustView, explosionView];
+        var views: IView[] = [shipView, weaponView, thrustView];
         var obj = new BasicShip(shipModel, views);
         return obj;
     }

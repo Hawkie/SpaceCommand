@@ -21,7 +21,7 @@ import { IFiringShipModel } from "ts/Models/Ships/Ship";
 export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implements IFiringShipModel {
     weaponModel: IWeaponData;
     thrustParticleModel: ParticleFieldModel;
-    explosionParticleModel: ParticleFieldModel;
+    //explosionParticleModel: ParticleFieldModel;
 
     constructor(data: BasicShipData) {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
@@ -43,30 +43,30 @@ export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implem
                 return new ParticleModel(p, [mover]);
             });
 
-        var explosionParticleData = new ParticleFieldData(50, 5, 0.2, false);
-        var explosionParticleModel: ParticleFieldModel = new ParticleFieldModel(explosionParticleData,
-            (now: number) => {
-                var p = new ParticleData(data.location.x,
-                    data.location.y,
-                    data.velX + ((Math.random() - 0.5) * 20),
-                    data.velY + ((Math.random() - 0.5) * 20),
-                    now);
-                var mover = new Mover(p);
-                return new ParticleModel(p, [mover]);
-            });
+        //var explosionParticleData = new ParticleFieldData(50, 5, 0.2, false);
+        //var explosionParticleModel: ParticleFieldModel = new ParticleFieldModel(explosionParticleData,
+        //    (now: number) => {
+        //        var p = new ParticleData(data.location.x,
+        //            data.location.y,
+        //            data.velX + ((Math.random() - 0.5) * 20),
+        //            data.velY + ((Math.random() - 0.5) * 20),
+        //            now);
+        //        var mover = new Mover(p);
+        //        return new ParticleModel(p, [mover]);
+        //    });
 
 
         var mover: IActor = new Mover(data);
         var thrust = new ForwardAccelerator(data);
         var rotator = new PolyRotator(data, shape);
 
-        var actors: IActor[] = [mover, thrust, rotator, weaponUpdater, thrustParticleModel, explosionParticleModel];
+        var actors: IActor[] = [mover, thrust, rotator, weaponUpdater, thrustParticleModel];//, explosionParticleModel];
         
         super(data, shape, actors);
 
         this.weaponModel = weaponModel;
         this.thrustParticleModel = thrustParticleModel;
-        this.explosionParticleModel = explosionParticleModel;
+        //this.explosionParticleModel = explosionParticleModel;
     }
 
     thrust() {
@@ -90,7 +90,6 @@ export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implem
     // turn on explosionParticles - done
     crash() {
         this.data.crashed = true;
-        this.explosionParticleModel.turnOn();
         console.log("Your ship crashed!");
     }
 

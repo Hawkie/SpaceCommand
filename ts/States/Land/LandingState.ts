@@ -34,6 +34,7 @@ import { LandingBasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { Mover } from "ts/Actors/Movers";
+import { ExplosionEnactment } from "ts/States/Ship/ExplosionEnactment";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -48,36 +49,15 @@ export class LandingState implements IGameState {
     landingPad: GameObject<LandingPadModel>;
     velocityText: TextObject;
     interactors: IInteractor[];
-
-    playExploded: boolean;
-    explosionSound: AudioObject;
     exitState: boolean = false;
+    explosion: ExplosionEnactment;
 
-    static create(assets:Assets): LandingState {
-        // Background
-        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
-        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
-            (now: number) => {
-                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
-                var mover = new Mover(p);
-                return new ParticleModel(p, [mover]);
-            });
-        var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
-        
-        // ships        
-        let landingShip = LandingState.createLandingShip(new Coordinate(256, 240));
-
-        var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: Array<IGameObject> = [field, text];
-        var landingState = new LandingState("Lander", assets, landingShip, objects);
-        return landingState;
-    }
     
     constructor(public name: string, private assets:Assets, private player : LandingBasicShip, private objects : Array<IGameObject>){
         this.player = player;
-        this.objects = new Array<IGameObject>();
-        this.objects.concat(objects);
+
+        let eModel = ExplosionEnactment.createGroundExplosion(this.player.model.data);
+        this.explosion = new ExplosionEnactment(eModel);
         this.wind = LandingState.createWindDirectionIndicator(new Coordinate(450,50));
         this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 0), this.player.model.data);
         this.landingPad = LandingState.createLandingPadObject(this.surface);
@@ -89,13 +69,12 @@ export class LandingState implements IGameState {
         this.objects.push(this.player);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
+        this.objects.push(this.explosion);
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model.data, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
-        this.playExploded = false;
-        this.explosionSound = new AudioObject("res/sound/explosion.wav");
     }
     
     update(lastDrawModifier : number){
@@ -121,10 +100,6 @@ export class LandingState implements IGameState {
     }
 
     sound(actx: AudioContext) {
-        if (this.player.model.crashed && !this.playExploded) {
-            this.explosionSound.play();
-            this.playExploded = true;
-        }
     }
     
     tests(lastTestModifier: number) { 
@@ -141,6 +116,7 @@ export class LandingState implements IGameState {
 
             if (this.player.model.data.velY > 20) {
                 this.player.model.crash();
+                this.explosion.on();
             }
 
             this.player.model.data.velY = 0;
@@ -152,6 +128,7 @@ export class LandingState implements IGameState {
         this.player.model.data.velY = 0;
         this.player.model.data.velX = 0;
         this.player.model.crash();
+        this.explosion.on();
     }
     
     returnState() : number {
@@ -162,6 +139,28 @@ export class LandingState implements IGameState {
         }
         return s;
     }
+
+    static create(assets: Assets): LandingState {
+        // Background
+        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        var pFieldData: ParticleFieldData = new ParticleFieldData(1);
+        var pFieldModel: ParticleFieldModel = new ParticleFieldModel(pFieldData,
+            (now: number) => {
+                var p = new ParticleData(512 * Math.random(), 0, 0, 16, now);
+                var mover = new Mover(p);
+                return new ParticleModel(p, [mover]);
+            });
+        var field: ParticleField = new ParticleField(pFieldModel, 2, 2);
+
+        // ships        
+        let landingShip = LandingState.createLandingShip(new Coordinate(256, 240));
+
+        var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+        var objects: Array<IGameObject> = [field, text];
+        var landingState = new LandingState("Lander", assets, landingShip, objects);
+        return landingState;
+    }
+
 
     static createPlanetSurfaceObject(location: Coordinate, from: ILocated): PlanetSurface {
         var model = new PlanetSurfaceModel(location);
