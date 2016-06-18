@@ -36,7 +36,7 @@ export class ParticleGenerator implements IActor {
     }
 }
 
-export class ParticleFieldMover implements IActor {
+export class ParticleModelUpdater implements IActor {
     constructor(private model: IParticleFieldData) { }
 
     update(timeModifier: number) {

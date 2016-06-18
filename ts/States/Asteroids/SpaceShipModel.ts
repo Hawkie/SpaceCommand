@@ -12,7 +12,7 @@ import { Transforms } from "ts/Physics/Transforms";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleModelUpdater } from "ts/Actors/ParticleFieldUpdater";
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon"
 import { IFiringShipModel } from "ts/Models/Ships/Ship";
 
@@ -28,7 +28,7 @@ export class BasicShipModel extends ShapedModel<BasicShipData, ShapeData> implem
         Transforms.scale(triangleShip, 2, 2);
         var shape = new ShapeData(triangleShip);
         var weaponModel: IWeaponData = new WeaponData();
-        var weaponUpdater: IActor = new ParticleFieldMover(weaponModel);
+        var weaponUpdater: IActor = new ParticleModelUpdater(weaponModel);
         
         // use particle field model!
         var thrustParticleData = new ParticleFieldData(20, 1, 0, false);

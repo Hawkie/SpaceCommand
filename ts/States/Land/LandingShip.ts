@@ -10,7 +10,7 @@ import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
-import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleModelUpdater } from "ts/Actors/ParticleFieldUpdater";
 
 import { IWeaponData, WeaponData } from "ts/Models/Weapons/Weapon";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";

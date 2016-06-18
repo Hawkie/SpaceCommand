@@ -5,7 +5,7 @@ import { IParticleFieldData, ParticleFieldData } from "ts/Data/ParticleFieldData
 import { IActor } from "ts/Actors/Actor"
 import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
-import { ParticleGenerator, ParticleFieldMover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleModelUpdater } from "ts/Actors/ParticleFieldUpdater";
 import { DynamicModel } from "ts/Models/DynamicModels";
 
 export class ParticleModel extends DynamicModel<IParticleData> {
@@ -18,7 +18,7 @@ export class ParticleModel extends DynamicModel<IParticleData> {
 export class ParticleFieldModel extends DynamicModel<IParticleFieldData> {
     constructor(data: IParticleFieldData, createParticle: (now: number) => DynamicModel<IParticleData>) {
         var generator: ParticleGenerator = new ParticleGenerator(data, createParticle);
-        var mover: ParticleFieldMover = new ParticleFieldMover(data);
+        var mover: ParticleModelUpdater = new ParticleModelUpdater(data);
         super(data, [generator, mover]);
     }
 
