@@ -20,7 +20,7 @@ export class LandingShipModel extends ShapedModel<LandingBasicShipData, IShape> 
 
     crashed: boolean;
     thrustParticleModel: ParticleFieldModel;
-    explosionParticleModel: ParticleFieldModel;
+    //explosionParticleModel: ParticleFieldModel;
 
     constructor(data: LandingBasicShipData) {
 
@@ -40,26 +40,26 @@ export class LandingShipModel extends ShapedModel<LandingBasicShipData, IShape> 
             }
         );
 
-        var explosionParticlesData = new ParticleFieldData(100, 5, 0.2, false);
-        var explosionParticlesModel: ParticleFieldModel = new ParticleFieldModel(explosionParticlesData,
-            (now: number) => {
-                var p = new ParticleData(data.location.x,
-                    data.location.y,
-                    (Math.random() - 0.5) * 20,
-                    (Math.random() * -30),
-                    now);
-                var mover = new Mover(p);
-                var gravity = new VectorAccelerator(p, new Vector(180, 10));
-                return new ParticleModel(p, [mover, gravity]);
-            });
+        //var explosionParticlesData = new ParticleFieldData(100, 5, 0.2, false);
+        //var explosionParticlesModel: ParticleFieldModel = new ParticleFieldModel(explosionParticlesData,
+        //    (now: number) => {
+        //        var p = new ParticleData(data.location.x,
+        //            data.location.y,
+        //            (Math.random() - 0.5) * 20,
+        //            (Math.random() * -30),
+        //            now);
+        //        var mover = new Mover(p);
+        //        var gravity = new VectorAccelerator(p, new Vector(180, 10));
+        //        return new ParticleModel(p, [mover, gravity]);
+        //    });
 
         var mover: IActor = new Mover(data);
         var thrust = new ForwardAccelerator(data);
         var gravityForce = new VectorAccelerator(data, new Vector(180, 10));
-        super(data, shape, [mover, thrust, gravityForce, thrustParticlesModel, explosionParticlesModel]);
+        super(data, shape, [mover, thrust, gravityForce, thrustParticlesModel]);//, explosionParticlesModel]);
         this.crashed = false;
         this.thrustParticleModel = thrustParticlesModel;
-        this.explosionParticleModel = explosionParticlesModel;
+        //this.explosionParticleModel = explosionParticlesModel;
 
     }
 
@@ -78,7 +78,7 @@ export class LandingShipModel extends ShapedModel<LandingBasicShipData, IShape> 
 
     crash() {
         this.crashed = true;
-        this.explosionParticleModel.turnOn();
+        //this.explosionParticleModel.turnOn();
         console.log("Your crashed your ship while landing!");
     }
 

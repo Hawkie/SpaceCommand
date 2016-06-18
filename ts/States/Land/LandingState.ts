@@ -193,9 +193,9 @@ export class LandingState implements IGameState {
         var shipView: IView = new PolyView(shipModel.data, shipModel.shape);
 
         var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
-        var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
+        //var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
 
-        var obj = new LandingBasicShip(shipModel, [shipView, thrustView, explosionView]);
+        var obj = new LandingBasicShip(shipModel, [shipView, thrustView]);//, explosionView]);
         return obj;
     }
 }

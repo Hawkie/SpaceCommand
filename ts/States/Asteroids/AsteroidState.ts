@@ -108,8 +108,8 @@ export class AsteroidState implements IGameState {
 
         let eModel: ParticleFieldModel = ExplosionEnactment.createSpaceExplosion(player.model.data);
         this.explosion = new ExplosionEnactment(eModel);
-        this.objects.push(this.explosion);
-        this.objects.push(this.player);
+        this.objects.push(this.explosion, this.player);
+        
         
         // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
         // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
