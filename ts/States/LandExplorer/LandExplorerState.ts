@@ -69,7 +69,6 @@ export class LandExplorerState implements IGameState {
         
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.model.data);
         this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
-        // todo placement
         this.sceneObjects.push(this.surface, this.landingPad, this.player, this.explosion);
 
         // Gui Objects

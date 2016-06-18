@@ -73,7 +73,14 @@ export class AsteroidState implements IGameState {
     level: number = 3;
     explosion: ExplosionEnactment;
     
-    constructor(public name: string, private assets: Assets, private actx: AudioContext, private player: BasicShip, private objects: IGameObject[], private asteroids: Asteroid[], private score:ValueObject) {
+    constructor(public name: string,
+        private assets: Assets,
+        private actx: AudioContext,
+        private player: BasicShip,
+        private objects: IGameObject[],
+        private asteroids: Asteroid[],
+        private score: ValueObject,
+        private guiObjects: IGameObject[]) {
         this.viewScale = 1;
         this.zoom = 1;
         this.player = player;
@@ -117,7 +124,8 @@ export class AsteroidState implements IGameState {
     }
 
     
-    update(lastDrawModifier : number) {
+    update(lastDrawModifier: number) {
+        this.guiObjects.forEach(o => o.update(lastDrawModifier));
         this.objects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
 
@@ -141,11 +149,11 @@ export class AsteroidState implements IGameState {
     display(drawingContext: DrawContext) {
         
         drawingContext.clear();
+        this.guiObjects.forEach(o => o.display(drawingContext));
         drawingContext.save();
         drawingContext.translate(this.player.model.data.location.x * (1 - this.zoom),
             this.player.model.data.location.y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
-        
         this.objects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
         drawingContext.restore();
@@ -264,9 +272,9 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
-        var objects: IGameObject[] = [field, text, score, valueDisplay, alien, coinObj];
+        var objects: IGameObject[] = [field, alien, coinObj];
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids, valueDisplay);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, objects, asteroids, valueDisplay, [text, score, valueDisplay]);
 
         return asteroidState;
     }

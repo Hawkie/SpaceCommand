@@ -61,15 +61,15 @@ export class LandingState implements IGameState {
         this.wind = LandingState.createWindDirectionIndicator(new Coordinate(450,50));
         this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 0), this.player.model.data);
         this.landingPad = LandingState.createLandingPadObject(this.surface);
-        // todo placement
         
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
+        this.objects.push(this.explosion);
         this.objects.push(this.surface);
         this.objects.push(this.landingPad);
         this.objects.push(this.player);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
-        this.objects.push(this.explosion);
+        
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model.data, this.playerLandingPadCollision.bind(this));
@@ -77,10 +77,8 @@ export class LandingState implements IGameState {
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
     }
     
-    update(lastDrawModifier : number){
+    update(lastDrawModifier: number) {
         this.velocityText.model.data.text = "Velocity: " + Math.abs(Math.round(this.player.model.data.velY));
-        
-        //this.player.update(lastDrawModifier);
         this.objects.forEach(o => o.update(lastDrawModifier));
     }
     
