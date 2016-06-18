@@ -163,8 +163,6 @@ export class LandingState implements IGameState {
         var model = new PlanetSurfaceModel(location);
         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
         surfaceGenerator.initSurface();
-        //model.actors.push(surfaceGenerator);
-        //var surface: IView = new PolyView(model.data, model.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
         var obj = new PlanetSurface(model, [surface]);

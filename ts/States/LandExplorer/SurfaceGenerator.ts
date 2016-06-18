@@ -32,11 +32,11 @@ export class SurfaceGenerator implements IActor {
 
     addSurface() {
         var buffer = (this.WIDTH / 2); // 260
-        var left = this.from.location.x - buffer; //256 - 260 = -4  // -5 - 260 = - 265 // 400 - 260 = 140
-        var right = this.from.location.x + buffer; // 256+260 = 516 // -5 + 260 = 255
-        var leftIndex = Math.floor(left / this.CHUNK); // -0.4 // -26.5 // 14
-        var rightIndex = Math.ceil(right / this.CHUNK); // 51.6 // 25.5
-        var toAddLeft = leftIndex + this.addedLeft; //-0.4 // -26.5
+        var left = this.from.location.x - buffer; //256 - 260 = -4  // 1 - 260 = - 259 // 400 - 260 = 140
+        var right = this.from.location.x + buffer; // 256+260 = 516 // 1 + 260 = 261 // 400 + 260 = 660
+        var leftIndex = Math.floor(left / this.CHUNK); // 0 // -25 // 14
+        var rightIndex = Math.ceil(right / this.CHUNK); // 52 // 27 // 66
+        var toAddLeft = leftIndex + this.addedLeft; // -0.4 // -26.5
         if (toAddLeft < 0) {
             this.shape.points.shift();
             for (let l = 0; toAddLeft < l; l--) {
@@ -46,7 +46,11 @@ export class SurfaceGenerator implements IActor {
             }
             this.shape.points.unshift(new Coordinate(first.x - 100, 1000));
         }
-        var toAddRight = rightIndex - this.shape.points.length - this.addedLeft // 51.6- 52 - 0 = -0.4 // 
+        var toAddRight = rightIndex - (this.shape.points.length - this.addedLeft - 3); // 51.6- 52 - 0 = -0.4 // 
+        console.log("length " + this.shape.points.length);
+        console.log("rightIndex " + rightIndex);
+        console.log("toAdd " + toAddRight);
+        console.log("fromx " + this.from.location.x);
         if (toAddRight > 0) {
             this.shape.points.pop();
             for (let r = 0; toAddRight > r; r++) {
