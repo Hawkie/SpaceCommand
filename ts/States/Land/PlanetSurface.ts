@@ -1,25 +1,24 @@
 import { Coordinate } from "ts/Physics/Common";
 import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
+import { IActor } from "ts/Actors/Actor";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 import { ShapedModel } from "ts/Models/DynamicModels";
 import { Transforms } from "ts/Physics/Transforms";
-
+import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 
 export class PlanetSurfaceModel extends ShapedModel<ILocated, IShape> {
-    // internal model
-    landingPad: LandingPadModel;
     
     
     constructor(startingPoint: Coordinate) {
         var located = new LocatedData(startingPoint);
-        var surfacePoints = PlanetSurfaceModel.generateSurface(startingPoint, 600);
-        var padLocation = surfacePoints.pop();
-        var shape = new ShapeData(surfacePoints);
-        var pad = new LandingPadModel(padLocation);
-        super(located, shape, [pad]);
-        this.landingPad = pad;
+        //var surfacePoints = surfaceGenerator.initSurface();
+        
+        //var padLocation = surfacePoints.pop();
+        var shape = new ShapeData([]);
+        super(located, shape, []);
     }
+    
     
     static generateSurface(startingPoint: Coordinate, surfaceLength : number, xMin:number = 20, xMax:number = 40, yMin:number = -20, yMax:number = 20) : Coordinate[]{
         

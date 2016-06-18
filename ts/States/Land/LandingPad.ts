@@ -7,12 +7,13 @@ export class LandingPadModel extends ShapedModel<LocatedData, IShape> {
     constructor(location: Coordinate) {
         var located = new LocatedData(location);
         var shape = new ShapeData([
-            new Coordinate(-10, -2),
-            new Coordinate(-13, 10),
-            new Coordinate(-10, 0),
-            new Coordinate(10, 0),
-            new Coordinate(13, 10),
-            new Coordinate(10, -2)
+            new Coordinate(-2, 2),
+            new Coordinate(-10, 2),
+            new Coordinate(-7, -10),
+            new Coordinate(7, -10),
+            new Coordinate(10, 2),
+            new Coordinate(2, 2),
+            new Coordinate(0,0),
         ]);
         super(located, shape, []);
     }

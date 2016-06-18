@@ -3,11 +3,12 @@ import { Assets } from "ts/Resources/Assets";
 import { AudioObject } from "ts/Sound/SoundObject";
 
 import { Coordinate } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
-import { LocatedData } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
@@ -31,6 +32,7 @@ import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
+import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -42,7 +44,7 @@ class LandingBasicShip extends GameObject<LandingShipModel> { }
 export class LandingState implements IGameState {
     wind : WindDirectionIndicator;
     surface: PlanetSurface;
-    landingPad: LandingPadModel;
+    landingPad: GameObject<LandingPadModel>;
     velocityText: TextObject;
     interactors: IInteractor[];
 
@@ -72,18 +74,18 @@ export class LandingState implements IGameState {
         this.objects = new Array<IGameObject>();
         this.objects.concat(objects);
         this.wind = LandingState.createWindDirectionIndicator(new Coordinate(450,50));
-        this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 400));
-        this.landingPad = this.surface.model.landingPad;
+        this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 0), this.player.model.data);
+        this.landingPad = LandingState.createLandingPadObject(this.surface);
         // todo placement
         
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.objects.push(this.surface);
-        //this.objects.push(this.landingPad);
+        this.objects.push(this.landingPad);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
-        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad, this.player.model.data, this.playerLandingPadCollision.bind(this));
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model.data, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
@@ -157,14 +159,26 @@ export class LandingState implements IGameState {
         return s;
     }
 
-    static createPlanetSurfaceObject(location: Coordinate) :PlanetSurface {
-            var model = new PlanetSurfaceModel(location);
-            //var surface: IView = new PolyView(model.data, model.shape);
-            var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
-            var terrain = new GraphicData("res/img/terrain.png");
-            var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
-            var obj = new PlanetSurface(model, [surface, pad]);
-            return obj;
+    static createPlanetSurfaceObject(location: Coordinate, from: ILocated): PlanetSurface {
+        var model = new PlanetSurfaceModel(location);
+        var surfaceGenerator = new SurfaceGenerator(from, model.shape);
+        surfaceGenerator.initSurface();
+        //model.actors.push(surfaceGenerator);
+        //var surface: IView = new PolyView(model.data, model.shape);
+        var terrain = new GraphicData("res/img/terrain.png");
+        var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
+        var obj = new PlanetSurface(model, [surface]);
+        return obj;
+    }
+
+    static createLandingPadObject(surface: PlanetSurface): GameObject<LandingPadModel> {
+        var placeIndex = Transforms.random(0, 50);
+        var xy = surface.model.shape.points[placeIndex];
+        var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.data.location.x,
+        xy.y + surface.model.data.location.y));
+        var padView: IView = new PolyView(padModel.data, padModel.shape);
+        var obj = new GameObject<LandingPadModel>(padModel, [padView]);
+        return obj;
     }
 
     static createWindDirectionIndicator(location: Coordinate): WindDirectionIndicator {

@@ -34,8 +34,8 @@ export class WindGenerator implements IActor {
 
             var wind = this.data.value;
             var newWind = wind + Math.round((Math.random() * 8)) - 4;
-            var maxWind = Math.min(newWind, 20);
-            var minWind = Math.max(maxWind, -20);
+            var maxWind = Math.min(newWind, 5);
+            var minWind = Math.max(maxWind, -5);
             this.data.value = minWind;
 
             if (this.data.value < 0) {

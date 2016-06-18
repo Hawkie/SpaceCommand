@@ -3,11 +3,12 @@ import { Assets } from "ts/Resources/Assets";
 import { AudioObject } from "ts/Sound/SoundObject";
 
 import { Coordinate, Vector } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
-import { LocatedData } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
@@ -33,6 +34,7 @@ import { ValueView } from "ts/Views/TextView";
 import { LandingBasicShipData, BasicShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 
 
 class PlanetSurface extends GameObject<PlanetSurfaceModel> { }
@@ -46,7 +48,7 @@ export class BasicShip extends GameObject<BasicShipModel> { }
 export class LandExplorerState implements IGameState {
     wind : WindDirectionIndicator;
     surface: PlanetSurface;
-    landingPad: LandingPadModel;
+    landingPad: GameObject<LandingPadModel>;
     velocityText: TextObject;
     interactors: IInteractor[];
 
@@ -61,10 +63,10 @@ export class LandExplorerState implements IGameState {
         this.zoom = 1;
         this.player = player;
         
-        this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 400));
-        this.landingPad = this.surface.model.landingPad;
+        this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.model.data);
+        this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
         // todo placement
-        this.sceneObjects.push(this.surface);
+        this.sceneObjects.push(this.surface, this.landingPad);
 
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -73,7 +75,7 @@ export class LandExplorerState implements IGameState {
         this.guiObjects.push(this.wind);
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.model.data, this.playerSurfaceCollision.bind(this));
-        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad, this.player.model.data, this.playerLandingPadCollision.bind(this));
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.model.data, this.playerLandingPadCollision.bind(this));
         var windEffect: IInteractor = new Interactor(this.wind.model, this.player.model, this.windEffectCallback);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
         this.playExploded = false;
@@ -98,7 +100,7 @@ export class LandExplorerState implements IGameState {
         if (keys.isKeyDown(Keys.Z)) {
             this.viewScale = 0.01;
         }
-        else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
+        else if (keys.isKeyDown(Keys.X)) {
             this.viewScale = -0.01;
         }
         else this.viewScale = 0;
@@ -108,8 +110,10 @@ export class LandExplorerState implements IGameState {
     
     display(drawingContext : DrawContext) {
         drawingContext.clear();
+        // objects not affected by movement
         this.guiObjects.forEach(o => o.display(drawingContext));
-        //this.wind.display(drawingContext);
+
+        // scene objects
         drawingContext.save();
         drawingContext.translate((256 - this.player.model.data.location.x) + this.player.model.data.location.x * (1 - this.zoom),
             (240 - this.player.model.data.location.y) + this.player.model.data.location.y * (1 - this.zoom));
@@ -177,13 +181,27 @@ export class LandExplorerState implements IGameState {
         return landingState;
     }
 
-    static createPlanetSurfaceObject(location: Coordinate): PlanetSurface {
+    static createPlanetSurfaceObject(location: Coordinate, from: ILocated): PlanetSurface {
+        
         var model = new PlanetSurfaceModel(location);
+        var surfaceGenerator = new SurfaceGenerator(from, model.shape);
+        surfaceGenerator.initSurface();
+        model.actors.push(surfaceGenerator);
         //var surface: IView = new PolyView(model.data, model.shape);
-        var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
+        //var pad: IView = new PolyView(model.landingPad.data, model.landingPad.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
-        var obj = new PlanetSurface(model, [surface, pad]);
+        var obj = new PlanetSurface(model, [surface]);
+        return obj;
+    }
+
+    static createLandingPadObject(surface: PlanetSurface): GameObject<LandingPadModel> {
+        var placeIndex = Transforms.random(0, 50);
+        var xy = surface.model.shape.points[placeIndex];
+        var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.data.location.x,
+            xy.y + surface.model.data.location.y));
+        var padView: IView = new PolyView(padModel.data, padModel.shape);
+        var obj = new GameObject<LandingPadModel>(padModel, [padView]);
         return obj;
     }
 
