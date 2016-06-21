@@ -26,6 +26,8 @@ export class SurfaceGenerator implements IActor {
         }
         var first = this.shape.points[0];
         var last = this.shape.points[this.shape.points.length - 1];
+
+        //draw lines down to create polygon (for collision detection)
         this.shape.points.unshift(new Coordinate(first.x - 100, 1000));
         this.shape.points.push(new Coordinate(last.x + 100, 1000));
     }
