@@ -1,6 +1,7 @@
 export class MarkovChains{
     words : string[];
     table : any;
+    END_OF_WORD = "\n";
     
     constructor(words : string[]){
         this.words = words;
@@ -10,8 +11,9 @@ export class MarkovChains{
     }
     
     generateTable(){
+        this.table = [];
         this.words.forEach(word => {
-            this.addWordToTable(word);
+            this.addWordToTable(word + this.END_OF_WORD);
         });
     }
     
@@ -30,5 +32,8 @@ export class MarkovChains{
                 this.table[previousLetter][letter] = 1;
             previousLetter = letter;
         });
+    }
+    
+    generateNewWord(){
     }
 }
