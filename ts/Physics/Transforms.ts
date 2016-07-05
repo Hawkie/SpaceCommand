@@ -1,4 +1,4 @@
-import { Coordinate } from "../Physics/Common";
+import { Coordinate, Vector } from "../Physics/Common";
 
 export class Transforms {
 
@@ -37,6 +37,12 @@ export class Transforms {
         var x = Math.sin(radians) * length;
         var y = Math.cos(radians) * -length;
         return new Coordinate(x, y);
+    }
+
+    static CartesianToVector(x: number, y: number) : Vector {
+        var length = Math.sqrt(x * x + y * y);
+        var angle = Math.atan(y / x) * 180 / Math.PI;
+        return new Vector(angle, length);
     }
 
     static scale(points: Coordinate[], scaleX: number, scaleY:number) {

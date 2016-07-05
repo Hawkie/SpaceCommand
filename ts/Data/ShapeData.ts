@@ -8,3 +8,14 @@ export interface IShape {
 export class ShapeData implements IShape {
     constructor(public points: Coordinate[]) { }
 }
+
+export class RectangleData {
+
+    constructor(public width: number, public height: number) { }
+}
+
+
+export class CircleData {
+
+    constructor(public radius: number) { }
+}

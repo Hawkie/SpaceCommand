@@ -16,7 +16,8 @@ export class Tester {
         this.testCollision(false, 6,5); // TODO should pass?
         this.testCollision(false, 4,6); // TODO should pass?
         this.testCollision(false, -1,5);
-        this.testCollision(false, 5,-1);
+        this.testCollision(false, 5, -1);
+        this.testMap();
     }
 
     testVector() {
@@ -35,6 +36,14 @@ export class Tester {
          var s = new Coordinate(0, 0); 
          var surface = new PlanetSurfaceModel(s);
          PlanetSurfaceModel.generateSurface(s, 600);
+     }
+
+     testMap() {
+             let m: { [i: number]: number } = { 2: 2, 4: 5, 5: 7 };
+             let v = m[4];
+             
+             console.log("Map:" + v);
+             return v;
      }
     
     static pass(expected : boolean, actual : boolean) : string{

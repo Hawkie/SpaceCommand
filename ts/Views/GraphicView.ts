@@ -1,11 +1,12 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
-import { IGraphic } from "ts/Data/GraphicData";
+import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 import { IView } from "ts/Views/View";
+
 
 // Binds data object to drawable item
 export class GraphicView implements IView {
-    constructor(private properties: ILocated, private graphic: IGraphic) { }
+    constructor(private properties: ILocated, private graphic: GraphicData) { }
 
     display(drawContext: DrawContext) {
         if (this.graphic.loaded)
@@ -14,7 +15,7 @@ export class GraphicView implements IView {
 }
 
 export class GraphicAngledView implements IView {
-    constructor(private properties: ILocatedAngled, private graphic: IGraphic) { }
+    constructor(private properties: ILocatedAngled, private graphic: GraphicData) { }
 
     display(drawContext: DrawContext) {
 
@@ -28,3 +29,4 @@ export class GraphicAngledView implements IView {
         }
     }
 }
+

@@ -78,6 +78,10 @@ export class DrawContext {
         this.ctx.fillRect(x, y, w, h);
     }
 
+    drawCircle(x: number, y: number, radius: number) {
+        this.ctx.arc(x, y, radius, 0, 360);
+    }
+
     translate(x: number, y: number) {
         this.ctx.translate(x, y);
     }

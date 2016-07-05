@@ -47,6 +47,7 @@
     <TypeScriptCompile Include="ts\Actors\ParticleFieldUpdater.ts" />
     <TypeScriptCompile Include="ts\Actors\SpriteAnimator.ts" />
     <TypeScriptCompile Include="ts\Actors\WindGenerator.ts" />
+    <TypeScriptCompile Include="ts\Collections\Map.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
     <TypeScriptCompile Include="ts\Common\Canvas.ts" />
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
