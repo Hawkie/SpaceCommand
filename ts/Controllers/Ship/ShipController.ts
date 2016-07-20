@@ -18,7 +18,7 @@ import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -41,7 +41,7 @@ export interface IWeaponController {
 export class LandShipController implements IShipController, IWeaponController {
 
 
-    constructor(public shipObj: GameObject<ShapedModel<LandingShipData, ShapeData>>,
+    constructor(public shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {
@@ -113,7 +113,7 @@ export class LandShipController implements IShipController, IWeaponController {
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.
 export class SpaceShipController implements IShipController, IWeaponController {
 
-    constructor(public shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>,
+    constructor(public shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {

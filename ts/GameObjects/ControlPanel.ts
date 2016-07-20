@@ -1,4 +1,4 @@
-﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 //import { DynamicModel } from "ts/Models/DynamicModels";
 import { ControlPanelView } from "ts/Views/ControlPanelView";
@@ -7,7 +7,7 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 
 
 
-export class ControlPanel<TModel extends IControlPanelModel> extends GameObject<TModel> {
+export class ControlPanel<TModel extends IControlPanelModel> extends SingleGameObject<TModel> {
     constructor(model: TModel, location: Coordinate) {
         var view: ControlPanelView = new ControlPanelView(model, location, 200);
         super(model, [], [view]);

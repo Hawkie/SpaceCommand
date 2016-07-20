@@ -4,7 +4,7 @@ import { Transforms } from "ts/Physics/Transforms";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
 import { Model, IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
-import { GameObject } from "ts/GameObjects/GameObject";
+import { SingleGameObject } from "ts/GameObjects/GameObject";
 
 
 export class ObjectCollisionDetector implements IInteractor {
@@ -48,7 +48,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
 }
 
 export class Multi2FieldCollisionDetector implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => GameObject<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: GameObject<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => SingleGameObject<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: SingleGameObject<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {

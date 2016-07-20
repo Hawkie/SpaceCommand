@@ -1,4 +1,4 @@
-﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 //import { DynamicModel } from "ts/Models/DynamicModels";
 import { IView } from "ts/Views/View";
 import { TextView, ValueView } from "ts/Views/TextView";
@@ -8,7 +8,7 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
-export class ValueObject extends GameObject<ValueData> {
+export class ValueObject extends SingleGameObject<ValueData> {
     constructor(value: number, location: Coordinate, font: string, fontSize: number) {
         var valueData = new ValueData(value, location);
         var view: IView = new ValueView(valueData, "", font, fontSize);

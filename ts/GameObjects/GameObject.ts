@@ -16,8 +16,21 @@ export interface ICompositeObject<TModel> extends IObject<TModel> {
 }
     
 
-export class GameObject<TModel> implements IGameObject {    
-    constructor(public model: TModel, public actors: IActor[], public views: IView[], public components: IGameObject[] = []) {
+export class SingleGameObject<TModel> implements IGameObject {    
+    constructor(public model: TModel, public actors: IActor[], public views: IView[]) {
+    }
+
+    update(timeModifier: number) {
+        this.actors.forEach(a => a.update(timeModifier));
+    }
+
+    display(drawContext: DrawContext) {
+        this.views.forEach(e => e.display(drawContext));
+    }
+}
+
+export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject {
+    constructor(public model: TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
     }
 
     update(timeModifier: number) {

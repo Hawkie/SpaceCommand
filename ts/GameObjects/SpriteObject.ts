@@ -1,4 +1,4 @@
-﻿import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IView } from "ts/Views/View";
 import { ISprite } from "ts/Data/SpriteData";
 import { ILocated } from "ts/Data/PhysicsData";
@@ -9,7 +9,7 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 
 
 
-export class SpriteObject extends GameObject<GraphicModel<ILocated, ISprite> > {
+export class SpriteObject extends SingleGameObject<GraphicModel<ILocated, ISprite> > {
     constructor(located: ILocated, sprite: ISprite, actors: IActor[]) {
         var model = new GraphicModel<ILocated, ISprite> (located, sprite);
         var view: IView = new SpriteView(model.data, model.graphic);

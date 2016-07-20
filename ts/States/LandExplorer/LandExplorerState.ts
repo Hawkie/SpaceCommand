@@ -23,7 +23,7 @@ import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
-import { IGameObject, GameObject } from "ts/GameObjects/GameObject"
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject"
 import { TextObject } from "ts/GameObjects/TextObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { IView } from "ts/Views/View";
@@ -43,9 +43,9 @@ import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 
 
 export class LandExplorerState implements IGameState {
-    wind: GameObject<WindModel>;
-    surface: GameObject<PlanetSurfaceModel>;
-    landingPad: GameObject<LandingPadModel>;
+    wind: SingleGameObject<WindModel>;
+    surface: SingleGameObject<PlanetSurfaceModel>;
+    landingPad: SingleGameObject<LandingPadModel>;
     velocityText: TextObject;
     interactors: IInteractor[];
     
@@ -159,9 +159,9 @@ export class LandExplorerState implements IGameState {
 
         // ship = space ship controller with gravity
         let ship: SpaceShipController = Ship.createSpaceShipController(new Coordinate(256, 240), 0, 0, 0, 0,
-            (shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>) => WeaponController.createWeaponController(actx),
-            (shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>) => ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape),
-            (shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>) => ExplosionController.createGroundExplosion(shipObj.model.data)
+            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => WeaponController.createWeaponController(actx),
+            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape),
+            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ExplosionController.createGroundExplosion(shipObj.model.data)
         );
         var gravityForce = new VectorAccelerator(ship.shipObj.model.data, new Vector(180, 10));
         ship.shipObj.actors.push(gravityForce);
@@ -171,33 +171,33 @@ export class LandExplorerState implements IGameState {
         return landingState;
     }
 
-    static createPlanetSurfaceObject(location: Coordinate, from: ILocated): GameObject<PlanetSurfaceModel> {
+    static createPlanetSurfaceObject(location: Coordinate, from: ILocated): SingleGameObject<PlanetSurfaceModel> {
         
         var model = new PlanetSurfaceModel(location);
         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
         surfaceGenerator.initSurface();
         var terrain = new GraphicData("res/img/terrain.png");
         var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
-        var obj = new GameObject<PlanetSurfaceModel>(model, [surfaceGenerator], [surface]);
+        var obj = new SingleGameObject(model, [surfaceGenerator], [surface]);
         return obj;
     }
 
-    static createLandingPadObject(surface: GameObject<PlanetSurfaceModel>): GameObject<LandingPadModel> {
+    static createLandingPadObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<LandingPadModel> {
         var placeIndex = Transforms.random(0, 50);
         var xy = surface.model.shape.points[placeIndex];
         var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.data.location.x,
             xy.y + surface.model.data.location.y));
         var padView: IView = new PolyView(padModel.data, padModel.shape);
-        var obj = new GameObject<LandingPadModel>(padModel, [], [padView]);
+        var obj = new SingleGameObject<LandingPadModel>(padModel, [], [padView]);
         return obj;
     }
 
-    static createWindDirectionIndicator(location: Coordinate): GameObject<WindModel> {
+    static createWindDirectionIndicator(location: Coordinate): SingleGameObject<WindModel> {
         var model: WindModel = new WindModel(location);
         var windGenerator: IActor = new WindGenerator(model.data, model.shape);
         var viewArrow: IView = new PolyView(model.data, model.shape); // arrow shape
         var viewText: IView = new ValueView(model.data, "{0} mph", "monospace", 12);
-        var obj = new GameObject<WindModel>(model, [windGenerator], [viewArrow, viewText]);
+        var obj = new SingleGameObject<WindModel>(model, [windGenerator], [viewArrow, viewText]);
         return obj;
     }
 }

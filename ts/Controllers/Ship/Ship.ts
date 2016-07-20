@@ -19,7 +19,7 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 
-import { IGameObject, GameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 
 import { IWeaponController, IShipController, SpaceShipController, LandShipController } from "ts/Controllers/Ship/ShipController";
 import { WeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -32,9 +32,9 @@ export class Ship {
         vely: number,
         angle: number,
         spin: number,
-        getWeapon: (shipObj: GameObject<ShapedModel<LandingShipData, ShapeData>>) => WeaponController,
-        getThrust: (shipObj: GameObject<ShapedModel<LandingShipData, ShapeData>>) => ThrustController,
-        getExplosion: (shipObj: GameObject<ShapedModel<LandingShipData, ShapeData>>) => ExplosionController)
+        getWeapon: (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => WeaponController,
+        getThrust: (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => ThrustController,
+        getExplosion: (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => ExplosionController)
         :
         LandShipController {
         var physics = new LandingShipData(location);
@@ -59,9 +59,9 @@ export class Ship {
         vely: number,
         angle: number,
         spin: number,
-        getWeapon: (shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>) => WeaponController,
-        getThrust: (shipObj:GameObject<ShapedModel<SpaceShipData, ShapeData>>) => ThrustController,
-        getExplosion: (shipObj:GameObject<ShapedModel<SpaceShipData, ShapeData>>) => ExplosionController)
+        getWeapon: (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => WeaponController,
+        getThrust: (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ThrustController,
+        getExplosion: (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ExplosionController)
     :
         SpaceShipController {
         var spaceShip = new SpaceShipData(location, velx, vely, angle, spin)
@@ -79,7 +79,7 @@ export class Ship {
         return shipController;
     }
 
-    static createShipObj<TShip extends IShipData>(physics:TShip): GameObject<ShapedModel<TShip, ShapeData>> {
+    static createShipObj<TShip extends IShipData>(physics:TShip): MultiGameObject<ShapedModel<TShip, ShapeData>, IGameObject> {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         Transforms.scale(triangleShip, 2, 2);
         
@@ -94,7 +94,7 @@ export class Ship {
         var shipView: IView = new PolyView(ship.data, ship.shape);
 
         var views: IView[] = [shipView];
-        var shipObj = new GameObject<ShapedModel<TShip, ShapeData>>(ship, actors, views);
+        var shipObj = new MultiGameObject<ShapedModel<TShip, ShapeData>, IGameObject>(ship, actors, views);
         return shipObj;
     }
 }

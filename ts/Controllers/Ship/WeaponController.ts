@@ -7,7 +7,7 @@ import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/D
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-import { GameObject } from "ts/GameObjects/GameObject";
+import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
@@ -34,7 +34,7 @@ export class WeaponController {
 
     soundPlayed: boolean = false;
 
-    constructor(public field: Field<ParticleFieldData, ParticleData>, actx:AudioContext) {
+    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>, actx:AudioContext) {
         this.laserSound = new FXObject(actx, this.laserEffect);
     }
 
@@ -46,18 +46,18 @@ export class WeaponController {
             Date.now());
         var mover = new Mover(p);
         var view = new RectangleView(p, new RectangleData(1, 1));
-        let pObj = new GameObject<ParticleData>(p, [mover], [view]);
-        this.field.field.push(pObj);
+        let pObj = new SingleGameObject<ParticleData>(p, [mover], [view]);
+        this.field.components.push(pObj);
         this.laserSound.play();
     }
 
 
     static createWeaponController(actx: AudioContext): WeaponController {
         let fieldData: ParticleFieldData = new ParticleFieldData(2, 5, 2, false);
-        let pField: GameObject<ParticleData>[] = [];
+        let pField: SingleGameObject<ParticleData>[] = [];
         
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
-        var field = new Field<ParticleFieldData, ParticleData>(fieldData, pField, [remover]);
+        var field = new MultiGameObject(fieldData, [remover], [], pField);
         return new WeaponController(field, actx);
     }
 
