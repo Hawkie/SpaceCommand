@@ -28,8 +28,8 @@ export class ParticleData extends LocatedMovingData implements IParticleData {
 
 export class ParticleDataVectorConstructor extends ParticleData {
 
-    constructor(location: ICoordinate, vector: IVector) {
+    constructor(location: ICoordinate, vector: IVector, bornTime: number) {
         var cartesian = Transforms.VectorToCartesian(vector.angle, vector.length)
-        super(location.x, location.y, cartesian.x, cartesian.y, 0);
+        super(location.x, location.y, cartesian.x, cartesian.y, bornTime);
     }
 }

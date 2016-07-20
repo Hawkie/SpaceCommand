@@ -3,7 +3,8 @@ import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
-import { DynamicModel, IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
+import { Model, IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
+import { GameObject } from "ts/GameObjects/GameObject";
 
 
 export class ObjectCollisionDetector implements IInteractor {
@@ -46,8 +47,8 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
     }
 }
 
-export class Multi2MultiCollisionDetector implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => DynamicModel<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: DynamicModel<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
+export class Multi2FieldCollisionDetector implements IInteractor {
+    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => GameObject<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: GameObject<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
@@ -58,7 +59,7 @@ export class Multi2MultiCollisionDetector implements IInteractor {
             let target = targets[i1];
             for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
                 let hitter = hitters[i2];
-                if (Transforms.hasPoint(target.shape.points, target.data.location, hitter.data.location)) {
+                if (Transforms.hasPoint(target.shape.points, target.data.location, hitter.model.location)) {
                     this.hit(i1, targets, i2, hitters);
                     if (this.searchFirstHitOnly) {
                         found = true;

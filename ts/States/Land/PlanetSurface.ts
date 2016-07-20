@@ -16,7 +16,7 @@ export class PlanetSurfaceModel extends ShapedModel<ILocated, IShape> {
         
         //var padLocation = surfacePoints.pop();
         var shape = new ShapeData([]);
-        super(located, shape, []);
+        super(located, shape);
     }
     
     

@@ -4,7 +4,7 @@ import { ILocatedMovingAngledRotatingData, LocatedMovingAngledRotatingData, IHit
 import { IShape, ShapeData  } from "ts/Data/ShapeData";
 import { Mover } from "ts/Actors/Movers";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
-import { DynamicModel, ShapedModel } from "ts/Models/DynamicModels";
+import { Model, ShapedModel } from "ts/Models/DynamicModels";
 
 
 export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData, IShape> implements IHittable {
@@ -16,8 +16,6 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData,
     private static a4 = [-1, -2, -2, -4, 1, -4, 4, -2, 4, -1, 1, 0, 4, 2, 2, 4, 1, 3, -2, 4, -4, 1, -4, -2, -1, -2];
     private static a5 = [-4, -2, -2, -4, 2, -4, 4, -2, 4, 2, 2, 4, -2, 4, -4, 2, -4, -2];
     static as = [AsteroidModel.a1, AsteroidModel.a2, AsteroidModel.a3, AsteroidModel.a4, AsteroidModel.a5];
-    
-
 
     size: number;
     constructor(location: Coordinate, velX:number, velY:number, angle:number, spin:number, size:number, type:number) {
@@ -27,10 +25,7 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData,
         Transforms.scale(asteroidShape, size, size);
         var shape: IShape = new ShapeData(asteroidShape);
         var data = new LocatedMovingAngledRotatingData(location, velX, velY, angle, spin);
-        var mover = new Mover(data);
-        var spinner = new Spinner(data);
-        var rotator = new PolyRotator(data, shape);
-        super(data, shape, [mover, spinner, rotator]);
+        super(data, shape);
         this.size = size;
     }
 

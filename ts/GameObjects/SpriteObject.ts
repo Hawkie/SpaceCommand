@@ -3,14 +3,16 @@ import { IView } from "ts/Views/View";
 import { ISprite } from "ts/Data/SpriteData";
 import { ILocated } from "ts/Data/PhysicsData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
-import { SpriteModel } from "ts/Models/Graphic/SpriteModel";
+import { GraphicModel } from "ts/Models/DynamicModels";
 import { IActor } from "ts/Actors/Actor";
 import { Coordinate, Vector } from "ts/Physics/Common";
 
-export class SpriteObject extends GameObject<SpriteModel> {
+
+
+export class SpriteObject extends GameObject<GraphicModel<ILocated, ISprite> > {
     constructor(located: ILocated, sprite: ISprite, actors: IActor[]) {
-        var model = new SpriteModel(located, sprite, actors);
+        var model = new GraphicModel<ILocated, ISprite> (located, sprite);
         var view: IView = new SpriteView(model.data, model.graphic);
-        super(model, [view]);
+        super(model, [], [view]);
     }
 }

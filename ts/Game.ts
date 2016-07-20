@@ -26,13 +26,13 @@ export class Game {
         gameloop.loop();
     }
 
-    static createStates(assets: Assets, audioContext:AudioContext): IGameState[] {
+    static createStates(assets: Assets, actx:AudioContext): IGameState[] {
 
-        var menuState = MenuState.create(assets, audioContext);
-        var asteroidState = AsteroidState.createState(assets, audioContext);
-        var landingState = LandingState.create(assets);
+        var menuState = MenuState.create(assets, actx);
+        var asteroidState = AsteroidState.createState(assets, actx);
+        var landingState = LandingState.create(assets, actx);
         var soundDesigner = SoundDesignerState.create();
-        var landExplorer = LandExplorerState.create(assets);
+        var landExplorer = LandExplorerState.create(assets, actx);
 
         var states = [menuState, asteroidState, landingState, soundDesigner, landExplorer];
 

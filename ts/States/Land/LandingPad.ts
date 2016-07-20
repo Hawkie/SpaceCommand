@@ -15,6 +15,6 @@ export class LandingPadModel extends ShapedModel<LocatedData, IShape> {
             new Coordinate(2, 2),
             new Coordinate(0,0),
         ]);
-        super(located, shape, []);
+        super(located, shape);
     }
 }

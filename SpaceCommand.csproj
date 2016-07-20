@@ -70,12 +70,13 @@
     <TypeScriptCompile Include="ts\Interactors\Interactor.ts" />
     <TypeScriptCompile Include="ts\Models\DynamicModels.ts" />
     <TypeScriptCompile Include="ts\Models\Controls\ControlPanelModel.ts" />
-    <TypeScriptCompile Include="ts\Models\Graphic\SpriteModel.ts" />
     <TypeScriptCompile Include="ts\States\LandExplorer\LandExplorerState.ts" />
     <TypeScriptCompile Include="ts\States\LandExplorer\SurfaceGenerator.ts" />
     <TypeScriptCompile Include="ts\States\Land\LandingPad.ts" />
-    <TypeScriptCompile Include="ts\States\Asteroids\SpaceShipModel.ts" />
-    <TypeScriptCompile Include="ts\States\Ship\ExplosionEnactment.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\ShipController.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\ExplosionController.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\ThrustController.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\WeaponController.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundEffectsModel.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\AsteroidModel.ts" />
     <TypeScriptCompile Include="ts\Data\TextData.ts" />
@@ -84,7 +85,6 @@
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundDesignerState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
-    <TypeScriptCompile Include="ts\Views\ParticleFieldView.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />
@@ -95,10 +95,8 @@
     <TypeScriptCompile Include="ts\Views\TextView.ts" />
     <TypeScriptCompile Include="ts\Actors\Movers.ts" />
     <TypeScriptCompile Include="ts\Actors\Rotators.ts" />
-    <TypeScriptCompile Include="ts\States\Land\LandingShip.ts" />
-    <TypeScriptCompile Include="ts\Models\Ships\Ship.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\Ship.ts" />
     <TypeScriptCompile Include="ts\Sound\Amplifier.ts" />
-    <TypeScriptCompile Include="ts\Models\ParticleFieldModel.ts" />
     <TypeScriptCompile Include="ts\States\Land\PlanetSurface.ts" />
     <TypeScriptCompile Include="ts\States\Land\WindModel.ts" />
     <TypeScriptCompile Include="ts\States\Asteroids\AsteroidState.ts" />
