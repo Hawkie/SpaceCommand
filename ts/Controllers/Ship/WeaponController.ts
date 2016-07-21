@@ -33,22 +33,31 @@ export class WeaponController {
     laserSound: FXObject;
 
     soundPlayed: boolean = false;
+    last: number;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>, actx:AudioContext) {
+    constructor(public field: MultiGameObject<ParticleFieldData,
+        SingleGameObject<ParticleData>>,
+        actx: AudioContext) {
         this.laserSound = new FXObject(actx, this.laserEffect);
+        this.last = Date.now();
     }
 
     pullTrigger(data: ILocatedAngledMoving, offsetAngle: number = 0, velocity: number = 128) {
         // put firerate check in here
-        var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x,
-            data.location.y),
-            new Vector(data.angle + offsetAngle, velocity),
-            Date.now());
-        var mover = new Mover(p);
-        var view = new RectangleView(p, new RectangleData(1, 1));
-        let pObj = new SingleGameObject<ParticleData>(p, [mover], [view]);
-        this.field.components.push(pObj);
-        this.laserSound.play();
+        let now = Date.now();
+        let elapsedTimeSec = (now - this.last)/1000;
+        if (elapsedTimeSec >= 1/this.field.model.itemsPerSec) {
+            this.last = now;
+            var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x,
+                data.location.y),
+                new Vector(data.angle + offsetAngle, velocity),
+                Date.now());
+            var mover = new Mover(p);
+            var view = new RectangleView(p, new RectangleData(1, 1));
+            let pObj = new SingleGameObject<ParticleData>(p, [mover], [view]);
+            this.field.components.push(pObj);
+            this.laserSound.play();
+        }
     }
 
 
