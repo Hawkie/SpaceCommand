@@ -71,10 +71,11 @@ export class AsteroidState implements IGameState {
         private assets: Assets,
         private actx: AudioContext,
         private player: SpaceShipController,
+        private guiObjects: IGameObject[],
         private objects: IGameObject[],
         private asteroids: Asteroid[],
-        private score: ValueObject,
-        private guiObjects: IGameObject[]) {
+        private score: ValueObject
+        ) {
         this.viewScale = 1;
         this.zoom = 1;
         this.player = player;
@@ -214,6 +215,7 @@ export class AsteroidState implements IGameState {
 
         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
         var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
+        var spriteField = Field.createSpriteField();
 
         // special
         let ship: SpaceShipController = Ship.createSpaceShipController(new Coordinate(256, 240), 0, 0, 0, 0,
@@ -229,8 +231,7 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, [field, alien, coinObj, ship.shipObj], asteroids, valueDisplay, [text, score, valueDisplay]);
-
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, [text, score, valueDisplay], [field, alien, coinObj, spriteField, ship.shipObj], asteroids, valueDisplay);
         return asteroidState;
     }
 

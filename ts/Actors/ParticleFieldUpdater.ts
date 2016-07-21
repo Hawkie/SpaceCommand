@@ -5,11 +5,11 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { VectorAccelerator } from "ts/Actors/Accelerators";
-import { SingleGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export class ParticleGenerator implements IActor {
-    constructor(private data: ParticleFieldData, private field: SingleGameObject<ParticleData>[],
-        private createParticle: (now: number) => SingleGameObject<ParticleData>) { }
+    constructor(private data: ParticleFieldData, private field: IGameObject[],
+        private createParticle: (now: number) => IGameObject) { }
     
     update(lastTimeModifier: number) {
         var now = Date.now();

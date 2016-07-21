@@ -40,6 +40,7 @@ export class ExplosionController {
                     data.location.y,
                     (Math.random() - 0.5) * 20,
                     (Math.random() * -30),
+                    0, 0,
                     now);
                 var mover = new Mover(p);
                 var gravity = new VectorAccelerator(p, new Vector(180, 10));
@@ -59,6 +60,8 @@ export class ExplosionController {
                 data.location.y,
                 data.velX + ((Math.random() - 0.5) * 20),
                 data.velY + ((Math.random() - 0.5) * 20),
+                0,
+                0,
                 now);
             var mover = new Mover(p);
             var view = new RectangleView(p, new RectangleData(3, 3));
