@@ -63,7 +63,7 @@ export class LandShipController implements IShipController, IWeaponController {
     }
 
     // TODO: flash screen white. 
-    // remove ship - done
+    // remove ship
     // turn on explosionParticles - done
     crash() {
         if (!this.shipObj.model.data.crashed) {
@@ -72,7 +72,6 @@ export class LandShipController implements IShipController, IWeaponController {
             console.log("Your ship crashed!");
         }
     }
-
 
     shootPrimary() {
         if (!this.shipObj.model.data.crashed) this.weaponController.pullTrigger(this.shipObj.model.data, 0, 128);
@@ -97,17 +96,6 @@ export class LandShipController implements IShipController, IWeaponController {
         }
     }
 }
-
-// Add overrides for space ship
-//export class SpaceShipController extends BaseShipController {
-//    constructor(public shipObj: GameObject<ShapedModel<SpaceShipData, ShapeData>>,
-//        thrustField: Field<ParticleFieldData, ParticleData>,
-//        explosionField: Field<ParticleFieldData, ParticleData>,
-//        weaponField: Field<ParticleFieldData, ParticleData>,
-//        actx: AudioContext) {
-//        super(shipObj, thrustField, explosionField, weaponField, actx);
-//    }
-//}
 
 
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.

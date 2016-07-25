@@ -79,7 +79,10 @@ export class DrawContext {
     }
 
     drawCircle(x: number, y: number, radius: number) {
-        this.ctx.arc(x, y, radius, 0, 360);
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+        this.ctx.closePath();
+        this.ctx.stroke();
     }
 
     translate(x: number, y: number) {

@@ -21,7 +21,7 @@ export class CircleView implements IView {
 
     display(drawContext: DrawContext) {
         drawContext.drawCircle(this.properties.location.x, this.properties.location.y, this.circle.radius);
-        drawContext.fill();
+        //drawContext.fill();
     }
 }
 

@@ -101,8 +101,7 @@ export class LandExplorerState implements IGameState {
     
     display(drawingContext : DrawContext) {
         drawingContext.clear();
-        // objects not affected by movement
-        this.guiObjects.forEach(o => o.display(drawingContext));
+        
 
         // scene objects
         drawingContext.save();
@@ -111,6 +110,9 @@ export class LandExplorerState implements IGameState {
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         drawingContext.restore();
+
+        // objects not affected by movement
+        this.guiObjects.forEach(o => o.display(drawingContext));
     }
 
     sound(actx: AudioContext) {
