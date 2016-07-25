@@ -62,7 +62,7 @@ export class WeaponController {
 
 
     static createWeaponController(actx: AudioContext): WeaponController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(2, 5, 2, false);
+        let fieldData: ParticleFieldData = new ParticleFieldData(2, 1, 5, 2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);

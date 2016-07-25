@@ -33,7 +33,7 @@ export class ExplosionController {
     }
 
     static createGroundExplosion(data: ILocatedMoving): ExplosionController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(50, 5, 0.2, false);
+        let fieldData: ParticleFieldData = new ParticleFieldData(50, undefined, 5, 0.2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
                 var p = new ParticleData(data.location.x,
@@ -53,7 +53,7 @@ export class ExplosionController {
     }
 
     static createSpaceExplosion(data: ILocatedMoving): ExplosionController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(50, 5, 0.2, false);
+        let fieldData: ParticleFieldData = new ParticleFieldData(50, undefined, 5, 0.2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleData(data.location.x,

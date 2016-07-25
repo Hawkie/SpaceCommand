@@ -34,7 +34,7 @@ export class ThrustController {
     }
 
     static createGroundThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(20, 1, 0, false);
+        let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),
@@ -53,7 +53,7 @@ export class ThrustController {
     }
 
     static createSpaceThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(20, 1, 0, false);
+        let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),

@@ -21,13 +21,14 @@ export class ParticleGenerator implements IActor {
             var secSinceLast = (now - this.data.lastCheck) / 1000;
 
             // Don't add if past generation time
-            if (this.data.generationTimeInSec == 0 || this.data.firstAdded == 0 || ((now - this.data.firstAdded) / 1000) < this.data.generationTimeInSec) {
+            if (this.data.generationTimeInSec === undefined || this.data.firstAdded == 0 || ((now - this.data.firstAdded) / 1000) < this.data.generationTimeInSec) {
                 
                 // find the integer number of particles to add. conservatively round down
                 let toAdd = Math.floor(this.data.itemsPerSec * secSinceLast);
+                if (this.data.maxGeneratedPerIteration != undefined)
+                    toAdd = Math.min(toAdd, this.data.maxGeneratedPerIteration);
                 for (let i: number = 0; i < toAdd; i++) {
                     var particleModel = this.createParticle(now);
-                    //this.actors.forEach(a => particleModel.
                     this.field.push(particleModel);
                     if (this.data.firstAdded == 0) this.data.firstAdded = now;
                     this.data.lastCheck = now;
@@ -48,18 +49,13 @@ export class ParticleRemover implements IActor {
         
             // remove if too old
             let removed = false;
-            if (this.data.lifeTimeInSec > 0) {
+            if (this.data.lifeTimeInSec != undefined) {
                 var ageInSec = (now - element.model.born) / 1000;
                 if (ageInSec > this.data.lifeTimeInSec) {
                     this.field.splice(i, 1);
                     removed = true;
                 }
             }
-            // TODO remove this bit
-            // update if still remains
-            //if (!removed) {
-            //    element.update(timeModifier);
-            //}
         }
     }
 }

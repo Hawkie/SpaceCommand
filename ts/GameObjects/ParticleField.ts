@@ -20,7 +20,7 @@ export class Field {
 
     // simple rectangle field scrolling down
     static createBackgroundField(speed:number, size:number) : MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {
-        let fieldData: ParticleFieldData = new ParticleFieldData(1);
+        let fieldData: ParticleFieldData = new ParticleFieldData(1, 1);
         let field: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, field, (now: number) => {
                 var p = new ParticleData(512 * Math.random(), 0, 0, speed, 0, 0, now);
@@ -37,7 +37,7 @@ export class Field {
 
     // sprite field
     static createSpriteField(): MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {
-        let fieldData: ParticleFieldData = new ParticleFieldData(1);
+        let fieldData: ParticleFieldData = new ParticleFieldData(1, 1);
         let particles: SingleGameObject<ParticleData>[] = [];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, particles, (now: number) => {
                        
