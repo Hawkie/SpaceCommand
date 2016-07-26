@@ -13,14 +13,14 @@ import { IActor } from "ts/Actors/Actor";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
-
+// Particle Fields
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
-
+// Controllers
 import { IWeaponController, IShipController, SpaceShipController, LandShipController } from "ts/Controllers/Ship/ShipController";
 import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";

@@ -66,7 +66,7 @@ export class LandExplorerState implements IGameState {
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450, 50));
-        this.guiObjects.push(this.velocityText, this.wind);
+        this.guiObjects.push(this.velocityText, this.wind, this.player.explosionController.screenFlash);
 
         var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.shipObj.model.data, this.playerSurfaceCollision.bind(this));
         var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.shipObj.model.data, this.playerLandingPadCollision.bind(this));

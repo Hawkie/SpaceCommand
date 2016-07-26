@@ -231,7 +231,7 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, [text, score, valueDisplay], [field, alien, coinObj, spriteField, ship.shipObj], asteroids, valueDisplay);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, [text, score, valueDisplay, ship.explosionController.screenFlash], [field, alien, coinObj, spriteField, ship.shipObj], asteroids, valueDisplay);
         return asteroidState;
     }
 

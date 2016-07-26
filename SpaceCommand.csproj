@@ -46,6 +46,7 @@
     <TypeScriptCompile Include="ts\Actors\Actor.ts" />
     <TypeScriptCompile Include="ts\Actors\ParticleFieldUpdater.ts" />
     <TypeScriptCompile Include="ts\Actors\SpriteAnimator.ts" />
+    <TypeScriptCompile Include="ts\Actors\Switches.ts" />
     <TypeScriptCompile Include="ts\Actors\WindGenerator.ts" />
     <TypeScriptCompile Include="ts\Collections\Map.ts" />
     <TypeScriptCompile Include="ts\Collections\SparseArray.ts" />
@@ -53,6 +54,7 @@
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
+    <TypeScriptCompile Include="ts\Data\EffectData.ts" />
     <TypeScriptCompile Include="ts\Data\GraphicData.ts" />
     <TypeScriptCompile Include="ts\Data\ParticleData.ts" />
     <TypeScriptCompile Include="ts\Data\ParticleFieldData.ts" />
@@ -85,6 +87,7 @@
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundDesignerState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
+    <TypeScriptCompile Include="ts\Views\EffectViews.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />
     <TypeScriptCompile Include="ts\Physics\Common.ts" />
     <TypeScriptCompile Include="ts\GameObjects\GameObject.ts" />

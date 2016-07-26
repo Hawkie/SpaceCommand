@@ -17,7 +17,6 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-//import { ParticleModel, ParticleFieldModel } from "ts/Models/ParticleFieldModel";
 import { Field } from "ts/GameObjects/ParticleField";
 import { Mover } from "ts/Actors/Movers";
 

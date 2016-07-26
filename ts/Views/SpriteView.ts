@@ -27,9 +27,6 @@ export class SpriteAngledView implements IView {
             drawContext.drawSprite(this.sprite.img, this.sprite.frame.x, this.sprite.frame.y, this.sprite.frame.width, this.sprite.frame.height, this.properties.location.x, this.properties.location.y, this.sprite.frame.width* this.sprite.scaleX, this.sprite.frame.height*this.sprite.scaleY);
 
             drawContext.restore();
-            //drawContext.translate(this.properties.location.x, this.properties.location.y);
-            //drawContext.rotate(-this.properties.angle);
-            //drawContext.translate(-this.properties.location.x, -this.properties.location.y);
         }
     }
 }
