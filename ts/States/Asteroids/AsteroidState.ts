@@ -218,11 +218,13 @@ export class AsteroidState implements IGameState {
         var spriteField = Field.createSpriteField();
 
         // special
-        let ship: SpaceShipController = Ship.createSpaceShipController(new Coordinate(256, 240), 0, 0, 0, 0,
-            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => WeaponController.createWeaponController(actx),
-            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ThrustController.createSpaceThrust(shipObj.model.data, shipObj.model.shape),
-            (shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>) => ExplosionController.createSpaceExplosion(shipObj.model.data)
-        );
+        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
+        var shipObj = Ship.createShipObj(spaceShipData);
+        var weaponController = WeaponController.createWeaponController(actx);
+        var thrustController = ThrustController.createSpaceThrust(shipObj.model.data, shipObj.model.shape);
+        var explosionController = ExplosionController.createSpaceExplosion(shipObj.model.data);
+        var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);
+        
         let asteroids = AsteroidState.createLevel(3);
 
         let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
@@ -231,7 +233,7 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, ship, [text, score, valueDisplay], [field, alien, coinObj, spriteField, ship], asteroids, valueDisplay);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController, [text, score, valueDisplay], [field, alien, coinObj, spriteField, shipController], asteroids, valueDisplay);
         return asteroidState;
     }
 

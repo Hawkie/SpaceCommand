@@ -46,7 +46,7 @@ export interface IWeaponController {
 // Add overrides for landship
 export class LandShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
 
-    constructor(public shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>,
+    constructor(public shipObj: SingleGameObject<ShapedModel<LandingShipData, ShapeData>>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {
@@ -104,7 +104,7 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.
 export class SpaceShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
 
-    constructor(public shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>,
+    constructor(public shipObj: SingleGameObject<ShapedModel<SpaceShipData, ShapeData>>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {

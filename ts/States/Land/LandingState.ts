@@ -2,7 +2,7 @@ import { DrawContext} from "ts/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
 import { AudioObject } from "ts/Sound/SoundObject";
 
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameState } from "ts/States/GameState";
@@ -39,6 +39,7 @@ import { WindGenerator } from "ts/Actors/WindGenerator";
 import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
+import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 
 export class LandingState implements IGameState {
     wind: SingleGameObject<WindModel>;
@@ -137,15 +138,19 @@ export class LandingState implements IGameState {
         var field = Field.createBackgroundField(16, 2);
 
         // ships        
-        let landingShip = Ship.createLandShipController(new Coordinate(256, 240), 0, 0, 0, 0,
-            (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => WeaponController.createWeaponController(actx),
-            (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape),
-            (shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>) => ExplosionController.createGroundExplosion(shipObj.model.data)
-        );
+        var shipData = new LandingShipData(new Coordinate(256, 240));
+        var shipObj = Ship.createShipObj(shipData);
+        var weaponController = WeaponController.createWeaponController(actx);
+        var thrustController = ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape);
+        var explosionController = ExplosionController.createGroundExplosion(shipObj.model.data);
+        var shipController = new LandShipController(shipObj, weaponController, thrustController, explosionController);
+
+        var gravityForce = new VectorAccelerator(shipController.shipObj.model.data, new Vector(180, 10));
+        shipController.shipObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
-        var landingState = new LandingState("Lander", assets, landingShip, objects);
+        var landingState = new LandingState("Lander", assets, shipController, objects);
         return landingState;
     }
 
