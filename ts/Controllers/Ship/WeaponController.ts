@@ -7,14 +7,14 @@ import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/D
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 
-export class WeaponController {
+export class WeaponController extends ComponentObjects<IGameObject> {
     laserEffect = new SoundEffectData(
     1046.5,           //frequency
     0,                //attack
@@ -38,6 +38,7 @@ export class WeaponController {
     constructor(public field: MultiGameObject<ParticleFieldData,
         SingleGameObject<ParticleData>>,
         actx: AudioContext) {
+        super([field]);
         this.laserSound = new FXObject(actx, this.laserEffect);
         this.last = Date.now();
     }

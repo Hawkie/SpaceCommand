@@ -10,8 +10,7 @@ export class RectangleView implements IView {
     }
 
     display(drawContext: DrawContext) {
-        drawContext.drawRect(this.properties.location.x, this.properties.location.y, this.rectangle.width, this. rectangle.height);
-        drawContext.fill();
+        drawContext.fillRect(this.properties.location.x, this.properties.location.y, this.rectangle.width, this.rectangle.height);
     }
 }
 
@@ -40,8 +39,10 @@ export class PolyGraphic implements IView {
     display(drawContext: DrawContext) {
         if (this.graphic.loaded) {
             drawContext.drawP(this.properties.location, this.shape.points);
+            drawContext.save();
             let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
             drawContext.fill(fillStyle);
+            drawContext.restore();
         }
     }
 }

@@ -18,7 +18,7 @@ import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -28,9 +28,15 @@ export interface IShipController {
     // methods
     left(timeModifier: number);
     right(timeModifier: number);
+}
+
+export interface ICrashController {
+    crash();
+}
+
+export interface IThrustController {
     thrust();
     noThrust();
-    crash();
 }
 
 export interface IWeaponController {
@@ -38,14 +44,13 @@ export interface IWeaponController {
 }
 
 // Add overrides for landship
-export class LandShipController implements IShipController, IWeaponController {
-
+export class LandShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
 
     constructor(public shipObj: MultiGameObject<ShapedModel<LandingShipData, ShapeData>, IGameObject>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {
-        //super(shipObj, thrustField, explosionField, weaponField, actx);
+        super([thrustController, weaponController, explosionController, shipObj]);
     }
 
     thrust() {
@@ -62,9 +67,7 @@ export class LandShipController implements IShipController, IWeaponController {
         this.thrustController.off();
     }
 
-    // TODO: flash screen white. 
-    // remove ship
-    // turn on explosionParticles - done
+    // TODO: break up ship
     crash() {
         if (!this.shipObj.model.data.crashed) {
             this.shipObj.model.data.crashed = true;
@@ -99,12 +102,13 @@ export class LandShipController implements IShipController, IWeaponController {
 
 
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.
-export class SpaceShipController implements IShipController, IWeaponController {
+export class SpaceShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
 
     constructor(public shipObj: MultiGameObject<ShapedModel<SpaceShipData, ShapeData>, IGameObject>,
         public weaponController: WeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {
+        super([thrustController, weaponController, explosionController, shipObj]);
     }
     
     thrust() {
@@ -120,10 +124,8 @@ export class SpaceShipController implements IShipController, IWeaponController {
         this.shipObj.model.data.forwardForce = 0;
         this.thrustController.off();
     }
-    
-    // TODO: flash screen white. 
-    // remove ship - done
-    // turn on explosionParticles - done
+     
+    // TODO: breakup ship - done
     crash() {
         if (!this.shipObj.model.data.crashed) {
             this.shipObj.model.data.crashed = true;

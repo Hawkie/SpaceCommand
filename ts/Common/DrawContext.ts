@@ -1,5 +1,4 @@
 import { Coordinate } from "ts/Physics/Common";
-//import { Polygon } from "./DisplayObject";
 
 export class DrawContext {
     constructor(private ctx: CanvasRenderingContext2D) {
@@ -41,6 +40,7 @@ export class DrawContext {
             for (var i = 1, len = p.length; i < len; i ++) {
                 ctx.lineTo(p[i].x + location.x, p[i].y + location.y);
             }
+            ctx.closePath();
             ctx.stroke();
         }
     }
@@ -74,7 +74,7 @@ export class DrawContext {
         this.ctx.fillText(text, x, y);
     }
 
-    drawRect(x : number, y : number, w : number, h : number) {
+    fillRect(x : number, y : number, w : number, h : number) {
         this.ctx.fillRect(x, y, w, h);
     }
 

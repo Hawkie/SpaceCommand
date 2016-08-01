@@ -53,7 +53,7 @@ export class LandExplorerState implements IGameState {
     zoom: number;
     exitState: boolean = false;
     
-    constructor(public name: string, private assets: Assets, private player: SpaceShipController, private guiObjects: Array<IGameObject>, private sceneObjects: Array<IGameObject>) {
+    constructor(public name: string, private assets: Assets, private player: SpaceShipController, private guiObjects: IGameObject[], private sceneObjects: IGameObject[]) {
         this.viewScale = 1;
         this.zoom = 1;
         this.player = player;
@@ -61,7 +61,7 @@ export class LandExplorerState implements IGameState {
         // scene objects
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.shipObj.model.data);
         this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
-        this.sceneObjects.push(this.surface, this.landingPad, this.player.shipObj);
+        this.sceneObjects.push(this.surface, this.landingPad, this.player.shipObj, this.player.thrustController, this.player.weaponController, this.player.explosionController.field);
 
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -101,7 +101,9 @@ export class LandExplorerState implements IGameState {
     
     display(drawingContext : DrawContext) {
         drawingContext.clear();
-        
+
+        // objects not affected by movement
+        this.guiObjects.forEach(o => o.display(drawingContext));
 
         // scene objects
         drawingContext.save();
@@ -111,8 +113,6 @@ export class LandExplorerState implements IGameState {
         this.sceneObjects.forEach(o => o.display(drawingContext));
         drawingContext.restore();
 
-        // objects not affected by movement
-        this.guiObjects.forEach(o => o.display(drawingContext));
     }
 
     sound(actx: AudioContext) {

@@ -11,7 +11,7 @@ export class ScreenFlashView implements IView {
     display(drawContext: DrawContext) {
         if (this.effect.enabled) {
             if (this.effect.value) {
-                drawContext.drawRect(this.located.location.x, this.located.location.y, 512, 480);
+                drawContext.fillRect(this.located.location.x, this.located.location.y, 512, 480);
                 drawContext.fill();
             }
         }

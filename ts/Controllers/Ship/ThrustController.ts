@@ -7,17 +7,19 @@ import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/D
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { Transforms } from "ts/Physics/Transforms";
 
-export class ThrustController {
+export class ThrustController extends ComponentObjects<IGameObject> {
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>) { }
+    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>) {
+        super([field]);
+    }
 
     on() {
         this.field.model.on = true;

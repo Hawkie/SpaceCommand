@@ -14,12 +14,24 @@ import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { ScreenFlashView } from "ts/Views/EffectViews";
+import { IGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 
-export class ExplosionController {
+// a controller has a specific interface (e.g. on/off) so change the state of its game objects
+// it is also a game object.
+
+export interface IExplosionController extends IGameObject {
+    on();
+    off();
+}
+
+export class ExplosionController extends ComponentObjects<IGameObject> implements IExplosionController  {
     explosionSound: AudioObject = new AudioObject("res/sound/explosion.wav");
     soundPlayed: boolean = false;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>, public screenFlash: SingleGameObject<EffectData>) { }
+    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+        public screenFlash: SingleGameObject<EffectData>) {
+        super([field, screenFlash]);
+    }
 
     on() {
         this.field.model.on = true;
@@ -38,6 +50,7 @@ export class ExplosionController {
         
     }
 
+    // flash and field separate?
     static createFlash(located:ILocated) : SingleGameObject<EffectData> {
         let e = new EffectData();
         let s = new Flasher(e);

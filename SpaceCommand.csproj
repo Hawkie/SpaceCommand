@@ -54,6 +54,7 @@
     <TypeScriptCompile Include="ts\Common\DrawContext.ts" />
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
+    <TypeScriptCompile Include="ts\Controllers\Ship\ShipComponents.ts" />
     <TypeScriptCompile Include="ts\Data\EffectData.ts" />
     <TypeScriptCompile Include="ts\Data\GraphicData.ts" />
     <TypeScriptCompile Include="ts\Data\ParticleData.ts" />

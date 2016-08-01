@@ -57,10 +57,11 @@ export class LandingState implements IGameState {
         this.landingPad = LandingState.createLandingPadObject(this.surface);
         
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
+        
+        
         this.objects.push(this.surface);
         this.objects.push(this.landingPad);
-        this.objects.push(this.player.shipObj);
-        this.objects.push(this.player.explosionController.screenFlash);
+        this.objects.push(this.player);
         this.objects.push(this.velocityText);
         this.objects.push(this.wind);
         
