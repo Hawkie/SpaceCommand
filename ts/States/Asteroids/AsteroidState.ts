@@ -34,7 +34,7 @@ import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Mover } from "ts/Actors/Movers";
-import { WeaponController } from "ts/Controllers/Ship/WeaponController";
+import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 
@@ -169,7 +169,7 @@ export class AsteroidState implements IGameState {
     }
 
     bulletModels(): SingleGameObject<ILocated>[] {
-        return this.player.weaponController.field.components;
+        return this.player.weaponController.components;
         }
 
     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[]) {
@@ -220,7 +220,7 @@ export class AsteroidState implements IGameState {
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
         var shipObj = Ship.createShipObj(spaceShipData);
-        var weaponController = WeaponController.createWeaponController(actx);
+        var weaponController = BulletWeaponController.createWeaponController(actx);
         var thrustController = ThrustController.createSpaceThrust(shipObj.model.data, shipObj.model.shape);
         var explosionController = ExplosionController.createSpaceExplosion(shipObj.model.data);
         var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);

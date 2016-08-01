@@ -37,7 +37,7 @@ import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { Mover } from "ts/Actors/Movers";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 import { IActor } from "ts/Actors/Actor";
-import { WeaponController } from "ts/Controllers/Ship/WeaponController";
+import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 
 
@@ -162,7 +162,7 @@ export class LandExplorerState implements IGameState {
         // ship = space ship controller with gravity
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
         var shipObj = Ship.createShipObj(spaceShipData);
-        var weaponController = WeaponController.createWeaponController(actx);
+        var weaponController = BulletWeaponController.createWeaponController(actx);
         var thrustController = ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(shipObj.model.data);
         var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);

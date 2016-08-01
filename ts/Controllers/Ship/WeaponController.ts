@@ -14,7 +14,12 @@ import { RectangleView } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 
-export class WeaponController extends ComponentObjects<IGameObject> {
+export interface IParticleWeaponController extends IGameObject {
+    pullTrigger(data: ILocatedAngledMoving, offsetAngle: number, velocity: number);
+    components: SingleGameObject<ParticleData>[];
+}
+
+export class BulletWeaponController extends ComponentObjects<SingleGameObject<ParticleData>> implements IParticleWeaponController {
     laserEffect = new SoundEffectData(
     1046.5,           //frequency
     0,                //attack
@@ -35,10 +40,9 @@ export class WeaponController extends ComponentObjects<IGameObject> {
     soundPlayed: boolean = false;
     last: number;
 
-    constructor(public field: MultiGameObject<ParticleFieldData,
-        SingleGameObject<ParticleData>>,
+    constructor(private field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
         actx: AudioContext) {
-        super([field]);
+        super(field.components);
         this.laserSound = new FXObject(actx, this.laserEffect);
         this.last = Date.now();
     }
@@ -62,13 +66,13 @@ export class WeaponController extends ComponentObjects<IGameObject> {
     }
 
 
-    static createWeaponController(actx: AudioContext): WeaponController {
+    static createWeaponController(actx: AudioContext): BulletWeaponController {
         let fieldData: ParticleFieldData = new ParticleFieldData(2, 1, 5, 2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [remover], [], pField);
-        return new WeaponController(field, actx);
+        return new BulletWeaponController(field, actx);
     }
 
 }

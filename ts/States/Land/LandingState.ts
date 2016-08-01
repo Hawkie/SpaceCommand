@@ -36,7 +36,7 @@ import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { WindGenerator } from "ts/Actors/WindGenerator";
-import { WeaponController } from "ts/Controllers/Ship/WeaponController";
+import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
@@ -140,7 +140,7 @@ export class LandingState implements IGameState {
         // ships        
         var shipData = new LandingShipData(new Coordinate(256, 240));
         var shipObj = Ship.createShipObj(shipData);
-        var weaponController = WeaponController.createWeaponController(actx);
+        var weaponController = BulletWeaponController.createWeaponController(actx);
         var thrustController = ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(shipObj.model.data);
         var shipController = new LandShipController(shipObj, weaponController, thrustController, explosionController);

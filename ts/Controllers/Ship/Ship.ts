@@ -20,8 +20,8 @@ import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 // Controllers
-import { IShipController, ICrashController, IThrustController, IWeaponController, SpaceShipController, LandShipController } from "ts/Controllers/Ship/ShipController";
-import { WeaponController } from "ts/Controllers/Ship/WeaponController";
+import { IShipController, ICrashController, IPrimaryWeaponController, SpaceShipController, LandShipController } from "ts/Controllers/Ship/ShipController";
+import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 

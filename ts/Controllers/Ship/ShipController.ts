@@ -19,8 +19,8 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
-import { WeaponController } from "ts/Controllers/Ship/WeaponController";
-import { ThrustController } from "ts/Controllers/Ship/ThrustController";
+import { IParticleWeaponController, BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
+import { IThrustController, ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 
 
@@ -28,26 +28,23 @@ export interface IShipController {
     // methods
     left(timeModifier: number);
     right(timeModifier: number);
+    thrust();
+    noThrust();
 }
 
 export interface ICrashController {
     crash();
 }
 
-export interface IThrustController {
-    thrust();
-    noThrust();
-}
-
-export interface IWeaponController {
+export interface IPrimaryWeaponController {
     shootPrimary();
 }
 
 // Add overrides for landship
-export class LandShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
+export class LandShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IPrimaryWeaponController {
 
     constructor(public shipObj: SingleGameObject<ShapedModel<LandingShipData, ShapeData>>,
-        public weaponController: WeaponController,
+        public weaponController: BulletWeaponController,
         public thrustController: ThrustController,
         public explosionController: ExplosionController) {
         super([thrustController, weaponController, explosionController, shipObj]);
@@ -102,11 +99,11 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
 
 
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.
-export class SpaceShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IThrustController, IWeaponController {
+export class SpaceShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IPrimaryWeaponController {
 
     constructor(public shipObj: SingleGameObject<ShapedModel<SpaceShipData, ShapeData>>,
-        public weaponController: WeaponController,
-        public thrustController: ThrustController,
+        public weaponController: IParticleWeaponController,
+        public thrustController: IThrustController,
         public explosionController: ExplosionController) {
         super([thrustController, weaponController, explosionController, shipObj]);
     }

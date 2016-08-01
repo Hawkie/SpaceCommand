@@ -13,7 +13,12 @@ import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { Transforms } from "ts/Physics/Transforms";
 
-export class ThrustController extends ComponentObjects<IGameObject> {
+export interface IThrustController extends IGameObject {
+    on();
+    off();
+}
+
+export class ThrustController extends ComponentObjects<IGameObject> implements IThrustController {
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
