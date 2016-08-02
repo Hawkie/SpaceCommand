@@ -17,13 +17,13 @@ export class PolyRotator implements IActor {
             var rotateAngle = this.data.angle - this.previousAngle
             // rotate the difference
             var newPoints = Transforms.Rotate(this.shape.points, rotateAngle);
+            var newOffset = Transforms.Rotate([this.shape.offset], rotateAngle);
             this.shape.points = newPoints;
+            this.shape.offset = newOffset[0];
             this.previousAngle = this.data.angle;
         }
     }
 }
-
-
 
 export class Spinner implements IActor {
     constructor(private properties: IAngledRotating) {

@@ -72,7 +72,7 @@ export class AsteroidState implements IGameState {
         private actx: AudioContext,
         private player: SpaceShipController,
         private guiObjects: IGameObject[],
-        private objects: IGameObject[],
+        private sceneObjects: IGameObject[],
         private asteroids: Asteroid[],
         private score: ValueObject
         ) {
@@ -80,11 +80,7 @@ export class AsteroidState implements IGameState {
         this.zoom = 1;
         this.player = player;
         this.asteroids = asteroids;
-        
         this.asteroidNoise = false;
-  
-        
-        
         
         // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
         // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
@@ -101,7 +97,7 @@ export class AsteroidState implements IGameState {
     
     update(lastDrawModifier: number) {
         this.guiObjects.forEach(o => o.update(lastDrawModifier));
-        this.objects.forEach(o => o.update(lastDrawModifier));
+        this.sceneObjects.forEach(o => o.update(lastDrawModifier));
         this.asteroids.forEach(x => x.update(lastDrawModifier));
 
         // keep objects in screen
@@ -129,7 +125,7 @@ export class AsteroidState implements IGameState {
         drawingContext.translate(this.player.shipObj.model.data.location.x * (1 - this.zoom),
             this.player.shipObj.model.data.location.y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
-        this.objects.forEach(o => o.display(drawingContext));
+        this.sceneObjects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
         drawingContext.restore();
     }

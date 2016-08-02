@@ -30,15 +30,15 @@ export class DrawContext {
         ctx.restore();
     }
 
-    drawP(location: Coordinate, points: Coordinate[]) {
+    drawP(x: number, y:number, points: Coordinate[]) {
         var ctx = this.ctx;
         var p = points;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
-            ctx.moveTo(points[0].x + location.x, points[0].y + location.y);
+            ctx.moveTo(points[0].x + x, points[0].y + y);
             for (var i = 1, len = p.length; i < len; i ++) {
-                ctx.lineTo(p[i].x + location.x, p[i].y + location.y);
+                ctx.lineTo(p[i].x + x, p[i].y + y);
             }
             ctx.closePath();
             ctx.stroke();

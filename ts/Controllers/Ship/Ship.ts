@@ -34,9 +34,6 @@ export class Ship {
         var shape = new ShapeData(triangleShip);
         var ship = new ShapedModel<TShip, ShapeData>(physics, shape);
 
-        //var engineShape = [];
-        //var engine = new ShapedModel<TShip, ShapeData>(physics, shape);
-
         var mover: IActor = new Mover(ship.data);
         var thrust = new ForwardAccelerator(ship.data);
         var rotator = new PolyRotator(ship.data, ship.shape);

@@ -28,7 +28,9 @@ export class PolyView implements IView {
     constructor(private properties: ILocated, private shape: ShapeData) { }
 
     display(drawContext: DrawContext) {
-        drawContext.drawP(this.properties.location, this.shape.points);
+        var x = this.properties.location.x + this.shape.offset.x;
+        var y = this.properties.location.y + this.shape.offset.y;
+        drawContext.drawP(x, y, this.shape.points);
         drawContext.fill();
     }
 }
@@ -38,7 +40,9 @@ export class PolyGraphic implements IView {
 
     display(drawContext: DrawContext) {
         if (this.graphic.loaded) {
-            drawContext.drawP(this.properties.location, this.shape.points);
+            var x = this.properties.location.x + this.shape.offset.x;
+            var y = this.properties.location.y + this.shape.offset.y;
+            drawContext.drawP(x, y, this.shape.points);
             drawContext.save();
             let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
             drawContext.fill(fillStyle);
@@ -52,7 +56,9 @@ export class PolyGraphicAngled implements IView {
 
     display(drawContext: DrawContext) {
         if (this.graphic.loaded) {
-            drawContext.drawP(this.properties.location, this.shape.points);
+            var x = this.properties.location.x + this.shape.offset.x;
+            var y = this.properties.location.y + this.shape.offset.y;
+            drawContext.drawP(x, y, this.shape.points);
             drawContext.save();
             drawContext.translate(this.properties.location.x, this.properties.location.y);
             drawContext.rotate(this.properties.angle);

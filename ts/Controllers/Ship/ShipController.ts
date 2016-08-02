@@ -44,10 +44,10 @@ export interface IPrimaryWeaponController {
 export class LandShipController extends ComponentObjects<IGameObject> implements IShipController, ICrashController, IPrimaryWeaponController {
 
     constructor(public shipObj: SingleGameObject<ShapedModel<LandingShipData, ShapeData>>,
-        public weaponController: BulletWeaponController,
-        public thrustController: ThrustController,
+        public weaponController: IParticleWeaponController,
+        public thrustController: IThrustController,
         public explosionController: ExplosionController) {
-        super([thrustController, weaponController, explosionController, shipObj]);
+        super([shipObj, weaponController, thrustController, explosionController]);
     }
 
     thrust() {
@@ -105,7 +105,7 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
         public weaponController: IParticleWeaponController,
         public thrustController: IThrustController,
         public explosionController: ExplosionController) {
-        super([thrustController, weaponController, explosionController, shipObj]);
+        super([shipObj, weaponController, thrustController, explosionController]);
     }
     
     thrust() {

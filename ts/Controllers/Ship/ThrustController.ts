@@ -1,8 +1,9 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
-import { ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
+import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
+import { PolyRotator } from "ts/Actors/Rotators";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
@@ -10,8 +11,10 @@ import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdat
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-import { RectangleView } from "ts/Views/PolyViews";
+import { RectangleView, PolyView } from "ts/Views/PolyViews";
 import { Transforms } from "ts/Physics/Transforms";
+import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 
 export interface IThrustController extends IGameObject {
     on();
@@ -22,8 +25,9 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>) {
-        super([field]);
+    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+        public engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>   ) {
+        super([field, engine]);
     }
 
     on() {
@@ -56,7 +60,8 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
-        return new ThrustController(field);
+        var engine = ShipComponents.createEngine(data);
+        return new ThrustController(field, engine);
     }
 
     static createSpaceThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {
@@ -74,6 +79,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
-        return new ThrustController(field);
+        var engine = ShipComponents.createEngine(data);
+        return new ThrustController(field, engine);
     }
 }
