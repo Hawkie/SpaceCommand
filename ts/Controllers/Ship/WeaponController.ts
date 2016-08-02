@@ -1,5 +1,5 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
-import { ILocatedMoving, ILocatedAngledMoving } from "ts/Data/PhysicsData";
+import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
@@ -13,13 +13,15 @@ import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
+import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 
 export interface IParticleWeaponController extends IGameObject {
     pullTrigger(data: ILocatedAngledMoving, offsetAngle: number, velocity: number);
-    components: SingleGameObject<ParticleData>[];
+    bullets: SingleGameObject<ParticleData>[];
 }
 
-export class BulletWeaponController extends ComponentObjects<SingleGameObject<ParticleData>> implements IParticleWeaponController {
+export class BulletWeaponController extends ComponentObjects<IGameObject> implements IParticleWeaponController {
     laserEffect = new SoundEffectData(
     1046.5,           //frequency
     0,                //attack
@@ -40,11 +42,16 @@ export class BulletWeaponController extends ComponentObjects<SingleGameObject<Pa
     soundPlayed: boolean = false;
     last: number;
 
-    constructor(private field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+        public gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>,
         actx: AudioContext) {
-        super(field.components);
+        super([field, gun]);
         this.laserSound = new FXObject(actx, this.laserEffect);
         this.last = Date.now();
+    }
+
+    get bullets(): SingleGameObject<ParticleData>[] {
+            return this.field.components;
     }
 
     pullTrigger(data: ILocatedAngledMoving, offsetAngle: number = 0, velocity: number = 128) {
@@ -66,13 +73,14 @@ export class BulletWeaponController extends ComponentObjects<SingleGameObject<Pa
     }
 
 
-    static createWeaponController(actx: AudioContext): BulletWeaponController {
+    static createWeaponController(data: ILocatedAngledMovingRotatingForwardAcc, actx: AudioContext): BulletWeaponController {
         let fieldData: ParticleFieldData = new ParticleFieldData(2, 1, 5, 2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [remover], [], pField);
-        return new BulletWeaponController(field, actx);
+        var gun = ShipComponents.createGun(data);
+        return new BulletWeaponController(field, gun, actx);
     }
 
 }

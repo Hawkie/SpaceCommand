@@ -40,4 +40,18 @@ export class ShipComponents {
         var rotator = new PolyRotator(data, shapeData);
         return new SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>(model, [rotator], [view]);
     }
+
+    static gunShape1: Coordinate[] = [new Coordinate(0, -2),
+        new Coordinate(0, 0),
+        new Coordinate(0, -2)]; 
+
+    static createGun(data: ILocatedAngledMoving): SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>> {
+        var gunShape = ShipComponents.gunShape1;
+        //Transforms.scale(engineShape, 2, 2);
+        var shapeData = new ShapeData(gunShape, new Coordinate(0, -8));
+        var model = new ShapedModel<ILocatedAngledMoving, ShapeData>(data, shapeData);
+        var view = new PolyView(data, shapeData);
+        var rotator = new PolyRotator(data, shapeData);
+        return new SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>(model, [rotator], [view]);
+    }
 }

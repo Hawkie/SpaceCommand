@@ -140,7 +140,7 @@ export class LandingState implements IGameState {
         // ships        
         var shipData = new LandingShipData(new Coordinate(256, 240));
         var shipObj = Ship.createShipObj(shipData);
-        var weaponController = BulletWeaponController.createWeaponController(actx);
+        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.data, actx);
         var thrustController = ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(shipObj.model.data);
         var shipController = new LandShipController(shipObj, weaponController, thrustController, explosionController);

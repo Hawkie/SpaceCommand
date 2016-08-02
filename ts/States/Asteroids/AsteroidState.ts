@@ -105,6 +105,8 @@ export class AsteroidState implements IGameState {
         this.asteroids.forEach(x => this.keepIn(x.model.data));
         this.keepIn(this.player.shipObj.model.data);
         this.keepIn(this.player.thrustController.engine.model.data);
+
+        // If all asteroids cleared, create more at next level
         if (this.asteroids.length == 0) {
             this.level += 1;
             this.asteroids = AsteroidState.createLevel(this.level);
@@ -167,7 +169,7 @@ export class AsteroidState implements IGameState {
     }
 
     bulletModels(): SingleGameObject<ILocated>[] {
-        return this.player.weaponController.components;
+        return this.player.weaponController.bullets;
         }
 
     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[]) {
@@ -242,7 +244,7 @@ export class AsteroidState implements IGameState {
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
         var shipObj = Ship.createShipObj(spaceShipData);
-        var weaponController = BulletWeaponController.createWeaponController(actx);
+        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.data, actx);
         var thrustController = ThrustController.createSpaceThrust(shipObj.model.data, shipObj.model.shape);
         var explosionController = ExplosionController.createSpaceExplosion(shipObj.model.data);
         var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);

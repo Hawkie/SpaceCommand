@@ -20,20 +20,20 @@ export interface IThrustController extends IGameObject {
     on();
     off();
     engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
-    thrust: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>
+    thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>
 }
 
 export class ThrustController extends ComponentObjects<IGameObject> implements IThrustController {
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
-    constructor(public thrust: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+    constructor(public thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
         public engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>   ) {
-        super([thrust, engine]);
+        super([thrustField, engine]);
     }
 
     on() {
-        this.thrust.model.on = true;
+        this.thrustField.model.on = true;
         if (!this.soundPlayed) {
             this.thrustSound.play();
             this.soundPlayed = true;
@@ -41,7 +41,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
     }
 
     off() {
-        this.thrust.model.on = false;
+        this.thrustField.model.on = false;
         this.thrustSound.pause();
         this.soundPlayed = false;
     }
