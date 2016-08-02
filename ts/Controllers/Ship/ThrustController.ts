@@ -19,19 +19,21 @@ import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 export interface IThrustController extends IGameObject {
     on();
     off();
+    engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
+    thrust: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>
 }
 
 export class ThrustController extends ComponentObjects<IGameObject> implements IThrustController {
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+    constructor(public thrust: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
         public engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>   ) {
-        super([field, engine]);
+        super([thrust, engine]);
     }
 
     on() {
-        this.field.model.on = true;
+        this.thrust.model.on = true;
         if (!this.soundPlayed) {
             this.thrustSound.play();
             this.soundPlayed = true;
@@ -39,7 +41,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
     }
 
     off() {
-        this.field.model.on = false;
+        this.thrust.model.on = false;
         this.thrustSound.pause();
         this.soundPlayed = false;
     }

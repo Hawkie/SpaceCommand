@@ -32,7 +32,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
             let target = targets[i1];
             for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
                 let point = shapeModel.shape.points[i2];
-                if (Transforms.hasPoint(target.shape.points, target.data.location, new Coordinate(shapeModel.data.location.x + point.x, shapeModel.data.location.y + point.y))) {
+                if (Transforms.hasPoint(target.shape.points, target.data.location, new Coordinate(shapeModel.data.location.x + shapeModel.shape.offset.x + point.x, shapeModel.data.location.y + + shapeModel.shape.offset.y + point.y))) {
                     this.hit(i1, targets, i2, shapeModel);
                     if (this.searchFirstHitOnly) {
                         found = true;

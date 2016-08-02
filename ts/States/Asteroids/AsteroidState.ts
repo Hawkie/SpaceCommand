@@ -91,7 +91,8 @@ export class AsteroidState implements IGameState {
             
         var asteroidBulletDetector = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.shipObj.model, this.asteroidPlayerHit.bind(this));
-        this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
+        var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.thrustController.engine.model, this.asteroidEngineHit.bind(this));
+        this.interactors = [asteroidBulletDetector, asteroidPlayerDetector, asteroidEngineDetector];
     }
 
     
@@ -103,6 +104,7 @@ export class AsteroidState implements IGameState {
         // keep objects in screen
         this.asteroids.forEach(x => this.keepIn(x.model.data));
         this.keepIn(this.player.shipObj.model.data);
+        this.keepIn(this.player.thrustController.engine.model.data);
         if (this.asteroids.length == 0) {
             this.level += 1;
             this.asteroids = AsteroidState.createLevel(this.level);
@@ -189,7 +191,31 @@ export class AsteroidState implements IGameState {
     }
 
     asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
+        var a = asteroids[i1];
+        var xImpact = a.data.velX;
+        var yImpact = a.data.velY;
+        this.player.shipObj.model.data.velX = xImpact + Transforms.random(-2, 2);
+        this.player.shipObj.model.data.velY = yImpact + Transforms.random(-2, 2);
         this.player.crash();
+    }
+
+    asteroidEngineHit(i1: number, asteroids: AsteroidModel[], i2: number, player: Coordinate[]) {
+        var a = asteroids[i1];
+        var xImpact = a.data.velX;
+        var yImpact = a.data.velY;
+        var engineSeparateModel = new LocatedMovingAngledRotatingData(new Coordinate(this.player.shipObj.model.data.location.x,
+            this.player.shipObj.model.data.location.y),
+            xImpact + Transforms.random(-2, 2),
+            yImpact + Transforms.random(-2, 2),
+            this.player.shipObj.model.data.angle,
+            5);
+        var shapeData = this.player.thrustController.engine.model.shape;
+        var mover = new Mover(engineSeparateModel);
+        var rotator = new PolyRotator(engineSeparateModel, shapeData);
+        this.player.thrustController.engine.model.data = engineSeparateModel;
+        this.player.thrustController.engine.actors = [mover, rotator];
+        var view = new PolyView(engineSeparateModel, shapeData);
+        this.player.thrustController.engine.views = [view];
     }
 
     tests(lastTestModifier: number) {
