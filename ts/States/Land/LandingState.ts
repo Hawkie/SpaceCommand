@@ -17,7 +17,7 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
-import { Ship } from "ts/Controllers/Ship/Ship";
+import { ShipChassis } from "ts/Controllers/Ship/Ship";
 import { LandShipController } from "ts/Controllers/Ship/ShipController";
 
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
@@ -54,7 +54,7 @@ export class LandingState implements IGameState {
         this.player = player;
 
         this.wind = LandingState.createWindDirectionIndicator(new Coordinate(450,50));
-        this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 0), this.player.shipObj.model.data);
+        this.surface = LandingState.createPlanetSurfaceObject(new Coordinate(0, 0), this.player.chassisObj.model.physics);
         this.landingPad = LandingState.createLandingPadObject(this.surface);
         
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -67,14 +67,14 @@ export class LandingState implements IGameState {
         this.objects.push(this.wind);
         
 
-        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.shipObj.model.data, this.playerSurfaceCollision.bind(this));
-        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.shipObj.model.data, this.playerLandingPadCollision.bind(this));
-        var windEffect: IInteractor = new Interactor(this.wind.model, this.player.shipObj.model, this.windEffect);
+        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(this.surface.model, this.player.chassisObj.model.physics, this.playerSurfaceCollision.bind(this));
+        var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model, this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
+        var windEffect: IInteractor = new Interactor(this.wind.model, this.player.chassisObj.model, this.windEffect);
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
     }
     
     update(lastDrawModifier: number) {
-        this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.shipObj.model.data.velY));
+        this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.chassisObj.model.physics.velY));
         this.objects.forEach(o => o.update(lastDrawModifier));
     }
     
@@ -101,25 +101,25 @@ export class LandingState implements IGameState {
     }
 
     windEffect(lastTestModifier: number, wind: WindModel, player: ShapedModel<LandingShipData, ShapeData>) {
-        player.data.velX += wind.data.value * lastTestModifier;
+        player.physics.velX += wind.physics.value * lastTestModifier;
     }
 
     playerLandingPadCollision() {
-        if (this.player.shipObj.model.data.velY > 0) {
-            console.log("Land velocity: " + this.player.shipObj.model.data.velY);
+        if (this.player.chassisObj.model.physics.velY > 0) {
+            console.log("Land velocity: " + this.player.chassisObj.model.physics.velY);
 
-            if (this.player.shipObj.model.data.velY > 20) {
+            if (this.player.chassisObj.model.physics.velY > 20) {
                 this.player.crash();
             }
 
-            this.player.shipObj.model.data.velY = 0;
-            this.player.shipObj.model.data.velX = 0;
+            this.player.chassisObj.model.physics.velY = 0;
+            this.player.chassisObj.model.physics.velX = 0;
         }
     }
 
     playerSurfaceCollision() {
-        this.player.shipObj.model.data.velY = 0;
-        this.player.shipObj.model.data.velX = 0;
+        this.player.chassisObj.model.physics.velY = 0;
+        this.player.chassisObj.model.physics.velX = 0;
         this.player.crash();
     }
     
@@ -139,14 +139,14 @@ export class LandingState implements IGameState {
 
         // ships        
         var shipData = new LandingShipData(new Coordinate(256, 240));
-        var shipObj = Ship.createShipObj(shipData);
-        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.data, actx);
-        var thrustController = ThrustController.createGroundThrust(shipObj.model.data, shipObj.model.shape);
-        var explosionController = ExplosionController.createGroundExplosion(shipObj.model.data);
+        var shipObj = ShipChassis.createShipObj(shipData);
+        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.physics, actx);
+        var thrustController = ThrustController.createGroundThrust(shipObj.model.physics, shipObj.model.shape);
+        var explosionController = ExplosionController.createGroundExplosion(shipObj.model.physics);
         var shipController = new LandShipController(shipObj, weaponController, thrustController, explosionController);
 
-        var gravityForce = new VectorAccelerator(shipController.shipObj.model.data, new Vector(180, 10));
-        shipController.shipObj.actors.push(gravityForce);
+        var gravityForce = new VectorAccelerator(shipController.chassisObj.model.physics, new Vector(180, 10));
+        shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];
@@ -160,7 +160,7 @@ export class LandingState implements IGameState {
         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
         surfaceGenerator.initSurface();
         var terrain = new GraphicData("res/img/terrain.png");
-        var surface: PolyGraphic = new PolyGraphic(model.data, model.shape, terrain);
+        var surface: PolyGraphic = new PolyGraphic(model.physics, model.shape, terrain);
         var obj = new SingleGameObject<PlanetSurfaceModel>(model, [], [surface]);
         return obj;
     }
@@ -168,18 +168,18 @@ export class LandingState implements IGameState {
     static createLandingPadObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<LandingPadModel> {
         var placeIndex = Transforms.random(0, 50);
         var xy = surface.model.shape.points[placeIndex];
-        var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.data.location.x,
-        xy.y + surface.model.data.location.y));
-        var padView: IView = new PolyView(padModel.data, padModel.shape);
+        var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.physics.location.x,
+        xy.y + surface.model.physics.location.y));
+        var padView: IView = new PolyView(padModel.physics, padModel.shape);
         var obj = new SingleGameObject<LandingPadModel>(padModel, [], [padView]);
         return obj;
     }
 
     static createWindDirectionIndicator(location: Coordinate): SingleGameObject<WindModel> {
         var model: WindModel = new WindModel(location);
-        var windGenerator: IActor = new WindGenerator(model.data, model.shape);
-        var viewArrow: IView = new PolyView(model.data, model.shape); // arrow shape
-        var viewText: IView = new ValueView(model.data, "{0} mph", "monospace", 12);
+        var windGenerator: IActor = new WindGenerator(model.physics, model.shape);
+        var viewArrow: IView = new PolyView(model.physics, model.shape); // arrow shape
+        var viewText: IView = new ValueView(model.physics, "{0} mph", "monospace", 12);
         var obj = new SingleGameObject<WindModel>(model, [windGenerator], [viewArrow, viewText]);
         return obj;
     }

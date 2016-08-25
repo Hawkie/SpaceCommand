@@ -17,6 +17,11 @@ import { Model, ShapedModel } from "ts/Models/DynamicModels";
 import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 
 export interface IParticleWeaponController extends IGameObject {
+    // data
+    bulletField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>;
+    gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
+
+    // control
     pullTrigger(data: ILocatedAngledMoving, offsetAngle: number, velocity: number);
     bullets: SingleGameObject<ParticleData>[];
 }
@@ -38,27 +43,26 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
     3);                 //Maximum duration of sound, in seconds
 
     laserSound: FXObject;
-
     soundPlayed: boolean = false;
     last: number;
 
-    constructor(public field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+    constructor(public bulletField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
         public gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>,
         actx: AudioContext) {
-        super([field, gun]);
+        super([bulletField, gun]);
         this.laserSound = new FXObject(actx, this.laserEffect);
         this.last = Date.now();
     }
 
     get bullets(): SingleGameObject<ParticleData>[] {
-            return this.field.components;
+            return this.bulletField.components;
     }
 
     pullTrigger(data: ILocatedAngledMoving, offsetAngle: number = 0, velocity: number = 128) {
         // put firerate check in here
         let now = Date.now();
         let elapsedTimeSec = (now - this.last)/1000;
-        if (elapsedTimeSec >= 1/this.field.model.itemsPerSec) {
+        if (elapsedTimeSec >= 1/this.bulletField.model.itemsPerSec) {
             this.last = now;
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x,
                 data.location.y),
@@ -67,11 +71,10 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
             var mover = new Mover(p);
             var view = new RectangleView(p, new RectangleData(1, 1));
             let pObj = new SingleGameObject<ParticleData>(p, [mover], [view]);
-            this.field.components.push(pObj);
+            this.bulletField.components.push(pObj);
             this.laserSound.play();
         }
     }
-
 
     static createWeaponController(data: ILocatedAngledMovingRotatingForwardAcc, actx: AudioContext): BulletWeaponController {
         let fieldData: ParticleFieldData = new ParticleFieldData(2, 1, 5, 2, false);
@@ -82,5 +85,4 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
         var gun = ShipComponents.createGun(data);
         return new BulletWeaponController(field, gun, actx);
     }
-
 }

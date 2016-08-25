@@ -16,7 +16,7 @@ export interface IComponentObjects<TModel> extends IGameObject {
 }
     
 
-export class SingleGameObject<TModel> implements IGameObject {    
+export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {    
     constructor(public model: TModel, public actors: IActor[], public views: IView[]) {
     }
 
@@ -29,7 +29,7 @@ export class SingleGameObject<TModel> implements IGameObject {
     }
 }
 
-export class ComponentObjects<TObject extends IGameObject> {
+export class ComponentObjects<TObject extends IGameObject> implements IComponentObjects<TObject> {
     constructor(public components: TObject[]) {
     }
 
@@ -44,7 +44,7 @@ export class ComponentObjects<TObject extends IGameObject> {
 
 
 // combi of single and component
-export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject {
+export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject, IObject<TModel> {
     constructor(public model: TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
     }
 

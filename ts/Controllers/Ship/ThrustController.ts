@@ -1,19 +1,25 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
+import { Transforms } from "ts/Physics/Transforms";
+// Data
+import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
+import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
+import { ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { ParticleFieldData } from "ts/Data/ParticleFieldData";
+// Actors
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
-import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
-import { ShapeData, RectangleData } from "ts/Data/ShapeData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
+// GameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
+// Views
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
-import { Transforms } from "ts/Physics/Transforms";
-import { Model, ShapedModel } from "ts/Models/DynamicModels";
+
+import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 
 export interface IThrustController extends IGameObject {
@@ -62,8 +68,10 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
-        var engine = ShipComponents.createEngine(data);
-        return new ThrustController(field, engine);
+        var engine : SingleGameObject<GPSModel<IBreakable, ILocatedAngledMoving, ShapeData>> = ShipComponents.createEngine(data);
+        // todo engine types are different!
+        var tc = new ThrustController(field, engine);
+        return tc;
     }
 
     static createSpaceThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {

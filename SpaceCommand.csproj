@@ -55,6 +55,7 @@
     <TypeScriptCompile Include="ts\Common\EventLoop.ts" />
     <TypeScriptCompile Include="ts\Common\KeyStateProvider.ts" />
     <TypeScriptCompile Include="ts\Controllers\Ship\ShipComponents.ts" />
+    <TypeScriptCompile Include="ts\Data\BreakableData.ts" />
     <TypeScriptCompile Include="ts\Data\EffectData.ts" />
     <TypeScriptCompile Include="ts\Data\GraphicData.ts" />
     <TypeScriptCompile Include="ts\Data\ParticleData.ts" />
@@ -108,7 +109,6 @@
     <TypeScriptCompile Include="ts\States\Land\LandingState.ts" />
     <TypeScriptCompile Include="ts\States\MenuState.ts" />
     <TypeScriptCompile Include="ts\tests\tester.ts" />
-    <TypeScriptCompile Include="ts\Models\Weapons\Weapon.ts" />
     <TypeScriptCompile Include="ts\Views\View.ts" />
     <TypeScriptCompile Include="ts\_includes.ts" />
   </ItemGroup>

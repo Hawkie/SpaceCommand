@@ -25,7 +25,9 @@ import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 
-export class Ship {
+export class ShipChassisObject<TShip extends IShipData> extends SingleGameObject<ShapedModel<TShip, ShapeData>> { }
+
+export class ShipChassis {
 
     static createShipObj<TShip extends IShipData>(physics:TShip): SingleGameObject<ShapedModel<TShip, ShapeData>> {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
@@ -34,12 +36,12 @@ export class Ship {
         var shape = new ShapeData(triangleShip);
         var ship = new ShapedModel<TShip, ShapeData>(physics, shape);
 
-        var mover: IActor = new Mover(ship.data);
-        var thrust = new ForwardAccelerator(ship.data);
-        var rotator = new PolyRotator(ship.data, ship.shape);
+        var mover: IActor = new Mover(ship.physics);
+        var thrust = new ForwardAccelerator(ship.physics);
+        var rotator = new PolyRotator(ship.physics, ship.shape);
 
         var actors: IActor[] = [mover, thrust, rotator];
-        var shipView: IView = new PolyView(ship.data, ship.shape);
+        var shipView: IView = new PolyView(ship.physics, ship.shape);
 
         var views: IView[] = [shipView];
         var shipObj = new SingleGameObject<ShapedModel<TShip, ShapeData>>(ship, actors, views);

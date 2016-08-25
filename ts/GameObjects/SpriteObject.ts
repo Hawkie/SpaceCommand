@@ -12,7 +12,7 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 export class SpriteObject extends SingleGameObject<GraphicModel<ILocated, ISprite> > {
     constructor(located: ILocated, sprite: ISprite, actors: IActor[]) {
         var model = new GraphicModel<ILocated, ISprite> (located, sprite);
-        var view: IView = new SpriteView(model.data, model.graphic);
+        var view: IView = new SpriteView(model.physics, model.graphic);
         super(model, [], [view]);
     }
 }

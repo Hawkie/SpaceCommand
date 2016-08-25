@@ -20,6 +20,9 @@ import { IGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 // it is also a game object.
 
 export interface IExplosionController extends IGameObject {
+    field: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>;
+    screenFlash: SingleGameObject<EffectData>;
+
     on();
     off();
 }

@@ -9,40 +9,86 @@ import { PolyRotator, Spinner } from "ts/Actors/Rotators";
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
-export interface ILocatedModel {
-    data: ILocated;
+
+export interface IPhysical<TPhysics extends ILocated> {
+    physics: TPhysics;
 }
 
-export interface IModel<TData> {
-    data: TData;
+export interface IShaped<TShape extends IShape> {
+    shape: TShape;
 }
 
-export interface IGraphicModel<TData1, TData2> {
-    data: TData1;
-    graphic: TData2;
+export interface IGamed<TObject> {
+    object: TObject;
 }
 
-export interface IShapedModel<TData1, TData2> {
-    data: TData1;
-    shape: TData2;
+export interface ISprited<TSprite extends ISprite> {
+    sprite: TSprite;
 }
 
-export class Model<TData> implements IModel<TData> {
-    constructor(public data: TData) {
+export interface IGraphical<TGraphic extends IGraphic> {
+    graphic: TGraphic;
+}
+
+export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
+
+
+export interface IGPSModel<TGame, TPhysics extends ILocated, TShape extends IShape > extends IGamed<TGame>, IPhysical < TPhysics >, IShaped < TShape > {}
+
+
+export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
+    constructor(
+        public physics: TPhysics) {
     }
 }
 
-export class GraphicModel<TPhysics extends ILocated, TDraw extends IGraphic> implements ILocatedModel, IModel<TPhysics> {
-    constructor(public data: TPhysics, public graphic: TDraw) {
+export class GraphicModel<TPhysics extends ILocated,
+    TGraphic extends IGraphic>
+    implements IPhysical<TPhysics>, IGraphical<TGraphic> {
+    constructor(
+        public physics: TPhysics,
+        public graphic: TGraphic) {
     }
 }
 
-export class SpriteModel<TPhysics extends ILocated, TDraw extends ISprite> implements ILocatedModel, IModel<TPhysics> {
-    constructor(public data: TPhysics, public sprite: TDraw) {
+export class SpriteModel<TPhysics extends ILocated,
+    TSprite extends ISprite>
+    implements IPhysical<TPhysics>, ISprited<TSprite> {
+    constructor(
+        public physics: TPhysics,
+        public sprite: TSprite) {
     }
 }
 
-export class ShapedModel<TPhysics extends ILocated, TShape extends IShape> implements ILocatedModel, IModel<TPhysics>, IShapedModel<TPhysics, TShape> {
-    constructor(public data: TPhysics, public shape: TShape) {
+export class ShapedModel<TPhysics extends ILocated,
+    TShape extends IShape>
+    implements IPhysical<TPhysics>, IShaped<TShape> {
+    constructor(
+        public physics: TPhysics,
+        public shape: TShape) {
+    }
+}
+
+export class GPSModel<TGame,
+    TPhysics extends ILocated,
+    TShape extends IShape>
+    implements IGamed<TGame>, IPhysical<TPhysics>, IShaped<TShape> {
+    constructor(
+        public object: TGame,
+        public physics: TPhysics,
+        public shape: TShape) {
+    }
+}
+
+export class GPSSModel<TGame,
+    TPhysics extends ILocated,
+    TShape extends IShape,
+    TSprite extends ISprite>
+    implements IGamed<TGame>, IPhysical<TPhysics>, IShaped<TShape>, ISprited<TSprite> {
+    constructor(
+        public object: TGame,
+        public physics: TPhysics,
+        public shape: TShape,
+        public sprite:TSprite) {
     }
 }

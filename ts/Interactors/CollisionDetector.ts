@@ -12,7 +12,7 @@ export class ObjectCollisionDetector implements IInteractor {
     }
 
     test(lastTestModifier: number) {
-        if (Transforms.hasPoint(this.model1.shape.points, this.model1.data.location, this.point.location))
+        if (Transforms.hasPoint(this.model1.shape.points, this.model1.physics.location, this.point.location))
             this.hit();
     }
 }
@@ -32,7 +32,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
             let target = targets[i1];
             for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
                 let point = shapeModel.shape.points[i2];
-                if (Transforms.hasPoint(target.shape.points, target.data.location, new Coordinate(shapeModel.data.location.x + shapeModel.shape.offset.x + point.x, shapeModel.data.location.y + + shapeModel.shape.offset.y + point.y))) {
+                if (Transforms.hasPoint(target.shape.points, target.physics.location, new Coordinate(shapeModel.physics.location.x + shapeModel.shape.offset.x + point.x, shapeModel.physics.location.y + + shapeModel.shape.offset.y + point.y))) {
                     this.hit(i1, targets, i2, shapeModel);
                     if (this.searchFirstHitOnly) {
                         found = true;
@@ -59,7 +59,7 @@ export class Multi2FieldCollisionDetector implements IInteractor {
             let target = targets[i1];
             for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
                 let hitter = hitters[i2];
-                if (Transforms.hasPoint(target.shape.points, target.data.location, hitter.model.location)) {
+                if (Transforms.hasPoint(target.shape.points, target.physics.location, hitter.model.location)) {
                     this.hit(i1, targets, i2, hitters);
                     if (this.searchFirstHitOnly) {
                         found = true;

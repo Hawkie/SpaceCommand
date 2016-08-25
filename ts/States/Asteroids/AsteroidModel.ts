@@ -30,7 +30,7 @@ export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData,
     }
 
     hit() {
-        this.data.velX += 2;
-        this.data.spin += 10;
+        this.physics.velX += 2;
+        this.physics.spin += 10;
     }
 }
