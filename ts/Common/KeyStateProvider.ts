@@ -34,7 +34,14 @@ export enum Keys {
     // Some handy key codes
     Tab = 9,
     Enter = 13,
+    Shift = 16,
     Esc = 27, // exit state
+
+
+    PageUp = 33,
+    PageDown = 34,
+    End = 35,
+    Home = 36,
 
     LeftArrow = 37,
     UpArrow = 38,
@@ -42,11 +49,15 @@ export enum Keys {
     DownArrow = 40,
     SpaceBar = 32,
 
-    PageUp = 33,
-    PageDown = 34,
-    End = 35,
-    Home = 36,
+    
 
+    A = 65,
+    D = 68,
+    E = 69,
+    Q = 81,
+    R = 82,
+    S = 83,
+    W = 87,
     X = 88, // zoom out
     Z = 90, // zoom in
     

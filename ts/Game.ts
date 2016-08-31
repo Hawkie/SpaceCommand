@@ -7,6 +7,7 @@ import { AsteroidState } from "ts/States/Asteroids/AsteroidState";
 import { LandingState } from "ts/States/Land/LandingState";
 import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
 import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
+import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
 import { MenuState } from "ts/States/MenuState";
 
 
@@ -33,8 +34,9 @@ export class Game {
         var landingState = LandingState.create(assets, actx);
         var soundDesigner = SoundDesignerState.create();
         var landExplorer = LandExplorerState.create(assets, actx);
+        var duel = DuelState.createState(assets, actx);
 
-        var states = [menuState, asteroidState, landingState, soundDesigner, landExplorer];
+        var states = [menuState, asteroidState, landingState, landExplorer, duel];
 
         return states;
     }

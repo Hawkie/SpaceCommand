@@ -27,7 +27,7 @@ export abstract class GameState implements IGameState {
 
     sound(actx: AudioContext) { }
 
-    tests() { }
+    tests(lastTestModifier: number) { }
 
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number) { }
 

@@ -88,6 +88,7 @@
     <TypeScriptCompile Include="ts\Sound\FXObject.ts" />
     <TypeScriptCompile Include="ts\Sound\SoundObject.ts" />
     <TypeScriptCompile Include="ts\States\SoundDesigner\SoundDesignerState.ts" />
+    <TypeScriptCompile Include="ts\States\TwoPlayerDuel\DuelState.ts" />
     <TypeScriptCompile Include="ts\Views\ControlPanelView.ts" />
     <TypeScriptCompile Include="ts\Views\EffectViews.ts" />
     <TypeScriptCompile Include="ts\Views\PolyViews.ts" />

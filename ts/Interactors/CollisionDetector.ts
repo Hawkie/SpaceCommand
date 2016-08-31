@@ -17,10 +17,11 @@ export class ObjectCollisionDetector implements IInteractor {
     }
 }
 
-export class Multi2ShapeCollisionDetector implements IInteractor {
+export class Multi2ShapeCollisionDetector<T> implements IInteractor {
     constructor(private model1s: () => IShapedModel<ILocated, IShape>[],
         private sourceModel: IShapedModel<ILocated, IShape>,
-        private hit: (i1: number, targets: IShapedModel<ILocated, IShape>[], i2: number, sourceModel: IShapedModel<ILocated, IShape>) => void,
+        private tag: T,
+        private hit: (i1: number, targets: IShapedModel<ILocated, IShape>[], i2: number, sourceModel: IShapedModel<ILocated, IShape>, tag:T) => void,
         private searchFirstHitOnly: boolean = true) {
     }
 
@@ -33,7 +34,7 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
             for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
                 let point = shapeModel.shape.points[i2];
                 if (Transforms.hasPoint(target.shape.points, target.physics.location, new Coordinate(shapeModel.physics.location.x + shapeModel.shape.offset.x + point.x, shapeModel.physics.location.y + + shapeModel.shape.offset.y + point.y))) {
-                    this.hit(i1, targets, i2, shapeModel);
+                    this.hit(i1, targets, i2, shapeModel, this.tag);
                     if (this.searchFirstHitOnly) {
                         found = true;
                         break;
@@ -47,8 +48,8 @@ export class Multi2ShapeCollisionDetector implements IInteractor {
     }
 }
 
-export class Multi2FieldCollisionDetector implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => SingleGameObject<ILocated>[], private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: SingleGameObject<ILocated>[]) => void, private searchFirstHitOnly: boolean = true) {
+export class Multi2FieldCollisionDetector<T> implements IInteractor {
+    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => SingleGameObject<ILocated>[], private tag:T, private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: SingleGameObject<ILocated>[], tag: T) => void, private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
@@ -60,7 +61,7 @@ export class Multi2FieldCollisionDetector implements IInteractor {
             for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
                 let hitter = hitters[i2];
                 if (Transforms.hasPoint(target.shape.points, target.physics.location, hitter.model.location)) {
-                    this.hit(i1, targets, i2, hitters);
+                    this.hit(i1, targets, i2, hitters, this.tag);
                     if (this.searchFirstHitOnly) {
                         found = true;
                         break;
