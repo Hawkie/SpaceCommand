@@ -37,7 +37,7 @@ export enum Keys {
     Shift = 16,
     Esc = 27, // exit state
 
-
+    SpaceBar = 32,
     PageUp = 33,
     PageDown = 34,
     End = 35,
@@ -47,9 +47,10 @@ export enum Keys {
     UpArrow = 38,
     RightArrow = 39,
     DownArrow = 40,
-    SpaceBar = 32,
 
-    
+    Num0 = 48,
+    Num1 = 49,
+    Num2 = 50,
 
     A = 65,
     D = 68,
