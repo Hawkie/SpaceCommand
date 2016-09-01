@@ -159,8 +159,8 @@ export class DuelState extends GameState implements IGameState {
             this.players[1].chassisObj.model.physics.location.y);
         let yd = (y2 - y1);
         let avgY = y1 + (yd * 0.5);
-
-        this.zoom = Math.min(256/xd, 240/yd);
+        let d = Math.sqrt(Math.pow(xd, 2) + Math.pow(yd, 2));
+        this.zoom = 351 / d;
         drawingContext.translate(256 - avgX * this.zoom, 240 - avgY * this.zoom);
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
