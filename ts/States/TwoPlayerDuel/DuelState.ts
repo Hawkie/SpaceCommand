@@ -65,6 +65,8 @@ export class DuelState extends GameState implements IGameState {
     level: number = 3;
     ShipController: SpaceShipController;
 
+    width: number = 512;
+    height: number = 480;
 
     constructor(
         name: string,
@@ -116,7 +118,7 @@ export class DuelState extends GameState implements IGameState {
         // keep objects in screen
         this.asteroids.forEach(x => this.keepIn(x.model.physics));
         this.players.forEach(player => {
-            this.keepIn(player.chassisObj.model.physics);
+            if (this.keepIn(player.chassisObj.model.physics) > 0) this.zoom = 1;
             this.keepIn(player.thrustController.engine.model.physics);
         });
 
@@ -127,11 +129,13 @@ export class DuelState extends GameState implements IGameState {
         }
     }
 
-    private keepIn(l: ILocated) {
-        if (l.location.x > 512) l.location.x = 0;
-        if (l.location.x < 0) l.location.x = 512;
-        if (l.location.y > 480) l.location.y = 0;
-        if (l.location.y < 0) l.location.y = 480;
+    private keepIn(l: ILocated): number {
+        let moved = 0;
+        if (l.location.x > this.width) { l.location.x = 0; moved = 1; }
+        if (l.location.x < 0) { l.location.x = this.width; moved = 2; } 
+        if (l.location.y > this.height) { l.location.y = 0; moved = 3; }
+        if (l.location.y < 0) { l.location.y = this.height; moved = 4; }
+        return moved;
     }
 
     // order is important. Like layers on top of each other.
@@ -140,28 +144,29 @@ export class DuelState extends GameState implements IGameState {
         drawingContext.clear();
         this.guiObjects.forEach(o => o.display(drawingContext));
         drawingContext.save();
-        //let avgX = 0;
-        //this.players.forEach(p => avgX += p.chassisObj.model.physics.location.x);
-        //let avgY = 0;
-        //this.players.forEach(p => avgY += p.chassisObj.model.physics.location.y);
-        //avgX = avgX / 2;
-        //avgY = avgY / 2;
+    
         let x1 = Math.min(this.players[0].chassisObj.model.physics.location.x,
             this.players[1].chassisObj.model.physics.location.x);
         let x2 = Math.max(this.players[0].chassisObj.model.physics.location.x,
             this.players[1].chassisObj.model.physics.location.x);
         let xd = (x2 - x1);
-        let avgX = x1 + (xd * 0.5);
+        let midX = x1 + (xd * 0.5);
 
         let y1 = Math.min(this.players[0].chassisObj.model.physics.location.y,
             this.players[1].chassisObj.model.physics.location.y);
         let y2 = Math.max(this.players[0].chassisObj.model.physics.location.y,
             this.players[1].chassisObj.model.physics.location.y);
         let yd = (y2 - y1);
-        let avgY = y1 + (yd * 0.5);
-        let d = Math.sqrt(Math.pow(xd, 2) + Math.pow(yd, 2));
-        this.zoom = 351 / d;
-        drawingContext.translate(256 - avgX * this.zoom, 240 - avgY * this.zoom);
+        let midY = y1 + (yd * 0.5);
+        //let d = Math.sqrt(Math.pow(xd, 2) + Math.pow(yd, 2));
+        //this.zoom = 351 / d;
+        let lx = midX * (1 -this.zoom); // origin doesn't change unless zoomed (then to mid point of ships)
+        let uy = midY * (1 -this.zoom);
+        //let lx = 256 - midX * this.zoom; // interesting: origin is always mid point between ships
+        //let uy = 256 - midY * this.zoom;
+        //if ((xd -20) * this.zoom > 256 * this.zoom
+        //    || (yd - 20) * this.zoom > 240 * this.zoom) this.zoom *= 0.99;
+        drawingContext.translate(lx, uy);
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
@@ -194,16 +199,16 @@ export class DuelState extends GameState implements IGameState {
             this.players[1].noThrust();
         if (keys.isKeyDown(Keys.A)) this.players[1].left(lastDrawModifier);
         if (keys.isKeyDown(Keys.D)) this.players[1].right(lastDrawModifier);
-        if (keys.isKeyDown(Keys.Num1)) this.players[1].shootPrimary();
+        if (keys.isKeyDown(Keys.Q)) this.players[1].shootPrimary();
 
-        //if (keys.isKeyDown(Keys.Z)) {
-        //    this.viewScale = 0.01;
-        //}
-        //else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
-        //    this.viewScale = -0.01;
-        //}
-        //else this.viewScale = 0;
-        //this.zoom *= 1 + this.viewScale;
+        if (keys.isKeyDown(Keys.Z)) {
+            this.viewScale = 0.01;
+        }
+        else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
+            this.viewScale = -0.01;
+        }
+        else this.viewScale = 0;
+        this.zoom *= 1 + this.viewScale;
         if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
 

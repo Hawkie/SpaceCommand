@@ -126,8 +126,13 @@ export class AsteroidState implements IGameState {
         drawingContext.clear();
         this.guiObjects.forEach(o => o.display(drawingContext));
         drawingContext.save();
-        drawingContext.translate(this.player.chassisObj.model.physics.location.x * (1 - this.zoom),
-            this.player.chassisObj.model.physics.location.y * (1 - this.zoom));
+        let x = this.player.chassisObj.model.physics.location.x;
+        let y = this.player.chassisObj.model.physics.location.y;
+        // move origin to location of ship - location of ship factored by zoom
+        // if zoom = 1 no change
+        // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
+        // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
+        drawingContext.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));

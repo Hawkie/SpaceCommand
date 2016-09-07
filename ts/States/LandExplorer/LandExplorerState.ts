@@ -107,7 +107,9 @@ export class LandExplorerState implements IGameState {
 
         // scene objects
         drawingContext.save();
-        drawingContext.translate((256 - this.player.chassisObj.model.physics.location.x) + this.player.chassisObj.model.physics.location.x * (1 - this.zoom),
+        let x = this.player.chassisObj.model.physics.location.x;
+        // drawing origin moves to centre - ship location (when location > centre, origin moves left)
+        drawingContext.translate(256 - x + x * (1 - this.zoom),
             (240 - this.player.chassisObj.model.physics.location.y) + this.player.chassisObj.model.physics.location.y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
