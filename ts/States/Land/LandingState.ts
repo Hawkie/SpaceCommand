@@ -17,7 +17,7 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
-import { ShipChassis } from "ts/Controllers/Ship/Ship";
+import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { LandShipController } from "ts/Controllers/Ship/ShipController";
 
 import { IInteractor, Interactor } from "ts/Interactors/Interactor";
@@ -139,7 +139,7 @@ export class LandingState implements IGameState {
 
         // ships        
         var shipData = new LandingShipData(new Coordinate(256, 240));
-        var shipObj = ShipChassis.createShipObj(shipData);
+        var shipObj = ShipComponents.createShipObj(shipData);
         var weaponController = BulletWeaponController.createWeaponController(shipObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(shipObj.model.physics, shipObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(shipObj.model.physics);

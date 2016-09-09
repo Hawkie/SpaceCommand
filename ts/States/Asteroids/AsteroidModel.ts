@@ -1,13 +1,13 @@
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { ILocatedMovingAngledRotatingData, LocatedMovingAngledRotatingData, IHittable  } from "ts/Data/PhysicsData";
+import { ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData, IHittable  } from "ts/Data/PhysicsData";
 import { IShape, ShapeData  } from "ts/Data/ShapeData";
 import { Mover } from "ts/Actors/Movers";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 
 
-export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotatingData, IShape> implements IHittable {
+export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotating, IShape> implements IHittable {
 
     // 5 different asteroid shapes
     private static a1 = [-4, -2, -2, -4, 0, -2, 2, -4, 4, -2, 3, 0, 4, 2, 1, 4, -2, 4, -4, 2, -4, -2];

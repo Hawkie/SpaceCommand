@@ -18,7 +18,7 @@ import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { SpaceShipData } from "ts/Data/ShipData";
-import { ShipChassis } from "ts/Controllers/Ship/Ship";
+import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
@@ -249,7 +249,7 @@ export class AsteroidState implements IGameState {
 
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
-        var shipObj = ShipChassis.createShipObj(spaceShipData);
+        var shipObj = ShipComponents.createShipObj(spaceShipData);
         var weaponController = BulletWeaponController.createWeaponController(shipObj.model.physics, actx);
         var thrustController = ThrustController.createSpaceThrust(shipObj.model.physics, shipObj.model.shape);
         var explosionController = ExplosionController.createSpaceExplosion(shipObj.model.physics);

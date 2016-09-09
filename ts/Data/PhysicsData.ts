@@ -42,7 +42,7 @@ export interface ILocatedMoving extends ILocated, IMoving { }
 
 export interface IAngledRotating extends IAngled, IRotating { }
 
-export interface ILocatedMovingAngledRotatingData extends ILocated, IMoving, IAngled, IRotating { }
+export interface ILocatedMovingAngledRotating extends ILocated, IMoving, IAngled, IRotating { }
 
 export interface ILocatedAngledMovingRotatingForwardAcc extends ILocated, IAngled, IMoving, IRotating, IForwardAccelerator { }
 

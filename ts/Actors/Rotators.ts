@@ -9,7 +9,7 @@ export class PolyRotator implements IActor {
     private previousAngle: number;
     
     constructor(private data: IAngled, private shape: IShape) {
-        this.previousAngle = data.angle;
+        this.previousAngle = 0;
     }
 
     update(timeModifier: number) {

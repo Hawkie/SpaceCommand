@@ -18,7 +18,7 @@ import { IGameState, GameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
 import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { SpaceShipData } from "ts/Data/ShipData";
-import { ShipChassis } from "ts/Controllers/Ship/Ship";
+import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
@@ -118,6 +118,7 @@ export class DuelState extends GameState implements IGameState {
         // keep objects in screen
         this.asteroids.forEach(x => this.keepIn(x.model.physics));
         this.players.forEach(player => {
+            // reset zoom if wrap around screen
             if (this.keepIn(player.chassisObj.model.physics) > 0) this.zoom = 1;
             this.keepIn(player.thrustController.engine.model.physics);
         });
@@ -289,9 +290,9 @@ export class DuelState extends GameState implements IGameState {
         return s;
     }
 
-    static createPlayer(location: Coordinate, actx: AudioContext): SpaceShipController {
-        var ship1 = new SpaceShipData(location, 0, 0, 0, 0);
-        var shipObj1 = ShipChassis.createShipObj(ship1);
+    static createPlayer(location: Coordinate, angle:number, actx: AudioContext): SpaceShipController {
+        var ship1 = new SpaceShipData(location, 0, 0, angle, 0);
+        var shipObj1 = ShipComponents.createShipObj(ship1);
         var weaponController1 = BulletWeaponController.createWeaponController(shipObj1.model.physics, actx);
         var thrustController1 = ThrustController.createSpaceThrust(shipObj1.model.physics, shipObj1.model.shape);
         var explosionController1 = ExplosionController.createSpaceExplosion(shipObj1.model.physics);
@@ -307,8 +308,9 @@ export class DuelState extends GameState implements IGameState {
         //var spriteField = Field.createSpriteField();
 
         // special
-        let player1 = DuelState.createPlayer(new Coordinate(394, 120), actx);
-        let player2 = DuelState.createPlayer(new Coordinate(128, 360), actx);
+        let player1 = DuelState.createPlayer(new Coordinate(394, 120), 180, actx);
+        player1.update(0);
+        let player2 = DuelState.createPlayer(new Coordinate(128, 360), 0, actx);
         
         let asteroids = DuelState.createLevel(3);
 

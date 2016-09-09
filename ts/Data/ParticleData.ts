@@ -1,8 +1,8 @@
 ﻿import { ICoordinate, Coordinate, IVector, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { ILocatedMoving, LocatedMovingData, ILocatedMovingAngledRotatingData, LocatedMovingAngledRotatingData } from "ts/Data/PhysicsData";
+import { ILocatedMoving, LocatedMovingData, ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData } from "ts/Data/PhysicsData";
 
-export interface IParticleData extends ILocatedMovingAngledRotatingData {
+export interface IParticleData extends ILocatedMovingAngledRotating {
     born: number;
     originX: number;
     originY: number;
