@@ -1,5 +1,8 @@
 ts/**/*.js
 ts/**/*.js.map
+services/**/*.dll
+services/**/*.pdb
+services/**/Debug
 .vscode
 /.vs
 /node_modules
