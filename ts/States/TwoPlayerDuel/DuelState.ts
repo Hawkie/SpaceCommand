@@ -261,12 +261,13 @@ export class DuelState extends GameState implements IGameState {
         var a = asteroids[i1];
         var xImpact = a.physics.velX;
         var yImpact = a.physics.velY;
-        var engineSeparateModel = new LocatedMovingAngledRotatingData(new Coordinate(player.chassisObj.model.physics.location.x,
+        var engineSeparateModel = new LocatedMovingAngledRotatingForwardAccData(new Coordinate(player.chassisObj.model.physics.location.x,
             player.chassisObj.model.physics.location.y),
             xImpact + Transforms.random(-2, 2),
             yImpact + Transforms.random(-2, 2),
             player.chassisObj.model.physics.angle,
-            5);
+            5,
+            0);
         var shapeData = player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
@@ -291,12 +292,12 @@ export class DuelState extends GameState implements IGameState {
     }
 
     static createPlayer(location: Coordinate, angle:number, actx: AudioContext): SpaceShipController {
-        var ship1 = new SpaceShipData(location, 0, 0, angle, 0);
-        var shipObj1 = ShipComponents.createShipObj(ship1);
-        var weaponController1 = BulletWeaponController.createWeaponController(shipObj1.model.physics, actx);
-        var thrustController1 = ThrustController.createSpaceThrust(shipObj1.model.physics, shipObj1.model.shape);
-        var explosionController1 = ExplosionController.createSpaceExplosion(shipObj1.model.physics);
-        var shipController1 = new SpaceShipController(shipObj1, weaponController1, thrustController1, explosionController1);
+        var shipData = new SpaceShipData(location, 0, 0, angle, 0);
+        var chassisObj = ShipComponents.createShipObj(shipData);
+        var weaponController1 = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
+        var thrustController1 = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
+        var explosionController1 = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
+        var shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);
         return shipController1;
     }
 

@@ -22,25 +22,29 @@ import { AudioObject } from "ts/Sound/SoundObject";
 //Views
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
 
-export class ShipComponentObject extends SingleGameObject<GPSModel<IBreakable, ILocatedMovingAngledRotating, IShape>>{ }
+
+
+export class ShipComponentObject extends SingleGameObject<GPSModel<IBreakable, ILocatedAngledMovingRotatingForwardAcc, IShape>>{ }
 
 export class ShipComponents {
 
-    static createShipObj<TShip extends IShipData>(physics: TShip): SingleGameObject<ShapedModel<TShip, ShapeData>> {
+    static createShipObj<TShip extends IShipData>(physics: TShip): ShipComponentObject {
         var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         Transforms.scale(triangleShip, 2, 2);
 
+        var breakable = new BreakableData(20, 20, 0, false, false);
         var shape = new ShapeData(triangleShip);
-        var ship = new ShapedModel<TShip, ShapeData>(physics, shape);
+        var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForwardAcc, IShape>(breakable, physics, shape);
+        
 
-        var mover: IActor = new Mover(ship.physics);
-        var thrust = new ForwardAccelerator(ship.physics);
-        var rotator = new PolyRotator(ship.physics, ship.shape);
+        var mover: IActor = new Mover(chassis.physics);
+        var thrust = new ForwardAccelerator(chassis.physics);
+        var rotator = new PolyRotator(chassis.physics, chassis.shape);
 
         var actors: IActor[] = [mover, thrust, rotator];
-        var shipView = new PolyView(ship.physics, ship.shape);
+        var shipView = new PolyView(chassis.physics, chassis.shape);
 
-        var shipObj = new SingleGameObject<ShapedModel<TShip, ShapeData>>(ship, actors, [shipView]);
+        var shipObj = new ShipComponentObject(chassis, actors, [shipView]);
         return shipObj;
     }
 
@@ -66,11 +70,11 @@ export class ShipComponents {
         return engineShape;
     }
 
-    static createEngine(data: ILocatedMovingAngledRotating): ShipComponentObject {
+    static createEngine(data: ILocatedAngledMovingRotatingForwardAcc): ShipComponentObject {
         var engineShape = ShipComponents.engine1();
         var component = new BreakableData(20, 20, 0, false, false);
         var shapeData = new ShapeData(engineShape, new Coordinate(0, 5));
-        var model = new GPSModel<IBreakable, ILocatedMovingAngledRotating, IShape>(component, data, shapeData);
+        var model = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForwardAcc, IShape>(component, data, shapeData);
         var view = new PolyView(data, shapeData);
         var rotator = new PolyRotator(data, shapeData);
         return new ShipComponentObject(model, [rotator], [view]);

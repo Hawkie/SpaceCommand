@@ -20,12 +20,12 @@ import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
 
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
-import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
+import { ShipComponentObject, ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 
 export interface IThrustController extends IGameObject {
     on();
     off();
-    engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
+    engine: ShipComponentObject;
     thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>
 }
 
@@ -34,7 +34,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
     soundPlayed: boolean = false;
 
     constructor(public thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
-        public engine: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>   ) {
+        public engine: ShipComponentObject   ) {
         super([thrustField, engine]);
     }
 
@@ -68,7 +68,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
         var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
-        var engine : SingleGameObject<GPSModel<IBreakable, ILocatedAngledMoving, ShapeData>> = ShipComponents.createEngine(data);
+        var engine = ShipComponents.createEngine(data);
         // todo engine types are different!
         var tc = new ThrustController(field, engine);
         return tc;

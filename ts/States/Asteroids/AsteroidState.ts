@@ -210,12 +210,13 @@ export class AsteroidState implements IGameState {
         var a = asteroids[i1];
         var xImpact = a.physics.velX;
         var yImpact = a.physics.velY;
-        var engineSeparateModel = new LocatedMovingAngledRotatingData(new Coordinate(player.chassisObj.model.physics.location.x,
+        var engineSeparateModel = new LocatedMovingAngledRotatingForwardAccData(new Coordinate(player.chassisObj.model.physics.location.x,
             player.chassisObj.model.physics.location.y),
             xImpact + Transforms.random(-2, 2),
             yImpact + Transforms.random(-2, 2),
             player.chassisObj.model.physics.angle,
-            5);
+            5,
+            0);
         var shapeData = this.player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
@@ -249,11 +250,11 @@ export class AsteroidState implements IGameState {
 
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
-        var shipObj = ShipComponents.createShipObj(spaceShipData);
-        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.physics, actx);
-        var thrustController = ThrustController.createSpaceThrust(shipObj.model.physics, shipObj.model.shape);
-        var explosionController = ExplosionController.createSpaceExplosion(shipObj.model.physics);
-        var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);
+        var chassisObj = ShipComponents.createShipObj(spaceShipData);
+        var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
+        var thrustController = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
+        var explosionController = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
+        var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
         
         let asteroids = AsteroidState.createLevel(3);
 

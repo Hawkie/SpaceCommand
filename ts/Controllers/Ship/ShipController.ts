@@ -20,6 +20,7 @@ import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdat
 // Objects
 import { Field } from "ts/GameObjects/ParticleField";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
+import { ShipComponentObject } from "ts/Controllers/Ship/ShipComponents";
 import { IParticleWeaponController, BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { IThrustController, ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { IExplosionController, ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -42,7 +43,7 @@ export interface IPrimaryWeaponController {
 }
 
 export interface IShipComponents<TChassis extends IShipData> {
-    chassisObj: SingleGameObject<ShapedModel<TChassis, ShapeData>>;
+    chassisObj: ShipComponentObject;
     weaponController: IParticleWeaponController;
     thrustController: IThrustController;
     explosionController: IExplosionController;
@@ -52,7 +53,8 @@ export interface IShipComponents<TChassis extends IShipData> {
 // Add overrides for landship
 export class LandShipController extends ComponentObjects<IGameObject> implements IShipComponents<LandingShipData>, IShipController, ICrashController, IPrimaryWeaponController {
 
-    constructor(public chassisObj: SingleGameObject<ShapedModel<LandingShipData, ShapeData>>,
+    constructor(public shipData: LandingShipData,
+        public chassisObj: ShipComponentObject,
         public weaponController: IParticleWeaponController,
         public thrustController: IThrustController,
         public explosionController: IExplosionController) {
@@ -60,8 +62,8 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
     }
 
     thrust() {
-        if (!this.chassisObj.model.physics.crashed) {
-            this.chassisObj.model.physics.forwardForce = this.chassisObj.model.physics.maxForwardForce;
+        if (!this.shipData.crashed) {
+            this.shipData.forwardForce = this.shipData.maxForwardForce;
             this.thrustController.on();
         } else {
             this.noThrust();
@@ -69,39 +71,39 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
     }
 
     noThrust() {
-        this.chassisObj.model.physics.forwardForce = 0;
+        this.shipData.forwardForce = 0;
         this.thrustController.off();
     }
 
     // TODO: break up ship
     crash() {
-        if (!this.chassisObj.model.physics.crashed) {
-            this.chassisObj.model.physics.crashed = true;
+        if (!this.shipData.crashed) {
+            this.shipData.crashed = true;
             this.explosionController.on();
             console.log("Your ship crashed!");
         }
     }
 
     shootPrimary() {
-        if (!this.chassisObj.model.physics.crashed) this.weaponController.pullTrigger(this.chassisObj.model.physics, 0, 128);
+        if (!this.shipData.crashed) this.weaponController.pullTrigger(this.shipData, 0, 128);
     }
 
     left(lastTimeModifier: number) {
-        this.chassisObj.model.physics.velX -= this.chassisObj.model.physics.leftRightSpeed * lastTimeModifier;
+        this.shipData.velX -= this.shipData.leftRightSpeed * lastTimeModifier;
     }
 
     right(lastTimeModifier: number) {
-        this.chassisObj.model.physics.velX += this.chassisObj.model.physics.leftRightSpeed * lastTimeModifier;
+        this.shipData.velX += this.shipData.leftRightSpeed * lastTimeModifier;
     }
 
     notMovingOnX(lastDrawModifier: number) {
-        if (this.chassisObj.model.physics.velX < 0) {
-            this.chassisObj.model.physics.velX += (this.chassisObj.model.physics.leftRightSlowing * lastDrawModifier);
-            if (this.chassisObj.model.physics.velX >= 0) this.chassisObj.model.physics.velX = 0;
+        if (this.shipData.velX < 0) {
+            this.shipData.velX += (this.shipData.leftRightSlowing * lastDrawModifier);
+            if (this.shipData.velX >= 0) this.shipData.velX = 0;
         }
-        else if (this.chassisObj.model.physics.velX > 0) {
-            this.chassisObj.model.physics.velX -= (this.chassisObj.model.physics.leftRightSlowing * lastDrawModifier);
-            if (this.chassisObj.model.physics.velX < 0) this.chassisObj.model.physics.velX = 0;
+        else if (this.shipData.velX > 0) {
+            this.shipData.velX -= (this.shipData.leftRightSlowing * lastDrawModifier);
+            if (this.shipData.velX < 0) this.shipData.velX = 0;
         }
     }
 }
@@ -110,7 +112,8 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
 // Controllers act like decorators to game objects. They provide an interface to interact with the game object.
 export class SpaceShipController extends ComponentObjects<IGameObject> implements IShipComponents<SpaceShipData>, IShipController, ICrashController, IPrimaryWeaponController {
 
-    constructor(public chassisObj: SingleGameObject<ShapedModel<SpaceShipData, ShapeData>>,
+    constructor(public shipData: SpaceShipData,
+        public chassisObj: ShipComponentObject,
         public weaponController: IParticleWeaponController,
         public thrustController: IThrustController,
         public explosionController: IExplosionController) {
@@ -118,8 +121,8 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
     }
     
     thrust() {
-        if (!this.chassisObj.model.physics.crashed) {
-            this.chassisObj.model.physics.forwardForce = this.chassisObj.model.physics.maxForwardForce;
+        if (!this.shipData.crashed) {
+            this.shipData.forwardForce = this.shipData.maxForwardForce;
             this.thrustController.on();
         } else {
             this.noThrust();
@@ -133,22 +136,22 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
      
     // TODO: breakup ship - done
     crash() {
-        if (!this.chassisObj.model.physics.crashed) {
-            this.chassisObj.model.physics.crashed = true;
+        if (!this.shipData.crashed) {
+            this.shipData.crashed = true;
             this.explosionController.on();
             console.log("Your ship crashed!");
         }
     }
 
     left(lastTimeModifier: number) {
-        if (!this.chassisObj.model.physics.crashed) this.chassisObj.model.physics.angle -= this.chassisObj.model.physics.maxRotationalSpeed * lastTimeModifier;
+        if (!this.shipData.crashed) this.chassisObj.model.physics.angle -= this.shipData.maxRotationalSpeed * lastTimeModifier;
     }
 
     right(lastTimeModifier: number) {
-        if (!this.chassisObj.model.physics.crashed) this.chassisObj.model.physics.angle += this.chassisObj.model.physics.maxRotationalSpeed * lastTimeModifier;
+        if (!this.shipData.crashed) this.chassisObj.model.physics.angle += this.shipData.maxRotationalSpeed * lastTimeModifier;
     }
 
     shootPrimary() {
-        if (!this.chassisObj.model.physics.crashed) this.weaponController.pullTrigger(this.chassisObj.model.physics, 0, 128);
+        if (!this.shipData.crashed) this.weaponController.pullTrigger(this.shipData, 0, 128);
     }
 }

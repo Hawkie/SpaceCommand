@@ -163,11 +163,11 @@ export class LandExplorerState implements IGameState {
 
         // ship = space ship controller with gravity
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
-        var shipObj = ShipComponents.createShipObj(spaceShipData);
-        var weaponController = BulletWeaponController.createWeaponController(shipObj.model.physics, actx);
-        var thrustController = ThrustController.createGroundThrust(shipObj.model.physics, shipObj.model.shape);
-        var explosionController = ExplosionController.createGroundExplosion(shipObj.model.physics);
-        var shipController = new SpaceShipController(shipObj, weaponController, thrustController, explosionController);
+        var chassisObj = ShipComponents.createShipObj(spaceShipData);
+        var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
+        var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
+        var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
+        var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
         var gravityForce = new VectorAccelerator(shipController.chassisObj.model.physics, new Vector(180, 10));
         shipController.chassisObj.actors.push(gravityForce);
