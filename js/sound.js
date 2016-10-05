@@ -30,7 +30,7 @@ Thank you, Chris!
   'use strict';
 
   function fixSetTarget(param) {
-    if (!param)	// if NYI, just return
+    if (!param) // if NYI, just return
       return;
     if (!param.setTargetAtTime)
       param.setTargetAtTime = param.setTargetValueAtTime;

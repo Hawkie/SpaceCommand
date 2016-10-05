@@ -7,15 +7,15 @@ import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
 import { IShape, ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-// Model
+// model
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
-//Actors
+// actors
 import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-// GameObjects
+// gameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";

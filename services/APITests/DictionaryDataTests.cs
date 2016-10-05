@@ -60,9 +60,9 @@ namespace APITests
         public void Create_IfNotExists_Pass(string name)
         {
             var l = SampleData.SampleNames();
-            int id = l.Create(name);
-            Console.WriteLine("New Id = {0}", id);
-            Assert.Equal(id, l.Get(id).Key);
+            var result = l.Create(name);
+            Console.WriteLine("New Id = {0}", result.Key);
+            Assert.Equal(3, l.Get(result.Key).Key);
         }
 
         [Theory]
@@ -71,9 +71,9 @@ namespace APITests
         public void Create_IfExists_Pass(string name)
         {
             var l = SampleData.SampleNames();
-            int id = l.Create(name);
-            Console.WriteLine("New Id = {0}", id);
-            Assert.Equal(id, l.Get(id).Key);
+            var result = l.Create(name);
+            Console.WriteLine("New Id = {0}", result.Key);
+            Assert.Equal(3, l.Get(result.Key).Key);
         }
 
         [Theory]
@@ -110,6 +110,16 @@ namespace APITests
         public void UpdateCreate_IfNotExists_Creates(int id, string newName)
         {
             var l = SampleData.SampleNames();
+            var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
+            Assert.Equal(false, result.Updated);
+        }
+
+        [Theory]
+        [InlineData(2, "Sophie")]
+        public void UpdateCreate_KeyGenExists_Creates(int id, string newName)
+        {
+            var l = SampleData.SampleNames();
+            var k1 = l.Create(newName);
             var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
             Assert.Equal(false, result.Updated);
         }

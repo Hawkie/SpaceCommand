@@ -54,24 +54,28 @@ namespace APIDictionary
             throw new NotImplementedException();
         }
 
-        public K Create(V value)
+        public Result<K> Create(V value)
         {
             if (KeyGen != null)
             {
                 var k = KeyGen(value);
-                dataCollection.Add(k, value);
-                return k;
+                if (!dataCollection.ContainsKey(k))
+                {
+                    dataCollection.Add(k, value);
+                    return new Result<K>(k, false, true);
+                }
+                return new Result<K>(k, false, false, string.Format("Generated Key already exists {0}", k));
             }
             throw new MissingMemberException("Null Key generator for Create");
         }
 
-        public IEnumerable<K> Create(IEnumerable<V> values)
+        public IEnumerable<Result<K>> Create(IEnumerable<V> values)
         {
-            var l = new List<K>();
+            var l = new List<Result<K>>();
             foreach (var v in values)
             {
-                var k = Create(v);
-                l.Add(k);
+                var result = Create(v);
+                if (result.Created) l.Add(result);
             }
             return l;
         }
@@ -102,10 +106,9 @@ namespace APIDictionary
         {
             if (this.Update(kv))
             {
-                return new Result<K>(kv.Key, true);
+                return new Result<K>(kv.Key, true, false);
             }
-            var k = this.Create(kv.Value);
-            return new Result<K>(k, false);
+            return this.Create(kv.Value);
         }
 
         public IEnumerable<Result<K>> UpdateCreate(IEnumerable<KeyValuePair<K, V>> values)

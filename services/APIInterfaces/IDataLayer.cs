@@ -34,8 +34,8 @@ namespace APIInterfaces
         IEnumerable<Record<K, V>> Get(IEnumerable<K> keys);
 
         // Create
-        K Create(V value);
-        IEnumerable<K> Create(IEnumerable<V> values);
+        Result<K> Create(V value);
+        IEnumerable<Result<K>> Create(IEnumerable<V> values);
 
         /// <summary>
         /// Update only. Return missing status if not present

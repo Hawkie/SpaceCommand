@@ -11,10 +11,9 @@ namespace WebAPIcore.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private IDataLayer<int, string> model;
+        private static IDataLayer<int, string> model = SampleData.SampleNames();
         public ValuesController()
         {
-            model = SampleData.SampleNames();
         }
 
         // GET api/values
