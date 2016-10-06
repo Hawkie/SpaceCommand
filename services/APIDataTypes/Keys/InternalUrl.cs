@@ -7,7 +7,7 @@ namespace APIDataTypes.Keys
 {
     public class InternalUrl
     {
-        public InternalUrl(string category, string indexId, string location, string owner, DateTime businessDate)
+        public InternalUrl(string indexId, string category, string location, string owner, DateTime businessDate)
         {
             
             IndexId = indexId;
@@ -25,7 +25,7 @@ namespace APIDataTypes.Keys
 
         public override string ToString()
         {
-            return IndexId + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("YYYMMdd");
+            return IndexId + "-" + Category + "-" + Location + "-" + Owner + "-" + BusinessDate.ToString("yyyyMMdd");
         }
     }
 }

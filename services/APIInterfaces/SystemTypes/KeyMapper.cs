@@ -9,10 +9,12 @@ namespace APIInterfaces.SystemTypes
     public class KeyMapper<ExternalKey, InternalKey> : IKeyMapper<ExternalKey, InternalKey>
     {
         private Dictionary<ExternalKey, InternalKey> dataMap { get; }
+        private Dictionary<InternalKey, ExternalKey> dataReverse { get; }
 
         public KeyMapper()
         {
             dataMap = new Dictionary<ExternalKey, InternalKey>();
+            dataReverse = new Dictionary<InternalKey, ExternalKey>();
         }
 
         /// <summary>
@@ -23,14 +25,21 @@ namespace APIInterfaces.SystemTypes
         public void Add(ExternalKey ek, InternalKey ik)
         {
             dataMap.Add(ek, ik);
+            dataReverse.Add(ik, ek);
         }
 
-        public Result<InternalKey> Find(ExternalKey externalKey)
+        public InternalKey FindInternal(ExternalKey externalKey)
         {
-            InternalKey key = default(InternalKey);
-            if (dataMap.TryGetValue(externalKey, out key))
-                return new Result<InternalKey>(key, true, false, false);
-            return null;
+            var ik = default(InternalKey);
+            dataMap.TryGetValue(externalKey, out ik);
+            return ik;
+        }
+
+        public ExternalKey FindExternal(InternalKey internalKey)
+        {
+            var ek = default(ExternalKey);
+            dataReverse.TryGetValue(internalKey, out ek);
+            return ek;
         }
     }
 }

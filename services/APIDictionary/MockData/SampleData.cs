@@ -33,7 +33,7 @@ namespace APIDictionary
 
         public static IDataLayer<InternalUrl, WeightsDoc> SampleWeights()
         {
-            var f = new Func<WeightsDoc, InternalUrl>((s) => { return new InternalUrl("TestT", "TestId", "TestLocation", "TestOwner", DateTime.MinValue); });
+            var f = new Func<WeightsDoc, InternalUrl>((s) => { return new InternalUrl("TestId", "TestT", "TestLocation", "TestOwner", DateTime.MinValue); });
 
             var wts1 = new List<Weight>();
             wts1.Add(new Weight("C Z6", 10));
@@ -45,7 +45,7 @@ namespace APIDictionary
 
             var records = new List<Record<InternalUrl, WeightsDoc>>();
             records.Add(new Record<InternalUrl, WeightsDoc>(CreateInternalKey(), new WeightsDoc(wts1)));
-            records.Add(new Record<InternalUrl, WeightsDoc>(new InternalUrl("contracts", "TVI", "index.B", "trader", new DateTime(2016, 10, 6)), new WeightsDoc(wts2)));
+            records.Add(new Record<InternalUrl, WeightsDoc>(new InternalUrl("TVI", "contracts", "index.B", "trader", new DateTime(2016, 10, 6)), new WeightsDoc(wts2)));
 
             return new DictionaryData<InternalUrl, WeightsDoc>(records, f);
         }
@@ -57,7 +57,7 @@ namespace APIDictionary
 
         private static InternalUrl CreateInternalKey()
         {
-            return new InternalUrl("contracts", "TVI", "index.A", "trader", new DateTime(2016, 10, 5));
+            return new InternalUrl("TVI", "contracts", "index.A", "trader", new DateTime(2016, 10, 5));
         }
 
         public static IKeyMapper<ExternalUrl, InternalUrl> SampleMap()

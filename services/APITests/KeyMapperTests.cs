@@ -26,10 +26,10 @@ namespace APITests
             var ek = CreateExternalKey(indexId);
             var ik = CreateInternalKey(indexId, location);
             map.Add(ek, ik);
-            var result = map.Find(ek);
+            var key = map.FindInternal(ek);
 
-            Assert.Equal(indexId, result.Key.IndexId);
-            Assert.Equal(location, result.Key.Location);
+            Assert.Equal(indexId, key.IndexId);
+            Assert.Equal(location, key.Location);
         }
 
         private static ExternalUrl CreateExternalKey(string indexId)
@@ -39,7 +39,7 @@ namespace APITests
 
         private static InternalUrl CreateInternalKey(string indexId, string location)
         {
-            return new InternalUrl("contracts", indexId, location, "trader", new DateTime(2016, 10, 5));
+            return new InternalUrl(indexId, "contracts", location, "trader", new DateTime(2016, 10, 5));
         }
     }
 }

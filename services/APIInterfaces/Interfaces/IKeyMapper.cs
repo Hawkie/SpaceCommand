@@ -8,6 +8,7 @@ namespace APIInterfaces.Interfaces
 {
     public interface IKeyMapper<ExternalKeyT, InternalKeyT>
     {
-        Result<InternalKeyT> Find(ExternalKeyT externalKey);
+        InternalKeyT FindInternal(ExternalKeyT externalKey);
+        ExternalKeyT FindExternal(InternalKeyT internalKey);
     }
 }

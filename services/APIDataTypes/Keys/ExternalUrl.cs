@@ -48,7 +48,7 @@ namespace APIDataTypes.Keys
 
         public override string ToString()
         {
-            return IndexId + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("YYYMMdd");
+            return IndexId + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("yyyyMMdd");
         }
     }
 }

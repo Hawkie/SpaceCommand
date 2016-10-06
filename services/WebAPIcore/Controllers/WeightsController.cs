@@ -17,24 +17,27 @@ namespace WebAPIcore.Controllers
     public class WeightsController : Controller
     {
         private static IDataLayer<InternalUrl, WeightsDoc> model = SampleData.SampleWeights();
-        private static IKeyMapper<ExternalUrl, InternalUrl> map = new KeyMapper<ExternalUrl, InternalUrl>();
+        private static IKeyMapper<ExternalUrl, InternalUrl> map = SampleData.SampleMap();
 
 
         // GET: cache/weights
         [HttpGet]
-        public IEnumerable<WeightsDoc> Get()
+        public IEnumerable<Record<ExternalUrl, WeightsDoc>> Get()
         {
-            return model.GetAll().Select(x => x.Value);
+            return model.GetAll().Select(kv =>
+                new Record<ExternalUrl, WeightsDoc>(map.FindExternal(kv.Key), kv.Value));
         }
 
-        // GET cache/weights/5
+        
+
+        // GET cache/weights/TVI-contracts-trader-20161005
         [HttpGet("{id}")]
-        public WeightsDoc Get(ExternalUrl id)
+        public WeightsDoc Get(ExternalUrl ek)
         {
-            var result = map.Find(id);
-            if (result != null)
+            var ik = map.FindInternal(ek);
+            if (ik != null)
             {
-                var v = model.Get(result.Key);
+                var v = model.Get(ik);
                 if (v != null)
                 {
                     return v.Value;
