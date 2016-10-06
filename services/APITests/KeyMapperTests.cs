@@ -12,12 +12,6 @@ namespace APITests
     public class KeyMapperTests
     {
 
-        [Fact]
-        public void PassingTest()
-        {
-            Assert.Equal(4, 2 + 2);
-        }
-
         [Theory]
         [InlineData("TVI", "index.A")]
         public void Find_WhenExists_ReturnsInternalLocation(string indexId, string location)

@@ -8,17 +8,6 @@ namespace APITests
 {
     public class DictionaryDataTests
     {
-        public void SetUp()
-        {
-
-        }
-
-        [Fact]
-        public void PassingTest()
-        {
-            Assert.Equal(4, 2 + 2);
-        }
-
         [Fact]
         public void GetAll_Size_IsTwo()
         {
