@@ -52,7 +52,7 @@ namespace APIDictionary
 
         private static ExternalUrl CreateExternalKey()
         {
-            return new ExternalUrl("contracts", "TVI", "trader", new DateTime(2016, 10, 5));
+            return new ExternalUrl("TVI", "contracts", "trader", new DateTime(2016, 10, 5));
         }
 
         private static InternalUrl CreateInternalKey()

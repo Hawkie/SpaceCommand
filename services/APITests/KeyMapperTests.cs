@@ -34,7 +34,7 @@ namespace APITests
 
         private static ExternalUrl CreateExternalKey(string indexId)
         {
-            return new ExternalUrl("contracts", indexId, "trader", new DateTime(2016, 10, 5));
+            return new ExternalUrl(indexId, "contracts", "trader", new DateTime(2016, 10, 5));
         }
 
         private static InternalUrl CreateInternalKey(string indexId, string location)
