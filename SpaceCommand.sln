@@ -17,12 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServices", "WebServices"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebAPIcore", "services\WebAPIcore\WebAPIcore.xproj", "{EF8B64C6-ECD3-4BDE-9BFA-124E4164A97E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "APIDataTypes", "..\services\WebAPIcore\src\APIDataTypes\APIDataTypes.xproj", "{4EE88F22-EB51-4837-8DCD-6225FD119565}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF005FFB-F324-466A-BB9A-E54E0DC0D43D}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
 	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "APIDataTypes", "services\APIDataTypes\APIDataTypes.xproj", "{4EE88F22-EB51-4837-8DCD-6225FD119565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
