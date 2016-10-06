@@ -4,42 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using APIInterfaces.Interfaces;
+using APIInterfaces.SystemTypes;
+
 namespace APIDictionary
 {
-    public class DictionaryData<K, V> : IDataLayer<K, V>
+    public class DictionaryData<SystemKeyT, V> : IDataLayer<SystemKeyT, V>
     {
         // key generation
 
-        private Dictionary<K, V> dataCollection { get; }
-        private Func<V, K> KeyGen { get; set; }
+        private Dictionary<SystemKeyT, V> dataCollection { get; }
+        private Func<V, SystemKeyT> KeyGen { get; set; }
 
-        public DictionaryData(IEnumerable<Record<K, V>> dataObjects, Func<V, K> keyGen)
+        public DictionaryData(IEnumerable<Record<SystemKeyT, V>> dataObjects, Func<V, SystemKeyT> keyGen)
         {
             KeyGen = keyGen;
-            this.dataCollection = new Dictionary<K, V>();
+            this.dataCollection = new Dictionary<SystemKeyT, V>();
             foreach (var d in dataObjects)
                 dataCollection.Add(d.Key, d.Value);
         }
 
-        public IEnumerable<KeyValuePair<K, V>> GetAll()
+        public IEnumerable<KeyValuePair<SystemKeyT, V>> GetAll()
         {
             return dataCollection.ToList();
         }
 
 
-        public Record<K, V> Get(K key)
+        public Record<SystemKeyT, V> Get(SystemKeyT key)
         {
-            Record<K, V> record = null;
+            Record<SystemKeyT, V> record = null;
             V value = default(V);
             if (dataCollection.TryGetValue(key, out value))
-                record = new Record<K, V>(key, value);
+                record = new Record<SystemKeyT, V>(key, value);
             return record;
         }
 
 
-        public IEnumerable<Record<K, V>> Get(IEnumerable<K> keys)
+        public IEnumerable<Record<SystemKeyT, V>> Get(IEnumerable<SystemKeyT> keys)
         {
-            var l = new List<Record<K, V>>();
+            var l = new List<Record<SystemKeyT, V>>();
             foreach (var k in keys)
             {
                 var r = Get(k);
@@ -49,12 +52,12 @@ namespace APIDictionary
             return l;
         }
 
-        public IEnumerable<Record<K, V>> Find(IEnumerable<K> keys)
+        public IEnumerable<Record<SystemKeyT, V>> Find(IEnumerable<SystemKeyT> keys)
         {
             throw new NotImplementedException();
         }
 
-        public Result<K> Create(V value)
+        public Result<SystemKeyT> Create(V value)
         {
             if (KeyGen != null)
             {
@@ -62,16 +65,16 @@ namespace APIDictionary
                 if (!dataCollection.ContainsKey(k))
                 {
                     dataCollection.Add(k, value);
-                    return new Result<K>(k, false, true);
+                    return new Result<SystemKeyT>(k, false, true);
                 }
-                return new Result<K>(k, false, false, string.Format("Generated Key already exists {0}", k));
+                return new Result<SystemKeyT>(k, false, false, string.Format("Generated Key already exists {0}", k));
             }
             throw new MissingMemberException("Null Key generator for Create");
         }
 
-        public IEnumerable<Result<K>> Create(IEnumerable<V> values)
+        public IEnumerable<Result<SystemKeyT>> Create(IEnumerable<V> values)
         {
-            var l = new List<Result<K>>();
+            var l = new List<Result<SystemKeyT>>();
             foreach (var v in values)
             {
                 var result = Create(v);
@@ -80,7 +83,7 @@ namespace APIDictionary
             return l;
         }
 
-        public bool Update(KeyValuePair<K, V> kv)
+        public bool Update(KeyValuePair<SystemKeyT, V> kv)
         {
             if (dataCollection.ContainsKey(kv.Key))
             {
@@ -91,9 +94,9 @@ namespace APIDictionary
             return false;
         }
 
-        public IEnumerable<K> Update(IEnumerable<KeyValuePair<K, V>> values)
+        public IEnumerable<SystemKeyT> Update(IEnumerable<KeyValuePair<SystemKeyT, V>> values)
         {
-            var l = new List<K>();
+            var l = new List<SystemKeyT>();
             foreach (var kv in values)
             {
                 if (Update(kv))
@@ -102,18 +105,18 @@ namespace APIDictionary
             return l;
         }
 
-        public Result<K> UpdateCreate(KeyValuePair<K, V> kv)
+        public Result<SystemKeyT> UpdateCreate(KeyValuePair<SystemKeyT, V> kv)
         {
             if (this.Update(kv))
             {
-                return new Result<K>(kv.Key, true, false);
+                return new Result<SystemKeyT>(kv.Key, true, false);
             }
             return this.Create(kv.Value);
         }
 
-        public IEnumerable<Result<K>> UpdateCreate(IEnumerable<KeyValuePair<K, V>> values)
+        public IEnumerable<Result<SystemKeyT>> UpdateCreate(IEnumerable<KeyValuePair<SystemKeyT, V>> values)
         {
-            var r = new List<Result<K>>();
+            var r = new List<Result<SystemKeyT>>();
             foreach (var kv in values)
             {
                 var result = UpdateCreate(kv);
@@ -122,14 +125,14 @@ namespace APIDictionary
             return r;
         }
 
-        public bool Remove(K key)
+        public bool Remove(SystemKeyT key)
         {
             return dataCollection.Remove(key);
         }
 
-        public IEnumerable<K> Remove(IEnumerable<K> keys)
+        public IEnumerable<SystemKeyT> Remove(IEnumerable<SystemKeyT> keys)
         {
-            var l = new List<K>();
+            var l = new List<SystemKeyT>();
             foreach (var k in keys)
             {
                 if (Remove(k))

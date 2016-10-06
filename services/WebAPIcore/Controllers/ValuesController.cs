@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using APIDictionary;
-using APIInterfaces;
+
+using APIInterfaces.Interfaces;
+using APIInterfaces.SystemTypes;
 
 namespace WebAPIcore.Controllers
 {

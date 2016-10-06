@@ -3518,10 +3518,24 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
+      "APIDataTypes/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/APIDataTypes.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/APIDataTypes.dll": {}
+        }
+      },
       "APIDictionary/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
+          "APIDataTypes": "1.0.0",
           "APIInterfaces": "1.0.0",
           "NETStandard.Library": "1.6.0"
         },
@@ -9385,6 +9399,11 @@
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
       ]
+    },
+    "APIDataTypes/1.0.0": {
+      "type": "project",
+      "path": "../../../services/WebAPIcore/src/APIDataTypes/project.json",
+      "msbuildProject": "../../../services/WebAPIcore/src/APIDataTypes/APIDataTypes.xproj"
     },
     "APIDictionary/1.0.0": {
       "type": "project",

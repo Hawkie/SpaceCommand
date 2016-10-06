@@ -2,6 +2,7 @@
   "version": "1.0.0-*",
 
     "dependencies": {
+        "APIDataTypes": "1.0.0-*",
         "APIInterfaces": "1.0.0-*",
         "NETStandard.Library": "1.6.0"
     },
