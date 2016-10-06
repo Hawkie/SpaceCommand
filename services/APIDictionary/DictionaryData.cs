@@ -24,9 +24,9 @@ namespace APIDictionary
                 dataCollection.Add(d.Key, d.Value);
         }
 
-        public IEnumerable<KeyValuePair<SystemKeyT, V>> GetAll()
+        public IEnumerable<Record<SystemKeyT, V>> GetAll()
         {
-            return dataCollection.ToList();
+            return dataCollection.Select(kv => new Record<SystemKeyT, V>(kv.Key, kv.Value));
         }
 
 

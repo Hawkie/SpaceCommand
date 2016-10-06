@@ -7,6 +7,7 @@ using APIDictionary;
 
 using APIInterfaces.Interfaces;
 using APIInterfaces.SystemTypes;
+using APIDataTypes.Keys;
 
 namespace WebAPIcore.Controllers
 {
@@ -14,6 +15,7 @@ namespace WebAPIcore.Controllers
     public class ValuesController : Controller
     {
         private static IDataLayer<int, string> model = SampleData.SampleNames();
+        private static IKeyMapper<ExternalUrl, InternalUrl> map = new KeyMapper<ExternalUrl, InternalUrl>();
         public ValuesController()
         {
         }

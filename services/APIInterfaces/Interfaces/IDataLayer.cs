@@ -18,7 +18,7 @@ namespace APIInterfaces.Interfaces
         /// Get all values including ids
         /// </summary>
         /// <returns></returns>
-        IEnumerable<KeyValuePair<SystemKeyT, V>> GetAll();
+        IEnumerable<Record<SystemKeyT, V>> GetAll();
 
 
         /// <summary>
