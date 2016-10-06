@@ -10,7 +10,6 @@ namespace APIInterfaces.SystemTypes
         public SystemKeyT Key { get; private set; }
         public V Value { get; private set; }
         
-
         public Record(SystemKeyT key, V value)
         {
             Key = key;

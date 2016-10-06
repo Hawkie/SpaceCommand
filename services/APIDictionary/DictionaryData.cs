@@ -32,11 +32,10 @@ namespace APIDictionary
 
         public Record<SystemKeyT, V> Get(SystemKeyT key)
         {
-            Record<SystemKeyT, V> record = null;
             V value = default(V);
             if (dataCollection.TryGetValue(key, out value))
-                record = new Record<SystemKeyT, V>(key, value);
-            return record;
+                return new Record<SystemKeyT, V>(key, value);
+            return null;
         }
 
 
@@ -65,9 +64,9 @@ namespace APIDictionary
                 if (!dataCollection.ContainsKey(k))
                 {
                     dataCollection.Add(k, value);
-                    return new Result<SystemKeyT>(k, false, true);
+                    return new Result<SystemKeyT>(k, false, false, true);
                 }
-                return new Result<SystemKeyT>(k, false, false, string.Format("Generated Key already exists {0}", k));
+                return new Result<SystemKeyT>(k, false, false, false, string.Format("Generated Key already exists {0}", k));
             }
             throw new MissingMemberException("Null Key generator for Create");
         }
@@ -109,7 +108,7 @@ namespace APIDictionary
         {
             if (this.Update(kv))
             {
-                return new Result<SystemKeyT>(kv.Key, true, false);
+                return new Result<SystemKeyT>(kv.Key, true, true, false);
             }
             return this.Create(kv.Value);
         }

@@ -12,14 +12,16 @@ namespace APIDataTypes.Values
         public int Y { get; set; }
         public int VelX { get; set; }
         public int VelY { get; set; }
+        public string Username { get; private set; }
 
-        public Ship(string PlayerName, int x, int y, int velX, int velY)
+        public Ship(string username, string playerName, int x, int y, int velX, int velY)
         {
             VelY = velY;
             VelX = velX;
             Y = y;
             X = x;
-            this.PlayerName = PlayerName;
+            PlayerName = playerName;
+            Username = username;
         }
     }
 }

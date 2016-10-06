@@ -3522,7 +3522,8 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "NETStandard.Library": "1.6.0"
+          "NETStandard.Library": "1.6.0",
+          "System.Linq": "4.1.0"
         },
         "compile": {
           "netstandard1.6/APIDataTypes.dll": {}
@@ -9402,8 +9403,8 @@
     },
     "APIDataTypes/1.0.0": {
       "type": "project",
-      "path": "../../../services/WebAPIcore/src/APIDataTypes/project.json",
-      "msbuildProject": "../../../services/WebAPIcore/src/APIDataTypes/APIDataTypes.xproj"
+      "path": "../APIDataTypes/project.json",
+      "msbuildProject": "../APIDataTypes/APIDataTypes.xproj"
     },
     "APIDictionary/1.0.0": {
       "type": "project",
