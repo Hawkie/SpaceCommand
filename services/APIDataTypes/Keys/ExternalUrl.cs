@@ -7,22 +7,22 @@ namespace APIDataTypes.Keys
 {
     public class ExternalUrl
     {
-        public ExternalUrl(string indexId, string type, string owner, DateTime businessDate)
+        public ExternalUrl(string category, string indexId, string owner, DateTime businessDate)
         {
             IndexId = indexId;
-            Type = type;
+            Category = category;
             Owner = owner;
             BusinessDate = businessDate;
         }
 
         public string IndexId { get; }
-        public string Type { get; }
+        public string Category { get; }
         public string Owner { get; }
         public DateTime BusinessDate { get; }
 
         public override string ToString()
         {
-            return IndexId + "-" + Type + "-" + Owner + "-" + BusinessDate.ToString("YYYMMdd");
+            return IndexId + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("YYYMMdd");
         }
     }
 }

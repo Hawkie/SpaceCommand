@@ -31,10 +31,10 @@ namespace APIDictionary
             return new DictionaryData<int, Ship>(l, f);
         }
 
-        public static IDataLayer<ExternalUrl, WeightsDoc> SampleWeights()
+        public static IDataLayer<InternalUrl, WeightsDoc> SampleWeights()
         {
-            var f = new Func<WeightsDoc, ExternalUrl>((s) => { return new ExternalUrl("TestId", "TestT", "TestOwner", DateTime.MinValue); });
-            var l = new List<Record<ExternalUrl, WeightsDoc>>();
+            var f = new Func<WeightsDoc, InternalUrl>((s) => { return new InternalUrl("TestT", "TestId", "TestLocation", "TestOwner", DateTime.MinValue); });
+
             var wts1 = new List<Weight>();
             wts1.Add(new Weight("C Z6", 10));
             wts1.Add(new Weight("CLZ6", 5));
@@ -43,9 +43,28 @@ namespace APIDictionary
             wts2.Add(new Weight("LCZ6", 11));
             wts2.Add(new Weight("LHZ6", 6));
 
-            l.Add(new Record<ExternalUrl, WeightsDoc>(new ExternalUrl("TVI", "contracts", "trader", new DateTime(2016, 10, 5)), new WeightsDoc(wts1)));
-            l.Add(new Record<ExternalUrl, WeightsDoc>(new ExternalUrl("TVI", "contracts", "trader", new DateTime(2016, 10, 6)), new WeightsDoc(wts2)));
-            return new DictionaryData<ExternalUrl, WeightsDoc>(l, f);
+            var records = new List<Record<InternalUrl, WeightsDoc>>();
+            records.Add(new Record<InternalUrl, WeightsDoc>(CreateInternalKey(), new WeightsDoc(wts1)));
+            records.Add(new Record<InternalUrl, WeightsDoc>(new InternalUrl("contracts", "TVI", "index.B", "trader", new DateTime(2016, 10, 6)), new WeightsDoc(wts2)));
+
+            return new DictionaryData<InternalUrl, WeightsDoc>(records, f);
+        }
+
+        private static ExternalUrl CreateExternalKey()
+        {
+            return new ExternalUrl("contracts", "TVI", "trader", new DateTime(2016, 10, 5));
+        }
+
+        private static InternalUrl CreateInternalKey()
+        {
+            return new InternalUrl("contracts", "TVI", "index.A", "trader", new DateTime(2016, 10, 5));
+        }
+
+        public static IKeyMapper<ExternalUrl, InternalUrl> SampleMap()
+        {
+            var map = new KeyMapper<ExternalUrl, InternalUrl>();
+            map.Add(CreateExternalKey(), CreateInternalKey());
+            return map;
         }
     }
 }
