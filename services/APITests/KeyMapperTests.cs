@@ -17,23 +17,23 @@ namespace APITests
         public void Find_WhenExists_ReturnsInternalLocation(string indexId, string location)
         {
             var map = new KeyMapper<ExternalUrl, InternalUrl>();
-            var ek = CreateExternalKey(indexId);
-            var ik = CreateInternalKey(indexId, location);
+            var ek = CreateExternalKey(indexId:indexId);
+            var ik = CreateInternalKey(indexId:indexId, location:location);
             map.Add(ek, ik);
-            var key = map.FindInternal(ek);
+            var key = map.FindInternal(new ExternalUrl(indexId, "contracts", "trader", new DateTime(2016, 10, 05)));
 
             Assert.Equal(indexId, key.IndexId);
             Assert.Equal(location, key.Location);
         }
 
-        private static ExternalUrl CreateExternalKey(string indexId)
+        private static ExternalUrl CreateExternalKey(string indexId = "TVI", string contracts = "contracts")
         {
-            return new ExternalUrl(indexId, "contracts", "trader", new DateTime(2016, 10, 5));
+            return new ExternalUrl(indexId, contracts, "trader", new DateTime(2016, 10, 5));
         }
 
-        private static InternalUrl CreateInternalKey(string indexId, string location)
+        private static InternalUrl CreateInternalKey(string indexId = "TVI", string contracts = "contracts", string location = "Index.A")
         {
-            return new InternalUrl(indexId, "contracts", location, "trader", new DateTime(2016, 10, 5));
+            return new InternalUrl(indexId, contracts, location, "trader", new DateTime(2016, 10, 5));
         }
     }
 }

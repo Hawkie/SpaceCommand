@@ -35,7 +35,7 @@ namespace WebAPIcore.Controllers
         public WeightsDoc Get(ExternalUrl ek)
         {
             var ik = map.FindInternal(ek);
-            if (ik != null)
+            if (ik == default(InternalUrl))
             {
                 var v = model.Get(ik);
                 if (v != null)

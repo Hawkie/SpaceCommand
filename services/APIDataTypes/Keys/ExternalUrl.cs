@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.Keys
 {
-    public class ExternalUrl
+    public struct ExternalUrl
     {
         public static ExternalUrl FromString(string keyString)
         {
@@ -29,7 +29,7 @@ namespace APIDataTypes.Keys
                 return new ExternalUrl(IndexId, Category, Owner, BusinessDate);
             }
 
-            return null;
+            return default(ExternalUrl);
         }
 
         public ExternalUrl(string indexId, string category, string owner, DateTime businessDate)
@@ -45,6 +45,25 @@ namespace APIDataTypes.Keys
         public string Owner { get; }
         public DateTime BusinessDate { get; }
 
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
+        public static bool operator ==(ExternalUrl left, ExternalUrl right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ExternalUrl left, ExternalUrl right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.ToString() == obj.ToString();
+        }
 
         public override string ToString()
         {

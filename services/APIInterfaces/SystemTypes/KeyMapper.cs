@@ -31,14 +31,20 @@ namespace APIInterfaces.SystemTypes
         public InternalKey FindInternal(ExternalKey externalKey)
         {
             var ik = default(InternalKey);
-            dataMap.TryGetValue(externalKey, out ik);
+            if (!dataMap.TryGetValue(externalKey, out ik))
+            {
+                Console.WriteLine("Cannot find key: {0}", externalKey);
+            }
             return ik;
         }
 
         public ExternalKey FindExternal(InternalKey internalKey)
         {
             var ek = default(ExternalKey);
-            dataReverse.TryGetValue(internalKey, out ek);
+            if (!dataReverse.TryGetValue(internalKey, out ek))
+            {
+                Console.WriteLine("Cannot find key: {0}", internalKey);
+            }
             return ek;
         }
     }

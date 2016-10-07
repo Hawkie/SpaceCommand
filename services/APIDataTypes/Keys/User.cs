@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.Keys
 {
-    public class User
+    public struct User
     {
     }
 }

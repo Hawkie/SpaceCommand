@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.Keys
 {
-    public class InternalUrl
+    public struct InternalUrl
     {
         public InternalUrl(string indexId, string category, string location, string owner, DateTime businessDate)
         {
@@ -22,6 +22,26 @@ namespace APIDataTypes.Keys
         public string Owner { get; }
         public DateTime BusinessDate { get; }
         public string Location { get; }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
+        public static bool operator==(InternalUrl left, InternalUrl right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator!=(InternalUrl left, InternalUrl right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.ToString() == obj.ToString();
+        }
 
         public override string ToString()
         {
