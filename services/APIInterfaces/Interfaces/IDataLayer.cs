@@ -15,7 +15,7 @@ namespace APIInterfaces.Interfaces
     public interface IDataLayer<SystemKeyT, V>
     {
         /// <summary>
-        /// Get all values including ids
+        /// Read all values including ids
         /// </summary>
         /// <returns></returns>
         IEnumerable<Record<SystemKeyT, V>> GetAll();
@@ -28,16 +28,17 @@ namespace APIInterfaces.Interfaces
         /// <returns></returns>
         IEnumerable<Record<SystemKeyT, V>> Find(IEnumerable<SystemKeyT> keys);
 
-        /// <summary>
-        /// Get all or get one by key
-        /// </summary>
-        /// <returns></returns>
-        Record<SystemKeyT, V> Get(SystemKeyT key);
-        IEnumerable<Record<SystemKeyT, V>> Get(IEnumerable<SystemKeyT> keys);
 
         // Create
         Result<SystemKeyT> Create(V value);
         IEnumerable<Result<SystemKeyT>> Create(IEnumerable<V> values);
+
+        /// <summary>
+        /// Read all or get one by key
+        /// </summary>
+        /// <returns></returns>
+        Record<SystemKeyT, V> Read(SystemKeyT key);
+        IEnumerable<Record<SystemKeyT, V>> Read(IEnumerable<SystemKeyT> keys);
 
         /// <summary>
         /// Update only. Return missing status if not present
@@ -60,8 +61,8 @@ namespace APIInterfaces.Interfaces
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        bool Remove(SystemKeyT key);
-        IEnumerable<SystemKeyT> Remove(IEnumerable<SystemKeyT> keys);
+        bool Delete(SystemKeyT key);
+        IEnumerable<SystemKeyT> Delete(IEnumerable<SystemKeyT> keys);
     }
 
 }

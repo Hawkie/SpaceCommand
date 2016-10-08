@@ -21,7 +21,7 @@ namespace APITests
         public void Get_IfExists_Pass(int id, string name)
         {
             var l = SampleData.SampleNames();
-            var n = l.Get(id).Value;
+            var n = l.Read(id).Value;
             Assert.Equal(name, n);
         }
 
@@ -31,7 +31,7 @@ namespace APITests
         {
             var l = SampleData.SampleNames();
             l.Update(new KeyValuePair<int, string>(id, name));
-            Assert.Equal("Sophie", l.Get(id).Value);
+            Assert.Equal("Sophie", l.Read(id).Value);
         }
 
         [Theory]
@@ -40,7 +40,7 @@ namespace APITests
         {
             var l = SampleData.SampleNames();
             l.Update(new KeyValuePair<int, string>(id, name));
-            Assert.Equal(null, l.Get(id));
+            Assert.Equal(null, l.Read(id));
         }
 
         [Theory]
@@ -50,7 +50,7 @@ namespace APITests
             var l = SampleData.SampleNames();
             var result = l.Create(name);
             Console.WriteLine("New Id = {0}", result.Key);
-            Assert.Equal(3, l.Get(result.Key).Key);
+            Assert.Equal(3, l.Read(result.Key).Key);
         }
 
         [Theory]
@@ -61,7 +61,7 @@ namespace APITests
             var l = SampleData.SampleNames();
             var result = l.Create(name);
             Console.WriteLine("New Id = {0}", result.Key);
-            Assert.Equal(3, l.Get(result.Key).Key);
+            Assert.Equal(3, l.Read(result.Key).Key);
         }
 
         [Theory]
@@ -70,8 +70,8 @@ namespace APITests
         public void Remove_IfExists_Removed(int id)
         {
             var l = SampleData.SampleNames();
-            var success = l.Remove(id);
-            Assert.Equal(null, l.Get(id));
+            var success = l.Delete(id);
+            Assert.Equal(null, l.Read(id));
         }
 
         [Theory]
@@ -80,8 +80,8 @@ namespace APITests
         public void Remove_IfNotExists_Silent(int id)
         {
             var l = SampleData.SampleNames();
-            var success = l.Remove(id);
-            Assert.Equal(null, l.Get(id));
+            var success = l.Delete(id);
+            Assert.Equal(null, l.Read(id));
         }
 
         [Theory]

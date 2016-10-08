@@ -31,7 +31,7 @@ namespace WebAPIcore.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            var v = model.Get(id);
+            var v = model.Read(id);
             if (v != null)
                 return v.Value;
             return "No result";
@@ -55,7 +55,7 @@ namespace WebAPIcore.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var success = model.Remove(id);
+            var success = model.Delete(id);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace WebAPIcore.Controllers
             var ik = map.FindInternal(ek);
             if (ik == default(InternalUrl))
             {
-                var v = model.Get(ik);
+                var v = model.Read(ik);
                 if (v != null)
                 {
                     return v.Value;

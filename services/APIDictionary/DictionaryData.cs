@@ -29,28 +29,6 @@ namespace APIDictionary
             return dataCollection.Select(kv => new Record<SystemKeyT, V>(kv.Key, kv.Value));
         }
 
-
-        public Record<SystemKeyT, V> Get(SystemKeyT key)
-        {
-            V value = default(V);
-            if (dataCollection.TryGetValue(key, out value))
-                return new Record<SystemKeyT, V>(key, value);
-            return null;
-        }
-
-
-        public IEnumerable<Record<SystemKeyT, V>> Get(IEnumerable<SystemKeyT> keys)
-        {
-            var l = new List<Record<SystemKeyT, V>>();
-            foreach (var k in keys)
-            {
-                var r = Get(k);
-                if (r != null)
-                    l.Add(r);
-            }
-            return l;
-        }
-
         public IEnumerable<Record<SystemKeyT, V>> Find(IEnumerable<SystemKeyT> keys)
         {
             throw new NotImplementedException();
@@ -78,6 +56,27 @@ namespace APIDictionary
             {
                 var result = Create(v);
                 if (result.Created) l.Add(result);
+            }
+            return l;
+        }
+
+        public Record<SystemKeyT, V> Read(SystemKeyT key)
+        {
+            V value = default(V);
+            if (dataCollection.TryGetValue(key, out value))
+                return new Record<SystemKeyT, V>(key, value);
+            return null;
+        }
+
+
+        public IEnumerable<Record<SystemKeyT, V>> Read(IEnumerable<SystemKeyT> keys)
+        {
+            var l = new List<Record<SystemKeyT, V>>();
+            foreach (var k in keys)
+            {
+                var r = Read(k);
+                if (r != null)
+                    l.Add(r);
             }
             return l;
         }
@@ -124,17 +123,17 @@ namespace APIDictionary
             return r;
         }
 
-        public bool Remove(SystemKeyT key)
+        public bool Delete(SystemKeyT key)
         {
             return dataCollection.Remove(key);
         }
 
-        public IEnumerable<SystemKeyT> Remove(IEnumerable<SystemKeyT> keys)
+        public IEnumerable<SystemKeyT> Delete(IEnumerable<SystemKeyT> keys)
         {
             var l = new List<SystemKeyT>();
             foreach (var k in keys)
             {
-                if (Remove(k))
+                if (Delete(k))
                     l.Add(k);
             }
             return l;
