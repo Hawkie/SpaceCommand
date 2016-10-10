@@ -10,59 +10,57 @@ namespace APIInterfaces.Interfaces
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="SystemKeyT">Key type</typeparam>
+    /// <typeparam name="InternalT">Key type</typeparam>
     /// <typeparam name="V">Value Type</typeparam>
-    public interface IDataLayer<SystemKeyT, V>
+    public interface IDataLayer<InternalT, V>
     {
         /// <summary>
         /// Read all values including ids
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Record<SystemKeyT, V>> GetAll();
-
+        IEnumerable<Record<InternalT, V>> GetAll();
 
         /// <summary>
         /// Query option
         /// </summary>
         /// <param name="keys"></param>
         /// <returns></returns>
-        IEnumerable<Record<SystemKeyT, V>> Find(IEnumerable<SystemKeyT> keys);
-
+        IEnumerable<Record<InternalT, V>> Find(IEnumerable<InternalT> keys);
 
         // Create
-        Result<SystemKeyT> Create(V value);
-        IEnumerable<Result<SystemKeyT>> Create(IEnumerable<V> values);
+        Result<InternalT> Create(V value);
+        IEnumerable<Result<InternalT>> Create(IEnumerable<V> values);
 
         /// <summary>
         /// Read all or get one by key
         /// </summary>
         /// <returns></returns>
-        Record<SystemKeyT, V> Read(SystemKeyT key);
-        IEnumerable<Record<SystemKeyT, V>> Read(IEnumerable<SystemKeyT> keys);
+        Record<InternalT, V> Read(InternalT key);
+        IEnumerable<Record<InternalT, V>> Read(IEnumerable<InternalT> keys);
 
         /// <summary>
         /// Update only. Return missing status if not present
         /// </summary>
         /// <param name="kv"></param>
         /// <returns></returns>
-        bool Update(KeyValuePair<SystemKeyT, V> kv);
-        IEnumerable<SystemKeyT> Update(IEnumerable<KeyValuePair<SystemKeyT, V>> kv);
+        bool Update(KeyValuePair<InternalT, V> kv);
+        IEnumerable<InternalT> Update(IEnumerable<KeyValuePair<InternalT, V>> kv);
 
         /// <summary>
         /// If missing record, add it and get key 
         /// </summary>
         /// <param name="kv"></param>
         /// <returns></returns>
-        Result<SystemKeyT> UpdateCreate(KeyValuePair<SystemKeyT, V> kv);
-        IEnumerable<Result<SystemKeyT>> UpdateCreate(IEnumerable<KeyValuePair<SystemKeyT, V>> kv);
+        Result<InternalT> UpdateCreate(KeyValuePair<InternalT, V> kv);
+        IEnumerable<Result<InternalT>> UpdateCreate(IEnumerable<KeyValuePair<InternalT, V>> kv);
 
         /// <summary>
         /// Delete
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        bool Delete(SystemKeyT key);
-        IEnumerable<SystemKeyT> Delete(IEnumerable<SystemKeyT> keys);
+        bool Delete(InternalT key);
+        IEnumerable<InternalT> Delete(IEnumerable<InternalT> keys);
     }
 
 }

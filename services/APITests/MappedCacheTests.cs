@@ -28,13 +28,14 @@ namespace APITests
         }
 
         [Theory]
-        [InlineData("TVI-contracts-trader-20161005")]
-        public void Get_WithExternalKey_GetsWeights(string eks)
+        [InlineData("TVI-contracts-trader-20161005", 2)]
+        [InlineData("TVI-contracts-trader-20160506", 2)]
+        public void Get_WithExternalKey_GetsWeights(string eks, int count)
         {
             var ek = ExternalUrl.FromString(eks);
             var ik = map.FindInternal(ek);
             var doc = model.Read(ik).Value;
-            Assert.Equal(2, doc.Wts.Count());
+            Assert.Equal(count, doc.Wts.Count);
         }
     }
 }

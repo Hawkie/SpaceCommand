@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace APIInterfaces.SystemTypes
 {
-    public class KeyMapper<ExternalKey, InternalKey> : IKeyMapper<ExternalKey, InternalKey>
+    public class KeyMapper<ExternalT, InternalT> : IKeyMapper<ExternalT, InternalT>
     {
-        private Dictionary<ExternalKey, InternalKey> dataMap { get; }
-        private Dictionary<InternalKey, ExternalKey> dataReverse { get; }
+        private Dictionary<ExternalT, InternalT> dataMap { get; }
+        private Dictionary<InternalT, ExternalT> dataReverse { get; }
 
         public KeyMapper()
         {
-            dataMap = new Dictionary<ExternalKey, InternalKey>();
-            dataReverse = new Dictionary<InternalKey, ExternalKey>();
+            dataMap = new Dictionary<ExternalT, InternalT>();
+            dataReverse = new Dictionary<InternalT, ExternalT>();
         }
 
         /// <summary>
@@ -22,15 +22,15 @@ namespace APIInterfaces.SystemTypes
         /// </summary>
         /// <param name="ek"></param>
         /// <param name="ik"></param>
-        public void Add(ExternalKey ek, InternalKey ik)
+        public void Add(ExternalT ek, InternalT ik)
         {
             dataMap.Add(ek, ik);
             dataReverse.Add(ik, ek);
         }
 
-        public InternalKey FindInternal(ExternalKey externalKey)
+        public InternalT FindInternal(ExternalT externalKey)
         {
-            var ik = default(InternalKey);
+            var ik = default(InternalT);
             if (!dataMap.TryGetValue(externalKey, out ik))
             {
                 Console.WriteLine("Cannot find key: {0}", externalKey);
@@ -38,9 +38,9 @@ namespace APIInterfaces.SystemTypes
             return ik;
         }
 
-        public ExternalKey FindExternal(InternalKey internalKey)
+        public ExternalT FindExternal(InternalT internalKey)
         {
-            var ek = default(ExternalKey);
+            var ek = default(ExternalT);
             if (!dataReverse.TryGetValue(internalKey, out ek))
             {
                 Console.WriteLine("Cannot find key: {0}", internalKey);

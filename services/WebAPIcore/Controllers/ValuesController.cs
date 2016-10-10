@@ -34,7 +34,7 @@ namespace WebAPIcore.Controllers
             var v = model.Read(id);
             if (v != null)
                 return v.Value;
-            return "No result";
+            return null;
         }
 
         // POST cache/values

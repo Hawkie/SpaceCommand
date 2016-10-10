@@ -17,7 +17,7 @@ namespace WebAPIcore.Controllers
     public class WeightsController : Controller
     {
         private static IDataLayer<InternalUrl, WeightsDoc> model = SampleData.SampleWeights();
-        private static IKeyMapper<ExternalUrl, InternalUrl> map = SampleData.SampleMap();
+        private static IKeyMapper<ExternalUrl, InternalUrl> map = SampleData.SampleLogicalMap();
 
 
         // GET: cache/weights
@@ -50,18 +50,29 @@ namespace WebAPIcore.Controllers
         [HttpPost]
         public void Post([FromBody]WeightsDoc value)
         {
+            var result = model.Create(value);
         }
 
         // PUT cache/weights/5
         [HttpPut("{id}")]
         public void Put(ExternalUrl id, [FromBody]WeightsDoc value)
         {
+            // create internal key if one deoesn't exist?
+            // add external / internal mapping and keep permanent record
+            var ik = map.FindInternal(id);
+            if (ik != default(InternalUrl))
+            {
+                var result = model.UpdateCreate(new KeyValuePair<InternalUrl, WeightsDoc>(ik, value));
+                Console.WriteLine("Record Created={0}, Updated={1}", result.Created, result.Updated);
+            }
+            Console.WriteLine("Cannot locate key");
         }
 
         // DELETE cache/weights/5
         [HttpDelete("{id}")]
         public void Delete(ExternalUrl id)
         {
+
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using APIDataTypes.Values;
 using APIDataTypes.Keys;
+using APIDataTypes.KeyMappers;
 
 namespace APIDictionary
 {
@@ -76,6 +77,15 @@ namespace APIDictionary
             var map = new KeyMapper<ExternalUrl, InternalUrl>();
             map.Add(CreateExternalKey(), CreateInternalKey());
             map.Add(CreateExternalKey2(), CreateInternalKey2());
+            return map;
+        }
+
+        public static IKeyMapper<ExternalUrl, InternalUrl> SampleLogicalMap()
+        {
+            var keyMap1 = new KeyMapItem<string, string>("trading", "index.A");
+            var l = new List<KeyMapItem<string, string>>();
+            l.Add(keyMap1);
+            var map = new UrlMapper(l);
             return map;
         }
     }

@@ -9,32 +9,32 @@ using APIInterfaces.SystemTypes;
 
 namespace APIDictionary
 {
-    public class DictionaryData<SystemKeyT, V> : IDataLayer<SystemKeyT, V>
+    public class DictionaryData<InternalT, ValueT> : IDataLayer<InternalT, ValueT>
     {
         // key generation
 
-        private Dictionary<SystemKeyT, V> dataCollection { get; }
-        private Func<V, SystemKeyT> KeyGen { get; set; }
+        private Dictionary<InternalT, ValueT> dataCollection { get; }
+        private Func<ValueT, InternalT> KeyGen { get; set; }
 
-        public DictionaryData(IEnumerable<Record<SystemKeyT, V>> dataObjects, Func<V, SystemKeyT> keyGen)
+        public DictionaryData(IEnumerable<Record<InternalT, ValueT>> dataObjects, Func<ValueT, InternalT> keyGen)
         {
             KeyGen = keyGen;
-            this.dataCollection = new Dictionary<SystemKeyT, V>();
+            this.dataCollection = new Dictionary<InternalT, ValueT>();
             foreach (var d in dataObjects)
                 dataCollection.Add(d.Key, d.Value);
         }
 
-        public IEnumerable<Record<SystemKeyT, V>> GetAll()
+        public IEnumerable<Record<InternalT, ValueT>> GetAll()
         {
-            return dataCollection.Select(kv => new Record<SystemKeyT, V>(kv.Key, kv.Value));
+            return dataCollection.Select(kv => new Record<InternalT, ValueT>(kv.Key, kv.Value));
         }
 
-        public IEnumerable<Record<SystemKeyT, V>> Find(IEnumerable<SystemKeyT> keys)
+        public IEnumerable<Record<InternalT, ValueT>> Find(IEnumerable<InternalT> keys)
         {
             throw new NotImplementedException();
         }
 
-        public Result<SystemKeyT> Create(V value)
+        public Result<InternalT> Create(ValueT value)
         {
             if (KeyGen != null)
             {
@@ -42,16 +42,16 @@ namespace APIDictionary
                 if (!dataCollection.ContainsKey(k))
                 {
                     dataCollection.Add(k, value);
-                    return new Result<SystemKeyT>(k, false, false, true);
+                    return new Result<InternalT>(k, false, false, true);
                 }
-                return new Result<SystemKeyT>(k, false, false, false, string.Format("Generated Key already exists {0}", k));
+                return new Result<InternalT>(k, false, false, false, string.Format("Generated Key already exists {0}", k));
             }
             throw new MissingMemberException("Null Key generator for Create");
         }
 
-        public IEnumerable<Result<SystemKeyT>> Create(IEnumerable<V> values)
+        public IEnumerable<Result<InternalT>> Create(IEnumerable<ValueT> values)
         {
-            var l = new List<Result<SystemKeyT>>();
+            var l = new List<Result<InternalT>>();
             foreach (var v in values)
             {
                 var result = Create(v);
@@ -60,18 +60,18 @@ namespace APIDictionary
             return l;
         }
 
-        public Record<SystemKeyT, V> Read(SystemKeyT key)
+        public Record<InternalT, ValueT> Read(InternalT key)
         {
-            V value = default(V);
+            ValueT value = default(ValueT);
             if (dataCollection.TryGetValue(key, out value))
-                return new Record<SystemKeyT, V>(key, value);
+                return new Record<InternalT, ValueT>(key, value);
             return null;
         }
 
 
-        public IEnumerable<Record<SystemKeyT, V>> Read(IEnumerable<SystemKeyT> keys)
+        public IEnumerable<Record<InternalT, ValueT>> Read(IEnumerable<InternalT> keys)
         {
-            var l = new List<Record<SystemKeyT, V>>();
+            var l = new List<Record<InternalT, ValueT>>();
             foreach (var k in keys)
             {
                 var r = Read(k);
@@ -81,7 +81,7 @@ namespace APIDictionary
             return l;
         }
 
-        public bool Update(KeyValuePair<SystemKeyT, V> kv)
+        public bool Update(KeyValuePair<InternalT, ValueT> kv)
         {
             if (dataCollection.ContainsKey(kv.Key))
             {
@@ -92,9 +92,9 @@ namespace APIDictionary
             return false;
         }
 
-        public IEnumerable<SystemKeyT> Update(IEnumerable<KeyValuePair<SystemKeyT, V>> values)
+        public IEnumerable<InternalT> Update(IEnumerable<KeyValuePair<InternalT, ValueT>> values)
         {
-            var l = new List<SystemKeyT>();
+            var l = new List<InternalT>();
             foreach (var kv in values)
             {
                 if (Update(kv))
@@ -103,18 +103,18 @@ namespace APIDictionary
             return l;
         }
 
-        public Result<SystemKeyT> UpdateCreate(KeyValuePair<SystemKeyT, V> kv)
+        public Result<InternalT> UpdateCreate(KeyValuePair<InternalT, ValueT> kv)
         {
             if (this.Update(kv))
             {
-                return new Result<SystemKeyT>(kv.Key, true, true, false);
+                return new Result<InternalT>(kv.Key, true, true, false);
             }
             return this.Create(kv.Value);
         }
 
-        public IEnumerable<Result<SystemKeyT>> UpdateCreate(IEnumerable<KeyValuePair<SystemKeyT, V>> values)
+        public IEnumerable<Result<InternalT>> UpdateCreate(IEnumerable<KeyValuePair<InternalT, ValueT>> values)
         {
-            var r = new List<Result<SystemKeyT>>();
+            var r = new List<Result<InternalT>>();
             foreach (var kv in values)
             {
                 var result = UpdateCreate(kv);
@@ -123,14 +123,14 @@ namespace APIDictionary
             return r;
         }
 
-        public bool Delete(SystemKeyT key)
+        public bool Delete(InternalT key)
         {
             return dataCollection.Remove(key);
         }
 
-        public IEnumerable<SystemKeyT> Delete(IEnumerable<SystemKeyT> keys)
+        public IEnumerable<InternalT> Delete(IEnumerable<InternalT> keys)
         {
-            var l = new List<SystemKeyT>();
+            var l = new List<InternalT>();
             foreach (var k in keys)
             {
                 if (Delete(k))

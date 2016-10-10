@@ -32,6 +32,13 @@ namespace APIDataTypes.Keys
             return default(ExternalUrl);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="indexId">E.g. ALTVI</param>
+        /// <param name="category">E.g. contracts</param>
+        /// <param name="owner">E.g. Trading</param>
+        /// <param name="businessDate">format yyyyMMdd</param>
         public ExternalUrl(string indexId, string category, string owner, DateTime businessDate)
         {
             IndexId = indexId;
