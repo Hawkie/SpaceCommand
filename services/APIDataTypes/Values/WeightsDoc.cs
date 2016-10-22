@@ -7,16 +7,18 @@ namespace APIDataTypes.Values
 
     public class WeightsDoc
     {
-        public WeightsDoc(IEnumerable<Weight> wts)
+        public WeightsDoc(IEnumerable<Weight> weights)
         {
-            Wts = wts.ToList();
+            Weights = weights.ToList();
         }
 
-        public WeightsDoc(IEnumerable wts)
+        public WeightsDoc(IEnumerable weights)
         {
-            Wts = new List<Weight>(wts.Cast<Weight>());
+            Weights = new List<Weight>(weights.Cast<Weight>());
         }
 
-        public List<Weight> Wts { get; }
+        public List<Weight> Weights { get; }
+
+        public double Constant { get; }
     }
 }

@@ -29,7 +29,7 @@ namespace APIDictionary
             return dataCollection.Select(kv => new Record<InternalT, ValueT>(kv.Key, kv.Value));
         }
 
-        public IEnumerable<Record<InternalT, ValueT>> Find(IEnumerable<InternalT> keys)
+        public IEnumerable<Record<InternalT, ValueT>> Find(string queryString)
         {
             throw new NotImplementedException();
         }

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace APIInterfaces.SystemTypes
 {
-    public class KeyMapper<ExternalT, InternalT> : IKeyMapper<ExternalT, InternalT>
+    public class KeyMapper<ExternalKeyType, InternalKeyType> : IKeyMapper<ExternalKeyType, InternalKeyType>
     {
-        private Dictionary<ExternalT, InternalT> dataMap { get; }
-        private Dictionary<InternalT, ExternalT> dataReverse { get; }
+        private Dictionary<ExternalKeyType, InternalKeyType> dataForward { get; }
+        private Dictionary<InternalKeyType, ExternalKeyType> dataReverse { get; }
 
         public KeyMapper()
         {
-            dataMap = new Dictionary<ExternalT, InternalT>();
-            dataReverse = new Dictionary<InternalT, ExternalT>();
+            dataForward = new Dictionary<ExternalKeyType, InternalKeyType>();
+            dataReverse = new Dictionary<InternalKeyType, ExternalKeyType>();
         }
 
         /// <summary>
@@ -22,25 +22,25 @@ namespace APIInterfaces.SystemTypes
         /// </summary>
         /// <param name="ek"></param>
         /// <param name="ik"></param>
-        public void Add(ExternalT ek, InternalT ik)
+        public void Add(ExternalKeyType ek, InternalKeyType ik)
         {
-            dataMap.Add(ek, ik);
+            dataForward.Add(ek, ik);
             dataReverse.Add(ik, ek);
         }
 
-        public InternalT FindInternal(ExternalT externalKey)
+        public InternalKeyType FindInternal(ExternalKeyType externalKey)
         {
-            var ik = default(InternalT);
-            if (!dataMap.TryGetValue(externalKey, out ik))
+            var ik = default(InternalKeyType);
+            if (!dataForward.TryGetValue(externalKey, out ik))
             {
                 Console.WriteLine("Cannot find key: {0}", externalKey);
             }
             return ik;
         }
 
-        public ExternalT FindExternal(InternalT internalKey)
+        public ExternalKeyType FindExternal(InternalKeyType internalKey)
         {
-            var ek = default(ExternalT);
+            var ek = default(ExternalKeyType);
             if (!dataReverse.TryGetValue(internalKey, out ek))
             {
                 Console.WriteLine("Cannot find key: {0}", internalKey);

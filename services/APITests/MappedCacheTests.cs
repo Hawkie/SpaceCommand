@@ -35,7 +35,7 @@ namespace APITests
             var ek = ExternalUrl.FromString(eks);
             var ik = map.FindInternal(ek);
             var doc = model.Read(ik).Value;
-            Assert.Equal(count, doc.Wts.Count);
+            Assert.Equal(count, doc.Weights.Count);
         }
     }
 }

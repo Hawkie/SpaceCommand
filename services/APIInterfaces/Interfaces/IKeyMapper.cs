@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace APIInterfaces.Interfaces
 {
-    public interface IKeyMapper<ExternalT, InternalT>
+    public interface IKeyMapper<ExternalKeyType, InternalKeyType>
     {
-        InternalT FindInternal(ExternalT externalKey);
-        ExternalT FindExternal(InternalT internalKey);
+        InternalKeyType FindInternal(ExternalKeyType externalKey);
+        ExternalKeyType FindExternal(InternalKeyType internalKey);
     }
 }
