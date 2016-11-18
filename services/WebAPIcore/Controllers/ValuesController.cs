@@ -3,52 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using APIDictionary;
 
 using APIInterfaces.Interfaces;
 using APIInterfaces.SystemTypes;
 using APIDataTypes.Keys;
+using CacheDataRetrievers;
 
 namespace WebAPIcore.Controllers
 {
     [Route("cache/[controller]")]
     public class ValuesController : Controller
     {
-        private static IDataLayer<int, string> model = SampleData.SampleNames();
-        private static IKeyMapper<ExternalUrl, InternalUrl> map = new KeyMapper<ExternalUrl, InternalUrl>();
+        private static IDataLayer<int, Record<int, string>> model = SampleData.SampleNames();
+        
         public ValuesController()
         {
         }
 
         // GET cache/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<KeyValuePair<int, Record<int, string>>> Get()
         {
-            return model.GetAll().Select(x => x.Value); 
+            return model.Find((x) => { return true; }); 
         }
 
         // GET cache/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Record<int, string> Get(int id)
         {
-            var v = model.Read(id);
-            if (v != null)
-                return v.Value;
-            return null;
+            return model.Read(id);
         }
 
         // POST cache/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Record<int,string> value)
         {
             var result = model.Create(value);
         }
 
         // PUT cache/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Record<int, string> value)
         {
-            var result = model.UpdateCreate(new KeyValuePair<int, string>(id, value));
+            var kv = new KeyValuePair<int, Record<int, string>>(id, value);
+            if (!model.Update(kv))
+            {
+                var k = model.Create(kv.Value);
+            }
         }
 
         // DELETE cache/values/5

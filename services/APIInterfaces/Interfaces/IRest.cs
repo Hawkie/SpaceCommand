@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace APIInterfaces.Interfaces
 {
-    public interface IRest<ExternalT, InternalT, ValueT>
+    public interface IRest<ExternalT, ValueT>
     {
 
-        /// <summary>
-        /// Get all records
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Record<ExternalT, ValueT>> Get();
 
         /// <summary>
         /// 

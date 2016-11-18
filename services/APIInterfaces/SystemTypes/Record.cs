@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace APIInterfaces.SystemTypes
 {
-    public class Record<SystemKeyT, V>
+    public class Record<KeyType, ValueType>
     {
-        public SystemKeyT Key { get; private set; }
-        public V Value { get; private set; }
-        
-        public Record(SystemKeyT key, V value)
+        public Record(KeyType key, ValueType value)
         {
             Key = key;
             Value = value;
         }
+
+        public KeyType Key { get; }
+        public ValueType Value { get; }
     }
 }

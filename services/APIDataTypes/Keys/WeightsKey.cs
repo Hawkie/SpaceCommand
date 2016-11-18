@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.Keys
 {
-    public struct ExternalUrl
+    public struct WeightsKey
     {
-        public static ExternalUrl FromString(string keyString)
+        public static WeightsKey FromString(string keyString)
         {
             var sections = keyString.Split('-');
             var provider = CultureInfo.InvariantCulture;
@@ -26,28 +26,28 @@ namespace APIDataTypes.Keys
                 {
 
                 }
-                return new ExternalUrl(IndexId, Category, Owner, BusinessDate);
+                return new WeightsKey(IndexId, Category, Owner, BusinessDate);
             }
 
-            return default(ExternalUrl);
+            return default(WeightsKey);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="indexId">E.g. ALTVI</param>
+        /// <param name="indexName">E.g. ALTVI</param>
         /// <param name="category">E.g. contracts</param>
         /// <param name="owner">E.g. Trading</param>
         /// <param name="businessDate">format yyyyMMdd</param>
-        public ExternalUrl(string indexId, string category, string owner, DateTime businessDate)
+        public WeightsKey(string indexName, string category, string owner, DateTime businessDate)
         {
-            IndexId = indexId;
+            IndexName = indexName;
             Category = category;
             Owner = owner;
             BusinessDate = businessDate;
         }
 
-        public string IndexId { get; }
+        public string IndexName { get; }
         public string Category { get; }
         public string Owner { get; }
         public DateTime BusinessDate { get; }
@@ -57,12 +57,12 @@ namespace APIDataTypes.Keys
             return this.ToString().GetHashCode();
         }
 
-        public static bool operator ==(ExternalUrl left, ExternalUrl right)
+        public static bool operator ==(WeightsKey left, WeightsKey right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(ExternalUrl left, ExternalUrl right)
+        public static bool operator !=(WeightsKey left, WeightsKey right)
         {
             return !left.Equals(right);
         }
@@ -74,7 +74,7 @@ namespace APIDataTypes.Keys
 
         public override string ToString()
         {
-            return IndexId + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("yyyyMMdd");
+            return IndexName + "-" + Category + "-" + Owner + "-" + BusinessDate.ToString("yyyyMMdd");
         }
     }
 }

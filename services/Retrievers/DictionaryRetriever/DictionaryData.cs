@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using APIInterfaces.Interfaces;
 using APIInterfaces.SystemTypes;
 
-namespace APIDictionary
+namespace DictionaryRetriever
 {
     public class DictionaryData<KeyType, ValueType> : IDataLayer<KeyType, ValueType>
     {
         // key generation
-
         private IDictionary<KeyType, ValueType> dataCollection { get; }
         private Func<ValueType, KeyType> KeyGen { get; set; }
 
@@ -24,6 +23,25 @@ namespace APIDictionary
                 dataCollection.Add(d.Key, d.Value);
         }
 
+        /// Retrieval
+        public IEnumerable<KeyValuePair<KeyType, ValueType>> Find(Func<ValueType, bool> selector)
+        {
+            return dataCollection.ToList().Where(x => selector(x.Value));
+        }
+
+        public ValueType Read(KeyType key)
+        {
+            var value = default(ValueType);
+            if (dataCollection.TryGetValue(key, out value))
+                return value;
+            return default(ValueType);
+        }
+
+        /// <summary>
+        /// Persistance
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public KeyType Create(ValueType value)
         {
             if (KeyGen != null)
@@ -32,27 +50,17 @@ namespace APIDictionary
                 if (!dataCollection.ContainsKey(k))
                 {
                     dataCollection.Add(k, value);
-                    return new Result<KeyType>(k, false, false, true);
+                    return k;
                 }
-                return new Result<KeyType>(k, false, false, false, string.Format("Generated Key already exists {0}", k));
+                return default(KeyType);
             }
-            throw new MissingMemberException("Null Key generator for Create");
+            throw new MissingMemberException("No key generator set");
         }
 
-
-        public ValueType Read(KeyType key)
+        public bool Update(KeyValuePair<KeyType, ValueType> kv)
         {
-            ValueType value = default(ValueType);
-            if (dataCollection.TryGetValue(key, out value))
-                return value;
-            return null;
-        }
-
-
-
-        public Result<ValueType> Update(KeyValuePair<KeyType, ValueType> kv)
-        {
-            if (dataCollection.ContainsKey(kv.Key))
+            var existing = default(ValueType);
+            if (dataCollection.TryGetValue(kv.Key, out existing))
             {
                 dataCollection.Remove(kv.Key);
                 dataCollection.Add(kv.Key, kv.Value);
@@ -61,7 +69,7 @@ namespace APIDictionary
             return false;
         }
 
-        public Result<ValueType> Delete(KeyType key)
+        public bool Delete(KeyType key)
         {
             return dataCollection.Remove(key);
         }

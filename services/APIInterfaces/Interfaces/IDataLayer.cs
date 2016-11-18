@@ -15,28 +15,20 @@ namespace APIInterfaces.Interfaces
     public interface IDataLayer<SystemKeyType, ValueType>
     {
         /// <summary>
-        /// Read all values including ids
+        /// Searches the values using predicate to match 
         /// </summary>
+        /// <param name="selector"></param>
         /// <returns></returns>
-        IEnumerable<Record<SystemKeyType, ValueType>> GetAll();
-
-        /// <summary>
-        /// Query option
-        /// </summary>
-        /// <param name="keys"></param>
-        /// <returns></returns>
-        IEnumerable<Record<SystemKeyType, ValueType>> Find(string queryString);
+        IEnumerable<KeyValuePair<SystemKeyType, ValueType>> Find(Func<ValueType, bool> selector);
 
         // Create
-        Result<SystemKeyType> Create(ValueType value);
-        IEnumerable<Result<SystemKeyType>> Create(IEnumerable<ValueType> values);
+        SystemKeyType Create(ValueType value);
 
         /// <summary>
         /// Read all or get one by key
         /// </summary>
         /// <returns></returns>
-        Record<SystemKeyType, ValueType> Read(SystemKeyType key);
-        IEnumerable<Record<SystemKeyType, ValueType>> Read(IEnumerable<SystemKeyType> keys);
+        ValueType Read(SystemKeyType key);
 
         /// <summary>
         /// Update only. Return missing status if not present
@@ -44,15 +36,6 @@ namespace APIInterfaces.Interfaces
         /// <param name="kv"></param>
         /// <returns></returns>
         bool Update(KeyValuePair<SystemKeyType, ValueType> kv);
-        IEnumerable<SystemKeyType> Update(IEnumerable<KeyValuePair<SystemKeyType, ValueType>> kv);
-
-        /// <summary>
-        /// If missing record, add it and get key 
-        /// </summary>
-        /// <param name="kv"></param>
-        /// <returns></returns>
-        Result<SystemKeyType> UpdateCreate(KeyValuePair<SystemKeyType, ValueType> kv);
-        IEnumerable<Result<SystemKeyType>> UpdateCreate(IEnumerable<KeyValuePair<SystemKeyType, ValueType>> kv);
 
         /// <summary>
         /// Delete
@@ -60,7 +43,6 @@ namespace APIInterfaces.Interfaces
         /// <param name="key"></param>
         /// <returns></returns>
         bool Delete(SystemKeyType key);
-        IEnumerable<SystemKeyType> Delete(IEnumerable<SystemKeyType> keys);
     }
 
 }

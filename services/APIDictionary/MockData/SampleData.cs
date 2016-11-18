@@ -23,42 +23,42 @@ namespace APIDictionary
         }
 
 
-        public static IDataLayer<int, Ship> SampleShips()
+        public static IDataLayer<int, ShipData> SampleShips()
         {
-            var f = new Func<Ship, int>((s) => { return 3; });
-            var l = new List<Record<int, Ship>>();
-            l.Add(new Record<int, Ship>(1, new Ship("hawk", "Paul", 0,0,0,0)));
-            l.Add(new Record<int, Ship>(5, new Ship("hun", "Emma", 0, 0, 0, 0)));
-            return new DictionaryData<int, Ship>(l, f);
+            var f = new Func<ShipData, int>((s) => { return 3; });
+            var l = new List<Record<int, ShipData>>();
+            l.Add(new Record<int, ShipData>(1, new ShipData("hawk", "Paul", 0,0,0,0)));
+            l.Add(new Record<int, ShipData>(5, new ShipData("hun", "Emma", 0, 0, 0, 0)));
+            return new DictionaryData<int, ShipData>(l, f);
         }
 
-        public static IDataLayer<InternalUrl, WeightsDoc> SampleWeights()
+        public static IDataLayer<InternalUrl, WeightsData> SampleWeights()
         {
-            var f = new Func<WeightsDoc, InternalUrl>((s) => { return new InternalUrl("TestId", "TestT", "TestLocation", "TestOwner", DateTime.MinValue); });
+            var f = new Func<WeightsData, InternalUrl>((s) => { return new InternalUrl("TestId", "TestT", "TestLocation", "TestOwner", DateTime.MinValue); });
 
-            var wts1 = new List<Weight>();
-            wts1.Add(new Weight("C Z6", 10));
-            wts1.Add(new Weight("CLZ6", 5));
+            var wts1 = new List<WeightItemData>();
+            wts1.Add(new WeightItemData("C Z6", 10));
+            wts1.Add(new WeightItemData("CLZ6", 5));
 
-            var wts2 = new List<Weight>();
-            wts2.Add(new Weight("LCZ6", 11));
-            wts2.Add(new Weight("LHZ6", 6));
+            var wts2 = new List<WeightItemData>();
+            wts2.Add(new WeightItemData("LCZ6", 11));
+            wts2.Add(new WeightItemData("LHZ6", 6));
 
-            var records = new List<Record<InternalUrl, WeightsDoc>>();
-            records.Add(new Record<InternalUrl, WeightsDoc>(CreateInternalKey(), new WeightsDoc(wts1)));
-            records.Add(new Record<InternalUrl, WeightsDoc>(CreateInternalKey2(), new WeightsDoc(wts2)));
+            var records = new List<Record<InternalUrl, WeightsData>>();
+            records.Add(new Record<InternalUrl, WeightsData>(CreateInternalKey(), new WeightsData(wts1)));
+            records.Add(new Record<InternalUrl, WeightsData>(CreateInternalKey2(), new WeightsData(wts2)));
 
-            return new DictionaryData<InternalUrl, WeightsDoc>(records, f);
+            return new DictionaryData<InternalUrl, WeightsData>(records, f);
         }
 
-        private static ExternalUrl CreateExternalKey()
+        private static WeightKey CreateExternalKey()
         {
-            return new ExternalUrl("TVI", "contracts", "trader", new DateTime(2016, 10, 5));
+            return new WeightKey("TVI", "contracts", "trader", new DateTime(2016, 10, 5));
         }
 
-        private static ExternalUrl CreateExternalKey2()
+        private static WeightKey CreateExternalKey2()
         {
-            return new ExternalUrl("TVI", "contracts", "trader", new DateTime(2016, 5, 6));
+            return new WeightKey("TVI", "contracts", "trader", new DateTime(2016, 5, 6));
         }
 
         private static InternalUrl CreateInternalKey()
@@ -72,15 +72,15 @@ namespace APIDictionary
         }
         
 
-        public static IKeyMapper<ExternalUrl, InternalUrl> SampleMap()
+        public static IKeyMapper<WeightKey, InternalUrl> SampleMap()
         {
-            var map = new KeyMapper<ExternalUrl, InternalUrl>();
+            var map = new KeyMapper<WeightKey, InternalUrl>();
             map.Add(CreateExternalKey(), CreateInternalKey());
             map.Add(CreateExternalKey2(), CreateInternalKey2());
             return map;
         }
 
-        public static IKeyMapper<ExternalUrl, InternalUrl> SampleLogicalMap()
+        public static IKeyMapper<WeightKey, InternalUrl> SampleLogicalMap()
         {
             var keyMap1 = new KeyMapItem<string, string>("trading", "index.A");
             var l = new List<KeyMapItem<string, string>>();

@@ -16,7 +16,10 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "System.Interactive.Async": "3.0.0",
-    "APIDictionary": "1.0.0-*"
+    "APIDictionary": "1.0.0-*",
+    "CacheDataRetrievers": "1.0.0-*",
+    "APIDataTypes": "1.0.0-*",
+    "APIInterfaces": "1.0.0-*"
   },
 
   "tools": {

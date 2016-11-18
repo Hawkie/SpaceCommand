@@ -3538,7 +3538,6 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "APIDataTypes": "1.0.0",
           "APIInterfaces": "1.0.0",
           "NETStandard.Library": "1.6.0"
         },
@@ -3560,6 +3559,37 @@
         },
         "runtime": {
           "netstandard1.6/APIInterfaces.dll": {}
+        }
+      },
+      "CacheDataRetrievers/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "APIDataTypes": "1.0.0",
+          "APIInterfaces": "1.0.0",
+          "DictionaryRetriever": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/CacheDataRetrievers.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/CacheDataRetrievers.dll": {}
+        }
+      },
+      "DictionaryRetriever/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "APIDataTypes": "1.0.0",
+          "APIInterfaces": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/DictionaryRetriever.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/DictionaryRetriever.dll": {}
         }
       }
     }
@@ -9410,18 +9440,31 @@
     },
     "APIDictionary/1.0.0": {
       "type": "project",
-      "path": "../APIDictionary/project.json",
-      "msbuildProject": "../APIDictionary/APIDictionary.xproj"
+      "path": "../../../services/WebAPIcore/src/APIDictionary/project.json",
+      "msbuildProject": "../../../services/WebAPIcore/src/APIDictionary/APIDictionary.xproj"
     },
     "APIInterfaces/1.0.0": {
       "type": "project",
       "path": "../APIInterfaces/project.json",
       "msbuildProject": "../APIInterfaces/APIInterfaces.xproj"
+    },
+    "CacheDataRetrievers/1.0.0": {
+      "type": "project",
+      "path": "../Retrievers/CacheDataRetrievers/project.json",
+      "msbuildProject": "../Retrievers/CacheDataRetrievers/CacheDataRetrievers.xproj"
+    },
+    "DictionaryRetriever/1.0.0": {
+      "type": "project",
+      "path": "../Retrievers/DictionaryRetriever/project.json",
+      "msbuildProject": "../Retrievers/DictionaryRetriever/DictionaryRetriever.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
+      "APIDataTypes >= 1.0.0-*",
       "APIDictionary >= 1.0.0-*",
+      "APIInterfaces >= 1.0.0-*",
+      "CacheDataRetrievers >= 1.0.0-*",
       "Microsoft.ApplicationInsights.AspNetCore >= 1.0.0",
       "Microsoft.AspNetCore.Mvc >= 1.0.0",
       "Microsoft.AspNetCore.Server.IISIntegration >= 1.0.0",

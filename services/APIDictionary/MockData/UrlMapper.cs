@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.KeyMappers
 {
-    public class UrlMapper : IKeyMapper<ExternalUrl, InternalUrl>
+    public class UrlMapper : IKeyMapper<WeightKey, InternalUrl>
     {
         // map trading to specific location
         private KeyMapper<string, string> ownerToLocation = new KeyMapper<string, string>();
@@ -22,7 +22,7 @@ namespace APIDataTypes.KeyMappers
         }
 
 
-        public InternalUrl FindInternal(ExternalUrl ek)
+        public InternalUrl FindInternal(WeightKey ek)
         {
             var location = ownerToLocation.FindInternal(ek.Owner);
             if (location != default(string))
@@ -33,7 +33,7 @@ namespace APIDataTypes.KeyMappers
             return default(InternalUrl);
         }
 
-        public ExternalUrl FindExternal(InternalUrl ik)
+        public WeightKey FindExternal(InternalUrl ik)
         {
             var ek = new ExternalUrl(ik.IndexId, ik.Category, ik.Owner, ik.BusinessDate);
             return ek;

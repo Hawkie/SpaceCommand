@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace APIDataTypes.Values
 {
-    public class Ship
+    public class ShipData
     {
         public string PlayerName { get; set; }
         public int X { get; set; }
@@ -14,7 +14,7 @@ namespace APIDataTypes.Values
         public int VelY { get; set; }
         public string Username { get; private set; }
 
-        public Ship(string username, string playerName, int x, int y, int velX, int velY)
+        public ShipData(string username, string playerName, int x, int y, int velX, int velY)
         {
             VelY = velY;
             VelX = velX;

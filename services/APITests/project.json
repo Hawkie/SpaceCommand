@@ -1,11 +1,11 @@
-﻿{
+{
     "version": "1.0.0-*",
     "testRunner": "xunit",
     "dependencies": {
         "xunit": "2.2.0-beta2-build3300",
         "dotnet-test-xunit": "2.2.0-preview2-build1029",
-        "APIInterfaces": "1.0.0-*",
-        "APIDictionary": "1.0.0-*"
+        "CacheDataRetrievers": "1.0.0-*",
+        "APIDataTypes": "1.0.0-*"
     },
     "frameworks": {
         "netcoreapp1.0": {

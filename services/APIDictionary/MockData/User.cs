@@ -7,5 +7,7 @@ namespace APIDataTypes.Keys
 {
     public struct User
     {
+        string TagName { get; }
+        string Surname { get; }
     }
 }

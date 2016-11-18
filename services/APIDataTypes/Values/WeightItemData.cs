@@ -1,9 +1,9 @@
 ﻿namespace APIDataTypes.Values
 {
 
-    public class Weight
+    public class WeightItemData
     {
-        public Weight(string id, double value)
+        public WeightItemData(string id, double value)
         {
             Id = id;
             Value = value;

@@ -1,8 +1,9 @@
 ﻿using System;
-using APIDictionary;
 using Xunit;
 using System.Linq;
 using System.Collections.Generic;
+using CacheDataRetrievers;
+using APIInterfaces.SystemTypes;
 
 namespace APITests
 {
@@ -12,7 +13,7 @@ namespace APITests
         public void GetAll_Size_IsTwo()
         {
             var l = SampleData.SampleNames();
-            Assert.Equal(2, l.GetAll().Count());
+            Assert.Equal(2, l.Find((x)=> { return true; }).Count());
         }
 
         [Theory]
@@ -30,7 +31,7 @@ namespace APITests
         public void Update_IfExists_Pass(int id, string name)
         {
             var l = SampleData.SampleNames();
-            l.Update(new KeyValuePair<int, string>(id, name));
+            l.Update(new KeyValuePair<int, Record<int, string>>(id, new Record<int, string>(id, name)));
             Assert.Equal("Sophie", l.Read(id).Value);
         }
 
@@ -39,7 +40,7 @@ namespace APITests
         public void Update_IfNotExists_Fail(int id, string name)
         {
             var l = SampleData.SampleNames();
-            l.Update(new KeyValuePair<int, string>(id, name));
+            l.Update(new KeyValuePair<int, Record<int, string>>(id, new Record<int, string>(id, name)));
             Assert.Equal(null, l.Read(id));
         }
 
@@ -48,9 +49,9 @@ namespace APITests
         public void Create_IfNotExists_Pass(string name)
         {
             var l = SampleData.SampleNames();
-            var result = l.Create(name);
-            Console.WriteLine("New Id = {0}", result.Key);
-            Assert.Equal(3, l.Read(result.Key).Key);
+            var result = l.Create(new Record<int, string>(3, name));
+            Console.WriteLine("New Id = {0}", result);
+            Assert.Equal(3, l.Read(result).Key);
         }
 
         [Theory]
@@ -59,9 +60,9 @@ namespace APITests
         public void Create_IfExists_Pass(string name)
         {
             var l = SampleData.SampleNames();
-            var result = l.Create(name);
-            Console.WriteLine("New Id = {0}", result.Key);
-            Assert.Equal(3, l.Read(result.Key).Key);
+            var result = l.Create(new Record<int, string>(3, name));
+            Console.WriteLine("New Id = {0}", result);
+            Assert.Equal(3, l.Read(result).Key);
         }
 
         [Theory]
@@ -84,33 +85,33 @@ namespace APITests
             Assert.Equal(null, l.Read(id));
         }
 
-        [Theory]
-        [InlineData(1, "Sophie")]
-        public void UpdateCreate_IfExists_Updates(int id, string newName)
-        {
-            var l = SampleData.SampleNames();
-            var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
-            Assert.Equal(true, result.Updated);
-        }
+        //[Theory]
+        //[InlineData(1, "Sophie")]
+        //public void UpdateCreate_IfExists_Updates(int id, string newName)
+        //{
+        //    var l = SampleData.SampleNames();
+        //    var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
+        //    Assert.Equal(true, result.Updated);
+        //}
 
-        [Theory]
-        [InlineData(2, "Sophie")]
-        public void UpdateCreate_IfNotExists_Creates(int id, string newName)
-        {
-            var l = SampleData.SampleNames();
-            var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
-            Assert.Equal(false, result.Updated);
-        }
+        //[Theory]
+        //[InlineData(2, "Sophie")]
+        //public void UpdateCreate_IfNotExists_Creates(int id, string newName)
+        //{
+        //    var l = SampleData.SampleNames();
+        //    var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
+        //    Assert.Equal(false, result.Updated);
+        //}
 
-        [Theory]
-        [InlineData(2, "Sophie")]
-        public void UpdateCreate_KeyGenExists_Creates(int id, string newName)
-        {
-            var l = SampleData.SampleNames();
-            var k1 = l.Create(newName);
-            var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
-            Assert.Equal(false, result.Updated);
-        }
+        //[Theory]
+        //[InlineData(2, "Sophie")]
+        //public void UpdateCreate_KeyGenExists_Creates(int id, string newName)
+        //{
+        //    var l = SampleData.SampleNames();
+        //    var k1 = l.Create(newName);
+        //    var result = l.UpdateCreate(new KeyValuePair<int, string>(id, newName));
+        //    Assert.Equal(false, result.Updated);
+        //}
     }
 }
 

@@ -2515,21 +2515,6 @@
           "netstandard1.6/APIDataTypes.dll": {}
         }
       },
-      "APIDictionary/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v1.6",
-        "dependencies": {
-          "APIDataTypes": "1.0.0",
-          "APIInterfaces": "1.0.0",
-          "NETStandard.Library": "1.6.0"
-        },
-        "compile": {
-          "netstandard1.6/APIDictionary.dll": {}
-        },
-        "runtime": {
-          "netstandard1.6/APIDictionary.dll": {}
-        }
-      },
       "APIInterfaces/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
@@ -2541,6 +2526,37 @@
         },
         "runtime": {
           "netstandard1.6/APIInterfaces.dll": {}
+        }
+      },
+      "CacheDataRetrievers/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "APIDataTypes": "1.0.0",
+          "APIInterfaces": "1.0.0",
+          "DictionaryRetriever": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/CacheDataRetrievers.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/CacheDataRetrievers.dll": {}
+        }
+      },
+      "DictionaryRetriever/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "APIDataTypes": "1.0.0",
+          "APIInterfaces": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/DictionaryRetriever.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/DictionaryRetriever.dll": {}
         }
       }
     }
@@ -7543,21 +7559,26 @@
       "path": "../APIDataTypes/project.json",
       "msbuildProject": "../APIDataTypes/APIDataTypes.xproj"
     },
-    "APIDictionary/1.0.0": {
-      "type": "project",
-      "path": "../APIDictionary/project.json",
-      "msbuildProject": "../APIDictionary/APIDictionary.xproj"
-    },
     "APIInterfaces/1.0.0": {
       "type": "project",
       "path": "../APIInterfaces/project.json",
       "msbuildProject": "../APIInterfaces/APIInterfaces.xproj"
+    },
+    "CacheDataRetrievers/1.0.0": {
+      "type": "project",
+      "path": "../Retrievers/CacheDataRetrievers/project.json",
+      "msbuildProject": "../Retrievers/CacheDataRetrievers/CacheDataRetrievers.xproj"
+    },
+    "DictionaryRetriever/1.0.0": {
+      "type": "project",
+      "path": "../Retrievers/DictionaryRetriever/project.json",
+      "msbuildProject": "../Retrievers/DictionaryRetriever/DictionaryRetriever.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "APIDictionary >= 1.0.0-*",
-      "APIInterfaces >= 1.0.0-*",
+      "APIDataTypes >= 1.0.0-*",
+      "CacheDataRetrievers >= 1.0.0-*",
       "dotnet-test-xunit >= 2.2.0-preview2-build1029",
       "xunit >= 2.2.0-beta2-build3300"
     ],
