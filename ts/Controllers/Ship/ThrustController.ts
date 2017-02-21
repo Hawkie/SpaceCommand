@@ -2,12 +2,12 @@
 import { Transforms } from "ts/Physics/Transforms";
 // Data
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
-import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
+import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // Actors
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
@@ -52,17 +52,22 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         this.soundPlayed = false;
     }
 
-    static createGroundThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {
+    static createGroundThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData): ThrustController {
         let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
         let pField: SingleGameObject<ParticleData>[] = [];
+
+        // add thrust
+        data.forces.push(new Vector(data.angle, 0));
+        let thrust = data.forces[0];
+
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),
                 data.location.y + shape.points[2].y + Transforms.random(-2, 2)),
-                new Vector(data.angle + Transforms.random(-5, 5) + 180,
-                    data.forwardForce * 5 + Transforms.random(-5, 5)),
+                new Vector(thrust.angle + Transforms.random(-5, 5) + 180,
+                    thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
-            var gravity = new VectorAccelerator(p, new Vector(180, 10));
+            var gravity = new Accelerator(p, [new Vector(180, 10)]);
             var view = new RectangleView(p, new RectangleData(1, 1));
             return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
         });
@@ -74,14 +79,18 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         return tc;
     }
 
-    static createSpaceThrust(data: ILocatedAngledMovingRotatingForwardAcc, shape: ShapeData): ThrustController {
+    static createSpaceThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData): ThrustController {
         let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
         let pField: SingleGameObject<ParticleData>[] = [];
+
+        // add thrust
+        data.forces.push(new Vector(data.angle, 0));
+        let thrust = data.forces[0];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),
                 data.location.y + shape.points[2].y + Transforms.random(-2, 2)),
-                new Vector(data.angle + Transforms.random(-5, 5) + 180,
-                    data.forwardForce * 5 + Transforms.random(-5, 5)),
+                new Vector(thrust.angle + Transforms.random(-5, 5) + 180,
+                    thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
             var view = new RectangleView(p, new RectangleData(1, 1));

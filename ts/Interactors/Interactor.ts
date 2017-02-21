@@ -10,3 +10,4 @@ export class Interactor<TModel1, TModel2> implements IInteractor {
     }
 }
 
+

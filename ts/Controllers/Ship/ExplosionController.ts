@@ -1,6 +1,6 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { ILocated, ILocatedMoving, LocatedData } from "ts/Data/PhysicsData";
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
@@ -72,7 +72,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                     0, 0,
                     now);
                 var mover = new Mover(p);
-                var gravity = new VectorAccelerator(p, new Vector(180, 10));
+                var gravity = new Accelerator(p, [new Vector(180, 10)]);
                 var view = new RectangleView(p, new RectangleData(3, 3));
                 return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
             });

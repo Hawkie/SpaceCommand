@@ -39,7 +39,7 @@ import { WindGenerator } from "ts/Actors/WindGenerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 
 export class LandingState implements IGameState {
     wind: SingleGameObject<WindModel>;
@@ -145,7 +145,7 @@ export class LandingState implements IGameState {
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new LandShipController(shipData, chassisObj, weaponController, thrustController, explosionController);
 
-        var gravityForce = new VectorAccelerator(shipController.chassisObj.model.physics, new Vector(180, 10));
+        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)]);
         shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);

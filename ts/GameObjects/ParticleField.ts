@@ -11,7 +11,7 @@ import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
-import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForwardAccData  } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";

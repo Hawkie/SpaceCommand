@@ -13,7 +13,7 @@ import { IView } from "ts/Views/View";
 import { PolyView } from "ts/Views/PolyViews";
 // Updaters
 import { IActor } from "ts/Actors/Actor";
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
@@ -63,7 +63,7 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
 
     thrust() {
         if (!this.shipData.crashed) {
-            this.shipData.forwardForce = this.shipData.maxForwardForce;
+            this.shipData.forces[0].length = this.shipData.maxForwardForce;
             this.thrustController.on();
         } else {
             this.noThrust();
@@ -71,7 +71,7 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
     }
 
     noThrust() {
-        this.shipData.forwardForce = 0;
+        this.shipData.forces[0].length = 0;
         this.thrustController.off();
     }
 
@@ -122,7 +122,7 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
     
     thrust() {
         if (!this.shipData.crashed) {
-            this.shipData.forwardForce = this.shipData.maxForwardForce;
+            this.shipData.forces[0].length = this.shipData.maxForwardForce;
             this.thrustController.on();
         } else {
             this.noThrust();
@@ -130,7 +130,7 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
     }
 
     noThrust() {
-        this.chassisObj.model.physics.forwardForce = 0;
+        this.chassisObj.model.physics.forces[0].length = 0;
         this.thrustController.off();
     }
      
@@ -144,11 +144,19 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
     }
 
     left(lastTimeModifier: number) {
-        if (!this.shipData.crashed) this.chassisObj.model.physics.angle -= this.shipData.maxRotationalSpeed * lastTimeModifier;
+        if (!this.shipData.crashed) {
+            this.chassisObj.model.physics.angle -= this.shipData.maxRotationalSpeed * lastTimeModifier;
+            // keep thrust vector in line with ship angle
+            this.shipData.forces[0].angle = this.chassisObj.model.physics.angle;
+        }
     }
 
     right(lastTimeModifier: number) {
-        if (!this.shipData.crashed) this.chassisObj.model.physics.angle += this.shipData.maxRotationalSpeed * lastTimeModifier;
+        if (!this.shipData.crashed) {
+            this.chassisObj.model.physics.angle += this.shipData.maxRotationalSpeed * lastTimeModifier;
+            // keep thrust vector in line with ship angle
+            this.shipData.forces[0].angle = this.chassisObj.model.physics.angle;
+        }
     }
 
     shootPrimary() {

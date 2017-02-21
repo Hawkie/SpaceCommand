@@ -9,7 +9,7 @@ import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicMo
 import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
-import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForwardAccData  } from "ts/Data/PhysicsData";
+import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IView } from "ts/Views/View";
 import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/Views/PolyViews";
@@ -39,7 +39,7 @@ import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
 
-export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotatingForwardAccData>> { }
+export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotatingForces>> { }
 
 export class DuelState extends GameState implements IGameState {
     // data objects
@@ -261,13 +261,12 @@ export class DuelState extends GameState implements IGameState {
         var a = asteroids[i1];
         var xImpact = a.physics.velX;
         var yImpact = a.physics.velY;
-        var engineSeparateModel = new LocatedMovingAngledRotatingForwardAccData(new Coordinate(player.chassisObj.model.physics.location.x,
+        var engineSeparateModel = new LocatedMovingAngledRotatingForces(new Coordinate(player.chassisObj.model.physics.location.x,
             player.chassisObj.model.physics.location.y),
             xImpact + Transforms.random(-2, 2),
             yImpact + Transforms.random(-2, 2),
             player.chassisObj.model.physics.angle,
-            5,
-            0);
+            5);
         var shapeData = player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
@@ -364,7 +363,7 @@ export class DuelState extends GameState implements IGameState {
     static createGraphicShip(location: Coordinate): GraphicShip {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: Model<LocatedMovingAngledRotatingForwardAccData> = new Model<LocatedMovingAngledRotatingForwardAccData>(new LocatedMovingAngledRotatingForwardAccData(location, 1, -1, 10, 5, 0));
+        var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5));
         var shipView: IView = new GraphicAngledView(shipModel.physics, new GraphicData("res/img/ship.png"));
 
         //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);

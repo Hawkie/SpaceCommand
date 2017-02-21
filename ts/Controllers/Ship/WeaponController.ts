@@ -1,6 +1,6 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
-import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForwardAcc } from "ts/Data/PhysicsData";
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
@@ -76,7 +76,7 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
         }
     }
 
-    static createWeaponController(data: ILocatedAngledMovingRotatingForwardAcc, actx: AudioContext): BulletWeaponController {
+    static createWeaponController(data: ILocatedAngledMovingRotatingForces, actx: AudioContext): BulletWeaponController {
         let fieldData: ParticleFieldData = new ParticleFieldData(2, 1, 5, 2, false);
         let pField: SingleGameObject<ParticleData>[] = [];
         

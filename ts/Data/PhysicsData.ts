@@ -18,25 +18,21 @@ export interface IRotating {
     spin: number;
 }
 
-export interface IForwardAccelerator {
-    forwardForce: number;
-}
-
-export interface IGravity {
-    gravityForce: Vector;
+export interface IForces {
+    forces: Vector[];
 }
 
 export interface IHittable {
     hit();
 }
 
-export interface IAngledMovingForwardAcc extends IAngled, IMoving, IForwardAccelerator { }
+export interface IAngledMovingForces extends IAngled, IMoving, IForces { }
 
 export interface ILocatedAngled extends ILocated, IAngled { }
 
 export interface ILocatedAngledMoving extends ILocated, IAngled, IMoving { }
 
-export interface ILocatedAngledMovingForwardAcc extends ILocated, IAngled, IMoving, IForwardAccelerator { }
+export interface ILocatedAngledMovingForces extends ILocated, IAngled, IMoving, IForces { }
 
 export interface ILocatedMoving extends ILocated, IMoving { }
 
@@ -44,9 +40,8 @@ export interface IAngledRotating extends IAngled, IRotating { }
 
 export interface ILocatedMovingAngledRotating extends ILocated, IMoving, IAngled, IRotating { }
 
-export interface ILocatedAngledMovingRotatingForwardAcc extends ILocated, IAngled, IMoving, IRotating, IForwardAccelerator { }
+export interface ILocatedAngledMovingRotatingForces extends ILocated, IAngled, IMoving, IRotating, IForces { }
 
-export interface IGravityObject extends ILocated, IAngled, IMoving, IRotating, IForwardAccelerator, IGravity { }
 
 export class LocatedData implements ILocated {
     constructor(public location: Coordinate) { }
@@ -70,14 +65,10 @@ export class LocatedMovingAngledRotatingData extends LocatedMovingAngledData imp
     }
 }
 
-export class LocatedMovingAngledRotatingForwardAccData extends LocatedMovingAngledRotatingData implements IForwardAccelerator {
-    constructor(location: Coordinate, velX: number, velY: number, angle: number, public spin: number, public forwardForce:number ) {
+export class LocatedMovingAngledRotatingForces extends LocatedMovingAngledRotatingData implements IForces {
+    public forces: Vector[];
+    constructor(location: Coordinate, velX: number, velY: number, angle: number, public spin: number) {
         super(location, velX, velY, angle, spin);
-    }
-}
-
-export class LocatedAngledMovingRotatingAcceleratingData extends LocatedMovingAngledRotatingForwardAccData {
-    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number, public gravityForce: Vector) {
-        super(location, velx, vely, angle, spin, 0);
+        this.forces = [];
     }
 }

@@ -31,7 +31,7 @@ import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
-import { ForwardAccelerator, VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { Mover } from "ts/Actors/Movers";
@@ -169,7 +169,7 @@ export class LandExplorerState implements IGameState {
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
-        var gravityForce = new VectorAccelerator(shipController.chassisObj.model.physics, new Vector(180, 10));
+        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)]);
         shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);

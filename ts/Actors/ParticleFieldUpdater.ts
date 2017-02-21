@@ -4,7 +4,7 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 //import { IModel } from "ts/Models/DynamicModels"; 
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
-import { VectorAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export class ParticleGenerator implements IActor {

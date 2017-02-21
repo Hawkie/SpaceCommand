@@ -1,4 +1,4 @@
-import { Coordinate, Vector } from "../Physics/Common";
+import { Coordinate, Vector, OrthogonalVectors } from "../Physics/Common";
 
 export class Transforms {
 
@@ -15,7 +15,7 @@ export class Transforms {
     }
 
     static Rotate(points: Coordinate[], degrees: number): Coordinate[]{
-        var radians = degrees / 360 * Math.PI * 2;
+        var radians = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
         var c = Math.cos(radians);
@@ -33,7 +33,7 @@ export class Transforms {
     }
 
     static VectorToCartesian(degrees, length): Coordinate {
-        var radians = degrees / 360 * Math.PI * 2;
+        var radians = degrees / 180 * Math.PI;
         var x = Math.sin(radians) * length;
         var y = Math.cos(radians) * -length;
         return new Coordinate(x, y);
@@ -44,6 +44,21 @@ export class Transforms {
         var angle = Math.atan(y / x) * 180 / Math.PI;
         return new Vector(angle, length);
     }
+
+    static AddVectors(vectorA: Vector, vectorB: Vector) {
+        
+    }
+
+    // sin 0 = 0 // unit circle (anticlockwise angle x = cos r, y = sin r (initial on horizontal line). 
+    // cos 0 = 1
+    static VectorToAxis(vectorAngle: number, vectorLength: number, axisAngle: number) : OrthogonalVectors {
+        var diff = (vectorAngle - axisAngle);
+        var c = Transforms.VectorToCartesian(diff, vectorLength);
+        return new OrthogonalVectors(c.x, c.y, axisAngle);
+    } 
+
+
+
 
     static scale(points: Coordinate[], scaleX: number, scaleY:number) {
         points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });

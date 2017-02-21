@@ -21,14 +21,15 @@ namespace API.Interfaces
         /// <returns></returns>
         IEnumerable<KeyValuePair<SystemKeyType, ValueType>> Find(Func<ValueType, bool> selector);
 
-        // Create
-        SystemKeyType Create(ValueType value);
-
         /// <summary>
         /// Read all or get one by key
         /// </summary>
         /// <returns></returns>
         ValueType Read(SystemKeyType key);
+
+
+        // Create
+        SystemKeyType Create(ValueType value);
 
         /// <summary>
         /// Update only. Return missing status if not present
