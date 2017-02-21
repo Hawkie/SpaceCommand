@@ -61,8 +61,8 @@ export class SpriteModel<TPhysics extends ILocated,
 }
 
 export class ShapedModel<TPhysics extends ILocated,
-    TShape extends IShape>
-    implements IPhysical<TPhysics>, IShaped<TShape> {
+    TShape>
+    implements IPhysical<TPhysics> {
     constructor(
         public physics: TPhysics,
         public shape: TShape) {

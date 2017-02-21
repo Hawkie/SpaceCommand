@@ -9,7 +9,7 @@ import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
 import { ILocated, LocatedData } from "ts/Data/PhysicsData";
-import { ShapeData } from "ts/Data/ShapeData";
+import { ShapeData, CircleData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
@@ -27,7 +27,7 @@ import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/G
 import { TextObject } from "ts/GameObjects/TextObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { IView } from "ts/Views/View";
-import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
+import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
@@ -46,6 +46,7 @@ export class LandExplorerState implements IGameState {
     wind: SingleGameObject<WindModel>;
     surface: SingleGameObject<PlanetSurfaceModel>;
     landingPad: SingleGameObject<LandingPadModel>;
+    ballObject: SingleGameObject<ShapedModel<LocatedData, CircleData>>;
     velocityText: TextObject;
     interactors: IInteractor[];
     
@@ -61,7 +62,8 @@ export class LandExplorerState implements IGameState {
         // scene objects
         this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.chassisObj.model.physics);
         this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
-        this.sceneObjects.push(this.surface, this.landingPad, this.player.chassisObj, this.player.thrustController, this.player.weaponController, this.player.explosionController.field);
+        this.ballObject = LandExplorerState.createBallObject(this.surface);
+        this.sceneObjects.push(this.surface, this.landingPad, this.ballObject, this.player.chassisObj, this.player.thrustController, this.player.weaponController, this.player.explosionController.field);
 
         // Gui Objects
         this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
@@ -195,6 +197,16 @@ export class LandExplorerState implements IGameState {
             xy.y + surface.model.physics.location.y));
         var padView: IView = new PolyView(padModel.physics, padModel.shape);
         var obj = new SingleGameObject<LandingPadModel>(padModel, [], [padView]);
+        return obj;
+    }
+
+    static createBallObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<ShapedModel<LocatedData, CircleData>> {
+        var placeIndex = Transforms.random(0, 50);
+        var xy = surface.model.shape.points[placeIndex];
+        var ballModel = new ShapedModel(new LocatedData(new Coordinate(xy.x + surface.model.physics.location.x,
+            xy.y + surface.model.physics.location.y-8)), new CircleData(8));
+        var ballView: IView = new CircleView(ballModel.physics, ballModel.shape);
+        var obj = new SingleGameObject<ShapedModel<LocatedData, CircleData>>(ballModel, [], [ballView]);
         return obj;
     }
 

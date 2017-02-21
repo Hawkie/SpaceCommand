@@ -162,4 +162,14 @@ export class SpaceShipController extends ComponentObjects<IGameObject> implement
     shootPrimary() {
         if (!this.shipData.crashed) this.weaponController.pullTrigger(this.shipData, 0, 128);
     }
+
+    // tether to ball if within range
+    // hook() {
+    //    if (!this.shipData.crashed) 
+
+    // untether to ball if within range
+    // unhook() {
+    //    if (!this.shipData.crashed) 
+
+    
 }
