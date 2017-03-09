@@ -1,4 +1,4 @@
-﻿import { ICoordinate, Coordinate, IVector, Vector } from "ts/Physics/Common";
+﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 
 export interface IShape {

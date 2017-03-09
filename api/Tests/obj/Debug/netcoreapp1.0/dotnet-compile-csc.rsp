@@ -110,6 +110,7 @@
 -r:"C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Interfaces\bin\Debug\netstandard1.6\Interfaces.dll"
 -r:"C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Retrievers\bin\Debug\netstandard1.6\Retrievers.dll"
 "C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Tests\DictionaryDataTests.cs"
+"C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Tests\PhysicsTest.cs"
 "C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Tests\WeightsControllerTests.cs"
 "C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Tests\WeightsKeyTests.cs"
 "C:\Users\paulh\Documents\Projects\src\SpaceCommand\api\Tests\Properties\AssemblyInfo.cs"

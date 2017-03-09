@@ -1,4 +1,4 @@
-﻿import { ICoordinate, Coordinate, IVector, Vector } from "ts/Physics/Common";
+﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocatedMoving, LocatedMovingData, ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData } from "ts/Data/PhysicsData";
 
@@ -28,7 +28,7 @@ export class ParticleData extends LocatedMovingAngledRotatingData implements IPa
 
 export class ParticleDataVectorConstructor extends ParticleData {
 
-    constructor(location: ICoordinate, vector: IVector, bornTime: number) {
+    constructor(location: Coordinate, vector: Vector, bornTime: number) {
         var cartesian = Transforms.VectorToCartesian(vector.angle, vector.length)
         super(location.x, location.y, cartesian.x, cartesian.y, 0, 0, bornTime);
     }

@@ -138,14 +138,19 @@ export class LandingState implements IGameState {
         var field = Field.createBackgroundField(16, 2);
 
         // ships        
-        var shipData = new LandingShipData(new Coordinate(256, 240));
+        var shipData = new LandingShipData(new Coordinate(256, 240), 1);
         var chassisObj = ShipComponents.createShipObj(shipData);
+        chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
+        chassisObj.model.physics.forces.push(new Vector(180, 10));
+        var accelerator = new Accelerator(chassisObj.model.physics, chassisObj.model.physics.forces, chassisObj.model.physics.mass);
+        chassisObj.actors.push(accelerator);
+
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new LandShipController(shipData, chassisObj, weaponController, thrustController, explosionController);
 
-        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)]);
+        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);
         shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);

@@ -34,8 +34,8 @@ export class Transforms {
 
     static VectorToCartesian(degrees, length): Coordinate {
         var radians = degrees / 180 * Math.PI;
-        var x = Math.sin(radians) * length;
-        var y = Math.cos(radians) * -length;
+        var x = Math.sin(radians) * length; // sin 0 = 0
+        var y = Math.cos(radians) * -length; // cos 0 = 1
         return new Coordinate(x, y);
     }
 
@@ -45,20 +45,13 @@ export class Transforms {
         return new Vector(angle, length);
     }
 
-    static AddVectors(vectorA: Vector, vectorB: Vector) {
-        
-    }
-
     // sin 0 = 0 // unit circle (anticlockwise angle x = cos r, y = sin r (initial on horizontal line). 
     // cos 0 = 1
     static VectorToAxis(vectorAngle: number, vectorLength: number, axisAngle: number) : OrthogonalVectors {
-        var diff = (vectorAngle - axisAngle);
-        var c = Transforms.VectorToCartesian(diff, vectorLength);
-        return new OrthogonalVectors(c.x, c.y, axisAngle);
+        var offsetDegrees = (axisAngle- vectorAngle);
+        var c = Transforms.VectorToCartesian(offsetDegrees, vectorLength);
+        return new OrthogonalVectors(c.y, c.x, axisAngle);
     } 
-
-
-
 
     static scale(points: Coordinate[], scaleX: number, scaleY:number) {
         points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });

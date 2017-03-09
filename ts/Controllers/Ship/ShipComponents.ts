@@ -39,10 +39,10 @@ export class ShipComponents {
 
         var mover: IActor = new Mover(chassis.physics);
         // adding ship thrust force
-        var thrust = new Accelerator(chassis.physics, chassis.physics.forces);
+        
         var rotator = new PolyRotator(chassis.physics, chassis.shape);
 
-        var actors: IActor[] = [mover, thrust, rotator];
+        var actors: IActor[] = [mover, rotator];
         var shipView = new PolyView(chassis.physics, chassis.shape);
 
         var shipObj = new ShipComponentObject(chassis, actors, [shipView]);

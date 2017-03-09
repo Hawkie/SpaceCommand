@@ -6,7 +6,7 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
@@ -33,6 +33,7 @@ import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Mover } from "ts/Actors/Movers";
+import { Accelerator } from "ts/Actors/Accelerators";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -266,7 +267,8 @@ export class DuelState extends GameState implements IGameState {
             xImpact + Transforms.random(-2, 2),
             yImpact + Transforms.random(-2, 2),
             player.chassisObj.model.physics.angle,
-            5);
+            5,
+            0.5);
         var shapeData = player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
@@ -291,8 +293,12 @@ export class DuelState extends GameState implements IGameState {
     }
 
     static createPlayer(location: Coordinate, angle:number, actx: AudioContext): SpaceShipController {
-        var shipData = new SpaceShipData(location, 0, 0, angle, 0);
+        var shipData = new SpaceShipData(location, 0, 0, angle, 0, 1);
         var chassisObj = ShipComponents.createShipObj(shipData);
+        chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
+        var accelerator = new Accelerator(chassisObj.model.physics, chassisObj.model.physics.forces, chassisObj.model.physics.mass);
+        chassisObj.actors.push(accelerator);
+
         var weaponController1 = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController1 = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
         var explosionController1 = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
@@ -363,7 +369,7 @@ export class DuelState extends GameState implements IGameState {
     static createGraphicShip(location: Coordinate): GraphicShip {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5));
+        var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5, 0.8));
         var shipView: IView = new GraphicAngledView(shipModel.physics, new GraphicData("res/img/ship.png"));
 
         //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);

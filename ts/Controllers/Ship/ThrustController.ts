@@ -56,8 +56,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
         let pField: SingleGameObject<ParticleData>[] = [];
 
-        // add thrust
-        data.forces.push(new Vector(data.angle, 0));
+        // get thrust
         let thrust = data.forces[0];
 
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
@@ -67,7 +66,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                     thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
-            var gravity = new Accelerator(p, [new Vector(180, 10)]);
+            var gravity = new Accelerator(p, [new Vector(180, 1)], 0.1);
             var view = new RectangleView(p, new RectangleData(1, 1));
             return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
         });
@@ -84,7 +83,6 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
         let pField: SingleGameObject<ParticleData>[] = [];
 
         // add thrust
-        data.forces.push(new Vector(data.angle, 0));
         let thrust = data.forces[0];
         var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
             var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),

@@ -20,6 +20,7 @@ export interface IRotating {
 
 export interface IForces {
     forces: Vector[];
+    mass: number;
 }
 
 export interface IHittable {
@@ -67,8 +68,9 @@ export class LocatedMovingAngledRotatingData extends LocatedMovingAngledData imp
 
 export class LocatedMovingAngledRotatingForces extends LocatedMovingAngledRotatingData implements IForces {
     public forces: Vector[];
-    constructor(location: Coordinate, velX: number, velY: number, angle: number, public spin: number) {
+    constructor(location: Coordinate, velX: number, velY: number, angle: number, public spin: number, public mass:number) {
         super(location, velX, velY, angle, spin);
         this.forces = [];
+        
     }
 }

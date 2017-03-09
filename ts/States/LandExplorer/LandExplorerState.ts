@@ -164,15 +164,23 @@ export class LandExplorerState implements IGameState {
         var field = Field.createBackgroundField(16, 2);
 
         // ship = space ship controller with gravity
-        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0);
+        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 1);
         var chassisObj = ShipComponents.createShipObj(spaceShipData);
+
+        chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
+        chassisObj.model.physics.forces.push(new Vector(180, 10));
+        var accelerator = new Accelerator(chassisObj.model.physics, chassisObj.model.physics.forces, chassisObj.model.physics.mass);
+        chassisObj.actors.push(accelerator);
+
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
-        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)]);
-        shipController.chassisObj.actors.push(gravityForce);
+        
+        
+        //var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);
+        //shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var landingState = new LandExplorerState("Lander", assets, shipController, [text], [field]);

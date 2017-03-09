@@ -1,4 +1,4 @@
-﻿import { ICoordinate, Coordinate, Vector } from "ts/Physics/Common";
+﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { ILocatedMoving, LocatedMovingData } from "ts/Data/PhysicsData";
 //import { IModel, DynamicModel } from "ts/Models/DynamicModels";
 import { IParticleData, ParticleData} from "ts/Data/ParticleData";

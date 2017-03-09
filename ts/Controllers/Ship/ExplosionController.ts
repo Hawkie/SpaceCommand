@@ -72,7 +72,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                     0, 0,
                     now);
                 var mover = new Mover(p);
-                var gravity = new Accelerator(p, [new Vector(180, 10)]);
+                var gravity = new Accelerator(p, [new Vector(180, 1)], 0.1);
                 var view = new RectangleView(p, new RectangleData(3, 3));
                 return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
             });

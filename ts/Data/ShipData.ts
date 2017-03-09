@@ -15,8 +15,8 @@ export class SpaceShipData extends LocatedMovingAngledRotatingForces {
     maxRotationalSpeed: number;
     crashed: boolean;
 
-    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number) {
-        super(location, velx, vely, angle, spin);
+    constructor(location: Coordinate, velx: number, vely: number, angle: number, spin: number, mass:number) {
+        super(location, velx, vely, angle, spin, mass);
         this.maxForwardForce = 16;
         this.maxRotationalSpeed = 64;
         this.crashed = false;
@@ -29,8 +29,8 @@ export class LandingShipData extends SpaceShipData {
     leftRightSpeed: number;
     leftRightSlowing: number;
 
-    constructor(location: Coordinate) {
-        super(location, 0, 0, 0, 0);
+    constructor(location: Coordinate, mass:number) {
+        super(location, 0, 0, 0, 0, mass);
         this.leftRightSpeed = 32;
         this.leftRightSlowing = 2;
     }
