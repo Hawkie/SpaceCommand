@@ -39,19 +39,12 @@ export class Transforms {
         return new Coordinate(x, y);
     }
 
+    // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
     static CartesianToVector(x: number, y: number) : Vector {
         var length = Math.sqrt(x * x + y * y);
-        var angle = Math.atan(y / x) * 180 / Math.PI;
+        var angle = Math.atan2(x, y) * 180 / Math.PI;
         return new Vector(angle, length);
     }
-
-    // sin 0 = 0 // unit circle (anticlockwise angle x = cos r, y = sin r (initial on horizontal line). 
-    // cos 0 = 1
-    static VectorToAxis(vectorAngle: number, vectorLength: number, axisAngle: number) : OrthogonalVectors {
-        var offsetDegrees = (axisAngle- vectorAngle);
-        var c = Transforms.VectorToCartesian(offsetDegrees, vectorLength);
-        return new OrthogonalVectors(c.y, c.x, axisAngle);
-    } 
 
     static scale(points: Coordinate[], scaleX: number, scaleY:number) {
         points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });

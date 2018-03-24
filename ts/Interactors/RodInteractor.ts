@@ -24,11 +24,7 @@ export class RodInteractor implements IInteractor {
         // Each for split to parallel and perpenticular forces
         // parallel to bar acts on sum of masses
         // perp to bar acts on own mass
-        this.fromF.forces.forEach((f) => {
-            var forceV = Transforms.VectorToAxis(f.angle, f.length, v.angle);
-            var accelerationParallel = forceV.parallel / (this.fromF.mass + this.toF.mass);
-            var accelerationPerp = forceV.perpendicular / (this.fromF.mass);
-        });
+
         //var ab = Transforms.VectorToAxis(this.model2.angle, this.model1.)
         //    this.callBack(lastTestModifier, this.model1, this.model2);
     }

@@ -18,7 +18,7 @@
     "System.Interactive.Async": "3.0.0",
     "Retrievers": "1.0.0-*",
     "Interfaces": "1.0.0-*",
-    "DataTypes": "1.0.0-*"  },
+    "DataTypes": "1.0.0-*"},
 
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"

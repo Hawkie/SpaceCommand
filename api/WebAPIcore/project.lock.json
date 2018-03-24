@@ -92,6 +92,26 @@
           "lib/netstandard1.6/Microsoft.ApplicationInsights.AspNetCore.dll": {}
         }
       },
+      "Microsoft.AspNet.WebApi.Client/4.0.20710": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Net.Http": "[2.0.20710, 2.1.0)",
+          "Newtonsoft.Json": "4.5.6"
+        }
+      },
+      "Microsoft.AspNet.WebApi.Core/4.0.20710": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "[4.0.20710, 4.1.0)"
+        }
+      },
+      "Microsoft.AspNet.WebApi.WebHost/4.0.20710": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Core": "[4.0.20710, 4.1.0)",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
       "Microsoft.AspNetCore.Antiforgery/1.0.0": {
         "type": "package",
         "dependencies": {
@@ -1313,6 +1333,9 @@
           "lib/netstandard1.0/Microsoft.Extensions.WebEncoders.dll": {}
         }
       },
+      "Microsoft.Net.Http/2.0.20710": {
+        "type": "package"
+      },
       "Microsoft.Net.Http.Headers/1.0.0": {
         "type": "package",
         "dependencies": {
@@ -1456,6 +1479,9 @@
         "runtime": {
           "lib/netstandard1.3/_._": {}
         }
+      },
+      "Microsoft.Web.Infrastructure/1.0.0": {
+        "type": "package"
       },
       "Microsoft.Win32.Primitives/4.0.1": {
         "type": "package",
@@ -1639,6 +1665,21 @@
         },
         "runtime": {
           "lib/netstandard1.0/_._": {}
+        }
+      },
+      "Swashbuckle/5.6.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.WebHost": "4.0.20710",
+          "Swashbuckle.Core": "5.6.0",
+          "WebActivatorEx": "2.0.0"
+        }
+      },
+      "Swashbuckle.Core/5.6.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Core": "4.0.20710",
+          "Newtonsoft.Json": "7.0.1"
         }
       },
       "System.AppContext/4.1.0": {
@@ -3518,6 +3559,59 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
+      "WebActivatorEx/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
+      "API.DataTypes/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "API.Interfaces": "1.0.0",
+          "Interfaces": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "System.Interactive.Async": "3.0.0",
+          "System.Linq": "4.1.0"
+        },
+        "compile": {
+          "netstandard1.6/API.DataTypes.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/API.DataTypes.dll": {}
+        }
+      },
+      "API.Interfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/API.Interfaces.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/API.Interfaces.dll": {}
+        }
+      },
+      "API.Retrievers/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "API.DataTypes": "1.0.0",
+          "API.Interfaces": "1.0.0",
+          "DataTypes": "1.0.0",
+          "Interfaces": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/API.Retrievers.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/API.Retrievers.dll": {}
+        }
+      },
       "DataTypes/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
@@ -3594,6 +3688,40 @@
         "Microsoft.ApplicationInsights.AspNetCore.nuspec",
         "lib/net451/Microsoft.ApplicationInsights.AspNetCore.dll",
         "lib/netstandard1.6/Microsoft.ApplicationInsights.AspNetCore.dll"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Client/4.0.20710": {
+      "sha512": "BwFtW0cGr8tg02XalvF8MmznOpYrhquD2eXWI0oF3LLSqLMFoFkb8Pmke/7SnqkiNc+YfsaUqdXEKbjhv1Ctrw==",
+      "type": "package",
+      "path": "Microsoft.AspNet.WebApi.Client/4.0.20710",
+      "files": [
+        "Microsoft.AspNet.WebApi.Client.4.0.20710.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.Client.nuspec",
+        "lib/net40/System.Net.Http.Formatting.dll",
+        "lib/net40/System.Net.Http.Formatting.xml"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Core/4.0.20710": {
+      "sha512": "ufD+tH4W7+eNsb4pzX5oFTDcgI6J3lffughFTkyLHPBZ+A4Eo+VncAxt3lbt9zxxbLHXIbgJHYRLvtgR5YEZAQ==",
+      "type": "package",
+      "path": "Microsoft.AspNet.WebApi.Core/4.0.20710",
+      "files": [
+        "Microsoft.AspNet.WebApi.Core.4.0.20710.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.Core.nuspec",
+        "content/web.config.transform",
+        "lib/net40/System.Web.Http.dll",
+        "lib/net40/System.Web.Http.xml"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.WebHost/4.0.20710": {
+      "sha512": "Pqje5F4BJvnN6z2eSIuyCCZNJbIPap/4bYfvvHYy/kiYPj7+cFK+tgcSKWgITwk+6K8v+Bf3Et16DXQQuK+wEg==",
+      "type": "package",
+      "path": "Microsoft.AspNet.WebApi.WebHost/4.0.20710",
+      "files": [
+        "Microsoft.AspNet.WebApi.WebHost.4.0.20710.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.WebHost.nuspec",
+        "lib/net40/System.Web.Http.WebHost.dll",
+        "lib/net40/System.Web.Http.WebHost.xml"
       ]
     },
     "Microsoft.AspNetCore.Antiforgery/1.0.0": {
@@ -4544,6 +4672,20 @@
         "lib/netstandard1.0/Microsoft.Extensions.WebEncoders.xml"
       ]
     },
+    "Microsoft.Net.Http/2.0.20710": {
+      "sha512": "OsB/5QO9tYJRLYIgBOhRl4Tssh3pw7+UAO9tMGMBg63f98GfjsniVIwLWRC0vcRr/F6HLP/NvRlHyGBhtD7Bmw==",
+      "type": "package",
+      "path": "Microsoft.Net.Http/2.0.20710",
+      "files": [
+        "Microsoft.Net.Http.2.0.20710.nupkg.sha512",
+        "Microsoft.Net.Http.nuspec",
+        "lib/net40/System.Net.Http.WebRequest.dll",
+        "lib/net40/System.Net.Http.WebRequest.xml",
+        "lib/net40/System.Net.Http.dll",
+        "lib/net40/System.Net.Http.xml",
+        "lib/net45/_._"
+      ]
+    },
     "Microsoft.Net.Http.Headers/1.0.0": {
       "sha512": "1lr92itF1fKR2oEQ6gk1IUsuCgp7UMlf/b1sjlAyuDeUnttj39ra59GQHYpomglJX1UVNpi1/cSBbEsXoNeIhw==",
       "type": "package",
@@ -4708,6 +4850,16 @@
         "ref/wpa81/_._"
       ]
     },
+    "Microsoft.Web.Infrastructure/1.0.0": {
+      "sha512": "FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg==",
+      "type": "package",
+      "path": "Microsoft.Web.Infrastructure/1.0.0",
+      "files": [
+        "Microsoft.Web.Infrastructure.1.0.0.nupkg.sha512",
+        "Microsoft.Web.Infrastructure.nuspec",
+        "lib/net40/Microsoft.Web.Infrastructure.dll"
+      ]
+    },
     "Microsoft.Win32.Primitives/4.0.1": {
       "sha512": "fQnBHO9DgcmkC9dYSJoBqo6sH1VJwJprUHh8F3hbcRlxiQiBUuTntdk8tUwV490OqC2kQUrinGwZyQHTieuXRA==",
       "type": "package",
@@ -4865,6 +5017,26 @@
         "lib/netstandard1.0/_._",
         "runtime.native.System.Security.Cryptography.4.0.0.nupkg.sha512",
         "runtime.native.System.Security.Cryptography.nuspec"
+      ]
+    },
+    "Swashbuckle/5.6.0": {
+      "sha512": "UAE91ynpgvwoUs8igq3k/D0HV+cHrGRGJR9cwIPGE08hHJenn24MR2vq1n6NYbDWEwAVm+RYUW+qIsO9p5Sn/Q==",
+      "type": "package",
+      "path": "Swashbuckle/5.6.0",
+      "files": [
+        "Content/App_Start/SwaggerConfig.cs.pp",
+        "Swashbuckle.5.6.0.nupkg.sha512",
+        "Swashbuckle.nuspec"
+      ]
+    },
+    "Swashbuckle.Core/5.6.0": {
+      "sha512": "GhVWgtB8hCOxQhx7zLiiRyoi6flm7fNDDGILYHWktxLMkykRUz90fhmLRZECmnbvCcepFyROiw3phS1XorhdDg==",
+      "type": "package",
+      "path": "Swashbuckle.Core/5.6.0",
+      "files": [
+        "Swashbuckle.Core.5.6.0.nupkg.sha512",
+        "Swashbuckle.Core.nuspec",
+        "lib/net40/Swashbuckle.Core.dll"
       ]
     },
     "System.AppContext/4.1.0": {
@@ -9385,6 +9557,31 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
+    "WebActivatorEx/2.0.0": {
+      "sha512": "B3ZbOEaGCqa7BLjZZw6wqprOJJMvP39h7Lr5ADkJOCPKHppAaCre34kR63/gfgpM4htzTfgm/pEw7r7qqqMgIA==",
+      "type": "package",
+      "path": "WebActivatorEx/2.0.0",
+      "files": [
+        "WebActivatorEx.2.0.0.nupkg.sha512",
+        "WebActivatorEx.nuspec",
+        "lib/net40/WebActivatorEx.dll"
+      ]
+    },
+    "API.DataTypes/1.0.0": {
+      "type": "project",
+      "path": "../DataTypes/project.json",
+      "msbuildProject": "../DataTypes/API.DataTypes.xproj"
+    },
+    "API.Interfaces/1.0.0": {
+      "type": "project",
+      "path": "../Interfaces/project.json",
+      "msbuildProject": "../Interfaces/API.Interfaces.xproj"
+    },
+    "API.Retrievers/1.0.0": {
+      "type": "project",
+      "path": "../Retrievers/project.json",
+      "msbuildProject": "../Retrievers/API.Retrievers.xproj"
+    },
     "DataTypes/1.0.0": {
       "type": "project",
       "path": "../DataTypes/project.json"
@@ -9415,6 +9612,7 @@
       "Microsoft.Extensions.Options.ConfigurationExtensions >= 1.0.0",
       "Microsoft.NETCore.App >= 1.0.0",
       "Retrievers >= 1.0.0-*",
+      "Swashbuckle >= 5.6.0",
       "System.Interactive.Async >= 3.0.0"
     ],
     ".NETCoreApp,Version=v1.0": []

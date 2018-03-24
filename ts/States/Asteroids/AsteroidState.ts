@@ -252,7 +252,7 @@ export class AsteroidState implements IGameState {
         //var spriteField = Field.createSpriteField();
 
         // special
-        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 1);
+        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 2);
         var chassisObj = ShipComponents.createShipObj(spaceShipData);
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
         
@@ -280,8 +280,10 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
         var angleDisplay: ValueObject = new ValueObject(chassisObj.model.physics.angle, new Coordinate(460, 40), "Arial", 18);
+        var rod : IView = new PolyView(spaceShipData, new ShapeData([ball.model.physics.location]));
+        var rodObj = new SingleGameObject<LocatedData>(spaceShipData, [],[rod]);
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController, [text, score, valueDisplay, angleDisplay], [field, alien, coinObj, shipController, ball], asteroids, valueDisplay, angleDisplay);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController, [text, score, valueDisplay, angleDisplay], [field, alien, coinObj, shipController, ball, rodObj], asteroids, valueDisplay, angleDisplay);
         return asteroidState;
     }
 
@@ -349,10 +351,10 @@ export class AsteroidState implements IGameState {
     }
 
     static createBallObject(x: number, y: number): SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>> {
-        var ballModel = new ShapedModel(new LocatedMovingAngledRotatingForces(new Coordinate(x, y),0,0,0,0, 2), new CircleData(8));
+        var ballModel = new ShapedModel(new LocatedMovingAngledRotatingForces(new Coordinate(x, y),0,0,0,0, 1), new CircleData(8));
         var ballView: IView = new CircleView(ballModel.physics, ballModel.shape);
-        var mover = new Mover(ballModel.physics);
-        var obj = new SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>>(ballModel, [mover], [ballView]);
+        //var mover = new Mover(ballModel.physics);
+        var obj = new SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>>(ballModel, [], [ballView]);
         return obj;
     }
 
