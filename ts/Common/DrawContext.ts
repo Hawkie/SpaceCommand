@@ -7,18 +7,18 @@ export class DrawContext {
     }
 
     zoom(scaleX:number, scaleY:number) {
-        var ctx = this.ctx;
+        var ctx: CanvasRenderingContext2D = this.ctx;
         ctx.scale(scaleX, scaleY);
     }
 
-    save() {
+    save(): void {
         this.ctx.save();
         //* The current transformation matrix.
         //* The current clipping region.
         //* The current values of the following attributes: strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation, font, textAlign, textBaseline.
     }
 
-    restore() {
+    restore(): void {
         this.ctx.restore();
     }
 
@@ -51,9 +51,9 @@ export class DrawContext {
 
     createPattern(img: HTMLImageElement) : CanvasPattern {
         return this.ctx.createPattern(img, 'repeat');
-        //repeat	Default.The pattern repeats both horizontally and vertically	Play it »
-        //repeat - x	The pattern repeats only horizontally	Play it »
-        //repeat - y	The pattern repeats only vertically	Play it »
+        //repeat	Default.The pattern repeats both horizontally and vertically	Play it ï¿½
+        //repeat - x	The pattern repeats only horizontally	Play it ï¿½
+        //repeat - y	The pattern repeats only vertically	Play it ï¿½
         //no - repeat	The pattern will be displayed only once (no repeat)
     }
 

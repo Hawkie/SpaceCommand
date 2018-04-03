@@ -26,7 +26,7 @@ export class MenuItem {
 
 export class MenuState implements IGameState {
 
-    menuItems: SparseArray<TextObject> = new SparseArray<TextObject>(10);
+    menuItems: SparseArray<TextObject> = new SparseArray<TextObject>();
     font: string = "Arial";
     size: number = 16;
     selectedItem: number = 0;

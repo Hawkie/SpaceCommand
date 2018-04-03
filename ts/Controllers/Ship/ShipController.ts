@@ -13,7 +13,6 @@ import { IView } from "ts/Views/View";
 import { PolyView } from "ts/Views/PolyViews";
 // Updaters
 import { IActor } from "ts/Actors/Actor";
-import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";

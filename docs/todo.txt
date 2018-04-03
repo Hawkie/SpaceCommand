@@ -1,0 +1,6 @@
+
+Integrate Karma and Jasmine for browser testing
+Change models/actors so they are more versitile and work with react 
+add redux, reduce and react
+remove sound that doen't seem to work on a phone safari browser?
+

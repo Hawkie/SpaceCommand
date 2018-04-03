@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/Common/DrawContext";
-import { SparseArray } from "ts/Collections/SparseArray"
-import { Coordinate } from "ts/Physics/Common"
+import { SparseArray } from "ts/Collections/SparseArray";
+import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 

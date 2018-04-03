@@ -4,19 +4,6 @@ import { IActor } from "ts/Actors/Actor";
 import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
 
 
-export class Accelerator implements IActor {
-
-    constructor(private properties: IMoving, private forces: Vector[], private mass:number) { }
-
-    update(timeModifer: number) {
-        this.forces.forEach((f) => {
-            let velChange = Transforms.VectorToCartesian(f.angle, f.length/this.mass * timeModifer);
-            this.properties.velX += velChange.x;
-            this.properties.velY += velChange.y;
-        });
-    }
-}
-
 export class CompositeAcceleratorError implements IActor {
 
     private barLength: number = 10;
@@ -222,7 +209,7 @@ export class CompositeAccelerator implements IActor {
         var dx = Math.sin(this.barAngleRadians)* this.barLength;
         var dy = Math.cos(this.barAngleRadians)* this.barLength;
 // apply vel to ball position
-        
+
         this.toL.location.x = this.fromL.location.x + dx;
         this.toL.location.y = this.fromL.location.y - dy;
     }

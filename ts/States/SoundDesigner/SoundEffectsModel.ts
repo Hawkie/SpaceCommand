@@ -22,7 +22,7 @@ export class SoundEffectData {
     constructor(public frequencyValue: number = 200,
         public attack: number = 0,
         public decay: number = 0,
-        public type: string = "sine",
+        public type: OscillatorType = "sine",
         public volumeValue: number = 1,
         public panValue: number = 0,
         public wait: number = 0,
@@ -38,15 +38,16 @@ export class SoundEffectData {
 export enum SoundType {
     sine,
     triangle,
-    square, 
-    sawtooth, 
+    square,
+    sawtooth,
 }
 
 export class SoundEffectsModel extends ControlPanelModel {
 
-    private typeNames: string[];
+    private typeNames: OscillatorType[];
 
-    sliders: Slider[]
+    sliders: Slider[];
+
     constructor() {
         var sliders = [new Slider("frequency(Hz)", 1046, 0, 10000, 10),
             new Slider("attack(sec)", 0, 0, 10, 0.05),

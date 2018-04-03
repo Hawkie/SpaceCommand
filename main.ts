@@ -1,4 +1,4 @@
 ﻿import {Game} from "./ts/Game";
 
-var game = new Game();
+var game: Game = new Game();
 game.run(window, document);

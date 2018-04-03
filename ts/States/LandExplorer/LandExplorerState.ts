@@ -31,7 +31,7 @@ import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
-import { Accelerator } from "ts/Actors/Accelerators";
+import { IAcceleratorProps, Accelerator, IOut } from "ts/Actors/Accelerator";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { Mover } from "ts/Actors/Movers";
@@ -42,6 +42,8 @@ import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 
 
 
+
+
 export class LandExplorerState implements IGameState {
     wind: SingleGameObject<WindModel>;
     surface: SingleGameObject<PlanetSurfaceModel>;
@@ -49,11 +51,11 @@ export class LandExplorerState implements IGameState {
     ballObject: SingleGameObject<ShapedModel<LocatedData, CircleData>>;
     velocityText: TextObject;
     interactors: IInteractor[];
-    
+
     viewScale: number;
     zoom: number;
     exitState: boolean = false;
-    
+
     constructor(public name: string, private assets: Assets, private player: SpaceShipController, private guiObjects: IGameObject[], private sceneObjects: IGameObject[]) {
         this.viewScale = 1;
         this.zoom = 1;
@@ -76,13 +78,12 @@ export class LandExplorerState implements IGameState {
         this.interactors = [shipSurfaceDetector, shipLandingPadDetector, windEffect];
     }
     
-    update(lastDrawModifier : number){
+    update(lastDrawModifier : number) {
         this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.chassisObj.model.physics.velY));
-        
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
         this.guiObjects.forEach(o => o.update(lastDrawModifier));
     }
-    
+
     input(keys: KeyStateProvider, lastDrawModifier: number) {
         if (keys.isKeyDown(Keys.UpArrow)) this.player.thrust();
         else this.player.noThrust();
@@ -100,7 +101,7 @@ export class LandExplorerState implements IGameState {
         this.zoom *= 1 + this.viewScale;
         if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
     }
-    
+
     display(drawingContext : DrawContext) {
         drawingContext.clear();
 
@@ -149,7 +150,7 @@ export class LandExplorerState implements IGameState {
         this.player.crash();
     }
     
-    returnState() : number {
+    returnState(): number {
         let s = undefined;
         if (this.exitState) {
             this.exitState = false;
@@ -169,7 +170,18 @@ export class LandExplorerState implements IGameState {
 
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
         chassisObj.model.physics.forces.push(new Vector(180, 10));
-        var accelerator = new Accelerator(chassisObj.model.physics, chassisObj.model.physics.forces, chassisObj.model.physics.mass);
+        var accelerator: Accelerator = new Accelerator(() => {
+            return {
+                x: chassisObj.model.physics.location.x,
+                y: chassisObj.model.physics.location.y,
+                Vx: chassisObj.model.physics.velX,
+                Vy: chassisObj.model.physics.velY,
+                forces: chassisObj.model.physics.forces,
+                mass: chassisObj.model.physics.mass
+        };},
+        (out: IOut) => {
+            chassisObj.model.physics.velX+= out.Vx;
+            chassisObj.model.physics.velY += out.Vy;});
         chassisObj.actors.push(accelerator);
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
@@ -177,10 +189,8 @@ export class LandExplorerState implements IGameState {
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
-        
-        
-        //var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);
-        //shipController.chassisObj.actors.push(gravityForce);
+        // var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);
+        // shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var landingState = new LandExplorerState("Lander", assets, shipController, [text], [field]);

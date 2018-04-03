@@ -6,7 +6,6 @@ import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator, Spinner } from "ts/Actors/Rotators";
-import { Accelerator } from "ts/Actors/Accelerators";
 import { Transforms } from "ts/Physics/Transforms";
 
 
@@ -35,6 +34,12 @@ export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> 
 
 export interface IGPSModel<TGame, TPhysics extends ILocated, TShape extends IShape > extends IGamed<TGame>, IPhysical < TPhysics >, IShaped < TShape > {}
 
+export interface IState {
+    x: number;
+    y: number;
+    Vx: number;
+    Vy: number;
+}
 
 export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
     constructor(

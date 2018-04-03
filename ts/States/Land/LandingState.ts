@@ -39,7 +39,7 @@ import { WindGenerator } from "ts/Actors/WindGenerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { Accelerator } from "ts/Actors/Accelerators";
+import { IAcceleratorProps, IOut, Accelerator } from "ts/Actors/Accelerator";
 
 export class LandingState implements IGameState {
     wind: SingleGameObject<WindModel>;
@@ -122,8 +122,8 @@ export class LandingState implements IGameState {
         this.player.chassisObj.model.physics.velX = 0;
         this.player.crash();
     }
-    
-    returnState() : number {
+
+    returnState(): number {
         let s = undefined;
         if (this.exitState) {
             this.exitState = false;
@@ -137,21 +137,32 @@ export class LandingState implements IGameState {
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
         var field = Field.createBackgroundField(16, 2);
 
-        // ships        
+        // ships
         var shipData = new LandingShipData(new Coordinate(256, 240), 1);
         var chassisObj = ShipComponents.createShipObj(shipData);
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
         chassisObj.model.physics.forces.push(new Vector(180, 10));
-        var accelerator = new Accelerator(chassisObj.model.physics, chassisObj.model.physics.forces, chassisObj.model.physics.mass);
+        var getAcceleratorProps: () => IAcceleratorProps = () => {
+            return {
+                x: shipController.shipData.location.x,
+                y: shipController.shipData.location.y,
+                Vx: shipController.shipData.velX,
+                Vy: shipController.shipData.velY,
+                forces: shipData.forces.concat([new Vector(180, 10)]),
+                mass: shipData.mass
+            };
+        };
+
+        var accelerator: Accelerator = new Accelerator(getAcceleratorProps, (out: IOut)=> {
+            shipController.shipData.velX += out.Vx;
+            shipController.shipData.velY += out.Vy;
+        });
         chassisObj.actors.push(accelerator);
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
         var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
         var shipController = new LandShipController(shipData, chassisObj, weaponController, thrustController, explosionController);
-
-        var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);
-        shipController.chassisObj.actors.push(gravityForce);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field, text];

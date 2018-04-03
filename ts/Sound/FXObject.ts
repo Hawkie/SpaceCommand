@@ -80,7 +80,7 @@ export class FXObject implements ISoundObject {
 
 
     private createOscillator(actx: AudioContext,
-        type: string,
+        type: OscillatorType,
         frequencyValue: number): OscillatorNode {
         var actx = this.audioContext;
         var oscillator: OscillatorNode = actx.createOscillator();

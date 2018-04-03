@@ -7,7 +7,7 @@ import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/D
 import { ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // Actors
-import { Accelerator } from "ts/Actors/Accelerators";
+import { IAcceleratorProps, IOut, Accelerator } from "ts/Actors/Accelerator";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
@@ -66,7 +66,20 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                     thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
-            var gravity = new Accelerator(p, [new Vector(180, 1)], 0.1);
+            var getAcceleratorProps: () => IAcceleratorProps = () => {
+                return {
+                    x: p.location.x,
+                    y:p.location.y,
+                    Vx:p.velX,
+                    Vy:p.velY,
+                    forces:[new Vector(180, 1)],
+                    mass:0.1
+                };
+            };
+            var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IOut)=> {
+                p.velX += out.Vx;
+                p.velY += out.Vy;
+            });
             var view = new RectangleView(p, new RectangleData(1, 1));
             return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
         });

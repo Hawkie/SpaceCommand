@@ -16,7 +16,7 @@ export interface IComponentObjects<TModel> extends IGameObject {
 }
     
 
-export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {    
+export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
     constructor(public model: TModel, public actors: IActor[], public views: IView[]) {
     }
 

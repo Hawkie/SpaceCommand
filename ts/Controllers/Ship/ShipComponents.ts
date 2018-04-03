@@ -10,7 +10,6 @@ import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // model
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 // actors
-import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";

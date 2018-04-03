@@ -1,6 +1,5 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
-import { Accelerator } from "ts/Actors/Accelerators";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";

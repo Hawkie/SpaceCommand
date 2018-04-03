@@ -34,7 +34,8 @@ import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Mover } from "ts/Actors/Movers";
-import { Accelerator, CompositeAccelerator } from "ts/Actors/Accelerators";
+import { CompositeAccelerator } from "ts/Actors/Accelerators";
+import { Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -272,7 +273,7 @@ export class AsteroidState implements IGameState {
             ball.model.physics);
         chassisObj.actors.push(rodForces);
 
-        let asteroids = AsteroidState.createLevel(3);
+        let asteroids: Asteroid[] = AsteroidState.createLevel(3);
 
         let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
 

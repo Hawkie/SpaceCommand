@@ -16,7 +16,6 @@ export class Game {
     // globals are doc and window
     run(window, document) {
         console.log("Game Run()");
-        
 
         var canvas = new Canvas(512, 480, document);
         var audioContext = new AudioContext();

@@ -71,6 +71,5 @@ export class LocatedMovingAngledRotatingForces extends LocatedMovingAngledRotati
     constructor(location: Coordinate, velX: number, velY: number, angle: number, public spin: number, public mass:number) {
         super(location, velX, velY, angle, spin);
         this.forces = [];
-        
     }
 }
