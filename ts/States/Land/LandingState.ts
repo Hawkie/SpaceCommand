@@ -39,7 +39,7 @@ import { WindGenerator } from "ts/Actors/WindGenerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { IAcceleratorProps, IOut, Accelerator } from "ts/Actors/Accelerator";
+import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 
 export class LandingState implements IGameState {
     wind: SingleGameObject<WindModel>;
@@ -142,7 +142,7 @@ export class LandingState implements IGameState {
         var chassisObj = ShipComponents.createShipObj(shipData);
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
         chassisObj.model.physics.forces.push(new Vector(180, 10));
-        var getAcceleratorProps: () => IAcceleratorProps = () => {
+        var getAcceleratorProps: () => IAcceleratorInputs = () => {
             return {
                 x: shipController.shipData.location.x,
                 y: shipController.shipData.location.y,
@@ -153,7 +153,7 @@ export class LandingState implements IGameState {
             };
         };
 
-        var accelerator: Accelerator = new Accelerator(getAcceleratorProps, (out: IOut)=> {
+        var accelerator: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
             shipController.shipData.velX += out.Vx;
             shipController.shipData.velY += out.Vy;
         });

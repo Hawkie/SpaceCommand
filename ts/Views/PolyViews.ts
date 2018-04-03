@@ -14,13 +14,19 @@ export class RectangleView implements IView {
     }
 }
 
+export interface ICircleView {
+    x: number;
+    y: number;
+    r: number;
+}
+
 export class CircleView implements IView {
-    constructor(private properties: ILocated, private circle: CircleData) {
+    constructor(private getInputs: ()=>ICircleView) {
     }
 
-    display(drawContext: DrawContext) {
-        drawContext.drawCircle(this.properties.location.x, this.properties.location.y, this.circle.radius);
-        //drawContext.fill();
+    display(drawContext: DrawContext): void {
+        var circle: ICircleView = this.getInputs();
+        drawContext.drawCircle(circle.x, circle.y, circle.r);
     }
 }
 

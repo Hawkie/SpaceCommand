@@ -353,8 +353,13 @@ export class AsteroidState implements IGameState {
 
     static createBallObject(x: number, y: number): SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>> {
         var ballModel = new ShapedModel(new LocatedMovingAngledRotatingForces(new Coordinate(x, y),0,0,0,0, 1), new CircleData(8));
-        var ballView: IView = new CircleView(ballModel.physics, ballModel.shape);
-        //var mover = new Mover(ballModel.physics);
+        var ballView: IView = new CircleView(() => {
+            return {
+                x:ballModel.physics.location.x,
+                y:ballModel.physics.location.y,
+                r: ballModel.shape.radius,
+            };
+        });
         var obj = new SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>>(ballModel, [], [ballView]);
         return obj;
     }

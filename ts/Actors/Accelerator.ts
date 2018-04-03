@@ -9,16 +9,16 @@ export interface IForceProps {
     angle: number;
 }
 
-export interface IOut {
+export interface IAcceleratorOutputs {
     Vx: number;
     Vy: number;
 }
 
-export class Out implements IOut {
+export class Out implements IAcceleratorOutputs {
     constructor(public Vx:number = 0, public Vy:number = 0) {}
 }
 
-export interface IAcceleratorProps {
+export interface IAcceleratorInputs {
     readonly x: number;
     readonly y: number;
     readonly Vx: number;
@@ -30,18 +30,18 @@ export interface IAcceleratorProps {
 
 export class Accelerator implements IActor {
 
-    constructor(private getProps: () => IAcceleratorProps,
-        private setOut:(out: IOut) => void) {
+    constructor(private getProps: () => IAcceleratorInputs,
+        private setOut:(out: IAcceleratorOutputs) => void) {
 
     }
 
     update(timeModifier: number): void {
-        var out:IOut = this.accelerate(timeModifier, this.getProps());
+        var out:IAcceleratorOutputs = Accelerator.accelerate(timeModifier, this.getProps());
         this.setOut(out);
     }
 
-    accelerate(timeModifer: number, props: IAcceleratorProps): IOut {
-        var vChange: IOut = new Out(0, 0);
+    static accelerate(timeModifer: number, props: IAcceleratorInputs): IAcceleratorOutputs {
+        var vChange: IAcceleratorOutputs = new Out(0, 0);
         props.forces.forEach((f) => {
             let velChange: Coordinate = Transforms.VectorToCartesian(f.angle, f.length/props.mass * timeModifer);
             vChange.Vx += velChange.x;

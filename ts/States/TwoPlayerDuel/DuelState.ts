@@ -33,7 +33,7 @@ import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Mover } from "ts/Actors/Movers";
-import { IAcceleratorProps, IOut, Accelerator } from "ts/Actors/Accelerator";
+import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -296,7 +296,7 @@ export class DuelState extends GameState implements IGameState {
         var shipData = new SpaceShipData(location, 0, 0, angle, 0, 1);
         var chassisObj = ShipComponents.createShipObj(shipData);
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
-        var getAcceleratorProps: () => IAcceleratorProps = () => {
+        var getAcceleratorProps: () => IAcceleratorInputs = () => {
             return {
                 x: chassisObj.model.physics.location.x,
                 y:chassisObj.model.physics.location.y,
@@ -306,7 +306,7 @@ export class DuelState extends GameState implements IGameState {
                 mass:chassisObj.model.physics.mass
             };
         };
-        var accelerator = new Accelerator(getAcceleratorProps, (out: IOut)=> {
+        var accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
             chassisObj.model.physics.velX += out.Vx;
             chassisObj.model.physics.velY += out.Vy;
         });

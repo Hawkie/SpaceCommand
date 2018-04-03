@@ -1,6 +1,6 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { ILocated, ILocatedMoving, LocatedData } from "ts/Data/PhysicsData";
-import { IAcceleratorProps, IOut, Accelerator } from "ts/Actors/Accelerator";
+import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
@@ -72,7 +72,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                     0, 0,
                     now);
                 var mover: Mover = new Mover(p);
-                var getAcceleratorProps: () => IAcceleratorProps = () => {
+                var getAcceleratorProps: () => IAcceleratorInputs = () => {
                     return {
                         x: p.location.x,
                         y:p.location.y,
@@ -82,7 +82,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                         mass:0.1
                     };
                 };
-                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IOut)=> {
+                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
                     p.velX += out.Vx;
                     p.velY += out.Vy;
                 });

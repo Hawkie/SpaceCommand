@@ -24,7 +24,7 @@ export interface IForces {
 }
 
 export interface IHittable {
-    hit();
+    hit(): void;
 }
 
 export interface IAngledMovingForces extends IAngled, IMoving, IForces { }

@@ -31,7 +31,7 @@ import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
 import { ValueView } from "ts/Views/TextView";
 import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
-import { IAcceleratorProps, Accelerator, IOut } from "ts/Actors/Accelerator";
+import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { Mover } from "ts/Actors/Movers";
@@ -179,7 +179,7 @@ export class LandExplorerState implements IGameState {
                 forces: chassisObj.model.physics.forces,
                 mass: chassisObj.model.physics.mass
         };},
-        (out: IOut) => {
+        (out: IAcceleratorOutputs) => {
             chassisObj.model.physics.velX+= out.Vx;
             chassisObj.model.physics.velY += out.Vy;});
         chassisObj.actors.push(accelerator);
@@ -223,7 +223,13 @@ export class LandExplorerState implements IGameState {
         var xy = surface.model.shape.points[placeIndex];
         var ballModel = new ShapedModel(new LocatedData(new Coordinate(xy.x + surface.model.physics.location.x,
             xy.y + surface.model.physics.location.y-8)), new CircleData(8));
-        var ballView: IView = new CircleView(ballModel.physics, ballModel.shape);
+        var ballView: IView = new CircleView(() => {
+            return {
+                x:ballModel.physics.location.x,
+                y:ballModel.physics.location.y,
+                r: ballModel.shape.radius,
+            };
+        });
         var obj = new SingleGameObject<ShapedModel<LocatedData, CircleData>>(ballModel, [], [ballView]);
         return obj;
     }
