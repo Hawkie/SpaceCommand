@@ -30,6 +30,23 @@ export class CircleView implements IView {
     }
 }
 
+export interface ILineView {
+    xFrom: number;
+    yFrom: number;
+    xTo: number;
+    yTo: number;
+}
+
+export class LineView implements IView {
+    constructor(private getIn: ()=> ILineView) {
+    }
+
+    display(drawContext: DrawContext): void {
+        var line: ILineView = this.getIn();
+        drawContext.line(line.xFrom, line.yFrom, line.xTo, line.yTo);
+    }
+}
+
 export class PolyView implements IView {
     constructor(private properties: ILocated, private shape: ShapeData) { }
 

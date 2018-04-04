@@ -12,7 +12,7 @@ import { TextData } from "ts/Data/TextData";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IView } from "ts/Views/View";
-import { PolyView, PolyGraphic, PolyGraphicAngled, CircleView } from "ts/Views/PolyViews";
+import { PolyView, PolyGraphic, PolyGraphicAngled, CircleView, LineView } from "ts/Views/PolyViews";
 import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor"
@@ -32,7 +32,7 @@ import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
-import { Mover } from "ts/Actors/Movers";
+import { Mover, Mover2, IMoveOut } from "ts/Actors/Movers";
 import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -46,6 +46,8 @@ export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotat
 export interface IBallObject {
     x: number;
     y: number;
+    Vx: number;
+    Vy: number;
     r: number;
     mass: number;
 }
@@ -138,11 +140,11 @@ export class AsteroidState implements IGameState {
         drawingContext.save();
         let x = this.player.chassisObj.model.physics.location.x;
         let y = this.player.chassisObj.model.physics.location.y;
+        drawingContext.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         // move origin to location of ship - location of ship factored by zoom
         // if zoom = 1 no change
         // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
         // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
-        drawingContext.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
@@ -251,18 +253,18 @@ export class AsteroidState implements IGameState {
     }
 
     static createState(assets: Assets, actx: AudioContext): AsteroidState {
-    
+
         var field: IGameObject = Field.createBackgroundField(16, 2);
 
-        //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
+        // var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
         var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
-        //var spriteField = Field.createSpriteField();
+        // var spriteField = Field.createSpriteField();
 
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 2);
         var chassisObj = ShipComponents.createShipObj(spaceShipData);
         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
-        
+
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
         var explosionController = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
@@ -279,8 +281,8 @@ export class AsteroidState implements IGameState {
                 massFrom: chassisObj.model.physics.mass,
                 xTo: ball.model.x,
                 yTo: ball.model.y,
-                VxTo: 0,
-                VyTo: 0,
+                VxTo: ball.model.Vx,
+                VyTo: ball.model.Vy,
                 massTo: ball.model.mass
             };
         }, (out: IRodOutputs) => {
@@ -290,8 +292,21 @@ export class AsteroidState implements IGameState {
                 chassisObj.model.physics.velY = out.VyFrom;
                 ball.model.x = out.xTo;
                 ball.model.y = out.yTo;
+                // ball.model.Vx += out.dVxTo;
+                // ball.model.Vy += out.dVyTo;
         });
         chassisObj.actors.push(rod);
+
+        // create rod view as a line from ball to ship
+        var line: LineView = new LineView(()=> {
+            return {
+                xFrom: ball.model.x,
+                yFrom: ball.model.y,
+                xTo: chassisObj.model.physics.location.x,
+                yTo: chassisObj.model.physics.location.y,
+            };
+        });
+        chassisObj.views.push(line);
 
         let asteroids: Asteroid[] = AsteroidState.createLevel(3);
 
@@ -309,7 +324,7 @@ export class AsteroidState implements IGameState {
         return asteroidState;
     }
 
-    private static createLevel(level:number): Asteroid[]{
+    private static createLevel(level:number): Asteroid[] {
         let a: Asteroid[] = [];
         for (var i = 0; i < level; i++) {
             let xy = Transforms.random(0, 3);
@@ -343,7 +358,6 @@ export class AsteroidState implements IGameState {
         var view: PolyGraphicAngled = new PolyGraphicAngled(model.physics, model.shape, terrain);
         var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);
         return asteroidObject;
-        
     }
 
     static createGraphicShip(location: Coordinate): GraphicShip {
@@ -376,6 +390,8 @@ export class AsteroidState implements IGameState {
         var ballModel: IBallObject = {
             x: x,
             y: y,
+            Vx: 0,
+            Vy: 0,
             mass: 1,
             r: 8,
         };
@@ -386,7 +402,18 @@ export class AsteroidState implements IGameState {
                 r: ballModel.r,
             };
         });
-        var obj: SingleGameObject<IBallObject>  = new SingleGameObject<IBallObject>(ballModel, [], [ballView]);
+        // not needed at this stage
+        var mover: Mover2 = new Mover2(
+            ()=> {
+                return {
+                    Vx: ballModel.Vx,
+                    Vy: ballModel.Vy,
+                };
+            }, (mOut: IMoveOut)=> {
+                ballModel.x += mOut.dx;
+                ballModel.y += mOut.dy;
+            });
+        var obj: SingleGameObject<IBallObject>  = new SingleGameObject<IBallObject>(ballModel, [mover], [ballView]);
         return obj;
     }
 

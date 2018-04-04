@@ -6,7 +6,7 @@ export class DrawContext {
         this.ctx.fillStyle = "#fff";
     }
 
-    zoom(scaleX:number, scaleY:number) {
+    zoom(scaleX:number, scaleY:number): void {
         var ctx: CanvasRenderingContext2D = this.ctx;
         ctx.scale(scaleX, scaleY);
     }
@@ -22,16 +22,25 @@ export class DrawContext {
         this.ctx.restore();
     }
 
-    fill(fillStyle: any = "#111") {
-        var ctx = this.ctx;
+    fill(fillStyle: any = "#111"): void {
+        var ctx: CanvasRenderingContext2D = this.ctx;
         ctx.save();
         ctx.fillStyle = fillStyle;
         ctx.fill();
         ctx.restore();
     }
 
+    line(xFrom: number, yFrom: number, xTo: number, yTo: number): void {
+        var ctx: CanvasRenderingContext2D = this.ctx;
+        ctx.beginPath();
+        ctx.moveTo(xFrom, yFrom);
+        ctx.lineTo(xTo, yTo);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
     drawP(x: number, y:number, points: Coordinate[]) {
-        var ctx = this.ctx;
+        var ctx: CanvasRenderingContext2D = this.ctx;
         var p = points;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
@@ -49,7 +58,7 @@ export class DrawContext {
         this.ctx.drawImage(img, x, y);
     }
 
-    createPattern(img: HTMLImageElement) : CanvasPattern {
+    createPattern(img: HTMLImageElement): CanvasPattern {
         return this.ctx.createPattern(img, 'repeat');
         //repeat	Default.The pattern repeats both horizontally and vertically	Play it �
         //repeat - x	The pattern repeats only horizontally	Play it �
@@ -57,7 +66,7 @@ export class DrawContext {
         //no - repeat	The pattern will be displayed only once (no repeat)
     }
 
-    creatGradient(x0: number, y0: number, x1:number, y1:number) : CanvasGradient {
+    creatGradient(x0: number, y0: number, x1:number, y1:number): CanvasGradient {
         return this.ctx.createLinearGradient(x0, y0, x1, y1);
         //var grd = ctx.createLinearGradient(0, 0, 200, 200);
         //grd.addColorStop(0, "black");
@@ -66,7 +75,7 @@ export class DrawContext {
     }
 
     drawSprite(img: HTMLImageElement, spriteX: number, spriteY: number, spriteW:number, spriteH:number, x: number, y: number, screenWidth:number, screenHeight: number) {
-         this.ctx.drawImage(img, spriteX, spriteY, spriteW, spriteH, x, y, screenWidth, screenHeight)
+         this.ctx.drawImage(img, spriteX, spriteY, spriteW, spriteH, x, y, screenWidth, screenHeight);
      }
 
     drawText(x : number, y : number, text : string, fontSize : number, font : string) {

@@ -101,8 +101,8 @@ export class CompositeAccelerator implements IActor {
             // changes to Vel in direction of rod
         //     this.fromM.velX += Bsin * Vc;
         //     this.fromM.velY -= Bcos * Vc;
-        //     this.toM.velX += Bsin * Vc;
-        //     this.toM.velY -= Bcos * Vc;
+                out.VxTo += Bsin * Vc;
+                out.VyTo -= Bcos * Vc;
                 out.VxFrom += Bsin * Vc;
                 out.VyFrom -= Bcos * Vc;
 
@@ -114,7 +114,7 @@ export class CompositeAccelerator implements IActor {
 
         });
 
-// acceleration on ship (ASt)
+// tangental acceleration on ship (ASt)
         var ASt: number = this.angularForce / rIn.massFrom;
         var VSt: number = ASt * timeModifer;
         // vel on ship due to angular vel
@@ -127,7 +127,7 @@ export class CompositeAccelerator implements IActor {
         var cmShipRadius: number = this.barLength * (totalMass - rIn.massFrom) / totalMass;
 
         // centripetal Force(FSc) = m * Av^2 / r
-        var FSc:number = rIn.massFrom * Math.pow(VSt, 2)  / cmShipRadius;
+        var FSc: number = rIn.massFrom * Math.pow(VSt, 2)  / cmShipRadius;
         var ASc: number = (FSc / rIn.massFrom);
         var VSc: number = ASc * timeModifer;
         VSx += Bsin * VSc;

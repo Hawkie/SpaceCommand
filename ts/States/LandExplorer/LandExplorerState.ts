@@ -34,7 +34,7 @@ import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { Mover } from "ts/Actors/Movers";
+import { Mover, Mover2, IMoveOut } from "ts/Actors/Movers";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 import { IActor } from "ts/Actors/Actor";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -45,6 +45,8 @@ export interface IBallObject {
     x: number;
     y: number;
     r: number;
+    Vx: number;
+    Vy: number;
     mass: number;
 }
 
@@ -229,17 +231,30 @@ export class LandExplorerState implements IGameState {
         var ballModel: IBallObject = {
             x: xy.x + surface.model.physics.location.x,
             y: xy.y + surface.model.physics.location.y-8,
+            Vx: 0,
+            Vy: 0,
             r: 8,
             mass: 1,
         };
         var ballView: IView = new CircleView(() => {
             return {
-                x:ballModel.x,
-                y:ballModel.y,
+                x: ballModel.x,
+                y: ballModel.y,
                 r: ballModel.r,
             };
         });
-        var obj = new SingleGameObject<IBallObject>(ballModel, [], [ballView]);
+        // not needed at this stage
+        var mover: Mover2 = new Mover2(
+            ()=> {
+                return {
+                    Vx: ballModel.Vx,
+                    Vy: ballModel.Vy,
+                };
+            }, (mOut: IMoveOut)=> {
+                ballModel.x += mOut.dx;
+                ballModel.y += mOut.dy;
+            });
+        var obj = new SingleGameObject<IBallObject>(ballModel, [mover], [ballView]);
         return obj;
     }
 
