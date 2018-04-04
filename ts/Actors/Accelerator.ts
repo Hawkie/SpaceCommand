@@ -4,11 +4,6 @@ import { IActor } from "ts/Actors/Actor";
 import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
 import { Coordinate } from "ts/Physics/Common";
 
-export interface IForceProps {
-    length: number;
-    angle: number;
-}
-
 export interface IAcceleratorOutputs {
     Vx: number;
     Vy: number;
@@ -23,7 +18,7 @@ export interface IAcceleratorInputs {
     readonly y: number;
     readonly Vx: number;
     readonly Vy: number;
-    readonly forces: IForceProps[];
+    readonly forces: Vector[];
     readonly mass: number;
 }
 

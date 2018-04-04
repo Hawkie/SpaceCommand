@@ -11,5 +11,5 @@ export class Coordinate {
 }
 
 export class OrthogonalVectors {
-    constructor(public parallel: number, public perpendicular:number, public angleA: number) { } 
+    constructor(public parallel: number, public perpendicular:number, public angleA: number) { }
 }

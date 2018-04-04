@@ -4,7 +4,7 @@ import { IActor } from "ts/Actors/Actor";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { Mover } from "ts/Actors/Movers";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { RectangleData, CircleData } from "ts/Data/ShapeData";
+import { RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { RectangleView, CircleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";

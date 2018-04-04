@@ -24,17 +24,16 @@ import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/TextObject";
 import { ValueObject } from "ts/GameObjects/ValueObject";
-//import { SpriteObject } from "ts/GameObjects/SpriteObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
-import { ShapeData, IShape, CircleData } from "ts/Data/ShapeData";
+import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { Mover } from "ts/Actors/Movers";
-import { CompositeAccelerator } from "ts/Actors/Accelerators";
+import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
@@ -43,6 +42,13 @@ import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
 
 export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotatingForces>> { }
+
+export interface IBallObject {
+    x: number;
+    y: number;
+    r: number;
+    mass: number;
+}
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -263,15 +269,29 @@ export class AsteroidState implements IGameState {
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
         var ball = AsteroidState.createBallObject(256, 280);
-        var rodForces = new CompositeAccelerator(chassisObj.model.physics,
-            chassisObj.model.physics,
-            chassisObj.model.physics,
-            chassisObj.model.physics,
-            ball.model.physics,
-            ball.model.physics,
-            ball.model.physics,
-            ball.model.physics);
-        chassisObj.actors.push(rodForces);
+        var rod: CompositeAccelerator = new CompositeAccelerator(() => {
+            return {
+                xFrom: chassisObj.model.physics.location.x,
+                yFrom: chassisObj.model.physics.location.y,
+                VxFrom: chassisObj.model.physics.velX,
+                VyFrom: chassisObj.model.physics.velY,
+                forces: chassisObj.model.physics.forces,
+                massFrom: chassisObj.model.physics.mass,
+                xTo: ball.model.x,
+                yTo: ball.model.y,
+                VxTo: 0,
+                VyTo: 0,
+                massTo: ball.model.mass
+            };
+        }, (out: IRodOutputs) => {
+                chassisObj.model.physics.location.x = out.xFrom;
+                chassisObj.model.physics.location.y = out.yFrom;
+                chassisObj.model.physics.velX = out.VxFrom;
+                chassisObj.model.physics.velY = out.VyFrom;
+                ball.model.x = out.xTo;
+                ball.model.y = out.yTo;
+        });
+        chassisObj.actors.push(rod);
 
         let asteroids: Asteroid[] = AsteroidState.createLevel(3);
 
@@ -281,10 +301,11 @@ export class AsteroidState implements IGameState {
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
         var angleDisplay: ValueObject = new ValueObject(chassisObj.model.physics.angle, new Coordinate(460, 40), "Arial", 18);
-        var rod : IView = new PolyView(spaceShipData, new ShapeData([ball.model.physics.location]));
-        var rodObj = new SingleGameObject<LocatedData>(spaceShipData, [],[rod]);
 
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController, [text, score, valueDisplay, angleDisplay], [field, alien, coinObj, shipController, ball, rodObj], asteroids, valueDisplay, angleDisplay);
+        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController,
+            [text, score, valueDisplay, angleDisplay],
+            [field, alien, coinObj, shipController, ball],
+            asteroids, valueDisplay, angleDisplay);
         return asteroidState;
     }
 
@@ -351,16 +372,21 @@ export class AsteroidState implements IGameState {
         return coinObj;
     }
 
-    static createBallObject(x: number, y: number): SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>> {
-        var ballModel = new ShapedModel(new LocatedMovingAngledRotatingForces(new Coordinate(x, y),0,0,0,0, 1), new CircleData(8));
+    static createBallObject(x: number, y: number): SingleGameObject<IBallObject> {
+        var ballModel: IBallObject = {
+            x: x,
+            y: y,
+            mass: 1,
+            r: 8,
+        };
         var ballView: IView = new CircleView(() => {
             return {
-                x:ballModel.physics.location.x,
-                y:ballModel.physics.location.y,
-                r: ballModel.shape.radius,
+                x: ballModel.x,
+                y: ballModel.y,
+                r: ballModel.r,
             };
         });
-        var obj = new SingleGameObject<ShapedModel<LocatedMovingAngledRotatingForces, CircleData>>(ballModel, [], [ballView]);
+        var obj: SingleGameObject<IBallObject>  = new SingleGameObject<IBallObject>(ballModel, [], [ballView]);
         return obj;
     }
 

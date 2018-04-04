@@ -9,7 +9,7 @@ import { IGameState } from "ts/States/GameState";
 import { SparseArray } from "ts/Collections/SparseArray";
 
 import { ILocated, LocatedData } from "ts/Data/PhysicsData";
-import { ShapeData, CircleData } from "ts/Data/ShapeData";
+import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
@@ -41,14 +41,19 @@ import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 
 
-
+export interface IBallObject {
+    x: number;
+    y: number;
+    r: number;
+    mass: number;
+}
 
 
 export class LandExplorerState implements IGameState {
     wind: SingleGameObject<WindModel>;
     surface: SingleGameObject<PlanetSurfaceModel>;
     landingPad: SingleGameObject<LandingPadModel>;
-    ballObject: SingleGameObject<ShapedModel<LocatedData, CircleData>>;
+    ballObject: SingleGameObject<IBallObject>;
     velocityText: TextObject;
     interactors: IInteractor[];
 
@@ -218,19 +223,23 @@ export class LandExplorerState implements IGameState {
         return obj;
     }
 
-    static createBallObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<ShapedModel<LocatedData, CircleData>> {
+    static createBallObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<IBallObject> {
         var placeIndex = Transforms.random(0, 50);
         var xy = surface.model.shape.points[placeIndex];
-        var ballModel = new ShapedModel(new LocatedData(new Coordinate(xy.x + surface.model.physics.location.x,
-            xy.y + surface.model.physics.location.y-8)), new CircleData(8));
+        var ballModel: IBallObject = {
+            x: xy.x + surface.model.physics.location.x,
+            y: xy.y + surface.model.physics.location.y-8,
+            r: 8,
+            mass: 1,
+        };
         var ballView: IView = new CircleView(() => {
             return {
-                x:ballModel.physics.location.x,
-                y:ballModel.physics.location.y,
-                r: ballModel.shape.radius,
+                x:ballModel.x,
+                y:ballModel.y,
+                r: ballModel.r,
             };
         });
-        var obj = new SingleGameObject<ShapedModel<LocatedData, CircleData>>(ballModel, [], [ballView]);
+        var obj = new SingleGameObject<IBallObject>(ballModel, [], [ballView]);
         return obj;
     }
 
