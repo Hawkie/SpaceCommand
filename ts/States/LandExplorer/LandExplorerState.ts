@@ -169,7 +169,7 @@ export class LandExplorerState implements IGameState {
     static create(assets: Assets, actx:AudioContext): LandExplorerState {
         // Background
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var field = Field.createBackgroundField(16, 2);
+        var field = Field.createBackgroundField2(16, 2);
 
         // ship = space ship controller with gravity
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 1);

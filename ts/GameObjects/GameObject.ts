@@ -11,20 +11,19 @@ export interface IObject<TModel> extends IGameObject {
     model: TModel;
 }
 
-export interface IComponentObjects<TModel> extends IGameObject {
+export interface IComponentObjects<TModel extends IGameObject> extends IGameObject {
     components: IGameObject[];
 }
-    
 
 export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
     constructor(public model: TModel, public actors: IActor[], public views: IView[]) {
     }
 
-    update(timeModifier: number) {
+    update(timeModifier: number): void {
         this.actors.forEach(a => a.update(timeModifier));
     }
 
-    display(drawContext: DrawContext) {
+    display(drawContext: DrawContext): void {
         this.views.forEach(e => e.display(drawContext));
     }
 }
@@ -33,11 +32,11 @@ export class ComponentObjects<TObject extends IGameObject> implements IComponent
     constructor(public components: TObject[]) {
     }
 
-    update(timeModifier: number) {
+    update(timeModifier: number): void {
         this.components.forEach(a => a.update(timeModifier));
     }
 
-    display(drawContext: DrawContext) {
+    display(drawContext: DrawContext): void {
         this.components.forEach(e => e.display(drawContext));
     }
 }
@@ -48,12 +47,12 @@ export class MultiGameObject<TModel, TComponent extends IGameObject> implements 
     constructor(public model: TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
     }
 
-    update(timeModifier: number) {
+    update(timeModifier: number): void {
         this.components.forEach(a => a.update(timeModifier));
         this.actors.forEach(a => a.update(timeModifier));
     }
 
-    display(drawContext: DrawContext) {
+    display(drawContext: DrawContext): void {
         this.components.forEach(e => e.display(drawContext));
         this.views.forEach(e => e.display(drawContext));
     }

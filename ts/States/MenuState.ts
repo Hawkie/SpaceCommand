@@ -40,11 +40,11 @@ export class MenuState implements IGameState {
     private assetsLoaded: boolean = false;
 
     static create(assets: Assets, actx:AudioContext): MenuState {
-        //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        
-        var field1 = Field.createBackgroundField(16, 1);
-        var field2 = Field.createBackgroundField(32, 2);
-        
+        // var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+
+        var field1: IGameObject = Field.createBackgroundField2(16, 1);
+        var field2: IGameObject = Field.createBackgroundField2(32, 2);
+
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field1, field2, text];
         let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];

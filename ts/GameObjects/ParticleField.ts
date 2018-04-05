@@ -1,7 +1,7 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { IView } from "ts/Views/View";
 import { IActor } from "ts/Actors/Actor";
-import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleGenerator2, ParticleRemover, IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 import { Mover } from "ts/Actors/Movers";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { RectangleData } from "ts/Data/ShapeData";
@@ -10,13 +10,40 @@ import { RectangleView, CircleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject, IComponentObjects, ComponentObjects } from "ts/GameObjects/GameObject";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 
 export class Field {
+
+    // new field with simpler inputs and setter.
+    static createBackgroundField2(speed: number, size: number):  MultiGameObject<IParticleGenInputs, IGameObject> {
+        var particleGenInputs: IParticleGenInputs = {
+            on: true,
+            itemsPerSec: 1,
+            lifeTimeInSec: undefined,
+            maxGeneratedPerIteration: 1,
+            generationTimeInSec: undefined,
+        };
+        var fieldArray: IGameObject[] = [];
+        let field: MultiGameObject<IParticleGenInputs,IGameObject> = new MultiGameObject<IParticleGenInputs, IGameObject>(
+            particleGenInputs,
+            [], [], fieldArray);
+        var generator: ParticleGenerator2 = new ParticleGenerator2(
+            ()=> particleGenInputs,
+            (now: number) => {
+                var p: ParticleData = new ParticleData(512 * Math.random(), 0, 0, speed, 0, 0, now);
+                var mover: IActor = new Mover(p);
+                var view: IView = new RectangleView(p, new RectangleData(size, size));
+                var newParticle: IGameObject = new SingleGameObject<ParticleData>(p, [mover], [view]);
+                field.components.push(newParticle);
+            });
+        // add the generator to the field object
+        field.actors.push(generator);
+        return field;
+    }
 
     // simple rectangle field scrolling down
     static createBackgroundField(speed:number, size:number): MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {
@@ -29,8 +56,8 @@ export class Field {
                 // var view = new CircleView(p, new CircleData(size));
                 return new SingleGameObject<ParticleData>(p, [mover], [view]);
             });
-        var mover: ParticleRemover = new ParticleRemover(fieldData, field);
-        var fieldObj = new MultiGameObject(fieldData, [generator, mover], [], field);
+        var remover: ParticleRemover = new ParticleRemover(fieldData, field);
+        var fieldObj = new MultiGameObject(fieldData, [generator, remover], [], field);
         return fieldObj;
     }
 

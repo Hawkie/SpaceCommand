@@ -256,7 +256,7 @@ export class AsteroidState implements IGameState {
 
     static createState(assets: Assets, actx: AudioContext): AsteroidState {
 
-        var field: IGameObject = Field.createBackgroundField(16, 2);
+        var field: IGameObject = Field.createBackgroundField2(16, 2);
 
         // var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
         var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
