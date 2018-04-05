@@ -34,12 +34,12 @@ export interface ISpinnerOutputs {
     dAngle: number;
 }
 
-export class Spinner2 implements IActor {
+export class Spinner implements IActor {
     constructor(private getIn:()=>ISpinnerInputs, private setOut: (out: ISpinnerOutputs)=> void) {
     }
 
     update(timeModifier: number): void {
-        var sOut:ISpinnerOutputs = Spinner2.spin(timeModifier, this.getIn());
+        var sOut:ISpinnerOutputs = Spinner.spin(timeModifier, this.getIn());
         this.setOut(sOut);
     }
 
@@ -50,12 +50,3 @@ export class Spinner2 implements IActor {
     }
 }
 
-
-export class Spinner implements IActor {
-    constructor(private properties: IAngledRotating) {
-    }
-
-    update(timeModifier: number) {
-        this.properties.angle += this.properties.spin * timeModifier;
-    }
-}

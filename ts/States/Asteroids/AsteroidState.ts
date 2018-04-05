@@ -31,7 +31,7 @@ import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
-import { Spinner2, ISpinnerInputs, PolyRotator } from "ts/Actors/Rotators";
+import { Spinner, ISpinnerInputs, PolyRotator } from "ts/Actors/Rotators";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
@@ -232,7 +232,7 @@ export class AsteroidState implements IGameState {
         var shapeData = this.player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
-        var spinner: Spinner2  = new Spinner2(() => {
+        var spinner: Spinner  = new Spinner(() => {
             return { spin:engineSeparateModel.spin };
         }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
         player.thrustController.engine.model.physics = engineSeparateModel;
@@ -355,7 +355,7 @@ export class AsteroidState implements IGameState {
         //var view: PolyView = new PolyView(model.data, model.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var mover = new Mover(model.physics);
-        var spinner: Spinner2 = new Spinner2(() => {
+        var spinner: Spinner = new Spinner(() => {
             return { spin: model.physics.spin };
         }, (sOut)=> model.physics.angle += sOut.dAngle);
         var rotator = new PolyRotator(model.physics, model.shape);
@@ -382,7 +382,7 @@ export class AsteroidState implements IGameState {
         var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
         var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
         var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-        var spinner: Spinner2 = new Spinner2(()=> {
+        var spinner: Spinner = new Spinner(()=> {
             return { spin: l.spin };
         }, (sOut)=> l.angle += sOut.dAngle);
 

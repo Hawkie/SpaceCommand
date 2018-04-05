@@ -272,7 +272,9 @@ export class DuelState extends GameState implements IGameState {
         var shapeData = player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
-        var spinner = new Spinner(engineSeparateModel);
+        var spinner: Spinner = new Spinner(() => {
+            return {spin: engineSeparateModel.spin};
+        }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
         player.thrustController.engine.model.physics = engineSeparateModel;
         player.thrustController.engine.actors = [mover, rotator, spinner];
         var view = new PolyView(engineSeparateModel, shapeData);
@@ -372,7 +374,9 @@ export class DuelState extends GameState implements IGameState {
         //var view: PolyView = new PolyView(model.data, model.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var mover = new Mover(model.physics);
-        var spinner = new Spinner(model.physics);
+        var spinner: Spinner = new Spinner(() => {
+            return { spin: model.physics.spin };
+        }, (sOut)=> model.physics.angle += sOut.dAngle);
         var rotator = new PolyRotator(model.physics, model.shape);
         var view: PolyGraphicAngled = new PolyGraphicAngled(model.physics, model.shape, terrain);
         var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);

@@ -43,7 +43,9 @@ export class Field {
             var mover = new Mover(particle);
             var sheet = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
             var animator = new SpriteAnimator(sheet, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-            var spinner = new Spinner(particle);
+            var spinner: Spinner = new Spinner(() => {
+                return {spin:particle.spin};
+            }, (sOut)=> particle.angle+=sOut.dAngle);
             var view = new SpriteAngledView(particle, sheet);
             return new SingleGameObject(particle, [mover, animator, spinner], [view]);
         });

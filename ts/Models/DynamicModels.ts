@@ -5,7 +5,7 @@ import { ISprite, Sprite } from "ts/Data/SpriteData";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";
-import { PolyRotator, Spinner } from "ts/Actors/Rotators";
+import { PolyRotator } from "ts/Actors/Rotators";
 import { Transforms } from "ts/Physics/Transforms";
 
 
