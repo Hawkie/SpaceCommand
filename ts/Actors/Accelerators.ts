@@ -18,14 +18,14 @@ export interface IRodInputs {
 }
 
 export interface IRodOutputs {
-        xFrom: number;
-        yFrom: number;
-        VxFrom: number;
-        VyFrom: number;
+        dxFrom: number;
+        dyFrom: number;
+        dVxFrom: number;
+        dVyFrom: number;
         xTo: number;
         yTo: number;
-        VxTo: number;
-        VyTo: number;
+        // VxTo: number;
+        // VyTo: number;
 }
 
 
@@ -66,14 +66,14 @@ export class CompositeAccelerator implements IActor {
         var totalMass: number = (rIn.massFrom + rIn.massTo);
 
         var out: IRodOutputs = {
-                xFrom: rIn.xFrom,
-                yFrom: rIn.yFrom,
-                VxFrom: rIn.VxFrom,
-                VyFrom: rIn.VyFrom,
-                xTo: rIn.xTo,
-                yTo: rIn.yTo,
-                VxTo: rIn.VxTo,
-                VyTo: rIn.VyTo,
+                dxFrom: 0,
+                dyFrom: 0,
+                dVxFrom: 0,
+                dVyFrom: 0,
+                xTo: 0,
+                yTo: 0,
+                // VxTo: rIn.VxTo,
+                // VyTo: rIn.VyTo,
         };
         // each for split to parallel and perpenticular forces
         // parallel to bar acts on sum of masses
@@ -101,10 +101,10 @@ export class CompositeAccelerator implements IActor {
             // changes to Vel in direction of rod
         //     this.fromM.velX += Bsin * Vc;
         //     this.fromM.velY -= Bcos * Vc;
-                out.VxTo += Bsin * Vc;
-                out.VyTo -= Bcos * Vc;
-                out.VxFrom += Bsin * Vc;
-                out.VyFrom -= Bcos * Vc;
+                // out.dVxTo += Bsin * Vc;
+                // out.dVyTo -= Bcos * Vc;
+                out.dVxFrom += Bsin * Vc;
+                out.dVyFrom -= Bcos * Vc;
 
 // tangental forces (Ft) applied to angular Force (Av) only.
             var Ft: number = Dsin * f.length;
@@ -137,8 +137,8 @@ export class CompositeAccelerator implements IActor {
         // this.fromL.location.x += VSx * timeModifer;
         // this.fromL.location.y -= VSy * timeModifer;
 
-        out.xFrom += VSx * timeModifer;
-        out.yFrom -= VSy * timeModifer;
+        out.dxFrom += VSx * timeModifer;
+        out.dyFrom -= VSy * timeModifer;
 
 // change tangental distance of ship
         var dsXst: number = VSt * timeModifer;
@@ -154,8 +154,8 @@ export class CompositeAccelerator implements IActor {
         // this.toL.location.x = this.fromL.location.x + dx;
         // this.toL.location.y = this.fromL.location.y - dy;
 
-        out.xTo = out.xFrom + dx;
-        out.yTo = out.yFrom - dy;
+        out.xTo = rIn.xFrom + out.dxFrom + dx;
+        out.yTo = rIn.yFrom + out.dyFrom - dy;
         return out;
     }
 }

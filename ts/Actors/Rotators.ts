@@ -5,6 +5,7 @@ import { IShape } from "ts/Data/ShapeData";
 import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
 import { Transforms } from "ts/Physics/Transforms";
 
+
 export class PolyRotator implements IActor {
     private previousAngle: number;
     
@@ -24,6 +25,31 @@ export class PolyRotator implements IActor {
         }
     }
 }
+
+export interface ISpinnerInputs {
+    spin: number;
+}
+
+export interface ISpinnerOutputs {
+    dAngle: number;
+}
+
+export class Spinner2 implements IActor {
+    constructor(private getIn:()=>ISpinnerInputs, private setOut: (out: ISpinnerOutputs)=> void) {
+    }
+
+    update(timeModifier: number): void {
+        var sOut:ISpinnerOutputs = Spinner2.spin(timeModifier, this.getIn());
+        this.setOut(sOut);
+    }
+
+    static spin(timeModifier: number, sIn: ISpinnerInputs): ISpinnerOutputs {
+        return {
+            dAngle: sIn.spin * timeModifier
+        };
+    }
+}
+
 
 export class Spinner implements IActor {
     constructor(private properties: IAngledRotating) {

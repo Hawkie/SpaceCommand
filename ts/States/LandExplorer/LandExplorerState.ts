@@ -34,7 +34,7 @@ import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { Mover, Mover2, IMoveOut } from "ts/Actors/Movers";
+import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 import { IActor } from "ts/Actors/Actor";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -244,7 +244,7 @@ export class LandExplorerState implements IGameState {
             };
         });
         // not needed at this stage
-        var mover: Mover2 = new Mover2(
+        var mover: MoveConstVelocity = new MoveConstVelocity(
             ()=> {
                 return {
                     Vx: ballModel.Vx,

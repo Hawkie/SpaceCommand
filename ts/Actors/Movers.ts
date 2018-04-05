@@ -17,19 +17,19 @@ export interface IMoveOut {
 export class Mover implements IActor {
     constructor(private locatedMoving: ILocatedMoving) { }
 
-    update(timeModifier: number) {
+    update(timeModifier: number): void {
         this.locatedMoving.location.x += this.locatedMoving.velX * timeModifier;
         this.locatedMoving.location.y += this.locatedMoving.velY * timeModifier;
     }
 }
 
-export class Mover2 implements IActor {
+export class MoveConstVelocity implements IActor {
     constructor(private getIn: () => IMoveIn, private setOut: (out: IMoveOut)=>void) {
     }
 
     update(timeModifier: number): void {
         var mIn: IMoveIn = this.getIn();
-        this.setOut(Mover2.move(timeModifier, mIn));
+        this.setOut(MoveConstVelocity.move(timeModifier, mIn));
     }
 
     static move(timeModifier: number, mIn: IMoveIn): IMoveOut {

@@ -1,5 +1,5 @@
-﻿// Data Updater
+﻿// data Updater
 
 export interface IActor {
-    update(timeModifier: number);
+    update(timeModifier: number): void;
 }

@@ -31,8 +31,8 @@ import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
-import { Spinner, PolyRotator } from "ts/Actors/Rotators";
-import { Mover, Mover2, IMoveOut } from "ts/Actors/Movers";
+import { Spinner2, ISpinnerInputs, PolyRotator } from "ts/Actors/Rotators";
+import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -232,7 +232,9 @@ export class AsteroidState implements IGameState {
         var shapeData = this.player.thrustController.engine.model.shape;
         var mover = new Mover(engineSeparateModel);
         var rotator = new PolyRotator(engineSeparateModel, shapeData);
-        var spinner = new Spinner(engineSeparateModel);
+        var spinner: Spinner2  = new Spinner2(() => {
+            return { spin:engineSeparateModel.spin };
+        }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
         player.thrustController.engine.model.physics = engineSeparateModel;
         player.thrustController.engine.actors = [mover, rotator, spinner];
         var view = new PolyView(engineSeparateModel, shapeData);
@@ -286,10 +288,10 @@ export class AsteroidState implements IGameState {
                 massTo: ball.model.mass
             };
         }, (out: IRodOutputs) => {
-                chassisObj.model.physics.location.x = out.xFrom;
-                chassisObj.model.physics.location.y = out.yFrom;
-                chassisObj.model.physics.velX = out.VxFrom;
-                chassisObj.model.physics.velY = out.VyFrom;
+                chassisObj.model.physics.location.x += out.dxFrom;
+                chassisObj.model.physics.location.y += out.dyFrom;
+                chassisObj.model.physics.velX += out.dVxFrom;
+                chassisObj.model.physics.velY += out.dVyFrom;
                 ball.model.x = out.xTo;
                 ball.model.y = out.yTo;
                 // ball.model.Vx += out.dVxTo;
@@ -353,7 +355,9 @@ export class AsteroidState implements IGameState {
         //var view: PolyView = new PolyView(model.data, model.shape);
         var terrain = new GraphicData("res/img/terrain.png");
         var mover = new Mover(model.physics);
-        var spinner = new Spinner(model.physics);
+        var spinner: Spinner2 = new Spinner2(() => {
+            return { spin: model.physics.spin };
+        }, (sOut)=> model.physics.angle += sOut.dAngle);
         var rotator = new PolyRotator(model.physics, model.shape);
         var view: PolyGraphicAngled = new PolyGraphicAngled(model.physics, model.shape, terrain);
         var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);
@@ -378,7 +382,9 @@ export class AsteroidState implements IGameState {
         var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
         var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
         var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-        var spinner = new Spinner(l);
+        var spinner: Spinner2 = new Spinner2(()=> {
+            return { spin: l.spin };
+        }, (sOut)=> l.angle += sOut.dAngle);
 
         var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
         var view: IView = new SpriteAngledView(model.physics, model.graphic);
@@ -403,7 +409,7 @@ export class AsteroidState implements IGameState {
             };
         });
         // not needed at this stage
-        var mover: Mover2 = new Mover2(
+        var mover: MoveConstVelocity = new MoveConstVelocity(
             ()=> {
                 return {
                     Vx: ballModel.Vx,
