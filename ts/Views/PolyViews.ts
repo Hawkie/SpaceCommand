@@ -5,6 +5,23 @@ import { IShape, ShapeData, RectangleData } from "ts/Data/ShapeData";
 import { IView } from "ts/Views/View";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 
+export interface IRectangleView {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export class RectangleView2 implements IView {
+    constructor(private getIn: ()=> IRectangleView) {
+    }
+
+    display(drawContext: DrawContext): void {
+        var rectangle: IRectangleView =this.getIn();
+        drawContext.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+}
+
 export class RectangleView implements IView {
     constructor(private properties: ILocated, private rectangle: RectangleData) { 
     }

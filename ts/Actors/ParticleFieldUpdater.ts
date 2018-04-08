@@ -8,11 +8,11 @@ import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 export interface IParticleGenInputs {
     on: boolean;
     itemsPerSec: number;
-    lifeTimeInSec: number;
     maxGeneratedPerIteration?: number;
     generationTimeInSec?: number;
 }
 
+// could use <T> instead of IGameObject
 export class ParticleGenerator2 implements IActor {
     constructor(private getIn: ()=> IParticleGenInputs,
         private createParticle: (now: number) => void) {}
@@ -58,36 +58,69 @@ export class ParticleGenerator2 implements IActor {
     }
 }
 
-export interface IParticleRemoverInputs {
-    lifeTimeInSec: number;
-    particles: number;
-    maxParticles: number;
-}
 
-export class ParticleRemover2 implements IActor {
-    constructor(
-        private getInputs: ()=> IParticleRemoverInputs,
-        private setOut: (newParticles:IGameObject[])=>void) {}
+// export interface IParticleRemoverInputs {
+//     born: number;
+//     x: number;
+//     y: number;
+// }
 
-    update(timeModifier: number) {
-        var now = Date.now();
-        // loop through objects
-        for (var i: number = this.field.length - 1; i >= 0; i--) {
-            var element = this.field[i];
-        
-            // remove if too old
-            let removed = false;
-            if (this.data.lifeTimeInSec != undefined) {
-                var ageInSec = (now - element.model.born) / 1000;
-                if (ageInSec > this.data.lifeTimeInSec) {
-                    this.field.splice(i, 1);
-                    removed = true;
+export class ParticleRemover2<T> implements IActor {
+    constructor(private removeFunction: ()=> void) {}
+
+    update(timeModifier: number): void {
+        this.removeFunction();
+    }
+
+    static remove<T>(getParticles: ()=> T[],
+        // getP: (t: T) => IParticleRemoverInputs,
+        preds: IPred<T>[]): void {
+        // loop through objects in reverse order so we can delete
+        var particles: T[] = getParticles();
+        for (var i: number = particles.length - 1; i >= 0; i--) {
+            var element: T = particles[i];
+            // var p: IParticleRemoverInputs = getP(element);
+            preds.forEach(pred => {
+                if (pred.Test(element)) {
+                    particles.splice(i, 1);
                 }
-            }
+            });
         }
     }
 }
 
+export interface IPred<TElement> {
+    Test(element: TElement): boolean;
+}
+
+export class AgePred<TElement> implements IPred<TElement> {
+    constructor(private lifeTimeInSec: ()=>number,
+    private getBorn: (p: TElement)=>number) {}
+
+    Test(element: TElement): boolean {
+        if (this.lifeTimeInSec !== undefined) {
+            var ageInSec: number = (Date.now() - this.getBorn(element)) / 1000;
+            if (ageInSec > this.lifeTimeInSec()) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+export class PredGreaterThan<TElement> implements IPred<TElement> {
+    constructor(private greaterThan: ()=>number,
+        private get: (p: TElement)=>number) {}
+
+    Test(element: TElement): boolean {
+        if (this.greaterThan !== undefined) {
+            if (this.get(element) > this.greaterThan()) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
 
 export class ParticleGenerator implements IActor {
     constructor(private data: ParticleFieldData, private field: IGameObject[],
