@@ -1,7 +1,7 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
 import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
-import { IShape, ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { IView } from "ts/Views/View";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 
@@ -12,7 +12,7 @@ export interface IRectangleView {
     height: number;
 }
 
-export class RectangleView2 implements IView {
+export class RectangleView implements IView {
     constructor(private getIn: ()=> IRectangleView) {
     }
 

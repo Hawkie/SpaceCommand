@@ -4,7 +4,7 @@ import { Transforms } from "ts/Physics/Transforms";
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
-import { ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // Actors
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
@@ -17,7 +17,7 @@ import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 // Views
-import { RectangleView2, PolyView } from "ts/Views/PolyViews";
+import { RectangleView, PolyView } from "ts/Views/PolyViews";
 
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 import { ShipComponentObject, ShipComponents } from "ts/Controllers/Ship/ShipComponents";
@@ -81,7 +81,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                 p.velX += out.Vx;
                 p.velY += out.Vy;
             });
-            var view: IView = new RectangleView2(()=> { return {
+            var view: IView = new RectangleView(()=> { return {
                 x: p.location.x,
                 y: p.location.y,
                 width: 1,
@@ -110,7 +110,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                     thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
-            var view:IView = new RectangleView2(()=> { return {
+            var view:IView = new RectangleView(()=> { return {
                 x: p.location.x,
                 y: p.location.y,
                 width: 1,

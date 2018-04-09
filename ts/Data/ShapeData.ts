@@ -10,8 +10,3 @@ export class ShapeData implements IShape {
     constructor(public points: Coordinate[], public offset: Coordinate = new Coordinate(0,0)) { }
 }
 
-export class RectangleData {
-
-    constructor(public width: number, public height: number) { }
-}
-

@@ -5,14 +5,14 @@ import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { ShapeData } from "ts/Data/ShapeData";
 import { EffectData } from "ts/Data/EffectData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-import { RectangleView2 } from "ts/Views/PolyViews";
+import { RectangleView } from "ts/Views/PolyViews";
 import { ScreenFlashView } from "ts/Views/EffectViews";
 import { IGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { IView } from "../../Views/View";
@@ -87,7 +87,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                     p.velX += out.Vx;
                     p.velY += out.Vy;
                 });
-                var view:IView = new RectangleView2(()=> { return {
+                var view:IView = new RectangleView(()=> { return {
                     x: p.location.x,
                     y: p.location.y,
                     width: 3,
@@ -114,7 +114,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                 0,
                 now);
             var mover = new Mover(p);
-            var view: IView = new RectangleView2(()=> { return {
+            var view: IView = new RectangleView(()=> { return {
                 x: p.location.x,
                 y: p.location.y,
                 width: 3,

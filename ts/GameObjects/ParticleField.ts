@@ -6,9 +6,8 @@ import { ParticleGenerator, ParticleRemover,
     ParticleRemover2, PredGreaterThan, AgePred } from "ts/Actors/ParticleFieldUpdater";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { CircleView, RectangleView2 } from "ts/Views/PolyViews";
+import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
@@ -30,7 +29,7 @@ export interface IParticle {
 export class Field {
 
     // new field with simpler inputs and setter.
-    static createBackgroundField2(speed: number, size: number):  MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+    static createBackgroundField(speed: number, size: number):  MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
         var fieldArray: SingleGameObject<IParticle>[] = [];
 
         // todo: change class to remove null later
@@ -61,7 +60,7 @@ export class Field {
                         p.y += out.dy;
                     }
                 );
-                var view: IView = new RectangleView2(() => { return {
+                var view: IView = new RectangleView(() => { return {
                     x: p.x,
                     y: p.y,
                     width: size,

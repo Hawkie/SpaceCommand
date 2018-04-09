@@ -323,7 +323,7 @@ export class DuelState extends GameState implements IGameState {
 
     static createState(assets: Assets, actx: AudioContext): DuelState {
 
-        var field: IGameObject = Field.createBackgroundField2(16, 2);
+        var field: IGameObject = Field.createBackgroundField(16, 2);
 
         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
         //var spriteField = Field.createSpriteField();

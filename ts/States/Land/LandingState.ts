@@ -135,7 +135,7 @@ export class LandingState implements IGameState {
     static create(assets: Assets, actx:AudioContext): LandingState {
         // Background
         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
-        var field = Field.createBackgroundField2(16, 2);
+        var field = Field.createBackgroundField(16, 2);
 
         // ships
         var shipData = new LandingShipData(new Coordinate(256, 240), 1);

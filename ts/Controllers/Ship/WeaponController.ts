@@ -3,13 +3,13 @@ import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } fr
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
-import { ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-import { RectangleView2 } from "ts/Views/PolyViews";
+import { RectangleView } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
@@ -69,7 +69,7 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
                 new Vector(data.angle + offsetAngle, velocity),
                 Date.now());
             var mover = new Mover(p);
-            var view:IView = new RectangleView2(()=> { return {
+            var view:IView = new RectangleView(()=> { return {
                 x: p.location.x,
                 y: p.location.y,
                 width: 2,

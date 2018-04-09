@@ -5,7 +5,7 @@ import { IShipData, SpaceShipData, LandingShipData } from "ts/Data/ShipData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces, ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData } from "ts/Data/PhysicsData";
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
-import { IShape, ShapeData, RectangleData } from "ts/Data/ShapeData";
+import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // model
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
