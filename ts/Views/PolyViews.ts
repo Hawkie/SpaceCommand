@@ -22,15 +22,6 @@ export class RectangleView2 implements IView {
     }
 }
 
-export class RectangleView implements IView {
-    constructor(private properties: ILocated, private rectangle: RectangleData) { 
-    }
-
-    display(drawContext: DrawContext) {
-        drawContext.fillRect(this.properties.location.x, this.properties.location.y, this.rectangle.width, this.rectangle.height);
-    }
-}
-
 export interface ICircleView {
     x: number;
     y: number;

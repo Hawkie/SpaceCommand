@@ -12,9 +12,10 @@ import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdat
 import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-import { RectangleView } from "ts/Views/PolyViews";
+import { RectangleView2 } from "ts/Views/PolyViews";
 import { ScreenFlashView } from "ts/Views/EffectViews";
 import { IGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
+import { IView } from "../../Views/View";
 
 // a controller has a specific interface (e.g. on/off) so change the state of its game objects
 // it is also a game object.
@@ -86,7 +87,12 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                     p.velX += out.Vx;
                     p.velY += out.Vy;
                 });
-                var view = new RectangleView(p, new RectangleData(3, 3));
+                var view:IView = new RectangleView2(()=> { return {
+                    x: p.location.x,
+                    y: p.location.y,
+                    width: 3,
+                    height: 3,
+                };});
                 return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
             });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
@@ -108,7 +114,12 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                 0,
                 now);
             var mover = new Mover(p);
-            var view = new RectangleView(p, new RectangleData(3, 3));
+            var view: IView = new RectangleView2(()=> { return {
+                x: p.location.x,
+                y: p.location.y,
+                width: 3,
+                height: 3,
+            };});
             return new SingleGameObject<ParticleData>(p, [mover], [view]);
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);

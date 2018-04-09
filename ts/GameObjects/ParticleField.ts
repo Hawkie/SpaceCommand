@@ -8,7 +8,7 @@ import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { RectangleData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { RectangleView, CircleView, RectangleView2 } from "ts/Views/PolyViews";
+import { CircleView, RectangleView2 } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
@@ -80,22 +80,6 @@ export class Field {
         // add the generator to the field object
         field.actors.push(generator, remover);
         return field;
-    }
-
-    // simple rectangle field scrolling down
-    static createBackgroundField(speed:number, size:number): MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {
-        let fieldData: ParticleFieldData = new ParticleFieldData(1, 1);
-        let field: SingleGameObject<ParticleData>[] = [];
-        var generator: ParticleGenerator = new ParticleGenerator(fieldData, field, (now: number) => {
-                var p = new ParticleData(512 * Math.random(), 0, 0, speed, 0, 0, now);
-                var mover = new Mover(p);
-                var view = new RectangleView(p, new RectangleData(size, size));
-                // var view = new CircleView(p, new CircleData(size));
-                return new SingleGameObject<ParticleData>(p, [mover], [view]);
-            });
-        var remover: ParticleRemover = new ParticleRemover(fieldData, field);
-        var fieldObj = new MultiGameObject(fieldData, [generator, remover], [], field);
-        return fieldObj;
     }
 
     // sprite field

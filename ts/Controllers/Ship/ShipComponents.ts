@@ -19,7 +19,7 @@ import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 //Views
-import { RectangleView, PolyView } from "ts/Views/PolyViews";
+import { PolyView } from "ts/Views/PolyViews";
 
 
 

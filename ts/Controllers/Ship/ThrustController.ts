@@ -17,10 +17,11 @@ import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 // Views
-import { RectangleView, PolyView } from "ts/Views/PolyViews";
+import { RectangleView2, PolyView } from "ts/Views/PolyViews";
 
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 import { ShipComponentObject, ShipComponents } from "ts/Controllers/Ship/ShipComponents";
+import { IView } from "../../Views/View";
 
 export interface IThrustController extends IGameObject {
     on();
@@ -80,7 +81,12 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                 p.velX += out.Vx;
                 p.velY += out.Vy;
             });
-            var view = new RectangleView(p, new RectangleData(1, 1));
+            var view: IView = new RectangleView2(()=> { return {
+                x: p.location.x,
+                y: p.location.y,
+                width: 1,
+                height: 1,
+            };});
             return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
@@ -104,7 +110,12 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                     thrust.length * 5 + Transforms.random(-5, 5)),
                 now);
             var mover = new Mover(p);
-            var view = new RectangleView(p, new RectangleData(1, 1));
+            var view:IView = new RectangleView2(()=> { return {
+                x: p.location.x,
+                y: p.location.y,
+                width: 1,
+                height: 1,
+            };});
             return new SingleGameObject<ParticleData>(p, [mover], [view]);
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, pField);

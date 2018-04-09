@@ -9,11 +9,12 @@ import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdat
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-import { RectangleView } from "ts/Views/PolyViews";
+import { RectangleView2 } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
+import { IView } from "../../Views/View";
 
 export interface IParticleWeaponController extends IGameObject {
     // data
@@ -68,7 +69,12 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
                 new Vector(data.angle + offsetAngle, velocity),
                 Date.now());
             var mover = new Mover(p);
-            var view = new RectangleView(p, new RectangleData(1, 1));
+            var view:IView = new RectangleView2(()=> { return {
+                x: p.location.x,
+                y: p.location.y,
+                width: 2,
+                height: 2,
+            };});
             let pObj = new SingleGameObject<ParticleData>(p, [mover], [view]);
             this.bulletField.components.push(pObj);
             this.laserSound.play();
