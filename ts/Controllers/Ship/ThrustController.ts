@@ -11,10 +11,10 @@ import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
-import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
+import { ParticleGenerator, ParticleRemover, IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 // gameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
-import { Field } from "ts/GameObjects/ParticleField";
+import { Field, IParticle } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 // views
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
@@ -27,100 +27,51 @@ export interface IThrustController extends IGameObject {
     on();
     off();
     engine: ShipComponentObject;
-    thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>
+    thrustField: IGameObject;
 }
 
 export class ThrustController extends ComponentObjects<IGameObject> implements IThrustController {
     thrustSound = new AudioObject("res/sound/thrust.wav", true);
     soundPlayed: boolean = false;
 
-    constructor(public thrustField: MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>>,
+    constructor(public thrustField: IGameObject,
+        public fieldSwitcher: (on:boolean)=>void,
         public engine: ShipComponentObject   ) {
         super([thrustField, engine]);
     }
 
-    on() {
-        this.thrustField.model.on = true;
+    on(): void {
+        this.fieldSwitcher(true);
         if (!this.soundPlayed) {
             this.thrustSound.play();
             this.soundPlayed = true;
         }
     }
 
-    off() {
-        this.thrustField.model.on = false;
+    off(): void {
+        this.fieldSwitcher(false);
         this.thrustSound.pause();
         this.soundPlayed = false;
     }
 
-    static createGroundThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData): ThrustController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
-        let pField: SingleGameObject<ParticleData>[] = [];
-
-        // get thrust
-        let thrust = data.forces[0];
-
-        var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
-            var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),
-                data.location.y + shape.points[2].y + Transforms.random(-2, 2)),
-                new Vector(thrust.angle + Transforms.random(-5, 5) + 180,
-                    thrust.length * 5 + Transforms.random(-5, 5)),
-                now);
-            var mover = new Mover(p);
-            var getAcceleratorProps: () => IAcceleratorInputs = () => {
-                return {
-                    x: p.location.x,
-                    y:p.location.y,
-                    Vx:p.velX,
-                    Vy:p.velY,
-                    forces:[new Vector(180, 1)],
-                    mass:0.1
-                };
-            };
-            var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
-                p.velX += out.dVx;
-                p.velY += out.dVy;
-            });
-            var view: IView = new RectangleView(()=> { return {
-                x: p.location.x,
-                y: p.location.y,
-                width: 1,
-                height: 1,
+    static createThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData, gravityOn: boolean): ThrustController {
+        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
+            Field.createGroundThrust(() => { return {
+                x: data.location.x,
+                y: data.location.y,
+                gravityOn: gravityOn,
+                thrust: data.forces[0],
+                xOffset: shape.points[2].x,
+                yOffset: shape.points[2].y,
             };});
-            return new SingleGameObject<ParticleData>(p, [mover, gravity], [view]);
-        });
-        var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
-        var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
+
         var engine = ShipComponents.createEngine(data);
         // todo engine types are different!
-        var tc = new ThrustController(field, engine);
+        var tc: ThrustController = new ThrustController(field,
+            (on: boolean) => {
+                field.model.on = on;
+            },
+            engine);
         return tc;
-    }
-
-    static createSpaceThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData): ThrustController {
-        let fieldData: ParticleFieldData = new ParticleFieldData(20, undefined, 1, undefined, false);
-        let pField: SingleGameObject<ParticleData>[] = [];
-
-        // add thrust
-        let thrust = data.forces[0];
-        var generator: ParticleGenerator = new ParticleGenerator(fieldData, pField, (now: number) => {
-            var p = new ParticleDataVectorConstructor(new Coordinate(data.location.x + shape.points[2].x + Transforms.random(-2, 2),
-                data.location.y + shape.points[2].y + Transforms.random(-2, 2)),
-                new Vector(thrust.angle + Transforms.random(-5, 5) + 180,
-                    thrust.length * 5 + Transforms.random(-5, 5)),
-                now);
-            var mover = new Mover(p);
-            var view:IView = new RectangleView(()=> { return {
-                x: p.location.x,
-                y: p.location.y,
-                width: 1,
-                height: 1,
-            };});
-            return new SingleGameObject<ParticleData>(p, [mover], [view]);
-        });
-        var remover: ParticleRemover = new ParticleRemover(fieldData, pField);
-        var field = new MultiGameObject(fieldData, [generator, remover], [], pField);
-        var engine = ShipComponents.createEngine(data);
-        return new ThrustController(field, engine);
     }
 }

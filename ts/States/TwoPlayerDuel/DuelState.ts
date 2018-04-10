@@ -315,7 +315,7 @@ export class DuelState extends GameState implements IGameState {
         chassisObj.actors.push(accelerator);
 
         var weaponController1 = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
-        var thrustController1 = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
+        var thrustController1 = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, false);
         var explosionController1 = ExplosionController.createExplosion(chassisObj.model.physics, false);
         var shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);
         return shipController1;

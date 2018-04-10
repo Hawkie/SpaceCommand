@@ -17,6 +17,7 @@ import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAn
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
+import { Transforms } from "../Physics/Transforms";
 
 export interface IParticle {
     x: number;
@@ -33,6 +34,19 @@ export interface IExplosionInputs {
     gravityOn: boolean;
 }
 
+export interface IThrustInputs {
+    x: number;
+    y: number;
+    thrust: Vector;
+    xOffset: number;
+    yOffset: number;
+    gravityOn: boolean;
+}
+
+// particlefield inputs
+// source
+// GeneratorFunction
+// remove
 export class Field {
 
     // new field with simpler inputs and setter.
@@ -70,8 +84,8 @@ export class Field {
                 var view: IView = new RectangleView(() => { return {
                     x: p.x,
                     y: p.y,
-                    width: size,
-                    height: size,
+                    width: p.size,
+                    height: p.size,
                 };});
                 var newParticle: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(p, [mover], [view]);
             field.components.push(newParticle);
@@ -125,8 +139,8 @@ export class Field {
                 var view:IView = new RectangleView(()=> { return {
                     x: p.x,
                     y: p.y,
-                    width: 3,
-                    height: 3,
+                    width: p.size,
+                    height: p.size,
                 };});
                 var newParticle: SingleGameObject<IParticle> =  new SingleGameObject<IParticle>(p, [mover], [view]);
                 if (source.gravityOn) {
@@ -158,6 +172,80 @@ export class Field {
             field.actors.push(generator, remover);
         return field;
     }
+
+    static createGroundThrust(getInputs: ()=> IThrustInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+        let fieldArray: SingleGameObject<IParticle>[] = [];
+        var particleGenInputs: IParticleGenInputs = {
+            on: false,
+            itemsPerSec: 20,
+            maxGeneratedPerIteration: undefined,
+            generationTimeInSec: undefined,
+        };
+
+        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
+            new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
+            particleGenInputs, [], [], fieldArray);
+
+        var generator: ParticleGenerator2 = new ParticleGenerator2(
+            () => field.model,
+            (now: number) => {
+                var source: IThrustInputs = getInputs();
+                var velocity: Coordinate = Transforms.VectorToCartesian(source.thrust.angle + Transforms.random(-5, 5) + 180,
+                source.thrust.length * 5 + Transforms.random(-5, 5));
+                var p: IParticle = {
+                    x: source.x + source.xOffset + Transforms.random(-2, 2),
+                    y: source.y + source.yOffset + Transforms.random(-2, 2),
+                    Vx: velocity.x,
+                    Vy: velocity.y,
+                    born: now,
+                    size: 1,
+                };
+                var mover: IActor = new MoveConstVelocity(() => { return {
+                    Vx: p.Vx,
+                    Vy: p.Vy,
+                };},
+                (out: IMoveOut)=> {
+                    p.x += out.dx;
+                    p.y += out.dy;
+                });
+                var view:IView = new RectangleView(()=> { return {
+                    x: p.x,
+                    y: p.y,
+                    width: p.size,
+                    height: p.size,
+                };});
+                var newParticle: SingleGameObject<IParticle> =  new SingleGameObject<IParticle>(p, [mover], [view]);
+
+            if (source.gravityOn) {
+                var getAcceleratorProps: () => IAcceleratorInputs = () => {
+                    return {
+                        x: p.x,
+                        y: p.y,
+                        Vx: p.Vx,
+                        Vy: p.Vy,
+                        forces: [new Vector(180, 1)],
+                        mass: 0.1
+                    };
+                };
+                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
+                    p.Vx += out.dVx;
+                    p.Vy += out.dVy;
+                });
+                newParticle.actors.push(gravity);
+            }
+            field.components.push(newParticle);
+        });
+        var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>1, (p: SingleGameObject<IParticle>)=> p.model.born);
+            var remover: ParticleRemover2<SingleGameObject<IParticle>> = new ParticleRemover2<SingleGameObject<IParticle>>(
+                () => {
+                    ParticleRemover2.remove(
+                        () => field.components,
+                        [age1]);});
+            // add the generator to the field object
+            field.actors.push(generator, remover);
+        return field;
+    }
+
 
 
     // sprite field

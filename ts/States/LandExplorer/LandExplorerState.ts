@@ -192,7 +192,7 @@ export class LandExplorerState implements IGameState {
         chassisObj.actors.push(accelerator);
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
-        var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
+        var thrustController = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, true);
         var explosionController = ExplosionController.createExplosion(chassisObj.model.physics, true);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
