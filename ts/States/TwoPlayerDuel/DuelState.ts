@@ -309,14 +309,14 @@ export class DuelState extends GameState implements IGameState {
             };
         };
         var accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
-            chassisObj.model.physics.velX += out.Vx;
-            chassisObj.model.physics.velY += out.Vy;
+            chassisObj.model.physics.velX += out.dVx;
+            chassisObj.model.physics.velY += out.dVy;
         });
         chassisObj.actors.push(accelerator);
 
         var weaponController1 = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController1 = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
-        var explosionController1 = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
+        var explosionController1 = ExplosionController.createExplosion(chassisObj.model.physics, false);
         var shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);
         return shipController1;
     }

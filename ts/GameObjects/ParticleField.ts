@@ -5,6 +5,7 @@ import { ParticleGenerator, ParticleRemover,
     IParticleGenInputs, ParticleGenerator2,
     ParticleRemover2, PredGreaterThan, AgePred } from "ts/Actors/ParticleFieldUpdater";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
+import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { CircleView, RectangleView } from "ts/Views/PolyViews";
@@ -24,6 +25,12 @@ export interface IParticle {
     Vy: number;
     born: number;
     size: number;
+}
+
+export interface IExplosionInputs {
+    x: number;
+    y: number;
+    gravityOn: boolean;
 }
 
 export class Field {
@@ -70,16 +77,88 @@ export class Field {
             field.components.push(newParticle);
         });
         var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model.born);
-        var edge1:PredGreaterThan<SingleGameObject<IParticle>> = new PredGreaterThan(()=>50, (p: SingleGameObject<IParticle>)=> p.model.y);
+        var edge1:PredGreaterThan<SingleGameObject<IParticle>> = new PredGreaterThan(()=>700, (p: SingleGameObject<IParticle>)=> p.model.y);
         var remover: ParticleRemover2<SingleGameObject<IParticle>> = new ParticleRemover2<SingleGameObject<IParticle>>(
             () => {
                 ParticleRemover2.remove(
                     () => field.components,
-                    [age1]);});
+                    [edge1]);});
         // add the generator to the field object
         field.actors.push(generator, remover);
         return field;
     }
+
+    static createExplosion(inputs: ()=> IExplosionInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+        var fieldArray: SingleGameObject<IParticle>[] = [];
+
+        var particleGenInputs: IParticleGenInputs = {
+            on: false,
+            itemsPerSec: 50,
+            maxGeneratedPerIteration: undefined,
+            generationTimeInSec: 0.2,
+        };
+        // todo: change class to remove null later
+        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
+            new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
+            particleGenInputs, [], [], fieldArray);
+
+        // let fieldData: ParticleFieldData = new ParticleFieldData(50, undefined, 5, 0.2, false);
+        var generator: ParticleGenerator2 = new ParticleGenerator2(() => {
+            return field.model; },
+            (now: number) => {
+                var source: IExplosionInputs = inputs();
+                var p: IParticle = {
+                    x: source.x,
+                    y: source.y,
+                    Vx: (Math.random() - 0.5) * 20,
+                    Vy: (Math.random() * -30),
+                    born: now,
+                    size: 3,
+                };
+                var mover: IActor = new MoveConstVelocity(
+                    () => p,
+                    (out: IMoveOut) => {
+                        p.x += out.dx;
+                        p.y += out.dy;
+                    }
+                );
+                var view:IView = new RectangleView(()=> { return {
+                    x: p.x,
+                    y: p.y,
+                    width: 3,
+                    height: 3,
+                };});
+                var newParticle: SingleGameObject<IParticle> =  new SingleGameObject<IParticle>(p, [mover], [view]);
+                if (source.gravityOn) {
+                    var getAcceleratorProps: () => IAcceleratorInputs = () => {
+                        return {
+                            x: p.x,
+                            y: p.y,
+                            Vx: p.Vx,
+                            Vy: p.Vy,
+                            forces: [new Vector(180, 1)],
+                            mass: 0.1
+                        };
+                    };
+                    var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
+                        p.Vx += out.dVx;
+                        p.Vy += out.dVy;
+                    });
+                    newParticle.actors.push(gravity);
+                }
+                field.components.push(newParticle);
+            });
+            var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model.born);
+            var remover: ParticleRemover2<SingleGameObject<IParticle>> = new ParticleRemover2<SingleGameObject<IParticle>>(
+                () => {
+                    ParticleRemover2.remove(
+                        () => field.components,
+                        [age1]);});
+            // add the generator to the field object
+            field.actors.push(generator, remover);
+        return field;
+    }
+
 
     // sprite field
     static createSpriteField(): MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {

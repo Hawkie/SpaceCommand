@@ -187,13 +187,13 @@ export class LandExplorerState implements IGameState {
                 mass: chassisObj.model.physics.mass
         };},
         (out: IAcceleratorOutputs) => {
-            chassisObj.model.physics.velX+= out.Vx;
-            chassisObj.model.physics.velY += out.Vy;});
+            chassisObj.model.physics.velX+= out.dVx;
+            chassisObj.model.physics.velY += out.dVy;});
         chassisObj.actors.push(accelerator);
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
-        var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
+        var explosionController = ExplosionController.createExplosion(chassisObj.model.physics, true);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
         // var gravityForce = new Accelerator(shipController.chassisObj.model.physics, [new Vector(180, 10)], 1);

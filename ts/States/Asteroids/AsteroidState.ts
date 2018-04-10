@@ -269,7 +269,7 @@ export class AsteroidState implements IGameState {
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createSpaceThrust(chassisObj.model.physics, chassisObj.model.shape);
-        var explosionController = ExplosionController.createSpaceExplosion(chassisObj.model.physics);
+        var explosionController = ExplosionController.createExplosion(chassisObj.model.physics, false);
         var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
 
         var ball = AsteroidState.createBallObject(256, 280);

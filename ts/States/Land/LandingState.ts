@@ -154,14 +154,14 @@ export class LandingState implements IGameState {
         };
 
         var accelerator: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
-            shipController.shipData.velX += out.Vx;
-            shipController.shipData.velY += out.Vy;
+            shipController.shipData.velX += out.dVx;
+            shipController.shipData.velY += out.dVy;
         });
         chassisObj.actors.push(accelerator);
 
         var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
         var thrustController = ThrustController.createGroundThrust(chassisObj.model.physics, chassisObj.model.shape);
-        var explosionController = ExplosionController.createGroundExplosion(chassisObj.model.physics);
+        var explosionController = ExplosionController.createExplosion(chassisObj.model.physics, false);
         var shipController = new LandShipController(shipData, chassisObj, weaponController, thrustController, explosionController);
 
         var text = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);

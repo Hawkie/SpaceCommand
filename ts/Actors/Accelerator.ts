@@ -5,12 +5,12 @@ import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
 import { Coordinate } from "ts/Physics/Common";
 
 export interface IAcceleratorOutputs {
-    Vx: number;
-    Vy: number;
+    dVx: number;
+    dVy: number;
 }
 
 export class Out implements IAcceleratorOutputs {
-    constructor(public Vx:number = 0, public Vy:number = 0) {}
+    constructor(public dVx:number = 0, public dVy:number = 0) {}
 }
 
 export interface IAcceleratorInputs {
@@ -39,8 +39,8 @@ export class Accelerator implements IActor {
         var vChange: IAcceleratorOutputs = new Out(0, 0);
         props.forces.forEach((f) => {
             let velChange: Coordinate = Transforms.VectorToCartesian(f.angle, f.length/props.mass * timeModifer);
-            vChange.Vx += velChange.x;
-            vChange.Vy += velChange.y;
+            vChange.dVx += velChange.x;
+            vChange.dVy += velChange.y;
         });
         return vChange;
     }

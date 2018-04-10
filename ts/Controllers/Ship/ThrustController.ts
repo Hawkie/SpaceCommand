@@ -1,22 +1,22 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-// Data
+// data
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
 import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-// Actors
+// actors
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-// GameObjects
+// gameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-// Views
+// views
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
 
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
@@ -78,8 +78,8 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                 };
             };
             var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
-                p.velX += out.Vx;
-                p.velY += out.Vy;
+                p.velX += out.dVx;
+                p.velY += out.dVy;
             });
             var view: IView = new RectangleView(()=> { return {
                 x: p.location.x,
