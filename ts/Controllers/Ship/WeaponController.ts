@@ -2,9 +2,7 @@
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { AgePred, ParticleRemover2 } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
@@ -47,7 +45,7 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
     soundPlayed: boolean = false;
     last: number;
 
-    constructor(public bulletField: MultiGameObject<ParticleFieldData, SingleGameObject<IParticle>>,
+    constructor(public bulletField: MultiGameObject<null, SingleGameObject<IParticle>>,
         public gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>,
         actx: AudioContext) {
         super([bulletField, gun]);

@@ -1,13 +1,10 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { IView } from "ts/Views/View";
 import { IActor } from "ts/Actors/Actor";
-import { ParticleGenerator, ParticleRemover,
-    IParticleGenInputs, ParticleGenerator2,
+import { IParticleGenInputs, ParticleGenerator2,
     ParticleRemover2, PredGreaterThan, AgePred } from "ts/Actors/ParticleFieldUpdater";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/Actors/Accelerator";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
@@ -26,6 +23,11 @@ export interface IParticle {
     Vy: number;
     born: number;
     size: number;
+}
+
+export interface ISpinningParticle extends IParticle {
+    spin: number;
+    angle: number;
 }
 
 export interface IExplosionInputs {
@@ -128,7 +130,6 @@ export class Field {
             new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
             particleGenInputs, [], [], fieldArray);
 
-        // let fieldData: ParticleFieldData = new ParticleFieldData(50, undefined, 5, 0.2, false);
         var generator: ParticleGenerator2 = new ParticleGenerator2(() => {
             return field.model; },
             (now: number) => {
@@ -261,29 +262,66 @@ export class Field {
 
 
     // sprite field
-    static createSpriteField(): MultiGameObject<ParticleFieldData, SingleGameObject<ParticleData>> {
-        let fieldData: ParticleFieldData = new ParticleFieldData(1, 1);
-        let particles: SingleGameObject<ParticleData>[] = [];
-        var generator: ParticleGenerator = new ParticleGenerator(fieldData, particles, (now: number) => {
-            var particle = new ParticleData(512 * Math.random(), 0, 0, 16, 45, 4, now);
-            var mover = new Mover(particle);
-            var sheet = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-            var animator = new SpriteAnimator(sheet, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-            var spinner: Spinner = new Spinner(() => {
-                return {spin:particle.spin};
-            }, (sOut)=> particle.angle+=sOut.dAngle);
-            var view: IView = new SpriteAngledView(() => {
-                return {
-                    x: particle.location.x,
-                    y: particle.location.y,
-                    angle: particle.angle,
-                    sprite: sheet,
-                };});
-            return new SingleGameObject(particle, [mover, animator, spinner], [view]);
-        });
-        var remover: ParticleRemover = new ParticleRemover(fieldData, particles);
+    static createSpriteField(): MultiGameObject<IParticleGenInputs, SingleGameObject<ISpinningParticle>> {
 
-        var fieldObj = new MultiGameObject(fieldData, [generator, remover], [], particles);
-        return fieldObj;
+        let fieldArray: SingleGameObject<ISpinningParticle>[] = [];
+        var particleGenInputs: IParticleGenInputs = {
+            on: true,
+            itemsPerSec: 1,
+            maxGeneratedPerIteration: 1,
+            generationTimeInSec: undefined,
+        };
+
+        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<ISpinningParticle>> =
+            new MultiGameObject<IParticleGenInputs, SingleGameObject<ISpinningParticle>>(
+            particleGenInputs, [], [], fieldArray);
+
+        var generator: ParticleGenerator2 = new ParticleGenerator2(
+            () => field.model,
+            (now: number) => {
+                var p: ISpinningParticle = {
+                    x: 512 * Math.random(),
+                    y: 0,
+                    Vx: 0,
+                    Vy: 0,
+                    born: now,
+                    size: 1,
+                    spin: 45,
+                    angle: 10,
+                };
+                var mover:IActor = new MoveConstVelocity(() => {
+                    return {
+                        Vx: 0,
+                        Vy: 3,
+                };},
+                (out: IMoveOut)=> {
+                    p.x += out.dx;
+                    p.y += out.dy;
+                });
+                var sheet: HorizontalSpriteSheet = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+                var animator: IActor = new SpriteAnimator(sheet, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+                var spinner: Spinner = new Spinner(() => {
+                    return {spin:p.spin};
+                }, (sOut)=> p.angle+= sOut.dAngle);
+                var view: IView = new SpriteAngledView(() => {
+                    return {
+                        x: p.x,
+                        y: p.y,
+                        angle: p.angle,
+                        sprite: sheet,
+                };
+            });
+            var o: SingleGameObject<ISpinningParticle> = new SingleGameObject(p, [mover, animator, spinner], [view]);
+            field.components.push(o);
+        });
+        var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>10, (p: SingleGameObject<IParticle>)=> p.model.born);
+            var remover: ParticleRemover2<SingleGameObject<IParticle>> = new ParticleRemover2<SingleGameObject<IParticle>>(
+                () => {
+                    ParticleRemover2.remove(
+                        () => field.components,
+                        [age1]);});
+            // add the generator to the field object
+            field.actors.push(generator, remover);
+        return field;
     }
 }

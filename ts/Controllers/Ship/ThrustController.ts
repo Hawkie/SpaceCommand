@@ -3,9 +3,7 @@ import { Transforms } from "ts/Physics/Transforms";
 // data
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // actors
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 import { Mover } from "ts/Actors/Movers";

@@ -14,9 +14,6 @@ import { TextObject } from "ts/GameObjects/TextObject";
 
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Field } from "ts/GameObjects/ParticleField";
 import { Mover } from "ts/Actors/Movers";
 

@@ -4,10 +4,8 @@ import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/
 import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { EffectData } from "ts/Data/EffectData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";

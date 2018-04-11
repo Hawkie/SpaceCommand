@@ -12,8 +12,7 @@ import { ILocated, LocatedData } from "ts/Data/PhysicsData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { Direction } from "ts/Data/WindData";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
+
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 import { WindModel } from "ts/States/Land/WindModel";
 import { LandingPadModel } from "ts/States/Land/LandingPad";

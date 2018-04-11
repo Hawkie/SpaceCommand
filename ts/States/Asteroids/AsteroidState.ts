@@ -3,8 +3,6 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { IParticleData, ParticleData } from "ts/Data/ParticleData";
-import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";

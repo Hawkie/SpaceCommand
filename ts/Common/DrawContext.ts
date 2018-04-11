@@ -101,7 +101,7 @@ export class DrawContext {
     // PI = 180 degrees.
     rotate(degrees: number) {
         // rotate 45 degrees clockwise degrees/360 * PI *2
-        this.ctx.rotate(degrees / 360 * Math.PI * 2);
+        this.ctx.rotate(degrees / 180 * Math.PI);
     }
 
     clear() {
