@@ -54,9 +54,9 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
 
     // flash and field separate?
     static createFlash(located:ILocated): SingleGameObject<EffectData> {
-        let e = new EffectData();
-        let s = new Flasher(e);
-        let flash = new SingleGameObject<EffectData>(e, [s], [new ScreenFlashView(located, e)]);
+        let e: EffectData = new EffectData();
+        let s: IActor = new Flasher(e);
+        let flash: SingleGameObject<EffectData> = new SingleGameObject<EffectData>(e, [s], [new ScreenFlashView(located, e)]);
         return flash;
     }
 
@@ -68,7 +68,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                 y: data.location.y,
                 gravityOn: gravityOn,
             };});
-        var flash = ExplosionController.createFlash(new LocatedData(new Coordinate(0,0)));
+        var flash: SingleGameObject<EffectData> = ExplosionController.createFlash(new LocatedData(new Coordinate(0,0)));
         return new ExplosionController(field, (on:boolean)=> {
             field.model.on = on;
         }, flash);

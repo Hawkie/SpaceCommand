@@ -43,8 +43,8 @@ export class HorizontalSpriteSheet extends Sprite {
         scaleY: number = 1) {
         var frames: SpriteFrame[] = [];
         for (let i: number = 0; i < totalFrames; i++) {
-            let w = i * width;
-            frames.push(new SpriteFrame(w, 0, width, height))
+            let w: number = i * width;
+            frames.push(new SpriteFrame(w, 0, width, height));
         }
         super(src, frames, index, scaleX, scaleY);
     }

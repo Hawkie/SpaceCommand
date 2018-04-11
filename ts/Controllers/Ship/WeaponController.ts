@@ -3,7 +3,7 @@ import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } fr
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { ShapeData } from "ts/Data/ShapeData";
-import { AgePred, ParticleRemover2 } from "ts/Actors/ParticleFieldUpdater";
+import { AgePred, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
@@ -100,9 +100,9 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
         let pField: SingleGameObject<IParticle>[] = [];
         var field: MultiGameObject<any, SingleGameObject<IParticle>> = new MultiGameObject(null, [], [], pField);
         var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model.born);
-        var remover: ParticleRemover2<SingleGameObject<IParticle>> = new ParticleRemover2<SingleGameObject<IParticle>>(
+        var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
             () => {
-                ParticleRemover2.remove(
+                ParticleRemover.remove(
                     () => field.components,
                     [age5]);});
         // add the generator to the field object

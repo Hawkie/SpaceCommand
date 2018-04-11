@@ -11,7 +11,7 @@ export interface IParticleGenInputs {
 }
 
 // could use <T> instead of IGameObject
-export class ParticleGenerator2 implements IActor {
+export class ParticleGenerator implements IActor {
     constructor(private getIn: ()=> IParticleGenInputs,
         private createParticle: (now: number) => void) {}
 
@@ -63,7 +63,7 @@ export class ParticleGenerator2 implements IActor {
 //     y: number;
 // }
 
-export class ParticleRemover2<T> implements IActor {
+export class ParticleRemover<T> implements IActor {
     constructor(private removeFunction: ()=> void) {}
 
     update(timeModifier: number): void {
