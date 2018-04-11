@@ -3,7 +3,7 @@ import { Transforms } from "ts/Physics/Transforms";
 // data
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
-import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 // actors
@@ -24,8 +24,8 @@ import { ShipComponentObject, ShipComponents } from "ts/Controllers/Ship/ShipCom
 import { IView } from "../../Views/View";
 
 export interface IThrustController extends IGameObject {
-    on();
-    off();
+    on(): void;
+    off(): void;
     engine: ShipComponentObject;
     thrustField: IGameObject;
 }
@@ -65,7 +65,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
                 yOffset: shape.points[2].y,
             };});
 
-        var engine = ShipComponents.createEngine(data);
+        var engine: ShipComponentObject = ShipComponents.createEngine(data);
         // todo engine types are different!
         var tc: ThrustController = new ThrustController(field,
             (on: boolean) => {

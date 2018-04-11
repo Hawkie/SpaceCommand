@@ -13,18 +13,33 @@ export class SpriteView implements IView {
     }
 }
 
+export interface ISpriteAngled {
+    x: number;
+    y: number;
+    angle: number;
+    sprite: ISprite;
+}
+
 export class SpriteAngledView implements IView {
-    constructor(private properties: ILocatedAngled, private sprite: ISprite) { }
+    constructor(private getInputs: ()=>ISpriteAngled) { }
 
-    display(drawContext: DrawContext) {
-
-        if (this.sprite.loaded) {
+    display(drawContext: DrawContext): void {
+        var inputs: ISpriteAngled = this.getInputs();
+        if (inputs.sprite.loaded) {
             drawContext.save();
-            drawContext.translate(this.properties.location.x, this.properties.location.y);
-            drawContext.rotate(this.properties.angle);
-            drawContext.translate(-this.properties.location.x, -this.properties.location.y);
+            drawContext.translate(inputs.x, inputs.y);
+            drawContext.rotate(inputs.angle);
+            drawContext.translate(-inputs.x, -inputs.y);
 
-            drawContext.drawSprite(this.sprite.img, this.sprite.frame.x, this.sprite.frame.y, this.sprite.frame.width, this.sprite.frame.height, this.properties.location.x, this.properties.location.y, this.sprite.frame.width* this.sprite.scaleX, this.sprite.frame.height*this.sprite.scaleY);
+            drawContext.drawSprite(inputs.sprite.img,
+                inputs.sprite.frame.x,
+                inputs.sprite.frame.y,
+                inputs.sprite.frame.width,
+                inputs.sprite.frame.height,
+                inputs.x,
+                inputs.y,
+                inputs.sprite.frame.width * inputs.sprite.scaleX,
+                inputs.sprite.frame.height * inputs.sprite.scaleY);
 
             drawContext.restore();
         }

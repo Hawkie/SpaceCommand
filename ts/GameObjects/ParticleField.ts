@@ -57,7 +57,7 @@ export interface IFieldInputs {
 
 // particlefield inputs
 // source
-// GeneratorFunction
+// generator Function
 // remove
 export class Field {
 
@@ -272,7 +272,13 @@ export class Field {
             var spinner: Spinner = new Spinner(() => {
                 return {spin:particle.spin};
             }, (sOut)=> particle.angle+=sOut.dAngle);
-            var view = new SpriteAngledView(particle, sheet);
+            var view: IView = new SpriteAngledView(() => {
+                return {
+                    x: particle.location.x,
+                    y: particle.location.y,
+                    angle: particle.angle,
+                    sprite: sheet,
+                };});
             return new SingleGameObject(particle, [mover, animator, spinner], [view]);
         });
         var remover: ParticleRemover = new ParticleRemover(fieldData, particles);

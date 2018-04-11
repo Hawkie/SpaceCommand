@@ -2,10 +2,10 @@
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
 import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
-import { IParticleData, ParticleData, ParticleDataVectorConstructor } from "ts/Data/ParticleData";
+import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { ParticleGenerator, ParticleRemover, AgePred, ParticleRemover2 } from "ts/Actors/ParticleFieldUpdater";
+import { AgePred, ParticleRemover2 } from "ts/Actors/ParticleFieldUpdater";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
@@ -109,7 +109,7 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
                     [age5]);});
         // add the generator to the field object
         field.actors.push(remover);
-        var gun = ShipComponents.createGun(data);
+        var gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>> = ShipComponents.createGun(data);
         return new BulletWeaponController(field, gun, actx);
     }
 }

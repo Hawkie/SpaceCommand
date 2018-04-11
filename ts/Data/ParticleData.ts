@@ -25,11 +25,3 @@ export class ParticleData extends LocatedMovingAngledRotatingData implements IPa
         return this.origin.y;
     }
 }
-
-export class ParticleDataVectorConstructor extends ParticleData {
-
-    constructor(location: Coordinate, vector: Vector, bornTime: number) {
-        var cartesian = Transforms.VectorToCartesian(vector.angle, vector.length);
-        super(location.x, location.y, cartesian.x, cartesian.y, 0, 0, bornTime);
-    }
-}

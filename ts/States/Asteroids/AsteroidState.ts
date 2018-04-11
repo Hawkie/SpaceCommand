@@ -274,7 +274,7 @@ export class AsteroidState implements IGameState {
 
         // var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
         var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
-        // var spriteField = Field.createSpriteField();
+        var spriteField = Field.createSpriteField();
 
         // special
         var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 2);
@@ -335,7 +335,7 @@ export class AsteroidState implements IGameState {
 
         var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController,
             [text, score, valueDisplay, angleDisplay],
-            [field, alien, coinObj, shipController, ball],
+            [field, alien, coinObj, shipController, ball, spriteField],
             asteroids, valueDisplay, angleDisplay);
         return asteroidState;
     }
@@ -401,7 +401,12 @@ export class AsteroidState implements IGameState {
         }, (sOut)=> l.angle += sOut.dAngle);
 
         var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
-        var view: IView = new SpriteAngledView(model.physics, model.graphic);
+        var view: IView = new SpriteAngledView(() => { return {
+            x: model.physics.location.x,
+            y: model.physics.location.y,
+            angle: model.physics.angle,
+            sprite: model.graphic,
+        };});
         var coinObj = new SingleGameObject<GraphicModel<LocatedMovingAngledRotatingData, ISprite>>(model, [a, spinner], [view]);
         return coinObj;
     }

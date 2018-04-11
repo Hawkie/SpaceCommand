@@ -15,7 +15,6 @@ import { PolyView } from "ts/Views/PolyViews";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
-import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
 // objects
 import { Field } from "ts/GameObjects/ParticleField";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
