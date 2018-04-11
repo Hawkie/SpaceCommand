@@ -43,6 +43,18 @@ export interface IThrustInputs {
     gravityOn: boolean;
 }
 
+export interface IFieldInputs {
+    x: number;
+    y: number;
+    Vx: number;
+    Vy: number;
+    thrust: Vector;
+    xOffset: number;
+    yOffset: number;
+    gravityOn: boolean;
+    size: number;
+}
+
 // particlefield inputs
 // source
 // GeneratorFunction
@@ -173,7 +185,7 @@ export class Field {
         return field;
     }
 
-    static createGroundThrust(getInputs: ()=> IThrustInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+    static createThrust(getInputs: ()=> IThrustInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
         let fieldArray: SingleGameObject<IParticle>[] = [];
         var particleGenInputs: IParticleGenInputs = {
             on: false,

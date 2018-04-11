@@ -8,7 +8,7 @@ import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { EffectData } from "ts/Data/EffectData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
-import { ParticleGenerator, ParticleRemover, IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
+import { IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";

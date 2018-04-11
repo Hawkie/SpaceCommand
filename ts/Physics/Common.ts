@@ -1,4 +1,7 @@
-﻿
+﻿export interface ICoordinate {
+    x: number;
+    y: number;
+}
 
 
 export class Vector {
@@ -6,10 +9,6 @@ export class Vector {
 }
 
 
-export class Coordinate {
+export class Coordinate implements ICoordinate {
     constructor(public x: number, public y: number) { }
-}
-
-export class OrthogonalVectors {
-    constructor(public parallel: number, public perpendicular:number, public angleA: number) { }
 }

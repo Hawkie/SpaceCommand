@@ -11,7 +11,7 @@ import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/
 import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
-import { ParticleGenerator, ParticleRemover, IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
+import { IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 // gameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
@@ -56,7 +56,7 @@ export class ThrustController extends ComponentObjects<IGameObject> implements I
 
     static createThrust(data: ILocatedAngledMovingRotatingForces, shape: ShapeData, gravityOn: boolean): ThrustController {
         var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
-            Field.createGroundThrust(() => { return {
+            Field.createThrust(() => { return {
                 x: data.location.x,
                 y: data.location.y,
                 gravityOn: gravityOn,

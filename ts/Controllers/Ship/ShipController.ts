@@ -1,22 +1,22 @@
 ﻿import { Transforms } from "ts/Physics/Transforms";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate, Vector } from "ts/Physics/Common";
-// Data
+// data
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShipData, SpaceShipData, LandingShipData } from "ts/Data/ShipData";
 import { ShapeData } from "ts/Data/ShapeData";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
-// Views
+// views
 import { IView } from "ts/Views/View";
 import { PolyView } from "ts/Views/PolyViews";
-// Updaters
+// updaters
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { ParticleGenerator, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
-// Objects
+// objects
 import { Field } from "ts/GameObjects/ParticleField";
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { ShipComponentObject } from "ts/Controllers/Ship/ShipComponents";
@@ -34,11 +34,11 @@ export interface IShipController {
 }
 
 export interface ICrashController {
-    crash();
+    crash(): void;
 }
 
 export interface IPrimaryWeaponController {
-    shootPrimary();
+    shootPrimary(): void;
 }
 
 export interface IShipComponents<TChassis extends IShipData> {
@@ -49,7 +49,7 @@ export interface IShipComponents<TChassis extends IShipData> {
 }
 
 
-// Add overrides for landship
+// add overrides for landship
 export class LandShipController extends ComponentObjects<IGameObject> implements IShipComponents<LandingShipData>, IShipController, ICrashController, IPrimaryWeaponController {
 
     constructor(public shipData: LandingShipData,
@@ -75,7 +75,7 @@ export class LandShipController extends ComponentObjects<IGameObject> implements
     }
 
     // TODO: break up ship
-    crash() {
+    crash(): void {
         if (!this.shipData.crashed) {
             this.shipData.crashed = true;
             this.explosionController.on();

@@ -49,9 +49,9 @@ export class DuelState extends GameState implements IGameState {
     // data to graphic binders
     // graphic drawers
 
-    //player : BasicShip;
-    //objects : Array<IGameObject>;
-    //asteroids : Array<Asteroid>;
+    // player : BasicShip;
+    // objects : Array<IGameObject>;
+    // asteroids : Array<Asteroid>;
 
     interactors: IInteractor[] = [];
 
@@ -97,17 +97,32 @@ export class DuelState extends GameState implements IGameState {
         this.interactors = [];
 
         this.players.forEach(player => {
-            var asteroidBulletDetector = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this), () => player.weaponController.bullets, player, this.asteroidBulletHit.bind(this));
+            var asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this),
+                () => player.weaponController.bullets,
+                player,
+                this.asteroidBulletHit.bind(this));
             this.interactors.push(asteroidBulletDetector);
-            var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), player.chassisObj.model, player, this.asteroidPlayerHit.bind(this));
+            var asteroidPlayerDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+                player.chassisObj.model,
+                player,
+                this.asteroidPlayerHit.bind(this));
             this.interactors.push(asteroidPlayerDetector);
-            var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), player.thrustController.engine.model, player, this.asteroidEngineHit.bind(this));
-            this.interactors.push(asteroidEngineDetector);    
+            var asteroidEngineDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+                player.thrustController.engine.model,
+                player,
+                this.asteroidEngineHit.bind(this));
+            this.interactors.push(asteroidEngineDetector);
         });
-        var player1ShootPlayer2Detector = new Multi2FieldCollisionDetector(() => [this.players[0].chassisObj.model], () => this.players[1].weaponController.bullets, this.players[0], this.playerHitPlayer.bind(this));
+        var player1ShootPlayer2Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[0].chassisObj.model],
+        () => this.players[1].weaponController.bullets,
+            this.players[0],
+            this.playerHitPlayer.bind(this));
         this.interactors.push(player1ShootPlayer2Detector);
-        var player2ShootPlayer1Detector = new Multi2FieldCollisionDetector(() => [this.players[1].chassisObj.model], () => this.players[0].weaponController.bullets, this.players[1], this.playerHitPlayer.bind(this));
-        this.interactors.push(player2ShootPlayer1Detector) 
+        var player2ShootPlayer1Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[1].chassisObj.model], 
+            () => this.players[0].weaponController.bullets,
+            this.players[1],
+            this.playerHitPlayer.bind(this));
+        this.interactors.push(player2ShootPlayer1Detector);
     }
 
 
@@ -229,14 +244,14 @@ export class DuelState extends GameState implements IGameState {
         playerHit.crash();
     }
 
-    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[], tag:any) {
+    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[], tag: SpaceShipController) {
         // effect on asteroid
         let a = asteroids[i1];
         a.physics.velX += 2;
         a.physics.spin += 3;
         this.asteroidNoise = true;
         // remove bullet
-        bullets.splice(i2, 1);
+        tag.weaponController.bulletField.components.splice(i2, 1);
         // add two small asteroids
 
         this.asteroids.splice(i1, 1);

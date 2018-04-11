@@ -1,5 +1,5 @@
 ﻿import { IInteractor } from "ts/Interactors/Interactor";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
@@ -42,25 +42,31 @@ export class Multi2ShapeCollisionDetector<T> implements IInteractor {
                 }
             }
             // only hit one object (game speed optimisation)
-            if (found)
+            if (found) {
                 break;
+            }
         }
     }
 }
 
 export class Multi2FieldCollisionDetector<T> implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated, IShape>[], private model2s: () => SingleGameObject<ILocated>[], private tag:T, private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[], i2:number, model2s: SingleGameObject<ILocated>[], tag: T) => void, private searchFirstHitOnly: boolean = true) {
+    constructor(private model1s: () => ShapedModel<ILocated, IShape>[],
+    private points2: () => ICoordinate[],
+    private tag:T,
+    private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[],
+        i2:number, model2s: ICoordinate[], tag: T) => void,
+        private searchFirstHitOnly: boolean = true) {
     }
 
     test(lastTestModifier: number) {
         let found = false;
         let targets = this.model1s();
-        let hitters = this.model2s();
+        let hitters = this.points2();
         for (let i1 = targets.length - 1; i1 >= 0; i1--) {
             let target = targets[i1];
             for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
                 let hitter = hitters[i2];
-                if (Transforms.hasPoint(target.shape.points, target.physics.location, hitter.model.location)) {
+                if (Transforms.hasPoint(target.shape.points, target.physics.location, hitter)) {
                     this.hit(i1, targets, i2, hitters, this.tag);
                     if (this.searchFirstHitOnly) {
                         found = true;
@@ -69,8 +75,9 @@ export class Multi2FieldCollisionDetector<T> implements IInteractor {
                 }
             }
             // only hit one object (game speed optimisation)
-            if (found)
+            if (found) {
                 break;
+            }
         }
     }
 }

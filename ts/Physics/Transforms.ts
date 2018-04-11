@@ -1,4 +1,4 @@
-import { Coordinate, Vector, OrthogonalVectors } from "../Physics/Common";
+import { Coordinate, Vector } from "../Physics/Common";
 
 export class Transforms {
 

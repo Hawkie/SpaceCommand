@@ -1,4 +1,4 @@
-import { Vector, OrthogonalVectors } from "ts/Physics/Common";
+import { Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
 import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";

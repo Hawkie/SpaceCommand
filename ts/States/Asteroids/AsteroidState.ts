@@ -6,7 +6,7 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { IParticleData, ParticleData } from "ts/Data/ParticleData";
 import { ParticleFieldData } from "ts/Data/ParticleFieldData";
 import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
-import { Coordinate, Vector } from "ts/Physics/Common";
+import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
@@ -99,10 +99,18 @@ export class AsteroidState implements IGameState {
         //     this.helloSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/hello.wav")[0].data, echoEffect);
         // });
         this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
-            
-        var asteroidBulletDetector = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this), this.bulletModels.bind(this), this.player, this.asteroidBulletHit.bind(this));
-        var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.chassisObj.model, this.player, this.asteroidPlayerHit.bind(this));
-        var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this), this.player.thrustController.engine.model, this.player, this.asteroidEngineHit.bind(this));
+        var asteroidBulletDetector = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this),
+            this.bulletModels.bind(this),
+            this.player,
+            this.asteroidBulletHit.bind(this));
+        var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+            this.player.chassisObj.model,
+            this.player,
+            this.asteroidPlayerHit.bind(this));
+        var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+            this.player.thrustController.engine.model,
+            this.player,
+            this.asteroidEngineHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector, asteroidEngineDetector];
     }
 
@@ -148,7 +156,6 @@ export class AsteroidState implements IGameState {
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         this.asteroids.forEach(x => x.display(drawingContext));
-        
         drawingContext.restore();
     }
 
@@ -186,24 +193,31 @@ export class AsteroidState implements IGameState {
         return this.asteroids.map(a => a.model);
     }
 
-    bulletModels(): SingleGameObject<ILocated>[] {
+    bulletModels(): ICoordinate[] {
         return this.player.weaponController.bullets;
         }
 
-    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[], tag:any) {
+    asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: ICoordinate[], tag:any) {
         // effect on asteroid
         let a = asteroids[i1];
         a.physics.velX += 2;
         a.physics.spin += 3;
         this.asteroidNoise = true;
-        // remove bullet
-        bullets.splice(i2, 1);
+        // remove bullet - todo - remove bullet with function
+        this.player.weaponController.bulletField.components.splice(i2, 1);
         // add two small asteroids
-        
+
         this.asteroids.splice(i1, 1);
         if (a.size > 1) {
-            for (let n = 0; n < 2; n++) {
-                this.asteroids.push(AsteroidState.createAsteroid(a.physics.location.x, a.physics.location.y, a.physics.velX + Math.random() * 10, a.physics.velY + Math.random() * 10, Transforms.random(0, 359), a.physics.spin + Math.random() * 10, a.size - 1, Transforms.random(0, 4)));
+            for (let n:number = 0; n < 2; n++) {
+                this.asteroids.push(AsteroidState.createAsteroid(a.physics.location.x,
+                    a.physics.location.y,
+                    a.physics.velX + Math.random() * 10,
+                    a.physics.velY + Math.random() * 10,
+                    Transforms.random(0, 359),
+                    a.physics.spin + Math.random() * 10,
+                    a.size - 1,
+                    Transforms.random(0, 4)));
             }
         }
         // TODO remove original;
