@@ -35,6 +35,7 @@ import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
+import { AsteroidState } from "../Asteroids/AsteroidState";
 
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
 
@@ -254,8 +255,16 @@ export class DuelState extends GameState implements IGameState {
 
         this.asteroids.splice(i1, 1);
         if (a.size > 1) {
-            for (let n = 0; n < 2; n++) {
-                this.asteroids.push(DuelState.createAsteroid(a.physics.location.x, a.physics.location.y, a.physics.velX + Math.random() * 10, a.physics.velY + Math.random() * 10, Transforms.random(0, 359), a.physics.spin + Math.random() * 10, a.size - 1, Transforms.random(0, 4)));
+            for (let n: number = 0; n < 2; n++) {
+                this.asteroids.push(AsteroidState.createAsteroid(
+                    a.physics.location.x,
+                    a.physics.location.y,
+                    a.physics.velX + Math.random() * 10,
+                    a.physics.velY + Math.random() * 10,
+                    Transforms.random(0, 359),
+                    a.physics.spin + Math.random() * 10,
+                    a.size - 1,
+                    Transforms.random(0, 4)));
             }
         }
         // TODO remove original;

@@ -359,7 +359,7 @@ export class AsteroidState implements IGameState {
     }
 
     //return Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
-    private static createAsteroid(x: number, y:number, velX: number, velY: number, angle: number, spin: number, size: number, type: number): Asteroid {
+    public static createAsteroid(x: number, y:number, velX: number, velY: number, angle: number, spin: number, size: number, type: number): Asteroid {
         
             //var rectangle1 = [new Coordinate(- 2, -20),
         //    new Coordinate(2, -20),
