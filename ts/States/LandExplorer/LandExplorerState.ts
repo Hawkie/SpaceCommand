@@ -208,7 +208,12 @@ export class LandExplorerState implements IGameState {
         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
         surfaceGenerator.initSurface();
         var terrain = new GraphicData("res/img/terrain.png");
-        var surface: PolyGraphic = new PolyGraphic(model.physics, model.shape, terrain);
+        var surface: IView = new PolyGraphic(() => { return {
+            x: model.physics.location.x,
+            y: model.physics.location.y,
+            shape: model.shape,
+            graphic: terrain,
+        };});
         var obj = new SingleGameObject(model, [surfaceGenerator], [surface]);
         return obj;
     }
@@ -218,7 +223,11 @@ export class LandExplorerState implements IGameState {
         var xy = surface.model.shape.points[placeIndex];
         var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.physics.location.x,
             xy.y + surface.model.physics.location.y));
-        var padView: IView = new PolyView(padModel.physics, padModel.shape);
+        var padView: IView = new PolyView(() => { return {
+            x: padModel.physics.location.x,
+            y: padModel.physics.location.y,
+            shape: padModel.shape,
+        };});
         var obj = new SingleGameObject<LandingPadModel>(padModel, [], [padView]);
         return obj;
     }
@@ -259,7 +268,11 @@ export class LandExplorerState implements IGameState {
     static createWindDirectionIndicator(location: Coordinate): SingleGameObject<WindModel> {
         var model: WindModel = new WindModel(location);
         var windGenerator: IActor = new WindGenerator(model.physics, model.shape);
-        var viewArrow: IView = new PolyView(model.physics, model.shape); // arrow shape
+        var viewArrow: IView = new PolyView(() => { return {
+            x: model.physics.location.x,
+            y: model.physics.location.y,
+            shape: model.shape,
+        };});
         var viewText: IView = new ValueView(model.physics, "{0} mph", "monospace", 12);
         var obj = new SingleGameObject<WindModel>(model, [windGenerator], [viewArrow, viewText]);
         return obj;

@@ -17,6 +17,7 @@ import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 //Views
 import { PolyView } from "ts/Views/PolyViews";
+import { IView } from "../../Views/View";
 
 
 
@@ -39,7 +40,11 @@ export class ShipComponents {
         var rotator = new PolyRotator(chassis.physics, chassis.shape);
 
         var actors: IActor[] = [mover, rotator];
-        var shipView = new PolyView(chassis.physics, chassis.shape);
+        var shipView: IView = new PolyView(()=> { return {
+            x: chassis.physics.location.x,
+            y: chassis.physics.location.y,
+            shape: chassis.shape,
+        };});
 
         var shipObj = new ShipComponentObject(chassis, actors, [shipView]);
         return shipObj;
@@ -72,7 +77,11 @@ export class ShipComponents {
         var component = new BreakableData(20, 20, 0, false, false);
         var shapeData = new ShapeData(engineShape, new Coordinate(0, 5));
         var model = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(component, data, shapeData);
-        var view = new PolyView(data, shapeData);
+        var view: IView = new PolyView(() => { return {
+            x: data.location.x,
+            y: data.location.y,
+            shape: shapeData,
+        };});
         var rotator = new PolyRotator(data, shapeData);
         return new ShipComponentObject(model, [rotator], [view]);
     }
@@ -90,7 +99,11 @@ export class ShipComponents {
         var component = new BreakableData(20, 20, 0, false, false);
         var shapeData = new ShapeData(gunShape, new Coordinate(0, -8));
         var model = new GPSModel<IBreakable, ILocatedMovingAngledRotating, IShape>(component, data, shapeData);
-        var view = new PolyView(data, shapeData);
+        var view: IView = new PolyView(() => { return {
+            x: data.location.x,
+            y: data.location.y,
+            shape: shapeData,
+        };});
         var rotator = new PolyRotator(data, shapeData);
         return new SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>(model, [rotator], [view]);
     }

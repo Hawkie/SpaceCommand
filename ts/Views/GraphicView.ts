@@ -3,28 +3,44 @@ import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 import { IView } from "ts/Views/View";
 
+export interface IGraphicViewInputs {
+    x: number;
+    y: number;
+    graphic: IGraphic;
+}
 
-// Binds data object to drawable item
+// binds data object to drawable item
 export class GraphicView implements IView {
-    constructor(private properties: ILocated, private graphic: GraphicData) { }
+    constructor(private getInputs: ()=> IGraphicViewInputs) { }
 
-    display(drawContext: DrawContext) {
-        if (this.graphic.loaded)
-            drawContext.drawImage(this.graphic.img, this.properties.location.x, this.properties.location.y);
+    display(drawContext: DrawContext): void {
+        var inputs: IGraphicViewInputs = this.getInputs();
+        GraphicView.drawGraphic(drawContext, inputs);
+    }
+
+    static drawGraphic(drawContext: DrawContext, inputs: IGraphicViewInputs): void {
+        if (inputs.graphic.loaded) {
+            drawContext.drawImage(inputs.graphic.img, inputs.x, inputs.y);
+        }
     }
 }
 
+export interface IGraphicAngledViewInputs extends IGraphicViewInputs {
+    angle: number;
+}
+
+// TODO: fix the rotation as per sprite rotation adjustment of origin
 export class GraphicAngledView implements IView {
-    constructor(private properties: ILocatedAngled, private graphic: GraphicData) { }
+    constructor(private getInputs: ()=> IGraphicAngledViewInputs) { }
 
-    display(drawContext: DrawContext) {
-
-        if (this.graphic.loaded) {
+    display(drawContext: DrawContext): void {
+        var inputs: IGraphicAngledViewInputs = this.getInputs();
+        if (inputs.graphic.loaded) {
             drawContext.save();
-            drawContext.translate(this.properties.location.x, this.properties.location.y);
-            drawContext.rotate(this.properties.angle);
-            drawContext.translate(-this.properties.location.x, -this.properties.location.y);
-            drawContext.drawImage(this.graphic.img, this.properties.location.x, this.properties.location.y);
+            drawContext.translate(inputs.x, inputs.y);
+            drawContext.rotate(inputs.angle);
+            drawContext.translate(-inputs.x, -inputs.y);
+            GraphicView.drawGraphic(drawContext, inputs);
             drawContext.restore();
         }
     }

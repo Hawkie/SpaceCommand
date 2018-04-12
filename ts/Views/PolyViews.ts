@@ -55,45 +55,62 @@ export class LineView implements IView {
     }
 }
 
-export class PolyView implements IView {
-    constructor(private properties: ILocated, private shape: ShapeData) { }
+export interface IPolyView {
+    x: number;
+    y: number;
+    shape: IShape;
+}
 
-    display(drawContext: DrawContext) {
-        var x = this.properties.location.x + this.shape.offset.x;
-        var y = this.properties.location.y + this.shape.offset.y;
-        drawContext.drawP(x, y, this.shape.points);
+export class PolyView implements IView {
+    constructor(private getInputs:()=> IPolyView) { }
+
+    display(drawContext: DrawContext): void {
+        var inputs: IPolyView = this.getInputs();
+        var x: number = inputs.x + inputs.shape.offset.x;
+        var y: number = inputs.y + inputs.shape.offset.y;
+        drawContext.drawP(x, y, inputs.shape.points);
         drawContext.fill();
     }
 }
 
-export class PolyGraphic implements IView {
-    constructor(private properties: ILocated, private shape: ShapeData, private graphic: GraphicData) { }
+export interface IPolyGraphicView extends IPolyView {
+    graphic: IGraphic;
+}
 
-    display(drawContext: DrawContext) {
-        if (this.graphic.loaded) {
-            var x = this.properties.location.x + this.shape.offset.x;
-            var y = this.properties.location.y + this.shape.offset.y;
-            drawContext.drawP(x, y, this.shape.points);
+export class PolyGraphic implements IView {
+    constructor(private getInputs: ()=> IPolyGraphicView) { }
+
+    display(drawContext: DrawContext): void {
+        var inputs: IPolyGraphicView = this.getInputs();
+        if (inputs.graphic.loaded) {
+            var x: number = inputs.x + inputs.shape.offset.x;
+            var y: number = inputs.y + inputs.shape.offset.y;
+            drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
-            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
+            let fillStyle: CanvasPattern = drawContext.createPattern(inputs.graphic.img);
             drawContext.fill(fillStyle);
             drawContext.restore();
         }
     }
 }
 
-export class PolyGraphicAngled implements IView {
-    constructor(private properties: ILocatedAngled, private shape: ShapeData, private graphic: GraphicData) { }
+export interface IPolyGraphicAngledView extends IPolyGraphicView {
+    angle: number;
+}
 
-    display(drawContext: DrawContext) {
-        if (this.graphic.loaded) {
-            var x = this.properties.location.x + this.shape.offset.x;
-            var y = this.properties.location.y + this.shape.offset.y;
-            drawContext.drawP(x, y, this.shape.points);
+export class PolyGraphicAngled implements IView {
+    constructor(private getInputs: ()=> IPolyGraphicAngledView) { }
+
+    display(drawContext: DrawContext): void {
+        var inputs: IPolyGraphicAngledView = this.getInputs();
+        if (inputs.graphic.loaded) {
+            var x: number = inputs.x + inputs.shape.offset.x;
+            var y: number = inputs.y + inputs.shape.offset.y;
+            drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
-            drawContext.translate(this.properties.location.x, this.properties.location.y);
-            drawContext.rotate(this.properties.angle);
-            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
+            drawContext.translate(inputs.x, inputs.y);
+            drawContext.rotate(inputs.angle);
+            let fillStyle: CanvasPattern = drawContext.createPattern(inputs.graphic.img);
             drawContext.fill(fillStyle);
             drawContext.restore();
         }

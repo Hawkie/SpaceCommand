@@ -290,7 +290,11 @@ export class DuelState extends GameState implements IGameState {
         }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
         player.thrustController.engine.model.physics = engineSeparateModel;
         player.thrustController.engine.actors = [mover, rotator, spinner];
-        var view = new PolyView(engineSeparateModel, shapeData);
+        var view: IView = new PolyView(() => { return {
+            x: engineSeparateModel.location.x,
+            y: engineSeparateModel.location.y,
+            shape: shapeData,
+        };});
         player.thrustController.engine.views = [view];
     }
 
@@ -391,7 +395,13 @@ export class DuelState extends GameState implements IGameState {
             return { spin: model.physics.spin };
         }, (sOut)=> model.physics.angle += sOut.dAngle);
         var rotator = new PolyRotator(model.physics, model.shape);
-        var view: PolyGraphicAngled = new PolyGraphicAngled(model.physics, model.shape, terrain);
+        var view: IView = new PolyGraphicAngled(() => { return {
+            x: model.physics.location.x,
+            y: model.physics.location.y,
+            shape: model.shape,
+            graphic: terrain,
+            angle: model.physics.angle,
+        };});
         var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);
         return asteroidObject;
     }
@@ -400,12 +410,15 @@ export class DuelState extends GameState implements IGameState {
 
         //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
         var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5, 0.8));
-        var shipView: IView = new GraphicAngledView(shipModel.physics, new GraphicData("res/img/ship.png"));
+        var image: IGraphic = new GraphicData("res/img/ship.png");
+        var shipView: IView = new GraphicAngledView(() => { return {
+            x: shipModel.physics.location.x,
+            y: shipModel.physics.location.y,
+            angle: shipModel.physics.angle,
+            graphic: image,
+        };});
 
-        //var thrustView: ParticleFieldView = new ParticleFieldView(shipModel.thrustParticleModel.data, 1, 1);
-        //var explosionView: ParticleFieldView = new ParticleFieldView(shipModel.explosionParticleModel.data, 3, 3);
-
-        var obj = new GraphicShip(shipModel, [], [shipView]);
+        var obj: GraphicShip = new GraphicShip(shipModel, [], [shipView]);
         return obj;
     }
 }

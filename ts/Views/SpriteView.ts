@@ -29,11 +29,8 @@ export class SpriteView implements IView {
     }
 }
 
-export interface ISpriteAngled {
-    x: number;
-    y: number;
+export interface ISpriteAngled extends ISpriteLocated {
     angle: number;
-    sprite: ISprite;
 }
 
 export class SpriteAngledView implements IView {
