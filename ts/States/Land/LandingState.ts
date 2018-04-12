@@ -28,7 +28,7 @@ import { Field } from "ts/GameObjects/ParticleField";
 import { IView } from "ts/Views/View";
 
 import { PolyView, PolyGraphic } from "ts/Views/PolyViews";
-import { ValueView } from "ts/Views/TextView";
+import { ValueView } from "ts/Views/ValueView";
 import { LandingShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";

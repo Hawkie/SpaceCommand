@@ -1,17 +1,16 @@
-﻿import { Coordinate, Vector } from "ts/Physics/Common";
+﻿import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { ILocated, ILocatedMoving, LocatedData } from "ts/Data/PhysicsData";
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
 import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
 import { ShapeData } from "ts/Data/ShapeData";
-import { EffectData } from "ts/Data/EffectData";
 import { IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";
 import { SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field, IParticle } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
-import { ScreenFlashView } from "ts/Views/EffectViews";
+import { ScreenFlashView, IFlashInputs } from "ts/Views/EffectViews";
 import { IGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { IView } from "../../Views/View";
 
@@ -20,7 +19,7 @@ import { IView } from "../../Views/View";
 
 export interface IExplosionController extends IGameObject {
     field: IGameObject;
-    screenFlash: SingleGameObject<EffectData>;
+    screenFlash: SingleGameObject<IFlashInputs>;
 
     on(): void;
     off(): void;
@@ -32,13 +31,13 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
 
     constructor(public field: IGameObject,
         public fieldSwitcher: (on:boolean)=>void,
-        public screenFlash: SingleGameObject<EffectData>) {
+        public screenFlash: SingleGameObject<IFlashInputs>) {
         super([field, screenFlash]);
     }
 
     on(): void {
         this.fieldSwitcher(true);
-        this.screenFlash.model.enabled = true;
+        this.screenFlash.model.on = true;
         if (!this.soundPlayed) {
             this.explosionSound.play();
             this.soundPlayed = true;
@@ -47,16 +46,32 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
 
     off(): void {
         this.fieldSwitcher(false);
-        this.screenFlash.model.enabled = false;
+        this.screenFlash.model.on = false;
         this.explosionSound.pause();
         this.soundPlayed = false;
     }
 
     // flash and field separate?
-    static createFlash(located:ILocated): SingleGameObject<EffectData> {
-        let e: EffectData = new EffectData();
-        let s: IActor = new Flasher(e);
-        let flash: SingleGameObject<EffectData> = new SingleGameObject<EffectData>(e, [s], [new ScreenFlashView(located, e)]);
+    static createFlash(): SingleGameObject<IFlashInputs> {
+        let flashIn: IFlashInputs = {
+            on: false,
+            value: 0,
+            x:0,
+            y:0,
+            width: 512,
+            height: 480,
+        };
+        let flasher: IActor = new Flasher(() => { return {
+                enabled: flashIn.on,
+                value: flashIn.value,
+                repeat: 10,
+                speed: 1,
+            };},
+            (out:number)=> { flashIn.value = out;
+            }
+        );
+        let flash: SingleGameObject<IFlashInputs> = new SingleGameObject<IFlashInputs>(flashIn,
+            [flasher], [new ScreenFlashView(()=> flashIn)]);
         return flash;
     }
 
@@ -68,7 +83,7 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
                 y: data.location.y,
                 gravityOn: gravityOn,
             };});
-        var flash: SingleGameObject<EffectData> = ExplosionController.createFlash(new LocatedData(new Coordinate(0,0)));
+        var flash: SingleGameObject<IFlashInputs> = ExplosionController.createFlash();
         return new ExplosionController(field, (on:boolean)=> {
             field.model.on = on;
         }, flash);

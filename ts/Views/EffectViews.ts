@@ -1,17 +1,26 @@
 ﻿
 import { IView } from "ts/Views/View";
 import { DrawContext } from "ts/Common/DrawContext";
-import { EffectData } from "ts/Data/EffectData";
 import { ILocated } from "ts/Data/PhysicsData";
 
-export class ScreenFlashView implements IView {
-    constructor(private located:ILocated, private effect: EffectData) {
-    }
+export interface IFlashInputs {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    on: boolean;
+    value: number;
+}
 
-    display(drawContext: DrawContext) {
-        if (this.effect.enabled) {
-            if (this.effect.value) {
-                drawContext.fillRect(this.located.location.x, this.located.location.y, 512, 480);
+// 512, 480
+export class ScreenFlashView implements IView {
+    constructor(private getInputs: ()=> IFlashInputs) {}
+
+    display(drawContext: DrawContext): void {
+        var inputs: IFlashInputs = this.getInputs();
+        if (inputs.on) {
+            if (inputs.value === 1) {
+                drawContext.fillRect(inputs.x, inputs.y, inputs.width, inputs.height);
                 drawContext.fill();
             }
         }

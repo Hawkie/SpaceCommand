@@ -7,7 +7,7 @@ export class ValueView implements IView {
     constructor(public model: IValueData, private format: string, private font: string, private fontSize: number) {
     }
 
-    display(drawingContext: DrawContext) {
+    display(drawingContext: DrawContext): void {
         drawingContext.drawText(this.model.location.x, this.model.location.y, this.model.value.toString(), this.fontSize, this.font);
     }
 }

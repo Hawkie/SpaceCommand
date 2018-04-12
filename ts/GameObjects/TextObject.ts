@@ -1,6 +1,7 @@
 ﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IView } from "ts/Views/View";
-import { TextView, ValueView } from "ts/Views/TextView";
+import { TextView } from "ts/Views/TextView";
+import { ValueView } from "ts/Views/ValueView";
 import { ITextData, TextData, IValueData, ValueData } from "ts/Data/TextData";
 import { IActor } from "ts/Actors/Actor";
 import { Mover } from "ts/Actors/Movers";

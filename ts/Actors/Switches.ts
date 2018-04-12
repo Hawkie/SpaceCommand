@@ -1,17 +1,27 @@
 ﻿import { IActor } from "ts/Actors/Actor";
-import { ISwitch } from "ts/Data/EffectData";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
+
+export interface ISwitch {
+    enabled: boolean;
+    value: number;
+    repeat: number;
+    speed: number;
+}
 
 export class Flasher implements IActor {
 
     flashed: number = 0;
-    constructor(public flash: ISwitch) { }
+    constructor(public getSwitch: ()=> ISwitch, private valueOut: (value:number)=> void) { }
 
-    update(timeModifier: number) {
-        if (this.flash.enabled) {
-            if (this.flashed < this.flash.repeat) {
-                if (this.flash.value) this.flash.value = false;
-                else this.flash.value = true;
+    update(timeModifier: number): void {
+        var inputs:ISwitch = this.getSwitch();
+        if (inputs.enabled) {
+            if (this.flashed < inputs.repeat) {
+                if (inputs.value === 0) {
+                    this.valueOut(1);
+                } else {
+                    this.valueOut(0);
+                }
                 this.flashed++;
             }
         }

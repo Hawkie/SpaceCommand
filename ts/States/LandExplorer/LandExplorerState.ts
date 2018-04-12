@@ -26,7 +26,7 @@ import { TextObject } from "ts/GameObjects/TextObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { IView } from "ts/Views/View";
 import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
-import { ValueView } from "ts/Views/TextView";
+import { ValueView } from "ts/Views/ValueView";
 import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";

@@ -3,21 +3,28 @@ import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
 import { ISprite } from "ts/Data/SpriteData";
 import { IView } from "ts/Views/View";
 
+export interface ISpriteLocated {
+    x: number;
+    y: number;
+    sprite: ISprite;
+}
+
 // binds data object to drawable item
 export class SpriteView implements IView {
-    constructor(private properties: ILocated, private sprite: ISprite) { }
+    constructor(private getInputs: ()=>ISpriteLocated) { }
 
     display(drawContext: DrawContext): void {
-        if (this.sprite.loaded) {
-            drawContext.drawSprite(this.sprite.img,
-                this.sprite.frame.x,
-                this.sprite.frame.y,
-                this.sprite.frame.width,
-                this.sprite.frame.height,
-                this.properties.location.x,
-                this.properties.location.y,
-                this.sprite.frame.width * this.sprite.scaleX,
-                this.sprite.frame.height * this.sprite.scaleY);
+        var inputs: ISpriteLocated = this.getInputs();
+        if (inputs.sprite.loaded) {
+            drawContext.drawSprite(inputs.sprite.img,
+                inputs.sprite.frame.x,
+                inputs.sprite.frame.y,
+                inputs.sprite.frame.width,
+                inputs.sprite.frame.height,
+                inputs.x,
+                inputs.y,
+                inputs.sprite.frame.width * inputs.sprite.scaleX,
+                inputs.sprite.frame.height * inputs.sprite.scaleY);
         }
     }
 }
