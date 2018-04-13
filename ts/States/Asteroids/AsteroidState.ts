@@ -3,7 +3,7 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { IPhysical, Model, ShapedModel } from "ts/Models/DynamicModels";
+import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";

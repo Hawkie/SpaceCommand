@@ -20,24 +20,11 @@ export interface IGamed<TObject> {
     object: TObject;
 }
 
-export interface IGraphical<TGraphic extends IGraphic> {
-    graphic: TGraphic;
-}
-
 export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
 
-export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
-    constructor(
-        public physics: TPhysics) {
-    }
-}
-
-// export class GraphicModel<TPhysics extends ILocated,
-//     TGraphic extends IGraphic>
-//     implements IPhysical<TPhysics>, IGraphical<TGraphic> {
+// export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
 //     constructor(
-//         public physics: TPhysics,
-//         public graphic: TGraphic) {
+//         public physics: TPhysics) {
 //     }
 // }
 

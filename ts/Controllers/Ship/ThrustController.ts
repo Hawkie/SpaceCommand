@@ -16,7 +16,7 @@ import { AudioObject } from "ts/Sound/SoundObject";
 // views
 import { RectangleView, PolyView } from "ts/Views/PolyViews";
 
-import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
+import { ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 import { ShipComponentObject, ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { IView } from "../../Views/View";
 

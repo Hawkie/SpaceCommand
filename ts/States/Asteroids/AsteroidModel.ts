@@ -3,7 +3,7 @@ import { Transforms } from "ts/Physics/Transforms";
 import { ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData, IHittable  } from "ts/Data/PhysicsData";
 import { IShape, ShapeData  } from "ts/Data/ShapeData";
 import { PolyRotator } from "ts/Actors/Rotators";
-import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShapedModel } from "ts/Models/DynamicModels";
 
 
 export class AsteroidModel extends ShapedModel<ILocatedMovingAngledRotating, IShape> implements IHittable {

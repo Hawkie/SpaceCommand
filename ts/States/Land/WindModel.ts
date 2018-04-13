@@ -3,7 +3,7 @@ import { ValueData } from "ts/Data/TextData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { LocatedData } from "ts/Data/PhysicsData";
 import { IWind, Direction, WindData } from "ts/Data/WindData";
-import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShapedModel } from "ts/Models/DynamicModels";
 
 
 export class WindModel extends ShapedModel<WindData, IShape> {

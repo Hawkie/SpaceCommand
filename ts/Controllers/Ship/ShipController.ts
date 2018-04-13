@@ -5,7 +5,7 @@ import { Coordinate, Vector } from "ts/Physics/Common";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShipData, SpaceShipData, LandingShipData } from "ts/Data/ShipData";
 import { ShapeData } from "ts/Data/ShapeData";
-import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShapedModel } from "ts/Models/DynamicModels";
 // views
 import { IView } from "ts/Views/View";
 import { PolyView } from "ts/Views/PolyViews";

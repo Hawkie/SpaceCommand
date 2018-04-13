@@ -10,7 +10,7 @@ import { AudioObject } from "ts/Sound/SoundObject";
 import { RectangleView } from "ts/Views/PolyViews";
 import { FXObject } from "ts/Sound/FXObject";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
-import { Model, ShapedModel } from "ts/Models/DynamicModels";
+import { ShapedModel } from "ts/Models/DynamicModels";
 import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { IView } from "../../Views/View";
 import { Transforms } from "../../Physics/Transforms";
