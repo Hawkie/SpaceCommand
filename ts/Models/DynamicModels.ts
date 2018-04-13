@@ -20,25 +20,11 @@ export interface IGamed<TObject> {
     object: TObject;
 }
 
-export interface ISprited<TSprite extends ISprite> {
-    sprite: TSprite;
-}
-
 export interface IGraphical<TGraphic extends IGraphic> {
     graphic: TGraphic;
 }
 
 export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
-
-
-export interface IGPSModel<TGame, TPhysics extends ILocated, TShape extends IShape > extends IGamed<TGame>, IPhysical < TPhysics >, IShaped < TShape > {}
-
-export interface IState {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-}
 
 export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
     constructor(
@@ -46,23 +32,14 @@ export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
     }
 }
 
-export class GraphicModel<TPhysics extends ILocated,
-    TGraphic extends IGraphic>
-    implements IPhysical<TPhysics>, IGraphical<TGraphic> {
-    constructor(
-        public physics: TPhysics,
-        public graphic: TGraphic) {
-    }
-}
-
-export class SpriteModel<TPhysics extends ILocated,
-    TSprite extends ISprite>
-    implements IPhysical<TPhysics>, ISprited<TSprite> {
-    constructor(
-        public physics: TPhysics,
-        public sprite: TSprite) {
-    }
-}
+// export class GraphicModel<TPhysics extends ILocated,
+//     TGraphic extends IGraphic>
+//     implements IPhysical<TPhysics>, IGraphical<TGraphic> {
+//     constructor(
+//         public physics: TPhysics,
+//         public graphic: TGraphic) {
+//     }
+// }
 
 export class ShapedModel<TPhysics extends ILocated,
     TShape>
@@ -81,18 +58,5 @@ export class GPSModel<TGame,
         public object: TGame,
         public physics: TPhysics,
         public shape: TShape) {
-    }
-}
-
-export class GPSSModel<TGame,
-    TPhysics extends ILocated,
-    TShape extends IShape,
-    TSprite extends ISprite>
-    implements IGamed<TGame>, IPhysical<TPhysics>, IShaped<TShape>, ISprited<TSprite> {
-    constructor(
-        public object: TGame,
-        public physics: TPhysics,
-        public shape: TShape,
-        public sprite:TSprite) {
     }
 }

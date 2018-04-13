@@ -4,6 +4,10 @@ import { Coordinate } from "ts/Physics/Common";
 import { ILocated, IMoving  } from "ts/Data/PhysicsData";
 import { ISprite } from "ts/Data/SpriteData";
 
+export interface ISpriteAnimator {
+    
+}
+
 export class SpriteAnimator implements IActor {
 
     lastChanged: number;

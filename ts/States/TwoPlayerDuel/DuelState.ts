@@ -3,7 +3,7 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
+import { IPhysical, Model, ShapedModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
@@ -13,7 +13,7 @@ import { IView } from "ts/Views/View";
 import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/Views/PolyViews";
 import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState, GameState } from "ts/States/GameState";
-import { IInteractor } from "ts/Interactors/Interactor"
+import { IInteractor } from "ts/Interactors/Interactor";
 import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { SpaceShipData } from "ts/Data/ShipData";
 import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
@@ -39,8 +39,6 @@ import { AsteroidState } from "../Asteroids/AsteroidState";
 import { IActor } from "../../Actors/Actor";
 
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
-
-export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotatingForces>> { }
 
 export class DuelState extends GameState implements IGameState {
     // data objects
@@ -372,7 +370,7 @@ export class DuelState extends GameState implements IGameState {
         let player2 = DuelState.createPlayer(new Coordinate(128, 360), 0, actx);
         let asteroids: Asteroid[] = AsteroidState.createLevel(3);
 
-        let alien: IGameObject = DuelState.createGraphicShip(new Coordinate(200, 100));
+        let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
 
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
@@ -380,22 +378,5 @@ export class DuelState extends GameState implements IGameState {
 
         var asteroidState = new DuelState("Duel", assets, actx, [player1, player2], [text, score, valueDisplay], [field, alien, player1, player2], asteroids, valueDisplay);
         return asteroidState;
-    }
-
-
-    static createGraphicShip(location: Coordinate): GraphicShip {
-
-        //let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5, 0.8));
-        var image: IGraphic = new GraphicData("res/img/ship.png");
-        var shipView: IView = new GraphicAngledView(() => { return {
-            x: shipModel.physics.location.x,
-            y: shipModel.physics.location.y,
-            angle: shipModel.physics.angle,
-            graphic: image,
-        };});
-
-        var obj: GraphicShip = new GraphicShip(shipModel, [], [shipView]);
-        return obj;
     }
 }

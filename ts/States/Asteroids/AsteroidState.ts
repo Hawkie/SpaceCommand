@@ -3,7 +3,7 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { IPhysical, Model, ShapedModel, GraphicModel } from "ts/Models/DynamicModels";
+import { IPhysical, Model, ShapedModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { TextData } from "ts/Data/TextData";
@@ -40,7 +40,27 @@ import { IActor } from "../../Actors/Actor";
 
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
 
-export class GraphicShip extends SingleGameObject<Model<LocatedMovingAngledRotatingForces>> { }
+export interface IGraphicShip {
+    x: number;
+    y: number;
+    Vx: number;
+    Vy: number;
+    angle: number;
+    spin: number;
+    mass: number;
+    graphic: IGraphic;
+}
+
+export interface ICoin {
+    x: number;
+    y: number;
+    Vx: number;
+    Vy: number;
+    angle: number;
+    spin: number;
+    mass: number;
+    sprite: ISprite;
+}
 
 export interface IBallObject {
     x: number;
@@ -58,9 +78,6 @@ export class AsteroidState implements IGameState {
 // data to graphic binders
 // graphic drawers
 
-    //player : BasicShip;
-    //objects : Array<IGameObject>;
-    //asteroids : Array<Asteroid>;
 
     interactors: IInteractor[] = [];
 
@@ -74,8 +91,7 @@ export class AsteroidState implements IGameState {
     exitState: boolean = false;
     level: number = 3;
     ShipController: SpaceShipController;
-    
-    
+
     constructor(public name: string,
         private assets: Assets,
         private actx: AudioContext,
@@ -384,11 +400,6 @@ export class AsteroidState implements IGameState {
         angle: number, spin: number,
         size: number, type: number): Asteroid {
 
-        // var rectangle1 = [new Coordinate(- 2, -20),
-        //    new Coordinate(2, -20),
-        //    new Coordinate(2, 20),
-        //    new Coordinate(-2, 20),
-        //    new Coordinate(-2, -20)];
         let l: ICoordinate = new Coordinate(x, y);
         var model: AsteroidModel = new AsteroidModel(l, velX, velY, angle, spin, size, type);
         var terrain: IGraphic = new GraphicData("res/img/terrain.png");
@@ -421,39 +432,54 @@ export class AsteroidState implements IGameState {
     }
 
 
-    static createGraphicShip(location: Coordinate): GraphicShip {
-        // let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
-        var shipModel: Model<LocatedMovingAngledRotatingForces> = new Model<LocatedMovingAngledRotatingForces>(
-            new LocatedMovingAngledRotatingForces(location, 1, -1, 10, 5, 1));
-        var image: IGraphic = new GraphicData("res/img/ship.png");
+    public static createGraphicShip(location: Coordinate): IGameObject {
+        var ship: IGraphicShip = {
+            x: location.x,
+            y: location.y,
+            Vx: 1,
+            Vy: -1,
+            angle: 10,
+            spin: 5,
+            mass: 1,
+            graphic: new GraphicData("res/img/ship.png"),
+        };
         var shipView: IView = new GraphicAngledView(() => { return {
-            x: shipModel.physics.location.x,
-            y: shipModel.physics.location.y,
-            angle: shipModel.physics.angle,
-            graphic: image,
+            x: ship.x,
+            y: ship.y,
+            angle: ship.angle,
+            graphic: ship.graphic,
         };});
-
-        var obj: GraphicShip = new GraphicShip(shipModel, [], [shipView]);
+        var obj: IGameObject = new SingleGameObject(ship, [], [shipView]);
         return obj;
     }
 
 
     static createCoin(location: Coordinate): IGameObject {
-        var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
-        var s = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-        var a = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+        // var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
+        var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+        // var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
+        var coin: ICoin = {
+            x: location.x,
+            y: location.y,
+            Vx: 0,
+            Vy: 0,
+            angle: 45,
+            spin: 4,
+            mass: 1,
+            sprite: s,
+        };
+        var animator: IActor = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
         var spinner: Spinner = new Spinner(()=> {
-            return { spin: l.spin };
-        }, (sOut)=> l.angle += sOut.dAngle);
+            return { spin: coin.spin };
+        }, (sOut)=> coin.angle += sOut.dAngle);
 
-        var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
         var view: IView = new SpriteAngledView(() => { return {
-            x: model.physics.location.x,
-            y: model.physics.location.y,
-            angle: model.physics.angle,
-            sprite: model.graphic,
+            x: coin.x,
+            y: coin.y,
+            angle: coin.angle,
+            sprite: coin.sprite,
         };});
-        var coinObj = new SingleGameObject<GraphicModel<LocatedMovingAngledRotatingData, ISprite>>(model, [a, spinner], [view]);
+        var coinObj: IGameObject = new SingleGameObject<ICoin>(coin, [animator, spinner], [view]);
         return coinObj;
     }
 

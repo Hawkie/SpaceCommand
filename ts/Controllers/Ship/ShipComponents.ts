@@ -6,7 +6,7 @@ import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces, ILo
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 // model
-import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
+import { ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 // actors
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
@@ -26,7 +26,11 @@ export class ShipComponentObject extends SingleGameObject<GPSModel<IBreakable, I
 export class ShipComponents {
 
     static createShipObj<TShip extends IShipData>(physics: TShip): ShipComponentObject {
-        var triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];
+        var triangleShip: Coordinate[] = [new Coordinate(0, -4),
+            new Coordinate(-2, 2),
+            new Coordinate(0, 1),
+            new Coordinate(2, 2),
+            new Coordinate(0, -4)];
         Transforms.scale(triangleShip, 2, 2);
 
         var breakable = new BreakableData(20, 20, 0, false, false);
@@ -48,14 +52,13 @@ export class ShipComponents {
             chassis.shape = out;
         });
 
-        var actors: IActor[] = [mover, rotator];
         var shipView: IView = new PolyView(()=> { return {
             x: chassis.physics.location.x,
             y: chassis.physics.location.y,
             shape: chassis.shape,
         };});
 
-        var shipObj = new ShipComponentObject(chassis, actors, [shipView]);
+        var shipObj = new ShipComponentObject(chassis, [mover, rotator], [shipView]);
         return shipObj;
     }
 
