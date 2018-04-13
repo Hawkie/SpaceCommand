@@ -15,7 +15,6 @@ import { TextObject } from "ts/GameObjects/TextObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { Field } from "ts/GameObjects/ParticleField";
-import { Mover } from "ts/Actors/Movers";
 
 export class MenuItem {
     constructor(public name: string, public id: number) { }

@@ -1,6 +1,6 @@
 ﻿import { Coordinate, Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-// Data
+// data
 import { IShipData, SpaceShipData, LandingShipData } from "ts/Data/ShipData";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces, ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData } from "ts/Data/PhysicsData";
 import { IBreakable, BreakableData } from "ts/Data/BreakableData";
@@ -8,16 +8,16 @@ import { IShape, ShapeData } from "ts/Data/ShapeData";
 // model
 import { Model, ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 // actors
-import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
 // gameObjects
 import { IGameObject, SingleGameObject, ComponentObjects, MultiGameObject } from "ts/GameObjects/GameObject";
 import { Field } from "ts/GameObjects/ParticleField";
 import { AudioObject } from "ts/Sound/SoundObject";
-//Views
+// views
 import { PolyView } from "ts/Views/PolyViews";
 import { IView } from "../../Views/View";
+import { MoveConstVelocity, IMoveOut } from "../../Actors/Movers";
 
 
 
@@ -32,9 +32,14 @@ export class ShipComponents {
         var breakable = new BreakableData(20, 20, 0, false, false);
         var shape = new ShapeData(triangleShip);
         var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(breakable, physics, shape);
-        
 
-        var mover: IActor = new Mover(chassis.physics);
+        var mover: IActor = new MoveConstVelocity(() => { return {
+            Vx: chassis.physics.velX,
+            Vy: chassis.physics.velY,
+        };}, (out: IMoveOut)=> {
+            chassis.physics.location.x += out.dx;
+            chassis.physics.location.y += out.dy;
+        });
         // adding ship thrust force
         var rotator: IActor = new PolyRotator(() => { return {
             angle: chassis.physics.angle,

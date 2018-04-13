@@ -4,7 +4,6 @@ import { TextView } from "ts/Views/TextView";
 import { ValueView } from "ts/Views/ValueView";
 import { ITextData, TextData, IValueData, ValueData } from "ts/Data/TextData";
 import { IActor } from "ts/Actors/Actor";
-import { Mover } from "ts/Actors/Movers";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { Transforms } from "ts/Physics/Transforms";

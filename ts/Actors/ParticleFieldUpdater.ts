@@ -1,6 +1,5 @@
 import { Vector } from "ts/Physics/Common";
 import { IActor } from "ts/Actors/Actor";
-import { Mover } from "ts/Actors/Movers";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export interface IParticleGenInputs {

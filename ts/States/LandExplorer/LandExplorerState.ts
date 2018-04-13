@@ -32,7 +32,7 @@ import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
+import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 import { IActor } from "ts/Actors/Actor";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";

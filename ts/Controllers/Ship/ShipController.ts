@@ -11,7 +11,6 @@ import { IView } from "ts/Views/View";
 import { PolyView } from "ts/Views/PolyViews";
 // updaters
 import { IActor } from "ts/Actors/Actor";
-import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 // objects
 import { Field } from "ts/GameObjects/ParticleField";

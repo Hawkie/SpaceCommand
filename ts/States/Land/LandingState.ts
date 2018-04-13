@@ -32,7 +32,6 @@ import { ValueView } from "ts/Views/ValueView";
 import { LandingShipData } from "ts/Data/ShipData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
-import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { WindGenerator } from "ts/Actors/WindGenerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";

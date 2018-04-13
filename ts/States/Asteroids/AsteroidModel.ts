@@ -2,7 +2,6 @@ import { Coordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocatedMovingAngledRotating, LocatedMovingAngledRotatingData, IHittable  } from "ts/Data/PhysicsData";
 import { IShape, ShapeData  } from "ts/Data/ShapeData";
-import { Mover } from "ts/Actors/Movers";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { Model, ShapedModel } from "ts/Models/DynamicModels";
 

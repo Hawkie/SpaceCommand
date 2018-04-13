@@ -30,7 +30,7 @@ import { ShapeData, IShape } from "ts/Data/ShapeData";
 import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, ISpinnerInputs, PolyRotator } from "ts/Actors/Rotators";
-import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
+import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
 import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
@@ -243,7 +243,14 @@ export class AsteroidState implements IGameState {
             player.chassisObj.model.physics.angle,
             5, 0.5);
         var shapeData = this.player.thrustController.engine.model.shape;
-        var mover = new Mover(engineSeparateModel);
+        var mover: IActor = new MoveConstVelocity(() => { return {
+            Vx: engineSeparateModel.velX,
+            Vy: engineSeparateModel.velY,
+        };}, (out: IMoveOut) => {
+                engineSeparateModel.location.x += out.dx;
+                engineSeparateModel.location.y += out.dy;
+            }
+        );
         var rotator: IActor = new PolyRotator(() => { return {
             angle: engineSeparateModel.angle,
             shape: this.player.thrustController.engine.model.shape,
@@ -268,7 +275,7 @@ export class AsteroidState implements IGameState {
     }
 
     returnState(): number {
-        let s = undefined;
+        let s: number = undefined;
         if (this.exitState) {
             this.exitState = false;
             s = 0;
@@ -348,35 +355,51 @@ export class AsteroidState implements IGameState {
         return asteroidState;
     }
 
-    private static createLevel(level:number): Asteroid[] {
+    public static createLevel(level:number): Asteroid[] {
         let a: Asteroid[] = [];
-        for (var i = 0; i < level; i++) {
-            let xy = Transforms.random(0, 3);
-            let x = Transforms.random(0,512), y = Transforms.random(0, 480);
-            if (xy === 0) x = Transforms.random(0, 100);
-            else if (xy === 1) x = Transforms.random(412, 512);
-            else if (xy === 2) y = Transforms.random(0, 100);
-            else if (xy === 3) y = Transforms.random(380, 480);
+        for (var i: number = 0; i < level; i++) {
+            let xy: number = Transforms.random(0, 3);
+            let x: number = Transforms.random(0,512), y = Transforms.random(0, 480);
+            if (xy === 0) {
+                x = Transforms.random(0, 100);
+            } else if (xy === 1) {
+                x = Transforms.random(412, 512);
+            } else if (xy === 2) {
+                y = Transforms.random(0, 100);
+            } else if (xy === 3) {
+                y = Transforms.random(380, 480);
+            }
 
-            let asteroid = AsteroidState.createAsteroid(x, y, Transforms.random(-20, 20), Transforms.random(-20, 20), Transforms.random(0, 359), Transforms.random(-10, 10), 3, Transforms.random(0, 4));
+            let asteroid: Asteroid = AsteroidState.createAsteroid(x, y,
+                Transforms.random(-20, 20), Transforms.random(-20, 20),
+                Transforms.random(0, 359), Transforms.random(-10, 10),
+                3, Transforms.random(0, 4));
             a.push(asteroid);
         }
         return a;
     }
 
-    //return Asteroid(new Coordinate(location.x, location.y), Math.random() * 5, Math.random() * 5,Math.random() * 360, Math.random() * 10);
-    public static createAsteroid(x: number, y:number, velX: number, velY: number, angle: number, spin: number, size: number, type: number): Asteroid {
-        
-            //var rectangle1 = [new Coordinate(- 2, -20),
+    public static createAsteroid(x: number, y: number,
+        velX: number, velY: number,
+        angle: number, spin: number,
+        size: number, type: number): Asteroid {
+
+        // var rectangle1 = [new Coordinate(- 2, -20),
         //    new Coordinate(2, -20),
         //    new Coordinate(2, 20),
         //    new Coordinate(-2, 20),
         //    new Coordinate(-2, -20)];
-        let l = new Coordinate(x, y);
-        var model = new AsteroidModel(l, velX, velY, angle, spin, size, type);
-        //var view: PolyView = new PolyView(model.data, model.shape);
-        var terrain = new GraphicData("res/img/terrain.png");
-        var mover = new Mover(model.physics);
+        let l: ICoordinate = new Coordinate(x, y);
+        var model: AsteroidModel = new AsteroidModel(l, velX, velY, angle, spin, size, type);
+        var terrain: IGraphic = new GraphicData("res/img/terrain.png");
+        var mover: IActor = new MoveConstVelocity(() => { return {
+            Vx: model.physics.velX,
+            Vy: model.physics.velY,
+        };}, (out: IMoveOut) => {
+                model.physics.location.x += out.dx;
+                model.physics.location.y += out.dy;
+            }
+        );
         var spinner: Spinner = new Spinner(() => {
             return { spin: model.physics.spin };
         }, (sOut)=> model.physics.angle += sOut.dAngle);
@@ -393,9 +416,10 @@ export class AsteroidState implements IGameState {
             graphic: terrain,
             angle: model.physics.angle,
         };});
-        var asteroidObject: Asteroid = new Asteroid(model, [mover, spinner, rotator], [view]);
+        var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);
         return asteroidObject;
     }
+
 
     static createGraphicShip(location: Coordinate): GraphicShip {
         // let triangleShip = [new Coordinate(0, -4), new Coordinate(-2, 2), new Coordinate(0, 1), new Coordinate(2, 2), new Coordinate(0, -4)];

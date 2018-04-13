@@ -1,7 +1,6 @@
 ﻿import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { ILocated, ILocatedMoving, LocatedData } from "ts/Data/PhysicsData";
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
-import { Mover } from "ts/Actors/Movers";
 import { Flasher } from "ts/Actors/Switches";
 import { IActor } from "ts/Actors/Actor";
 import { ShapeData } from "ts/Data/ShapeData";

@@ -3,7 +3,7 @@ import { IView } from "ts/Views/View";
 import { IActor } from "ts/Actors/Actor";
 import { IParticleGenInputs, ParticleGenerator,
     ParticleRemover, PredGreaterThan, AgePred } from "ts/Actors/ParticleFieldUpdater";
-import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
+import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";

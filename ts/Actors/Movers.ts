@@ -14,15 +14,6 @@ export interface IMoveOut {
     dy: number;
 }
 
-export class Mover implements IActor {
-    constructor(private locatedMoving: ILocatedMoving) { }
-
-    update(timeModifier: number): void {
-        this.locatedMoving.location.x += this.locatedMoving.velX * timeModifier;
-        this.locatedMoving.location.y += this.locatedMoving.velY * timeModifier;
-    }
-}
-
 export class MoveConstVelocity implements IActor {
     constructor(private getIn: () => IMoveIn, private setOut: (out: IMoveOut)=>void) {
     }

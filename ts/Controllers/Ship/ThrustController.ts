@@ -6,7 +6,6 @@ import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } fr
 import { ShapeData } from "ts/Data/ShapeData";
 // actors
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
-import { Mover } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
 import { IParticleGenInputs } from "ts/Actors/ParticleFieldUpdater";

@@ -1,6 +1,6 @@
 ﻿import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces } from "ts/Data/PhysicsData";
-import { Mover, MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
+import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IActor } from "ts/Actors/Actor";
 import { ShapeData } from "ts/Data/ShapeData";
 import { AgePred, ParticleRemover } from "ts/Actors/ParticleFieldUpdater";
