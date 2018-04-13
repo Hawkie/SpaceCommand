@@ -36,8 +36,12 @@ export class ShipComponents {
 
         var mover: IActor = new Mover(chassis.physics);
         // adding ship thrust force
-        
-        var rotator = new PolyRotator(chassis.physics, chassis.shape);
+        var rotator: IActor = new PolyRotator(() => { return {
+            angle: chassis.physics.angle,
+            shape: chassis.shape,
+        };}, (out: IShape)=> {
+            chassis.shape = out;
+        });
 
         var actors: IActor[] = [mover, rotator];
         var shipView: IView = new PolyView(()=> { return {
@@ -80,9 +84,14 @@ export class ShipComponents {
         var view: IView = new PolyView(() => { return {
             x: data.location.x,
             y: data.location.y,
-            shape: shapeData,
+            shape: model.shape,
         };});
-        var rotator = new PolyRotator(data, shapeData);
+        var rotator: IActor = new PolyRotator(() => { return {
+            angle: data.angle,
+            shape: model.shape,
+        };}, (out: IShape)=> {
+            model.shape = out;
+        });
         return new ShipComponentObject(model, [rotator], [view]);
     }
 
@@ -102,9 +111,14 @@ export class ShipComponents {
         var view: IView = new PolyView(() => { return {
             x: data.location.x,
             y: data.location.y,
-            shape: shapeData,
+            shape: model.shape,
         };});
-        var rotator = new PolyRotator(data, shapeData);
+        var rotator: IActor = new PolyRotator(() => { return {
+            angle: data.angle,
+            shape: model.shape,
+        };}, (out: IShape)=> {
+            model.shape = out;
+        });
         return new SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>(model, [rotator], [view]);
     }
 }

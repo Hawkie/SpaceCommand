@@ -56,13 +56,6 @@ export class ParticleGenerator implements IActor {
     }
 }
 
-
-// export interface IParticleRemoverInputs {
-//     born: number;
-//     x: number;
-//     y: number;
-// }
-
 export class ParticleRemover<T> implements IActor {
     constructor(private removeFunction: ()=> void) {}
 
@@ -71,9 +64,7 @@ export class ParticleRemover<T> implements IActor {
     }
 
     static remove<T>(getParticles: ()=> T[],
-        // getP: (t: T) => IParticleRemoverInputs,
         preds: IPred<T>[]): void {
-        // loop through objects in reverse order so we can delete
         var particles: T[] = getParticles();
         for (var i: number = particles.length - 1; i >= 0; i--) {
             var element: T = particles[i];

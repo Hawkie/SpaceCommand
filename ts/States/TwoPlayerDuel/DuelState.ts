@@ -36,6 +36,7 @@ import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { AsteroidState } from "../Asteroids/AsteroidState";
+import { IActor } from "../../Actors/Actor";
 
 export class Asteroid extends SingleGameObject<AsteroidModel> { }
 
@@ -292,8 +293,13 @@ export class DuelState extends GameState implements IGameState {
             5,
             0.5);
         var shapeData = player.thrustController.engine.model.shape;
-        var mover = new Mover(engineSeparateModel);
-        var rotator = new PolyRotator(engineSeparateModel, shapeData);
+        var mover: IActor = new Mover(engineSeparateModel);
+        var rotator: IActor = new PolyRotator(() => { return {
+            angle: engineSeparateModel.angle,
+            shape: player.thrustController.engine.model.shape,
+        };}, (out: IShape)=> {
+            player.thrustController.engine.model.shape = out;
+        });
         var spinner: Spinner = new Spinner(() => {
             return {spin: engineSeparateModel.spin};
         }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
@@ -403,7 +409,12 @@ export class DuelState extends GameState implements IGameState {
         var spinner: Spinner = new Spinner(() => {
             return { spin: model.physics.spin };
         }, (sOut)=> model.physics.angle += sOut.dAngle);
-        var rotator = new PolyRotator(model.physics, model.shape);
+        var rotator: IActor = new PolyRotator(() => { return {
+            angle: model.physics.angle,
+            shape: model.shape,
+        };}, (out: IShape)=> {
+            model.shape = out;
+        });
         var view: IView = new PolyGraphicAngled(() => { return {
             x: model.physics.location.x,
             y: model.physics.location.y,
