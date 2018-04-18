@@ -13,3 +13,8 @@ the space explosion dispersal - so its evenly spread - not upwards as in ground 
 put all helper static classes in one place
 
 condense all the field generators
+
+remove controllers  - use model state to determine key presses and inputs and then create Tester Actors to apply state to model changes
+
+change singlegame object and multi game object to have functions to get model from parent state.
+implement keep in as an actor

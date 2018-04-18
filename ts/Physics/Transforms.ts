@@ -32,17 +32,17 @@ export class Transforms {
         return newCoordinates;
     }
 
-    static VectorToCartesian(degrees, length): Coordinate {
-        var radians = degrees / 180 * Math.PI;
+    static VectorToCartesian(degrees: number, length: number): Coordinate {
+        var radians: number = degrees / 180 * Math.PI;
         var x = Math.sin(radians) * length; // sin 0 = 0
         var y = Math.cos(radians) * -length; // cos 0 = 1
         return new Coordinate(x, y);
     }
 
     // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
-    static CartesianToVector(x: number, y: number) : Vector {
-        var length = Math.sqrt(x * x + y * y);
-        var angle = Math.atan2(x, y) * 180 / Math.PI;
+    static CartesianToVector(x: number, y: number): Vector {
+        var length: number = Math.sqrt(x * x + y * y);
+        var angle: number = Math.atan2(x, y) * 180 / Math.PI;
         return new Vector(angle, length);
     }
 

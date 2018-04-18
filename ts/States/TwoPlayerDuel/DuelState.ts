@@ -32,7 +32,7 @@ import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/Actors/Rotators";
 import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
-import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
+import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { AsteroidState } from "../Asteroids/AsteroidState";
@@ -350,7 +350,7 @@ export class DuelState extends GameState implements IGameState {
         });
         chassisObj.actors.push(accelerator);
 
-        var weaponController1 = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
+        var weaponController1 = WeaponController.createWeapon(chassisObj.model.physics, actx);
         var thrustController1 = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, false);
         var explosionController1 = ExplosionController.createExplosion(chassisObj.model.physics, false);
         var shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);

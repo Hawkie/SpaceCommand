@@ -24,9 +24,31 @@ export interface IExplosionController extends IGameObject {
     off(): void;
 }
 
+export interface IExplosionInputs {
+    x: number;
+    y: number;
+    gravityOn: boolean;
+}
+
 export class ExplosionController extends ComponentObjects<IGameObject> implements IExplosionController  {
     explosionSound: AudioObject = new AudioObject("res/sound/explosion.wav");
     soundPlayed: boolean = false;
+
+    static createExplosion(getInputs: ()=> IExplosionInputs): ExplosionController {
+        var inputs: IExplosionInputs = getInputs();
+        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
+            Field.createExplosion(() => { return {
+                x: inputs.x,
+                y: inputs.y,
+                gravityOn: inputs.gravityOn,
+            };});
+        var flash: SingleGameObject<IFlashInputs> = ExplosionController.createFlash();
+        return new ExplosionController(field, (on:boolean)=> {
+            field.model.on = on;
+        }, flash);
+    }
+
+
 
     constructor(public field: IGameObject,
         public fieldSwitcher: (on:boolean)=>void,
@@ -73,19 +95,4 @@ export class ExplosionController extends ComponentObjects<IGameObject> implement
             [flasher], [new ScreenFlashView(()=> flashIn)]);
         return flash;
     }
-
-
-    static createExplosion(data: ILocatedMoving, gravityOn: boolean): ExplosionController {
-        var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
-            Field.createExplosion(() => { return {
-                x: data.location.x,
-                y: data.location.y,
-                gravityOn: gravityOn,
-            };});
-        var flash: SingleGameObject<IFlashInputs> = ExplosionController.createFlash();
-        return new ExplosionController(field, (on:boolean)=> {
-            field.model.on = on;
-        }, flash);
-    }
-
 }

@@ -13,16 +13,16 @@ import { IView } from "ts/Views/View";
 import { PolyView, PolyGraphic, PolyGraphicAngled, CircleView, LineView } from "ts/Views/PolyViews";
 import { GraphicAngledView } from "ts/Views/GraphicView";
 import { IGameState } from "ts/States/GameState";
-import { IInteractor } from "ts/Interactors/Interactor"
+import { IInteractor } from "ts/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
-import { SpaceShipData } from "ts/Data/ShipData";
-import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
+// import { SpaceShipData } from "ts/Data/ShipData";
+// import { ShipComponents, IShip } from "ts/Controllers/Ship/ShipComponents";
 import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject, IObject } from "ts/GameObjects/GameObject";
 import { TextObject } from "ts/GameObjects/TextObject";
 import { ValueObject } from "ts/GameObjects/ValueObject";
-import { Field } from "ts/GameObjects/ParticleField";
+import { Field, IThrustInputs } from "ts/GameObjects/ParticleField";
 import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
@@ -33,43 +33,13 @@ import { Spinner, ISpinnerInputs, PolyRotator } from "ts/Actors/Rotators";
 import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
 import { IRodOutputs, CompositeAccelerator } from "ts/Actors/Accelerators";
 import { Accelerator } from "ts/Actors/Accelerator";
-import { BulletWeaponController } from "ts/Controllers/Ship/WeaponController";
-import { ThrustController } from "ts/Controllers/Ship/ThrustController";
-import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
+import { WeaponController, IWeaponController } from "ts/Controllers/Ship/WeaponController";
+import { ThrustController, IThrustController } from "ts/Controllers/Ship/ThrustController";
+import { ExplosionController, IExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { IActor } from "../../Actors/Actor";
+import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState } from "./AsteroidModels";
+import { AsteroidObjects } from "./AsteroidObjects";
 
-export class Asteroid extends SingleGameObject<AsteroidModel> { }
-
-export interface IGraphicShip {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    angle: number;
-    spin: number;
-    mass: number;
-    graphic: IGraphic;
-}
-
-export interface ICoin {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    angle: number;
-    spin: number;
-    mass: number;
-    sprite: ISprite;
-}
-
-export interface IBallObject {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    r: number;
-    mass: number;
-}
 
 export class AsteroidState implements IGameState {
 // data objects
@@ -82,32 +52,24 @@ export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];
 
     asteroidNoise: boolean;
-
     asteroidHitSound: AudioObject = undefined;
     helloSound: BufferObject = undefined;
     loaded: boolean;
     viewScale: number;
     zoom: number;
     exitState: boolean = false;
-    level: number = 3;
-    ShipController: SpaceShipController;
 
     constructor(public name: string,
         private assets: Assets,
         private actx: AudioContext,
-        private player: SpaceShipController,
-        private guiObjects: IGameObject[],
-        private sceneObjects: IGameObject[],
-        private asteroids: Asteroid[],
-        private score: ValueObject,
-        private angle: ValueObject
+        private state: IAsteroidState,
+        private stateObj: MultiGameObject<IAsteroidState, IGameObject>,
+        private sceneObjects: IGameObject[]
         ) {
         this.viewScale = 1;
         this.zoom = 1;
-        this.player = player;
-        this.asteroids = asteroids;
         this.asteroidNoise = false;
-        
+
         // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
         // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
         //     this.asteroidHitSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/blast.wav")[0].data);
@@ -116,53 +78,62 @@ export class AsteroidState implements IGameState {
         this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
         var asteroidBulletDetector = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this),
             this.bulletModels.bind(this),
-            this.player,
+            this.state.ship,
             this.asteroidBulletHit.bind(this));
         var asteroidPlayerDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
             this.player.chassisObj.model,
             this.player,
             this.asteroidPlayerHit.bind(this));
-        var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
-            this.player.thrustController.engine.model,
-            this.player,
-            this.asteroidEngineHit.bind(this));
-        this.interactors = [asteroidBulletDetector, asteroidPlayerDetector, asteroidEngineDetector];
+        // var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+        //     this.player.thrustController.engine.model,
+        //     this.player,
+        //     this.asteroidEngineHit.bind(this));
+        this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
     }
 
-    
-    update(lastDrawModifier: number) {
-        this.guiObjects.forEach(o => o.update(lastDrawModifier));
+
+
+    static createState(assets: Assets, actx: AudioContext): AsteroidState {
+
+        var field: IGameObject = Field.createBackgroundField(16, 2);
+        var spriteField: IGameObject = Field.createSpriteField();
+
+        var state: IAsteroidState = AsteroidModels.createStateModel();
+        var stateObj: MultiGameObject<IAsteroidState, IGameObject> = AsteroidObjects.createAsteroidStateObject(()=>state);
+
+        var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
+            [field, spriteField]);
+        return asteroidState;
+    }
+
+    update(lastDrawModifier: number): void {
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
-        this.asteroids.forEach(x => x.update(lastDrawModifier));
+        this.stateObj.update(lastDrawModifier);
 
-        // keep objects in screen
-        this.asteroids.forEach(x => this.keepIn(x.model.physics));
-        this.keepIn(this.player.chassisObj.model.physics);
-        this.keepIn(this.player.thrustController.engine.model.physics);
+        // keep objects in screen. move to an actor!
+        this.keepIn(this.state.ship.x, 0, 512, (newV: number)=> { this.state.ship.x = newV; });
+        this.keepIn(this.state.ship.y, 0, 480, (newV: number)=> { this.state.ship.y = newV; });
 
-        // If all asteroids cleared, create more at next level
-        if (this.asteroids.length == 0) {
-            this.level += 1;
-            this.asteroids = AsteroidState.createLevel(this.level);
+        // if all asteroids cleared, create more at next level
+        if (this.state.asteroids.length === 0) {
+            this.state.level += 1;
+            // how do we ensure new asteroid objects bound to the new models in the state
+            this.state.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
         }
     }
 
-    private keepIn(l: ILocated) {
-        if (l.location.x > 512) l.location.x = 0;
-        if (l.location.x < 0) l.location.x = 512;
-        if (l.location.y > 480) l.location.y = 0;
-        if (l.location.y < 0) l.location.y = 480;
+    private keepIn(value: number, lowLimit:number, upLimit: number, f:(newV: number)=> void): void {
+        if (value > upLimit) { f(lowLimit);}
+        if (value < lowLimit) { f(upLimit);}
     }
-    
+
     // order is important. Like layers on top of each other.
-    display(drawingContext: DrawContext) {
-        
+    display(drawingContext: DrawContext): void {
         drawingContext.clear();
-        this.angle.model.value = this.player.chassisObj.model.physics.angle;
-        this.guiObjects.forEach(o => o.display(drawingContext));
+        // this.angle.model.value = this.player.chassisObj.model.physics.angle;
         drawingContext.save();
-        let x = this.player.chassisObj.model.physics.location.x;
-        let y = this.player.chassisObj.model.physics.location.y;
+        let x: number  = this.state.ship.x;
+        let y: number = this.state.ship.y;
         drawingContext.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         // move origin to location of ship - location of ship factored by zoom
         // if zoom = 1 no change
@@ -170,7 +141,7 @@ export class AsteroidState implements IGameState {
         // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
-        this.asteroids.forEach(x => x.display(drawingContext));
+        this.stateObj.display(drawingContext);
         drawingContext.restore();
     }
 
@@ -178,30 +149,45 @@ export class AsteroidState implements IGameState {
 
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
-            //if (this.helloSound !== undefined)
+            // if (this.helloSound !== undefined)
             //    this.helloSound.play();
             var asteroidHitSound = new AudioObject("res/sound/blast.wav");
                 asteroidHitSound.play();
         }
     }
-    
-    input(keys: KeyStateProvider, lastDrawModifier: number) {
-        if (keys.isKeyDown(Keys.UpArrow))
-            this.player.thrust();
-        else
-            this.player.noThrust();
-        if (keys.isKeyDown(Keys.LeftArrow)) this.player.left(lastDrawModifier);
-        if (keys.isKeyDown(Keys.RightArrow)) this.player.right(lastDrawModifier);
-        if (keys.isKeyDown(Keys.SpaceBar)) this.player.shootPrimary();
+
+    input(keys: KeyStateProvider, lastDrawModifier: number): void {
+        if (keys.isKeyDown(Keys.UpArrow)) {
+            this.state.up = true;
+        } else {
+            this.state.up = false;
+        }
+        if (keys.isKeyDown(Keys.LeftArrow)) {
+            this.state.left = true;
+        } else {
+            this.state.left = false;
+        }
+        if (keys.isKeyDown(Keys.RightArrow)) {
+            this.state.right = true;
+        } else {
+            this.state.right = false;
+        }
+        if (keys.isKeyDown(Keys.SpaceBar)) {
+            this.state.fire = true;
+        } else {
+            this.state.fire = false;
+        }
         if (keys.isKeyDown(Keys.Z)) {
             this.viewScale = 0.01;
-        }
-        else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
+        } else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
             this.viewScale = -0.01;
+        } else {
+            this.viewScale = 0;
         }
-        else this.viewScale = 0;
         this.zoom *= 1 + this.viewScale;
-        if (keys.isKeyDown(Keys.Esc)) this.exitState = true;
+        if (keys.isKeyDown(Keys.Esc)) {
+            this.exitState = true;
+        }
     }
 
     asteroidModels(): ShapedModel<ILocated, IShape>[] {
@@ -210,7 +196,7 @@ export class AsteroidState implements IGameState {
 
     bulletModels(): ICoordinate[] {
         return this.player.weaponController.bullets;
-        }
+    }
 
     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: ICoordinate[], tag:any) {
         // effect on asteroid
@@ -235,7 +221,7 @@ export class AsteroidState implements IGameState {
                     Transforms.random(0, 4)));
             }
         }
-        // TODO remove original;
+        // tODO remove original;
         this.score.model.value += 10;
     }
 
@@ -297,221 +283,6 @@ export class AsteroidState implements IGameState {
             s = 0;
         }
         return s;
-    }
-
-    static createState(assets: Assets, actx: AudioContext): AsteroidState {
-
-        var field: IGameObject = Field.createBackgroundField(16, 2);
-
-        // var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
-        var coinObj = AsteroidState.createCoin(new Coordinate(300, 400));
-        var spriteField = Field.createSpriteField();
-
-        // special
-        var spaceShipData = new SpaceShipData(new Coordinate(256, 240), 0, 0, 0, 0, 2);
-        var chassisObj = ShipComponents.createShipObj(spaceShipData);
-        chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
-
-        var weaponController = BulletWeaponController.createWeaponController(chassisObj.model.physics, actx);
-        var thrustController = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, false);
-        var explosionController = ExplosionController.createExplosion(chassisObj.model.physics, false);
-        var shipController = new SpaceShipController(spaceShipData, chassisObj, weaponController, thrustController, explosionController);
-
-        var ball = AsteroidState.createBallObject(256, 280);
-        var rod: CompositeAccelerator = new CompositeAccelerator(() => {
-            return {
-                xFrom: chassisObj.model.physics.location.x,
-                yFrom: chassisObj.model.physics.location.y,
-                VxFrom: chassisObj.model.physics.velX,
-                VyFrom: chassisObj.model.physics.velY,
-                forces: chassisObj.model.physics.forces,
-                massFrom: chassisObj.model.physics.mass,
-                xTo: ball.model.x,
-                yTo: ball.model.y,
-                VxTo: ball.model.Vx,
-                VyTo: ball.model.Vy,
-                massTo: ball.model.mass
-            };
-        }, (out: IRodOutputs) => {
-                chassisObj.model.physics.location.x += out.dxFrom;
-                chassisObj.model.physics.location.y += out.dyFrom;
-                chassisObj.model.physics.velX += out.dVxFrom;
-                chassisObj.model.physics.velY += out.dVyFrom;
-                ball.model.x = out.xTo;
-                ball.model.y = out.yTo;
-                // ball.model.Vx += out.dVxTo;
-                // ball.model.Vy += out.dVyTo;
-        });
-        chassisObj.actors.push(rod);
-
-        // create rod view as a line from ball to ship
-        var line: LineView = new LineView(()=> {
-            return {
-                xFrom: ball.model.x,
-                yFrom: ball.model.y,
-                xTo: chassisObj.model.physics.location.x,
-                yTo: chassisObj.model.physics.location.y,
-            };
-        });
-        chassisObj.views.push(line);
-
-        let asteroids: Asteroid[] = AsteroidState.createLevel(3);
-
-        let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
-
-        var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
-        var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
-        var angleDisplay: ValueObject = new ValueObject(chassisObj.model.physics.angle, new Coordinate(460, 40), "Arial", 18);
-
-        var asteroidState = new AsteroidState("Asteroids", assets, actx, shipController,
-            [text, score, valueDisplay, angleDisplay],
-            [field, alien, coinObj, shipController, ball, spriteField],
-            asteroids, valueDisplay, angleDisplay);
-        return asteroidState;
-    }
-
-    public static createLevel(level:number): Asteroid[] {
-        let a: Asteroid[] = [];
-        for (var i: number = 0; i < level; i++) {
-            let xy: number = Transforms.random(0, 3);
-            let x: number = Transforms.random(0,512), y = Transforms.random(0, 480);
-            if (xy === 0) {
-                x = Transforms.random(0, 100);
-            } else if (xy === 1) {
-                x = Transforms.random(412, 512);
-            } else if (xy === 2) {
-                y = Transforms.random(0, 100);
-            } else if (xy === 3) {
-                y = Transforms.random(380, 480);
-            }
-
-            let asteroid: Asteroid = AsteroidState.createAsteroid(x, y,
-                Transforms.random(-20, 20), Transforms.random(-20, 20),
-                Transforms.random(0, 359), Transforms.random(-10, 10),
-                3, Transforms.random(0, 4));
-            a.push(asteroid);
-        }
-        return a;
-    }
-
-    public static createAsteroid(x: number, y: number,
-        velX: number, velY: number,
-        angle: number, spin: number,
-        size: number, type: number): Asteroid {
-
-        let l: ICoordinate = new Coordinate(x, y);
-        var model: AsteroidModel = new AsteroidModel(l, velX, velY, angle, spin, size, type);
-        var terrain: IGraphic = new GraphicData("res/img/terrain.png");
-        var mover: IActor = new MoveConstVelocity(() => { return {
-            Vx: model.physics.velX,
-            Vy: model.physics.velY,
-        };}, (out: IMoveOut) => {
-                model.physics.location.x += out.dx;
-                model.physics.location.y += out.dy;
-            }
-        );
-        var spinner: Spinner = new Spinner(() => {
-            return { spin: model.physics.spin };
-        }, (sOut)=> model.physics.angle += sOut.dAngle);
-        var rotator: IActor = new PolyRotator(() => { return {
-            angle: model.physics.angle,
-            shape: model.shape,
-        };}, (out: IShape)=> {
-            model.shape = out;
-        });
-        var view: IView = new PolyGraphicAngled(() => { return {
-            x: model.physics.location.x,
-            y: model.physics.location.y,
-            shape: model.shape,
-            graphic: terrain,
-            angle: model.physics.angle,
-        };});
-        var asteroidObject = new Asteroid(model, [mover, spinner, rotator], [view]);
-        return asteroidObject;
-    }
-
-
-    public static createGraphicShip(location: Coordinate): IGameObject {
-        var ship: IGraphicShip = {
-            x: location.x,
-            y: location.y,
-            Vx: 1,
-            Vy: -1,
-            angle: 10,
-            spin: 5,
-            mass: 1,
-            graphic: new GraphicData("res/img/ship.png"),
-        };
-        var shipView: IView = new GraphicAngledView(() => { return {
-            x: ship.x,
-            y: ship.y,
-            angle: ship.angle,
-            graphic: ship.graphic,
-        };});
-        var obj: IGameObject = new SingleGameObject(ship, [], [shipView]);
-        return obj;
-    }
-
-
-    static createCoin(location: Coordinate): IGameObject {
-        // var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
-        var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-        // var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
-        var coin: ICoin = {
-            x: location.x,
-            y: location.y,
-            Vx: 0,
-            Vy: 0,
-            angle: 45,
-            spin: 4,
-            mass: 1,
-            sprite: s,
-        };
-        var animator: IActor = new SpriteAnimator(s, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-        var spinner: Spinner = new Spinner(()=> {
-            return { spin: coin.spin };
-        }, (sOut)=> coin.angle += sOut.dAngle);
-
-        var view: IView = new SpriteAngledView(() => { return {
-            x: coin.x,
-            y: coin.y,
-            angle: coin.angle,
-            sprite: coin.sprite,
-        };});
-        var coinObj: IGameObject = new SingleGameObject<ICoin>(coin, [animator, spinner], [view]);
-        return coinObj;
-    }
-
-    static createBallObject(x: number, y: number): SingleGameObject<IBallObject> {
-        var ballModel: IBallObject = {
-            x: x,
-            y: y,
-            Vx: 0,
-            Vy: 0,
-            mass: 1,
-            r: 8,
-        };
-        var ballView: IView = new CircleView(() => {
-            return {
-                x: ballModel.x,
-                y: ballModel.y,
-                r: ballModel.r,
-            };
-        });
-        // not needed at this stage
-        var mover: MoveConstVelocity = new MoveConstVelocity(
-            ()=> {
-                return {
-                    Vx: ballModel.Vx,
-                    Vy: ballModel.Vy,
-                };
-            }, (mOut: IMoveOut)=> {
-                ballModel.x += mOut.dx;
-                ballModel.y += mOut.dy;
-            });
-        var obj: SingleGameObject<IBallObject>  = new SingleGameObject<IBallObject>(ballModel, [mover], [ballView]);
-        return obj;
     }
 
 }

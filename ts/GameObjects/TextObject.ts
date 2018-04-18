@@ -10,7 +10,7 @@ import { Transforms } from "ts/Physics/Transforms";
 
 export class TextObject extends SingleGameObject<ITextData> {
     constructor(text: string, location: Coordinate, font: string, fontSize: number) {
-        var textData = new TextData(text, location);
+        var textData: TextData = new TextData(text, location);
         var view: IView = new TextView(textData, font, fontSize);
         super(textData, [], [view]);
     }

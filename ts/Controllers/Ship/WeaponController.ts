@@ -15,17 +15,25 @@ import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 import { IView } from "../../Views/View";
 import { Transforms } from "../../Physics/Transforms";
 
-export interface IParticleWeaponController extends IGameObject {
+export interface IWeaponInputs {
+    x: number;
+    y: number;
+    angle: number;
+    offsetAngle: number;
+    bulletVelocity: number;
+}
+
+export interface IWeaponController extends IGameObject {
     // data
     bulletField: MultiGameObject<any, SingleGameObject<IParticle>>;
-    gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
+    // gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>;
 
     // control
-    pullTrigger(data: ILocatedAngledMoving, offsetAngle: number, velocity: number): void;
+    pullTrigger(): void;
     bullets: ICoordinate[];
 }
 
-export class BulletWeaponController extends ComponentObjects<IGameObject> implements IParticleWeaponController {
+export class WeaponController extends ComponentObjects<IGameObject> implements IWeaponController {
     laserEffect = new SoundEffectData(
     1046.5,           // frequency
     0,                // attack
@@ -45,10 +53,10 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
     soundPlayed: boolean = false;
     last: number;
 
-    constructor(public bulletField: MultiGameObject<null, SingleGameObject<IParticle>>,
-        public gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>,
+    constructor(private getInputs:() => IWeaponInputs, public bulletField: MultiGameObject<null, SingleGameObject<IParticle>>,
+        // public gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>>,
         actx: AudioContext) {
-        super([bulletField, gun]);
+        super([bulletField]);
         this.laserSound = new FXObject(actx, this.laserEffect);
         this.last = Date.now();
     }
@@ -62,41 +70,42 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
                 });
     }
 
-    pullTrigger(data: ILocatedAngledMoving, offsetAngle: number = 0, velocity: number = 128): void {
+    pullTrigger(): void {
         // put firerate check in here
+        var inputs: IWeaponInputs = this.getInputs();
         let now: number = Date.now();
         let elapsedTimeSec: number = (now - this.last)/1000;
         if (elapsedTimeSec >= 1/2) {
             this.last = now;
-            var cartesian: Coordinate = Transforms.VectorToCartesian(data.angle + offsetAngle, velocity);
-            var b: IParticle = {
-                x: data.location.x,
-                y: data.location.y,
+            var cartesian: Coordinate = Transforms.VectorToCartesian(inputs.angle + inputs.offsetAngle, inputs.bulletVelocity);
+            var particle: IParticle = {
+                x: inputs.x,
+                y: inputs.y,
                 Vx: cartesian.x,
                 Vy: cartesian.y,
                 born: now,
                 size: 2,
             };
             var mover: IActor = new MoveConstVelocity(
-                () => b,
+                () => particle,
                 (out: IMoveOut) => {
-                    b.x += out.dx;
-                    b.y += out.dy;
+                    particle.x += out.dx;
+                    particle.y += out.dy;
                 }
             );
             var view:IView = new RectangleView(()=> { return {
-                x: b.x,
-                y: b.y,
-                width: b.size,
-                height: b.size,
+                x: particle.x,
+                y: particle.y,
+                width: particle.size,
+                height: particle.size,
             };});
-            let pObj: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(b, [mover], [view]);
+            let pObj: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(particle, [mover], [view]);
             this.bulletField.components.push(pObj);
             this.laserSound.play();
         }
     }
 
-    static createWeaponController(data: ILocatedAngledMovingRotatingForces, actx: AudioContext): BulletWeaponController {
+    static createWeapon(getInputs: ()=> IWeaponInputs, actx: AudioContext): IWeaponController {
         let pField: SingleGameObject<IParticle>[] = [];
         var field: MultiGameObject<any, SingleGameObject<IParticle>> = new MultiGameObject(null, [], [], pField);
         var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model.born);
@@ -107,7 +116,7 @@ export class BulletWeaponController extends ComponentObjects<IGameObject> implem
                     [age5]);});
         // add the generator to the field object
         field.actors.push(remover);
-        var gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>> = ShipComponents.createGun(data);
-        return new BulletWeaponController(field, gun, actx);
+        // var gun: SingleGameObject<ShapedModel<ILocatedAngledMoving, ShapeData>> = ShipComponents.createGun(data);
+        return new WeaponController(getInputs, field, actx);
     }
 }

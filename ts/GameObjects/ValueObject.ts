@@ -9,8 +9,8 @@ import { Transforms } from "ts/Physics/Transforms";
 
 export class ValueObject extends SingleGameObject<ValueData> {
     constructor(value: number, location: Coordinate, font: string, fontSize: number) {
-        var valueData = new ValueData(value, location);
+        var valueData: IValueData = new ValueData(value, location);
         var view: IView = new ValueView(valueData, "", font, fontSize);
-        super(valueData, [], [view]);
+        super(()=>valueData, [], [view]);
     }
 }

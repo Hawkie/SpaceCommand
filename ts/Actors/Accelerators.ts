@@ -24,8 +24,6 @@ export interface IRodOutputs {
         dVyFrom: number;
         xTo: number;
         yTo: number;
-        // VxTo: number;
-        // VyTo: number;
 }
 
 
@@ -72,8 +70,6 @@ export class CompositeAccelerator implements IActor {
                 dVyFrom: 0,
                 xTo: 0,
                 yTo: 0,
-                // VxTo: rIn.VxTo,
-                // VyTo: rIn.VyTo,
         };
         // each for split to parallel and perpenticular forces
         // parallel to bar acts on sum of masses

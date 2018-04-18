@@ -22,12 +22,6 @@ export interface IGamed<TObject> {
 
 export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
 
-// export class Model<TPhysics extends ILocated> implements IPhysical<TPhysics> {
-//     constructor(
-//         public physics: TPhysics) {
-//     }
-// }
-
 export class ShapedModel<TPhysics extends ILocated,
     TShape>
     implements IPhysical<TPhysics> {

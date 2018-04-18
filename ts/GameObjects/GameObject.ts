@@ -8,7 +8,7 @@ export interface IGameObject extends IActor, IView {
 export interface IObject<TModel> extends IGameObject {
     actors: IActor[];
     views: IView[];
-    model: TModel;
+    model: ()=>TModel;
 }
 
 export interface IComponentObjects<TModel extends IGameObject> extends IGameObject {
@@ -16,7 +16,7 @@ export interface IComponentObjects<TModel extends IGameObject> extends IGameObje
 }
 
 export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
-    constructor(public model: TModel, public actors: IActor[], public views: IView[]) {
+    constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[]) {
     }
 
     update(timeModifier: number): void {
@@ -44,7 +44,7 @@ export class ComponentObjects<TObject extends IGameObject> implements IComponent
 
 // combi of single and component
 export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject, IObject<TModel> {
-    constructor(public model: TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
+    constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
     }
 
     update(timeModifier: number): void {

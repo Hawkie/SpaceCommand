@@ -74,20 +74,23 @@ export class PolyView implements IView {
 }
 
 export interface IPolyGraphicView extends IPolyView {
-    graphic: IGraphic;
+    graphic: string;
 }
 
 export class PolyGraphic implements IView {
-    constructor(private getInputs: ()=> IPolyGraphicView) { }
+    private graphic: IGraphic;
+    constructor(private getInputs: ()=> IPolyGraphicView) {
+        this.graphic = new GraphicData(getInputs().graphic);
+     }
 
     display(drawContext: DrawContext): void {
         var inputs: IPolyGraphicView = this.getInputs();
-        if (inputs.graphic.loaded) {
+        if (this.graphic.loaded) {
             var x: number = inputs.x + inputs.shape.offset.x;
             var y: number = inputs.y + inputs.shape.offset.y;
             drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
-            let fillStyle: CanvasPattern = drawContext.createPattern(inputs.graphic.img);
+            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
             drawContext.fill(fillStyle);
             drawContext.restore();
         }
@@ -99,18 +102,21 @@ export interface IPolyGraphicAngledView extends IPolyGraphicView {
 }
 
 export class PolyGraphicAngled implements IView {
-    constructor(private getInputs: ()=> IPolyGraphicAngledView) { }
+    private graphic: IGraphic;
+    constructor(private getInputs: ()=> IPolyGraphicAngledView) {
+        this.graphic = new GraphicData(getInputs().graphic);
+     }
 
     display(drawContext: DrawContext): void {
         var inputs: IPolyGraphicAngledView = this.getInputs();
-        if (inputs.graphic.loaded) {
+        if (this.graphic.loaded) {
             var x: number = inputs.x + inputs.shape.offset.x;
             var y: number = inputs.y + inputs.shape.offset.y;
             drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
             drawContext.translate(inputs.x, inputs.y);
             drawContext.rotate(inputs.angle);
-            let fillStyle: CanvasPattern = drawContext.createPattern(inputs.graphic.img);
+            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
             drawContext.fill(fillStyle);
             drawContext.restore();
         }
