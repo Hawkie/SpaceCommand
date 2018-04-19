@@ -12,6 +12,6 @@ export class TextObject extends SingleGameObject<ITextData> {
     constructor(text: string, location: Coordinate, font: string, fontSize: number) {
         var textData: TextData = new TextData(text, location);
         var view: IView = new TextView(textData, font, fontSize);
-        super(textData, [], [view]);
+        super(()=>textData, [], [view]);
     }
 }

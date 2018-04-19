@@ -6,9 +6,9 @@ import { IControlPanelModel, ControlPanelModel, ISlider, Slider } from "ts/Model
 export class ControlPanelView implements IView {
 
     sliders: SliderView[];
-    constructor(private model: IControlPanelModel, private location: Coordinate, private width: number) {
+    constructor(private model: ()=> IControlPanelModel, private location: Coordinate, private width: number) {
         this.sliders = [];
-        this.model.sliders.forEach((control, index) => {
+        this.model().sliders.forEach((control, index) => {
             let sliderLocation = new Coordinate(location.x, location.y + index * 20);
             this.sliders.push(new SliderView(control, sliderLocation, width));
         });
@@ -19,7 +19,7 @@ export class ControlPanelView implements IView {
         this.sliders.forEach(slider => slider.display(drawContext));
 
         // draw selector
-        drawContext.fillRect(this.location.x, this.location.y + this.model.selectedControl * 20, 5, 5);
+        drawContext.fillRect(this.location.x, this.location.y + this.model().selectedControl * 20, 5, 5);
     }
 }
 

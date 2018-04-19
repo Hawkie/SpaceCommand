@@ -7,34 +7,44 @@ import { IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
 import { SingleGameObject } from "ts/GameObjects/GameObject";
 
 
+export interface IShapedLocation {
+    location: ICoordinate;
+    shape: IShape;
+}
+
 export class ObjectCollisionDetector implements IInteractor {
-    constructor(private model1: IShapedModel<ILocated, IShape>, private point: ILocated, private hit: () => void){
+    constructor(private getModel1: ()=>IShapedLocation, private point: ICoordinate, private hit: () => void) {
     }
 
-    test(lastTestModifier: number) {
-        if (Transforms.hasPoint(this.model1.shape.points, this.model1.physics.location, this.point.location))
+    test(lastTestModifier: number): void {
+        var model1: IShapedLocation = this.getModel1();
+        if (Transforms.hasPoint(model1.shape.points,
+            model1.location, this.point)) {
             this.hit();
+        }
     }
 }
 
-export class Multi2ShapeCollisionDetector<T> implements IInteractor {
-    constructor(private model1s: () => IShapedModel<ILocated, IShape>[],
-        private sourceModel: IShapedModel<ILocated, IShape>,
-        private tag: T,
-        private hit: (i1: number, targets: IShapedModel<ILocated, IShape>[], i2: number, sourceModel: IShapedModel<ILocated, IShape>, tag:T) => void,
+export class Multi2ShapeCollisionDetector implements IInteractor {
+    constructor(private model1s: () => IShapedLocation[],
+        private sourceModel:()=> IShapedLocation,
+        private hit: (i1: number, i2: number) => void,
         private searchFirstHitOnly: boolean = true) {
     }
 
-    test(lastTestModifier: number) {
-        let found = false;
-        let targets = this.model1s();
-        let shapeModel = this.sourceModel;
-        for (let i1 = targets.length - 1; i1 >= 0; i1--) {
-            let target = targets[i1];
-            for (let i2 = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
-                let point = shapeModel.shape.points[i2];
-                if (Transforms.hasPoint(target.shape.points, target.physics.location, new Coordinate(shapeModel.physics.location.x + shapeModel.shape.offset.x + point.x, shapeModel.physics.location.y + + shapeModel.shape.offset.y + point.y))) {
-                    this.hit(i1, targets, i2, shapeModel, this.tag);
+    test(lastTestModifier: number): void {
+        let found: boolean = false;
+        let targets:IShapedLocation[] = this.model1s();
+        let shapeModel: IShapedLocation = this.sourceModel();
+        for (let i1: number = targets.length - 1; i1 >= 0; i1--) {
+            let target:IShapedLocation = targets[i1];
+            for (let i2: number = shapeModel.shape.points.length - 1; i2 >= 0; i2--) {
+                let point: ICoordinate = shapeModel.shape.points[i2];
+                if (Transforms.hasPoint(target.shape.points,
+                    target.location,
+                    new Coordinate(shapeModel.location.x + shapeModel.shape.offset.x + point.x,
+                        shapeModel.location.y + + shapeModel.shape.offset.y + point.y))) {
+                    this.hit(i1, i2);
                     if (this.searchFirstHitOnly) {
                         found = true;
                         break;
@@ -49,25 +59,23 @@ export class Multi2ShapeCollisionDetector<T> implements IInteractor {
     }
 }
 
-export class Multi2FieldCollisionDetector<T> implements IInteractor {
-    constructor(private model1s: () => ShapedModel<ILocated, IShape>[],
+export class Multi2FieldCollisionDetector implements IInteractor {
+    constructor(private model1s: () => IShapedLocation[],
     private points2: () => ICoordinate[],
-    private tag:T,
-    private hit: (i1:number, model1s: ShapedModel<ILocated, IShape>[],
-        i2:number, model2s: ICoordinate[], tag: T) => void,
+    private hit: (i1:number, i2:number) => void,
         private searchFirstHitOnly: boolean = true) {
     }
 
-    test(lastTestModifier: number) {
-        let found = false;
-        let targets = this.model1s();
-        let hitters = this.points2();
-        for (let i1 = targets.length - 1; i1 >= 0; i1--) {
-            let target = targets[i1];
-            for (let i2 = hitters.length - 1; i2 >= 0; i2--) {
-                let hitter = hitters[i2];
-                if (Transforms.hasPoint(target.shape.points, target.physics.location, hitter)) {
-                    this.hit(i1, targets, i2, hitters, this.tag);
+    test(lastTestModifier: number): void {
+        let found: boolean = false;
+        let targets: IShapedLocation[] = this.model1s();
+        let hitters: ICoordinate[] = this.points2();
+        for (let i1: number = targets.length - 1; i1 >= 0; i1--) {
+            let target:IShapedLocation = targets[i1];
+            for (let i2: number = hitters.length - 1; i2 >= 0; i2--) {
+                let hitter:ICoordinate = hitters[i2];
+                if (Transforms.hasPoint(target.shape.points, target.location, hitter)) {
+                    this.hit(i1, i2);
                     if (this.searchFirstHitOnly) {
                         found = true;
                         break;
@@ -77,6 +85,31 @@ export class Multi2FieldCollisionDetector<T> implements IInteractor {
             // only hit one object (game speed optimisation)
             if (found) {
                 break;
+            }
+        }
+    }
+}
+
+
+export class ShapeCollisionDetector implements IInteractor {
+    constructor(private getModel: () => IShapedLocation,
+        private points2: () => ICoordinate[],
+        private hit: (i2:number, model2s: ICoordinate[]) => void,
+        private searchFirstHitOnly: boolean = true) {
+    }
+
+    test(lastTestModifier: number): void {
+        let found: boolean = false;
+        let target: IShapedLocation = this.getModel();
+        let hitters: ICoordinate[] = this.points2();
+        for (let i2: number = hitters.length - 1; i2 >= 0; i2--) {
+            let hitter:ICoordinate = hitters[i2];
+            if (Transforms.hasPoint(target.shape.points, target.location, hitter)) {
+                this.hit(i2, hitters);
+                if (this.searchFirstHitOnly) {
+                    found = true;
+                    break;
+                }
             }
         }
     }

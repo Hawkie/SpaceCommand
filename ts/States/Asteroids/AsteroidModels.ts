@@ -73,6 +73,7 @@ export interface IExplosion {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
+    sound: string;
 }
 
 export interface IAsteroid {
@@ -180,9 +181,26 @@ export class AsteroidModels {
             maxForwardForce: 16,
             maxRotationalSpeed: 64,
             crashed: false,
-            weapon1: { bullets: [], lastFired: undefined, bulletLifetime: 5, bulletVelocity: 128,},
-            exhaust: { particles: [], particleSize: 1, particlesPerSecond: 20, particleLifetime: 1, on: false},
-            explosion: { particles: [], particleSize: 1, particlesPerSecond: 20, particleLifetime: 1, on: false},
+            weapon1: {
+                bullets: [],
+                lastFired: undefined,
+                bulletLifetime: 5,
+                bulletVelocity: 128,
+            },
+            exhaust: {
+                particles: [],
+                particleSize: 1,
+                particlesPerSecond: 20,
+                particleLifetime: 1,
+                on: false},
+            explosion: {
+                particles: [],
+                particleSize: 1,
+                particlesPerSecond: 20,
+                particleLifetime: 1,
+                on: false,
+                sound: "res/sound/explosion.wav"
+            },
         };
         return ship;
     }
@@ -199,37 +217,46 @@ export class AsteroidModels {
     public static createAsteroidModels(level: number): IAsteroid[] {
         var asteroids: IAsteroid[] = [];
         for (var i: number = 0; i < level; i++) {
-            let xy: number = Transforms.random(0, 3);
-            let x: number = Transforms.random(0,512), y: number = Transforms.random(0, 480);
-            if (xy === 0) {
-                x = Transforms.random(0, 100);
-            } else if (xy === 1) {
-                x = Transforms.random(412, 512);
-            } else if (xy === 2) {
-                y = Transforms.random(0, 100);
-            } else if (xy === 3) {
-                y = Transforms.random(380, 480);
-            }
-            var type:number = Transforms.random(0, 4);
-            var points: number[] = AsteroidModels.as[type];
-            var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
-            var shape: IShape = new ShapeData(coords);
-            var a: IAsteroid = {
-                x: x,
-                y: y,
-                Vx: Transforms.random(-20, 20),
-                Vy: Transforms.random(-20, 20),
-                angle: Transforms.random(0, 359),
-                spin:Transforms.random(-10, 10),
-                size:3,
-                type: type,
-                shape: shape,
-                graphic: "res/img/terrain.png",
-                breakSound: "res/sound/blast.wav",
-            };
+            var a: IAsteroid = AsteroidModels.createAsteroidModel(3);
             asteroids.push(a);
         }
         return asteroids;
+    }
+
+    public static createAsteroidModel(size: number): IAsteroid {
+        let xy: number = Transforms.random(0, 3);
+        let x: number = Transforms.random(0,512), y: number = Transforms.random(0, 480);
+        if (xy === 0) {
+            x = Transforms.random(0, 100);
+        } else if (xy === 1) {
+            x = Transforms.random(412, 512);
+        } else if (xy === 2) {
+            y = Transforms.random(0, 100);
+        } else if (xy === 3) {
+            y = Transforms.random(380, 480);
+        }
+        return AsteroidModels.createAsteroidModelAt(x,y, 0, 0, size);
+    }
+
+    public static createAsteroidModelAt(x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
+        var type:number = Transforms.random(0, 4);
+        var points: number[] = AsteroidModels.as[type];
+        var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
+        var shape: IShape = new ShapeData(coords);
+        var a: IAsteroid = {
+            x: x,
+            y: y,
+            Vx: Vx + Transforms.random(-20, 20),
+            Vy: Vy + Transforms.random(-20, 20),
+            angle: Transforms.random(0, 359),
+            spin:Transforms.random(-10, 10),
+            size: size,
+            type: type,
+            shape: shape,
+            graphic: "res/img/terrain.png",
+            breakSound: "res/sound/blast.wav",
+        };
+        return a;
     }
 
     public static createGraphicShip(x: number, y:number): IGraphicShip {

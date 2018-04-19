@@ -4,10 +4,10 @@ import { Assets } from "ts/Resources/Assets";
 
 import { IGameState } from "ts/States/GameState";
 import { AsteroidState } from "ts/States/Asteroids/AsteroidState";
-import { LandingState } from "ts/States/Land/LandingState";
-import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
-import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
-import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
+// import { LandingState } from "ts/States/Land/LandingState";
+// import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
+// import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
+// import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
 import { MenuState } from "ts/States/MenuState";
 
 
@@ -30,13 +30,13 @@ export class Game {
 
         var menuState = MenuState.create(assets, actx);
         var asteroidState = AsteroidState.createState(assets, actx);
-        var landingState = LandingState.create(assets, actx);
-        var soundDesigner = SoundDesignerState.create();
-        var landExplorer = LandExplorerState.create(assets, actx);
-        var duel = DuelState.createState(assets, actx);
+        // var landingState = LandingState.create(assets, actx);
+        // var soundDesigner = SoundDesignerState.create();
+        // var landExplorer = LandExplorerState.create(assets, actx);
+        // var duel = DuelState.createState(assets, actx);
 
-        var states = [menuState, asteroidState, landingState, landExplorer, duel];
-
+        // var states = [menuState, asteroidState, landingState, landExplorer, duel];
+        var states = [menuState, asteroidState];
         return states;
     }
 };

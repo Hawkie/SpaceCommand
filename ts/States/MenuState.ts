@@ -43,8 +43,8 @@ export class MenuState implements IGameState {
 
         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         var objects: Array<IGameObject> = [field1, field2, text];
-        let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
-
+        // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
+        let items: MenuItem[] = [new MenuItem("Asteroids", 1)];
         return new MenuState("Menu", assets, actx, objects, items);
     }
 
@@ -79,10 +79,10 @@ export class MenuState implements IGameState {
         for (let i: number = 0; i < this.menuItems.length; i++) {
             let item = this.menuItems[i];
             if (i == this.selectedItem) {
-                item.model.text = "<" + this.items[i].name + ">";
+                item.model().text = "<" + this.items[i].name + ">";
             }
             else {
-                item.model.text = " " + this.items[i].name + " ";
+                item.model().text = " " + this.items[i].name + " ";
             }
             item.display(drawingContext);
         }
