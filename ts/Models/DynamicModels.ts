@@ -16,9 +16,9 @@ export interface IShaped<TShape extends IShape> {
     shape: TShape;
 }
 
-export interface IGamed<TObject> {
-    object: TObject;
-}
+// export interface IGamed<TObject> {
+//     object: TObject;
+// }
 
 export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
 
@@ -31,13 +31,3 @@ export class ShapedModel<TPhysics extends ILocated,
     }
 }
 
-export class GPSModel<TGame,
-    TPhysics extends ILocated,
-    TShape extends IShape>
-    implements IGamed<TGame>, IPhysical<TPhysics>, IShaped<TShape> {
-    constructor(
-        public object: TGame,
-        public physics: TPhysics,
-        public shape: TShape) {
-    }
-}

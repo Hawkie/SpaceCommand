@@ -9,7 +9,7 @@ import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
-import { IGameObject, SingleGameObject, MultiGameObject, IComponentObjects, ComponentObjects } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
@@ -70,7 +70,7 @@ export class Field {
 
         // todo: change class to remove null later
         let field: MultiGameObject<null,SingleGameObject<IParticle>> = new MultiGameObject<null, SingleGameObject<IParticle>>(
-            null, [], [], fieldArray);
+            null, [], [], ()=>fieldArray);
 
         var particleGenInputs: IParticleGenInputs = {
             on: true,
@@ -103,7 +103,7 @@ export class Field {
                     height: p.size,
                 };});
                 var newParticle: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(()=>p, [mover], [view]);
-            field.components.push(newParticle);
+            field.getComponents().push(newParticle);
         });
         var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model().born);
         var edge1:PredGreaterThan<SingleGameObject<IParticle>>
@@ -111,7 +111,7 @@ export class Field {
         var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
             () => {
                 ParticleRemover.remove(
-                    () => field.components,
+                    field.getComponents,
                     [edge1]);});
         // add the generator to the field object
         field.actors.push(generator, remover);
@@ -131,7 +131,7 @@ export class Field {
         // todo: change class to remove null later
         var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
             new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
-            ()=>particleGenInputs, [], [], fieldArray);
+            ()=>particleGenInputs, [], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(field.model,
             (now: number) => {
@@ -175,13 +175,13 @@ export class Field {
                     });
                     newParticle.actors.push(gravity);
                 }
-                field.components.push(newParticle);
+                field.getComponents().push(newParticle);
             });
             var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model().born);
             var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
                 () => {
                     ParticleRemover.remove(
-                        () => field.components,
+                        field.getComponents,
                         [age1]);});
             // add the generator to the field object
             field.actors.push(generator, remover);
@@ -200,7 +200,7 @@ export class Field {
 
         var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
             new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
-            ()=>particleGenInputs, [], [], fieldArray);
+            ()=>particleGenInputs, [], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(
             field.model,
@@ -249,14 +249,14 @@ export class Field {
                 });
                 newParticle.actors.push(gravity);
             }
-            field.components.push(newParticle);
+            field.getComponents().push(newParticle);
         });
         var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>exhaust.particleLifetime,
             (p: SingleGameObject<IParticle>)=> p.model().born);
             var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
                 () => {
                     ParticleRemover.remove(
-                        () => field.components,
+                        field.getComponents,
                         [age1]);});
             // add the generator to the field object
             field.actors.push(generator, remover);
@@ -278,7 +278,7 @@ export class Field {
 
         var field: MultiGameObject<IParticleGenInputs,SingleGameObject<ISpinningParticle>> =
             new MultiGameObject<IParticleGenInputs, SingleGameObject<ISpinningParticle>>(
-            ()=>particleGenInputs, [], [], fieldArray);
+            ()=>particleGenInputs, [], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(
             field.model,
@@ -316,13 +316,13 @@ export class Field {
                 };
             });
             var o: SingleGameObject<ISpinningParticle> = new SingleGameObject(()=>p, [mover, animator, spinner], [view]);
-            field.components.push(o);
+            field.getComponents().push(o);
         });
         var age1: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>10, (p: SingleGameObject<IParticle>)=> p.model().born);
             var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
                 () => {
                     ParticleRemover.remove(
-                        () => field.components,
+                        field.getComponents,
                         [age1]);});
             // add the generator to the field object
             field.actors.push(generator, remover);

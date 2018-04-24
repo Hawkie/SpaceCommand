@@ -1,5 +1,4 @@
 import { Coordinate } from "ts/Physics/Common";
-import { ValueData } from "ts/Data/TextData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 import { LocatedData } from "ts/Data/PhysicsData";
 import { IWind, Direction, WindData } from "ts/Data/WindData";

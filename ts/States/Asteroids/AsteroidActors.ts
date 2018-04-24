@@ -60,7 +60,8 @@ export class AsteroidActors {
                     // put firerate check in here
                     let now: number = Date.now();
                     let elapsedTimeSec: number = (now - inputs.weapon.lastFired)/1000;
-                    if (elapsedTimeSec >= 1/2) {
+                    if (inputs.weapon.lastFired === undefined
+                        || elapsedTimeSec >= 1/2) {
                         inputs.weapon.lastFired = now;
                         var cartesian: Coordinate = Transforms.VectorToCartesian(
                             inputs.ship.angle,

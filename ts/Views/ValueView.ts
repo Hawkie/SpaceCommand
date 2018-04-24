@@ -1,13 +1,16 @@
 ﻿import { IView } from "ts/Views/View";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate, ICoordinate } from "ts/Physics/Common";
 import { DrawContext } from "ts/Common/DrawContext";
-import { ITextData, TextData, IValueData, ValueData } from "ts/Data/TextData";
+
+
 
 export class ValueView implements IView {
-    constructor(public model: IValueData, private format: string, private font: string, private fontSize: number) {
+    constructor(public getModel: ()=> number,
+        private location: ICoordinate, private font: string, private fontSize: number) {
     }
 
     display(drawingContext: DrawContext): void {
-        drawingContext.drawText(this.model.location.x, this.model.location.y, this.model.value.toString(), this.fontSize, this.font);
+        var value: number = this.getModel();
+        drawingContext.drawText(this.location.x, this.location.y, value.toString(), this.fontSize, this.font);
     }
 }

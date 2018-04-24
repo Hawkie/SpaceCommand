@@ -1,4 +1,4 @@
-﻿import { Coordinate, Vector, IVector } from "ts/Physics/Common";
+﻿import { Coordinate, Vector, IVector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 // data
 // import { IShipData, SpaceShipData, LandingShipData } from "ts/Data/ShipData";
@@ -7,7 +7,7 @@ import { ILocated, ILocatedAngledMoving, ILocatedAngledMovingRotatingForces,
 // import { IBreakable, BreakableData } from "ts/Data/BreakableData";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
 // model
-import { ShapedModel, GPSModel } from "ts/Models/DynamicModels";
+// import { ShapedModel, GPSModel } from "ts/Models/DynamicModels";
 // actors
 import { IActor } from "ts/Actors/Actor";
 import { PolyRotator } from "ts/Actors/Rotators";
@@ -23,10 +23,8 @@ import { MoveConstVelocity, IMoveOut } from "../../Actors/Movers";
 
 export class ShipComponents {
 
-    
-
-    private static engine1(): Coordinate[] {
-        let engineShape = [new Coordinate(-2, 1),
+    private static engine1(): ICoordinate[] {
+        let engineShape: ICoordinate[] = [new Coordinate(-2, 1),
             new Coordinate(0, -1),
             new Coordinate(2, 1),
             new Coordinate(0, 0),
@@ -35,8 +33,8 @@ export class ShipComponents {
         return engineShape;
     }
 
-    private static engine2(): Coordinate[] {
-        let engineShape = [new Coordinate(-1, -1),
+    private static engine2(): ICoordinate[] {
+        let engineShape: ICoordinate[] = [new Coordinate(-1, -1),
             new Coordinate(-2, 0),
             new Coordinate(2, 0),
             new Coordinate(1, -1),
@@ -65,8 +63,8 @@ export class ShipComponents {
     //     return new ShipComponentObject(model, [rotator], [view]);
     // }
 
-    private static gunShape1(): Coordinate[] {
-        let gunShape = [new Coordinate(0, -2),
+    private static gunShape1(): ICoordinate[] {
+        let gunShape: ICoordinate[] = [new Coordinate(0, -2),
             new Coordinate(0, 0),
             new Coordinate(0, -2)];
         Transforms.scale(gunShape, 2, 2);

@@ -3,7 +3,7 @@ import { Coordinate, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { ILocated } from "ts/Data/PhysicsData";
 import { IShape } from "ts/Data/ShapeData";
-import { IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
+// import { IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
 import { SingleGameObject } from "ts/GameObjects/GameObject";
 
 

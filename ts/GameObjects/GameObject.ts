@@ -11,10 +11,6 @@ export interface IObject<TModel> extends IGameObject {
     model: ()=>TModel;
 }
 
-export interface IComponentObjects<TModel extends IGameObject> extends IGameObject {
-    components: IGameObject[];
-}
-
 export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
     constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[]) {
     }
@@ -28,32 +24,36 @@ export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
     }
 }
 
-export class ComponentObjects<TObject extends IGameObject> implements IComponentObjects<TObject> {
-    constructor(public components: TObject[]) {
+export class ComponentObjects<TComponent extends IGameObject> implements IGameObject {
+    constructor(public getComponents: ()=> TComponent[]) {
     }
 
     update(timeModifier: number): void {
-        this.components.forEach(a => a.update(timeModifier));
+        var components: TComponent[] = this.getComponents();
+        components.forEach(a => a.update(timeModifier));
     }
 
     display(drawContext: DrawContext): void {
-        this.components.forEach(e => e.display(drawContext));
+        var components: TComponent[] = this.getComponents();
+        components.forEach(e => e.display(drawContext));
     }
 }
 
 
 // combi of single and component
 export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject, IObject<TModel> {
-    constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[], public components: TComponent[] = []) {
+    constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[], public getComponents: ()=>TComponent[]) {
     }
 
     update(timeModifier: number): void {
-        this.components.forEach(a => a.update(timeModifier));
+        var components: TComponent[] = this.getComponents();
+        components.forEach(a => a.update(timeModifier));
         this.actors.forEach(a => a.update(timeModifier));
     }
 
     display(drawContext: DrawContext): void {
-        this.components.forEach(e => e.display(drawContext));
+        var components: TComponent[] = this.getComponents();
+        components.forEach(e => e.display(drawContext));
         this.views.forEach(e => e.display(drawContext));
     }
 }

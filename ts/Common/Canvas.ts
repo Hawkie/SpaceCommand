@@ -14,9 +14,7 @@ export class Canvas {
         document.body.appendChild(this.canvas);
     }
 
-    public context() : DrawContext {
+    public context(): DrawContext {
         return this.c;
     }
-    
-    doSomething(){}
 }

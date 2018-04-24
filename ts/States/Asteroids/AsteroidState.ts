@@ -6,7 +6,6 @@ import { SparseArray } from "ts/Collections/SparseArray";
 import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { TextData } from "ts/Data/TextData";
 import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IView } from "ts/Views/View";
@@ -19,11 +18,9 @@ import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/I
 // import { ShipComponents, IShip } from "ts/Controllers/Ship/ShipComponents";
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject, IObject } from "ts/GameObjects/GameObject";
-import { TextObject } from "ts/GameObjects/TextObject";
-import { ValueObject } from "ts/GameObjects/ValueObject";
+import { IGameObject, SingleGameObject, MultiGameObject, IObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { Field, IThrustInputs } from "ts/GameObjects/ParticleField";
-import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
+// import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
 import { ShapeData, IShape } from "ts/Data/ShapeData";
@@ -37,15 +34,13 @@ import { Accelerator } from "ts/Actors/Accelerator";
 // import { ThrustController, IThrustController } from "ts/Controllers/Ship/ThrustController";
 // import { ExplosionController, IExplosionController } from "ts/Controllers/Ship/ExplosionController";
 import { IActor } from "../../Actors/Actor";
-import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState } from "./AsteroidModels";
-import { AsteroidObjects } from "./AsteroidObjects";
+import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState, createStateModel } from "./AsteroidModels";
+import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "./AsteroidObjects";
+import { ArrayAmender } from "./AsteroidField";
 
 
 export class AsteroidState implements IGameState {
-
-
     interactors: IInteractor[] = [];
-
     asteroidNoise: boolean;
     asteroidHitSound: AudioObject = undefined;
     helloSound: BufferObject = undefined;
@@ -58,7 +53,7 @@ export class AsteroidState implements IGameState {
         private assets: Assets,
         private actx: AudioContext,
         private state: IAsteroidState,
-        private stateObj: MultiGameObject<IAsteroidState, IGameObject>,
+        private stateObj: IAsteroidStateObject,
         private sceneObjects: IGameObject[]
         ) {
         this.viewScale = 1;
@@ -86,22 +81,17 @@ export class AsteroidState implements IGameState {
                 shape: this.state.ship.shape,
             };},
             this.asteroidPlayerHit.bind(this));
-        // var asteroidEngineDetector = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
-        //     this.player.thrustController.engine.model,
-        //     this.player,
-        //     this.asteroidEngineHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
     }
-
 
 
     static createState(assets: Assets, actx: AudioContext): AsteroidState {
 
         var field: IGameObject = Field.createBackgroundField(16, 2);
         var spriteField: IGameObject = Field.createSpriteField();
-
-        var state: IAsteroidState = AsteroidModels.createStateModel();
-        var stateObj: MultiGameObject<IAsteroidState, IGameObject> = AsteroidObjects.createAsteroidStateObject(()=>state);
+        var state: IAsteroidState = createStateModel();
+        var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
+        // get state objects and add asteroid objects
 
         var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
             [field, spriteField]);
@@ -110,14 +100,21 @@ export class AsteroidState implements IGameState {
 
     update(lastDrawModifier: number): void {
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
-        this.stateObj.update(lastDrawModifier);
+        this.stateObj.sceneObjs.forEach(x=>x.update(lastDrawModifier));
+        this.stateObj.asteroidObjs.forEach(x=>x.update(lastDrawModifier));
 
         // keep objects in screen. move to an actor!
         this.keepIn(this.state.ship.x, 0, 512, (newV: number)=> { this.state.ship.x = newV; });
         this.keepIn(this.state.ship.y, 0, 480, (newV: number)=> { this.state.ship.y = newV; });
 
+        this.state.asteroids.forEach((a)=> {
+            this.keepIn(a.x, 0, 512, (newV: number)=> { a.x = newV; });
+            this.keepIn(a.y, 0, 480, (newV: number)=> { a.y = newV; });
+        });
+
         // if all asteroids cleared, create more at next level
         if (this.state.asteroids.length === 0) {
+            this.state.score += 50;
             this.state.level += 1;
             // how do we ensure new asteroid objects bound to the new models in the state
             this.state.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
@@ -143,12 +140,13 @@ export class AsteroidState implements IGameState {
         // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
-        this.stateObj.display(drawingContext);
+        this.stateObj.sceneObjs.forEach(x=>x.display(drawingContext));
+        this.stateObj.asteroidObjs.forEach(x=>x.display(drawingContext));
+        this.stateObj.views.forEach(x=>x.display(drawingContext));
         drawingContext.restore();
     }
 
     sound(actx: AudioContext): void {
-
         if (this.asteroidNoise) {
             this.asteroidNoise = false;
             // if (this.helloSound !== undefined)
@@ -198,16 +196,20 @@ export class AsteroidState implements IGameState {
         this.asteroidNoise = true;
         // remove bullet - todo - remove bullet with function
         this.state.ship.weapon1.bullets.splice(i2, 1);
-        // add two small asteroids
+        // todo remove bullet obj
 
+        // add two small asteroids
         this.state.asteroids.splice(i1, 1);
+        this.stateObj.asteroidObjs.splice(i1, 1);
+        // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {
                 var newAsteroid:IAsteroid = AsteroidModels.createAsteroidModelAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
                 this.state.asteroids.push(newAsteroid);
+                var asteroidObj: SingleGameObject<IAsteroid> = AsteroidObjects.createAsteroidObject(()=>newAsteroid);
+                this.stateObj.asteroidObjs.push(asteroidObj);
             }
         }
-        // tODO remove original;
         this.state.score += 10;
     }
 

@@ -2,32 +2,29 @@
 import { AudioObject, AudioWithAmplifier  } from "ts/Sound/SoundObject";
 import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
-
 import { Assets } from "ts/Resources/Assets";
-
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/Physics/Common";
-import { TextData } from "ts/Data/TextData";
-
-import { IGameObject } from "ts/GameObjects/GameObject";
-import { TextObject } from "ts/GameObjects/TextObject";
-
+import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { Field } from "ts/GameObjects/ParticleField";
+import { TextView } from "../Views/TextView";
+import { IView } from "../Views/View";
 
-export class MenuItem {
-    constructor(public name: string, public id: number) { }
+function createMenuItem(name: string, x: number, y: number): SingleGameObject<string> {
+    var menuObject: SingleGameObject<string> = new SingleGameObject<string>(()=>name,
+    [],
+    [new TextView(()=>name, new Coordinate(x, y), this.font, this.size)]);
+    return menuObject;
 }
 
 export class MenuState implements IGameState {
 
-    menuItems: SparseArray<TextObject> = new SparseArray<TextObject>();
+    originalItems: string[] = [];
     font: string = "Arial";
     size: number = 16;
     selectedItem: number = 0;
-    objects: Array<IGameObject>;
-    items: Array<MenuItem>;
     selected: boolean = false;
     lastMoved: number = Date.now();
     musicObject: AudioObject;
@@ -41,87 +38,93 @@ export class MenuState implements IGameState {
         var field1: IGameObject = Field.createBackgroundField(16, 1);
         var field2: IGameObject = Field.createBackgroundField(32, 2);
 
-        var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        var objects: Array<IGameObject> = [field1, field2, text];
+        var title: IView = new TextView(()=>"SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
-        let items: MenuItem[] = [new MenuItem("Asteroids", 1)];
-        return new MenuState("Menu", assets, actx, objects, items);
+        let items: string[] = ["Asteroids"];
+        return new MenuState("Menu", assets, actx, [title], [field1, field2], items);
     }
 
-    constructor(public name: string, private assets: Assets, private actx:AudioContext, objects : Array<IGameObject>, items : Array<MenuItem>) {
+    constructor(public name: string,
+        private assets: Assets,
+        private actx:AudioContext,
+        private views: IView[],
+        private objects : IGameObject[],
+        private items : string[]) {
         let x: number = 200;
         let y: number = 100;
 
-        items.forEach(item => {
-            this.menuItems.add(new TextObject(item.name, new Coordinate(x, y), this.font, this.size));
+
+        for (let i:number=0;i<items.length;i++) {
+            this.originalItems.push(items[i]);
+            this.views.push(new TextView(()=>items[i], new Coordinate(x, y), this.font, this.size));
             y += 50;
-        });
-        this.objects = objects;
-        this.items = items;
-        // music params
-        //var effects: SoundEffectData = new SoundEffectData();
-        //effects.echo = [0.2, 0.2, 1000];
-        //effects.panValue = 0;
-        this.musicObject = new AudioObject("res/sound/TimePortal.mp3",
-            //this.actx,
-            //new SoundPlayer(this.actx),
-            //effects,
-            true);
+        }
+        this.musicObject = new AudioObject("res/sound/TimePortal.mp3", true);
     }
 
-    update(lastDrawModifier: number) {
+    update(lastDrawModifier: number): void {
         this.objects.forEach(object => object.update(lastDrawModifier));
-    }
 
-    display(drawingContext: DrawContext) {
-        drawingContext.clear();
-        this.objects.forEach(object => object.display(drawingContext));
-        for (let i: number = 0; i < this.menuItems.length; i++) {
-            let item = this.menuItems[i];
-            if (i == this.selectedItem) {
-                item.model().text = "<" + this.items[i].name + ">";
+        for (let i: number = 0; i < this.items.length; i++) {
+            if (i === this.selectedItem) {
+                this.items[i] = "<" + this.originalItems[i] + ">";
+            } else {
+                this.items[i] = " " + this.originalItems[i] + " ";
             }
-            else {
-                item.model().text = " " + this.items[i].name + " ";
-            }
-            item.display(drawingContext);
         }
     }
 
-    sound(actx: AudioContext) {
+    display(drawingContext: DrawContext): void {
+        drawingContext.clear();
+        this.views.forEach(v=> v.display(drawingContext));
+        this.objects.forEach(object => object.display(drawingContext));
+
+    }
+
+    sound(actx: AudioContext): void {
         // load assets
-        //if (this.loadAssets) {
+        // if (this.loadAssets) {
         //    this.loadAssets = false;
         //    this.assets.load(this.actx, ["res/sound/TimePortal.mp3"], () => {
         //        sctx.playSound(this.assets.soundData[0].data);
         //    });
         //    console.log("Waiting for resources to load");
-        //}
+        // }
         if (!this.playingMusic) {
             this.playingMusic = true;
             this.musicObject.play();
         }
     }
 
-    input(keys: KeyStateProvider, lastDrawModifier: number) {
+    input(keys: KeyStateProvider, lastDrawModifier: number): void {
         var now: number = Date.now();
         if ((now - this.lastMoved) > 150) {
             this.lastMoved = now;
-            if (keys.isKeyDown(Keys.UpArrow)) this.selectedItem -= 1;
-            if (keys.isKeyDown(Keys.DownArrow)) this.selectedItem += 1;
-            if (this.selectedItem < 0) this.selectedItem = 0;
-            if (this.selectedItem >= this.menuItems.length) this.selectedItem = this.menuItems.length - 1;
-            if (keys.isKeyDown(Keys.Enter)) this.selected = true;
+            if (keys.isKeyDown(Keys.UpArrow)) {
+                this.selectedItem -= 1;
+            }
+            if (keys.isKeyDown(Keys.DownArrow)) {
+                this.selectedItem += 1;
+            }
+            if (this.selectedItem < 0) {
+                this.selectedItem = 0;
+            }
+            if (this.selectedItem >= this.items.length) {
+                this.selectedItem = this.items.length - 1;
+            }
+            if (keys.isKeyDown(Keys.Enter)) {
+                this.selected = true;
+            }
         }
     }
 
-    tests(lastTestModifier: number) { }
+    tests(lastTestModifier: number): void {}
 
     returnState(): number {
-        let newState = undefined;
+        let newState:number = undefined;
         if (this.selected) {
             this.selected = false;
-            newState = this.items[this.selectedItem].id;
+            newState = this.selectedItem+1;
         }
         return newState;
     }

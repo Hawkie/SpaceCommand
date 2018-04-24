@@ -4,15 +4,14 @@ import { Coordinate } from "ts/Physics/Common";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 
 
-export interface IGameState
-{
+export interface IGameState {
     name: string;
-    update(lastDrawModifier : number);
-    display(drawingContext: DrawContext);
-    sound(audioContext: AudioContext);
-    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number);
-    tests(lastTestModifier: number);
-    returnState() : number;
+    update(lastDrawModifier : number): void;
+    display(drawingContext: DrawContext): void;
+    sound(audioContext: AudioContext): void;
+    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number): void;
+    tests(lastTestModifier: number): void;
+    returnState(): number;
 }
 
 

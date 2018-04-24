@@ -122,88 +122,89 @@ export interface IBall {
 }
 
 
+export function createStateModel(): IAsteroidState {
+
+    var ship: IShip = createShip(256, 240);
+    var ball: IBall = AsteroidModels.createBallObject(256, 280);
+    var coin: ICoin = AsteroidModels.createCoin(new Coordinate(300, 400));
+    var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
+    var graphicShip: IGraphicShip = AsteroidModels.createGraphicShip(200, 100);
+
+    var stateVariables: IAsteroidState = {
+        left: false,
+        right: false,
+        up: false,
+        fire: false,
+        ship: ship,
+        ball: ball,
+        coin: coin,
+        level: 3,
+        asteroids: asteroids,
+        graphicShip: graphicShip,
+        score: 0,
+        title: "SpaceCommand",
+    };
+    return stateVariables;
+}
+
+export function createShip(x: number, y: number): IShip {
+    var triangleShip: ICoordinate[] = [new Coordinate(0, -4),
+        new Coordinate(-2, 2),
+        new Coordinate(0, 1),
+        new Coordinate(2, 2),
+        new Coordinate(0, -4)];
+    Transforms.scale(triangleShip, 2, 2);
+
+    // var breakable = new BreakableData(20, 20, 0, false, false);
+    // var shape = new ShapeData(triangleShip);
+    // var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(breakable, physics, shape);
+    var ship: IShip = {
+        x: x,
+        y: y,
+        Vx: 0,
+        Vy: 0,
+        thrust: new Vector(0, 0),
+        angle: 0,
+        spin: 0,
+        mass: 1,
+        shape: {points: triangleShip, offset: {x:0, y:0}},
+        hitPoints: 100,
+        damage: 0,
+        armour: 0,
+        disabled: false,
+        broken: false,
+        fuel: 1000,
+        energy: 1000,
+        colour: "#fff",
+        maxForwardForce: 16,
+        maxRotationalSpeed: 64,
+        crashed: false,
+        weapon1: {
+            bullets: [],
+            lastFired: undefined,
+            bulletLifetime: 5,
+            bulletVelocity: 128,
+        },
+        exhaust: {
+            particles: [],
+            particleSize: 1,
+            particlesPerSecond: 20,
+            particleLifetime: 1,
+            on: false},
+        explosion: {
+            particles: [],
+            particleSize: 1,
+            particlesPerSecond: 20,
+            particleLifetime: 1,
+            on: false,
+            sound: "res/sound/explosion.wav"
+        },
+    };
+    return ship;
+}
+
 export class AsteroidModels {
 
-    static createStateModel(): IAsteroidState {
-
-        var ship: IShip = AsteroidModels.createShip(256, 240);
-        var ball: IBall = AsteroidModels.createBallObject(256, 280);
-        var coin: ICoin = AsteroidModels.createCoin(new Coordinate(300, 400));
-        var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
-        var graphicShip: IGraphicShip = AsteroidModels.createGraphicShip(200, 100);
-
-        var stateVariables: IAsteroidState = {
-            left: false,
-            right: false,
-            up: false,
-            fire: false,
-            ship: ship,
-            ball: ball,
-            coin: coin,
-            level: 3,
-            asteroids: asteroids,
-            graphicShip: graphicShip,
-            score: 0,
-            title: "SpaceCommand",
-        };
-        return stateVariables;
-    }
-
-    static createShip(x: number, y: number): IShip {
-        var triangleShip: ICoordinate[] = [new Coordinate(0, -4),
-            new Coordinate(-2, 2),
-            new Coordinate(0, 1),
-            new Coordinate(2, 2),
-            new Coordinate(0, -4)];
-        Transforms.scale(triangleShip, 2, 2);
-
-        // var breakable = new BreakableData(20, 20, 0, false, false);
-        // var shape = new ShapeData(triangleShip);
-        // var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(breakable, physics, shape);
-        var ship: IShip = {
-            x: x,
-            y: y,
-            Vx: 0,
-            Vy: 0,
-            thrust: new Vector(0, 0),
-            angle: 0,
-            spin: 0,
-            mass: 1,
-            shape: {points: triangleShip, offset: {x:0, y:0}},
-            hitPoints: 100,
-            damage: 0,
-            armour: 0,
-            disabled: false,
-            broken: false,
-            fuel: 1000,
-            energy: 1000,
-            colour: "#fff",
-            maxForwardForce: 16,
-            maxRotationalSpeed: 64,
-            crashed: false,
-            weapon1: {
-                bullets: [],
-                lastFired: undefined,
-                bulletLifetime: 5,
-                bulletVelocity: 128,
-            },
-            exhaust: {
-                particles: [],
-                particleSize: 1,
-                particlesPerSecond: 20,
-                particleLifetime: 1,
-                on: false},
-            explosion: {
-                particles: [],
-                particleSize: 1,
-                particlesPerSecond: 20,
-                particleLifetime: 1,
-                on: false,
-                sound: "res/sound/explosion.wav"
-            },
-        };
-        return ship;
-    }
 
     // 5 different asteroid shapes
     private static a1 = [-4, -2, -2, -4, 0, -2, 2, -4, 4, -2, 3, 0, 4, 2, 1, 4, -2, 4, -4, 2, -4, -2];
@@ -242,6 +243,7 @@ export class AsteroidModels {
         var type:number = Transforms.random(0, 4);
         var points: number[] = AsteroidModels.as[type];
         var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
+        Transforms.scale(coords, size, size);
         var shape: IShape = new ShapeData(coords);
         var a: IAsteroid = {
             x: x,

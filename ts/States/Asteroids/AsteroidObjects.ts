@@ -3,7 +3,7 @@ import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
 import { IView } from "../../Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "../../Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "../../Actors/Movers";
-import { SingleGameObject, IGameObject, MultiGameObject } from "../../GameObjects/GameObject";
+import { SingleGameObject, IGameObject, MultiGameObject, ComponentObjects } from "../../GameObjects/GameObject";
 import { IActor } from "../../Actors/Actor";
 import { SpriteAnimator } from "../../Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "../../Actors/Rotators";
@@ -12,44 +12,60 @@ import { GraphicAngledView } from "../../Views/GraphicView";
 import { IShape } from "../../Data/ShapeData";
 import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "../../Actors/Accelerators";
-import { TextObject } from "../../GameObjects/TextObject";
+// import { TextObject } from "../../GameObjects/TextObject";
 import { Coordinate } from "../../Physics/Common";
-import { ValueObject } from "../../GameObjects/ValueObject";
+// import { ValueObject } from "../../GameObjects/ValueObject";
 import { IParticle, Field } from "../../GameObjects/ParticleField";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "../../Actors/ParticleFieldUpdater";
+import { DrawContext } from "../../Common/DrawContext";
+import { ValueView } from "../../Views/ValueView";
+import { TextView } from "../../Views/TextView";
+
+// list all objects that don't manage themselves separately
+export interface IAsteroidStateObject {
+    shipObj: SingleGameObject<IShip>;
+    weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>;
+    asteroidObjs: SingleGameObject<IAsteroid>[];
+    views: IView[];
+    sceneObjs: IGameObject[];
+}
+
+
+export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAsteroidStateObject {
+    var state: IAsteroidState = getState();
+    var shipObj: SingleGameObject<IShip> = AsteroidObjects.createShipObject(getState, ()=>state.ship);
+
+    var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>
+        = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
+    var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
+        = AsteroidObjects.createExhaustObj(()=>state.ship.exhaust, ()=>state.ship);
+    var explosionObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
+        = AsteroidObjects.createExplosionObj(()=>state.ship.explosion, ()=>state.ship);
+
+    var ballObj: SingleGameObject<IBall> = AsteroidObjects.createBallObject(()=>state.ball);
+    var shipBallObj: SingleGameObject<IRodInputs> = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
+    var coinObj: SingleGameObject<ICoin> = AsteroidObjects.createCoinObject(()=>state.coin);
+    var gShipObj: SingleGameObject<IGraphicShip> = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
+    var asteroidObjs: SingleGameObject<IAsteroid>[] =  AsteroidObjects.createAsteroidObjs(()=>state.asteroids);
+
+    var title: IView = new TextView(()=>state.title, new Coordinate(10, 20), "Arial", 18);
+    var score: IView = new TextView(()=>"Score:", new Coordinate(400, 20), "Arial", 18);
+    var scoreDisplay: IView = new ValueView(()=>state.score, new Coordinate(460, 20), "Arial", 18);
+    var angleDisplay: IView = new ValueView(()=>state.ship.angle, new Coordinate(460, 40), "Arial", 18);
+
+    var aObjs: IAsteroidStateObject = {
+        shipObj: shipObj,
+        weaponObj: weaponObj,
+        asteroidObjs: asteroidObjs,
+        views: [title, score, scoreDisplay, angleDisplay],
+        sceneObjs: [shipObj,weaponObj, exhaustObj, explosionObj, shipBallObj,
+            coinObj, ballObj, gShipObj],
+    };
+    return aObjs;
+}
+
 
 export class AsteroidObjects {
-
-    static createAsteroidStateObject(getState: ()=>IAsteroidState): MultiGameObject<IAsteroidState, IGameObject> {
-        var state: IAsteroidState = getState();
-        var shipObj: SingleGameObject<IShip> = AsteroidObjects.createShipObject(getState, ()=>state.ship);
-
-        var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>
-            = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
-        var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
-            = AsteroidObjects.createExhaustObj(()=>state.ship.exhaust, ()=>state.ship);
-        var explosionObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
-            = AsteroidObjects.createExplosionObj(()=>state.ship.explosion, ()=>state.ship);
-
-        var ballObj: SingleGameObject<IBall> = AsteroidObjects.createBallObject(()=>state.ball);
-        var shipBallObj: SingleGameObject<IRodInputs> = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
-        var coinObj: SingleGameObject<ICoin> = AsteroidObjects.createCoinObject(()=>state.coin);
-        var gShipObj: SingleGameObject<IGraphicShip> = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
-        var asteroidObjs: SingleGameObject<IAsteroid>[] =  AsteroidObjects.createAsteroidObjs(state.level);
-
-
-        var text: IGameObject = new TextObject(state.title, new Coordinate(10, 20), "Arial", 18);
-        var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
-        var valueDisplay: ValueObject = new ValueObject(state.score, new Coordinate(460, 20), "Arial", 18);
-        var angleDisplay: ValueObject = new ValueObject(shipObj.model().angle, new Coordinate(460, 40), "Arial", 18);
-
-        var stateObj: MultiGameObject<IAsteroidState, IGameObject> = new MultiGameObject(getState,
-            [], [],
-            [shipObj, weaponObj, exhaustObj, explosionObj,
-                coinObj, ballObj, shipBallObj, gShipObj, text, score, valueDisplay, angleDisplay]);
-        asteroidObjs.forEach(a => stateObj.components.push(a));
-        return stateObj;
-    }
 
     static createShipObject(getState: ()=> IAsteroidState, getShip: ()=>IShip): SingleGameObject<IShip> {
         var ship: IShip = getShip();
@@ -63,7 +79,7 @@ export class AsteroidObjects {
         });
         // adding ship thrust force
         var rotator: IActor = new PolyRotator(() => { return {
-            angle: ship.angle,
+            angle: getShip().angle,
             shape: ship.shape,
         };}, (out: IShape)=> {
             ship.shape = out;
@@ -86,9 +102,11 @@ export class AsteroidObjects {
         return shipObj;
     }
 
-    public static createAsteroidObjs(level: number): SingleGameObject<IAsteroid>[] {
-        var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(level);
-        var asteroidObjs: SingleGameObject<IAsteroid>[] = asteroids.map((a)=> AsteroidObjects.createAsteroidObject(()=>a));
+    public static createAsteroidObjs(getAsteroids: ()=> IAsteroid[]): SingleGameObject<IAsteroid>[] {
+        var asteroidObjs: SingleGameObject<IAsteroid>[] = [];
+        getAsteroids().forEach(a => {
+            asteroidObjs.push(AsteroidObjects.createAsteroidObject(()=>a));
+        });
         return asteroidObjs;
     }
 
@@ -102,7 +120,7 @@ export class AsteroidObjects {
                 asteroid.y += out.dy;
             }
         );
-        var spinner: Spinner = new Spinner(() => {
+        var spinner: IActor = new Spinner(() => {
             return { spin: asteroid.spin };
         }, (sOut)=> asteroid.angle += sOut.dAngle);
         var rotator: IActor = new PolyRotator(() => { return {
@@ -118,7 +136,7 @@ export class AsteroidObjects {
             graphic: asteroid.graphic,
             angle: asteroid.angle,
         };});
-        var asteroidObject: SingleGameObject<IAsteroid> = new SingleGameObject<IAsteroid>(()=>asteroid, [mover, spinner, rotator], [view]);
+        var asteroidObject: SingleGameObject<IAsteroid> = new SingleGameObject<IAsteroid>(getAsteroid, [mover, spinner, rotator], [view]);
         return asteroidObject;
     }
 
@@ -126,7 +144,7 @@ export class AsteroidObjects {
 
         var weapon: IWeapon = getWeapon();
         let bulletObjs: SingleGameObject<IParticle>[] = getWeapon().bullets.map((b)=> AsteroidObjects.createBulletObject(()=>b));
-        var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>> = new MultiGameObject(getWeapon, [], [], bulletObjs);
+        var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>> = new MultiGameObject(getWeapon, [], [], ()=>bulletObjs);
         var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(
             ()=>weapon.bulletLifetime,
             (p: SingleGameObject<IParticle>)=> p.model().born
@@ -134,7 +152,7 @@ export class AsteroidObjects {
         var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
             () => {
                 ParticleRemover.remove(
-                    () => weaponObj.components,
+                    weaponObj.getComponents,
                     [age5]);});
         // add the generator to the field object
         weaponObj.actors.push(remover);
@@ -147,7 +165,7 @@ export class AsteroidObjects {
         };}, (newParticle: IParticle) => {
             state.ship.weapon1.bullets.push(newParticle);
             var bulletObj: SingleGameObject<IParticle> = AsteroidObjects.createBulletObject(()=>newParticle);
-            weaponObj.components.push(bulletObj);
+            weaponObj.getComponents().push(bulletObj);
         });
         weaponObj.actors.push(weaponController);
         return weaponObj;

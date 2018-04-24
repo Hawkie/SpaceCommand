@@ -1,6 +1,5 @@
 ﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
-//import { DynamicModel } from "ts/Models/DynamicModels";
 import { ControlPanelView } from "ts/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
 import { Coordinate, Vector } from "ts/Physics/Common";
