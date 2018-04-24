@@ -86,19 +86,6 @@ export class AsteroidActors {
     //     }
     // }
 
-    // static createExhaustController(get:()=>IExhaustControlInputs): IActor {
-    //     var c: IActor = new Actor(get, (state, lastTimeModifier: number)=> {
-    //         if (!state.ship.crashed) {
-    //             if (state.up) {
-    //                 state.ship.exhaust.on = true;
-    //             } else {
-    //                 state.ship.exhaust.on = false;
-    //             }
-    //         }
-    //     });
-    //     return c;
-    // }
-
     static createExplosionController(get:()=>IExplosionControlInputs): IActor {
         var c: IActor = new Actor(get, (inputs, lastTimeModifier: number)=> {
             if (inputs.ship.crashed) {

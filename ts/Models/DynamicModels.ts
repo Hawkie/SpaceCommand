@@ -16,10 +16,6 @@ export interface IShaped<TShape extends IShape> {
     shape: TShape;
 }
 
-// export interface IGamed<TObject> {
-//     object: TObject;
-// }
-
 export interface IShapedModel<TPhysics extends ILocated, TShape extends IShape> extends IPhysical<TPhysics>, IShaped<TShape> { }
 
 export class ShapedModel<TPhysics extends ILocated,

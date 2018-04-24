@@ -79,7 +79,7 @@ export class AsteroidObjects {
         });
         // adding ship thrust force
         var rotator: IActor = new PolyRotator(() => { return {
-            angle: getShip().angle,
+            angle: ship.angle,
             shape: ship.shape,
         };}, (out: IShape)=> {
             ship.shape = out;
@@ -98,7 +98,10 @@ export class AsteroidObjects {
             up: state.up,
             ship: state.ship,
         };});
-        shipObj.actors.push(shipController);
+        var explosionController: IActor = AsteroidActors.createExplosionController(()=> { return {
+            ship: state.ship,
+        };});
+        shipObj.actors.push(shipController, explosionController);
         return shipObj;
     }
 
@@ -192,9 +195,8 @@ export class AsteroidObjects {
 
     static createExhaustObj(getExhaust: ()=>IExhaust, getShip: ()=>IShip)
         : MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
-        var exhaust: IExhaust = getExhaust();
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> = Field.createExhaustObj(exhaust, ()=> {
+        var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> = Field.createExhaustObj(getExhaust, ()=> {
         return {
             x: ship.x,
             y: ship.y,
@@ -217,7 +219,7 @@ export class AsteroidObjects {
         var explosion: IExplosion = getExplosion();
         var ship: IShip = getShip();
         var explosionObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
-            = Field.createExplosion(explosion, ()=> {
+            = Field.createExplosion(getExplosion, ()=> {
         return {
             x: ship.x,
             y: ship.y,

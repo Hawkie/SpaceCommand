@@ -14,13 +14,13 @@ import { MenuState } from "ts/States/MenuState";
 export class Game {
 
     // globals are doc and window
-    run(window, document) {
+    run(window, document): void {
         console.log("Game Run()");
 
-        var canvas = new Canvas(512, 480, document);
+        var canvas: Canvas = new Canvas(512, 480, document);
         var audioContext = new AudioContext();
         var assets = new Assets();
-        var states = Game.createStates(assets, audioContext);
+        var states: IGameState[] = Game.createStates(assets, audioContext);
         var gameloop = new EventLoop(window, canvas, audioContext, states);
 
         gameloop.loop();
@@ -36,7 +36,7 @@ export class Game {
         // var duel = DuelState.createState(assets, actx);
 
         // var states = [menuState, asteroidState, landingState, landExplorer, duel];
-        var states = [menuState, asteroidState];
+        var states: IGameState[] = [menuState, asteroidState];
         return states;
     }
 };

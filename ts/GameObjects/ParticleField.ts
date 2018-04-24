@@ -73,7 +73,7 @@ export class Field {
             null, [], [], ()=>fieldArray);
 
         var particleGenInputs: IParticleGenInputs = {
-            on: true,
+            on: ()=>true,
             itemsPerSec: 1,
             maxGeneratedPerIteration: 1,
             generationTimeInSec: undefined,
@@ -118,14 +118,14 @@ export class Field {
         return field;
     }
 
-    static createExplosion(explosion: IExplosion,
+    static createExplosion(explosion: ()=>IExplosion,
         inputs: ()=> IExplosionInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
         var fieldArray: SingleGameObject<IParticle>[] = [];
 
         var particleGenInputs: IParticleGenInputs = {
-            on: false,
-            itemsPerSec: explosion.particlesPerSecond,
-            maxGeneratedPerIteration: undefined,
+            on: ()=>explosion().on,
+            itemsPerSec: explosion().particlesPerSecond,
+            maxGeneratedPerIteration: 50,
             generationTimeInSec: 0.2,
         };
         // todo: change class to remove null later
@@ -188,22 +188,24 @@ export class Field {
         return field;
     }
 
-    static createExhaustObj(exhaust: IExhaust,
+    static createExhaustObj(getExhaust: ()=>IExhaust,
         getInputs: ()=> IThrustInputs): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
         let fieldArray: SingleGameObject<IParticle>[] = [];
+        var exhaust: IExhaust = getExhaust();
+
         var particleGenInputs: IParticleGenInputs = {
-            on: false,
+            on: ()=>exhaust.on,
             itemsPerSec: exhaust.particlesPerSecond,
-            maxGeneratedPerIteration: undefined,
+            maxGeneratedPerIteration: 50,
             generationTimeInSec: undefined,
         };
 
         var field: MultiGameObject<IParticleGenInputs,SingleGameObject<IParticle>> =
             new MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>(
-            ()=>particleGenInputs, [], [], ()=>fieldArray);
+                ()=>particleGenInputs, [], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(
-            field.model,
+            ()=>particleGenInputs,
             (now: number) => {
                 var source: IThrustInputs = getInputs();
                 var velocity: Coordinate = Transforms.VectorToCartesian(source.thrust.angle + Transforms.random(-5, 5) + 180,
@@ -263,14 +265,12 @@ export class Field {
         return field;
     }
 
-
-
     // sprite field
     static createSpriteField(): MultiGameObject<IParticleGenInputs, SingleGameObject<ISpinningParticle>> {
 
         let fieldArray: SingleGameObject<ISpinningParticle>[] = [];
         var particleGenInputs: IParticleGenInputs = {
-            on: true,
+            on: ()=>true,
             itemsPerSec: 1,
             maxGeneratedPerIteration: 1,
             generationTimeInSec: undefined,

@@ -3,7 +3,7 @@ import { IActor } from "ts/Actors/Actor";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export interface IParticleGenInputs {
-    on: boolean;
+    on: ()=>boolean;
     itemsPerSec: number;
     maxGeneratedPerIteration?: number;
     generationTimeInSec?: number;
@@ -26,11 +26,11 @@ export class ParticleGenerator implements IActor {
 
     generate(lastTimeModifier: number, inP: IParticleGenInputs): void {
         var now: number = Date.now();
-        if (!inP.on) {
+        var on: boolean = inP.on();
+        if (!on) {
             this.lastCheck = now;
             this.firstAdded = 0;
-        }
-        if (inP.on) {
+        } else {
             var secSinceLast: number = (now - this.lastCheck) / 1000;
 
             // don't add if past generation time
