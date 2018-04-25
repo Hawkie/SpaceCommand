@@ -3,6 +3,7 @@ import { IAsteroidState, IShip, IWeapon } from "./AsteroidModels";
 import { Coordinate } from "../../Physics/Common";
 import { Transforms } from "../../Physics/Transforms";
 import { IParticle } from "../../GameObjects/ParticleField";
+import { Sound } from "../../Actors/Sound";
 
 export interface IShipControlInputs {
     left: boolean;
@@ -25,6 +26,7 @@ export interface IExhaustControlInputs {
 export interface IExplosionControlInputs {
     ship: IShip;
 }
+
 
 export class AsteroidActors {
     static createShipController(getInputs:()=>IShipControlInputs): IActor {
@@ -89,6 +91,7 @@ export class AsteroidActors {
     static createExplosionController(get:()=>IExplosionControlInputs): IActor {
         var c: IActor = new Actor(get, (inputs, lastTimeModifier: number)=> {
             if (inputs.ship.crashed) {
+                inputs.ship.thrust.length = 0;
                 inputs.ship.explosion.on = true;
             } else {
                 inputs.ship.explosion.on = false;

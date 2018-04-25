@@ -65,6 +65,7 @@ export interface IExhaust {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
+    soundFilename: string;
 }
 
 export interface IExplosion {
@@ -73,7 +74,7 @@ export interface IExplosion {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
-    sound: string;
+    soundFilename: string;
 }
 
 export interface IAsteroid {
@@ -190,14 +191,15 @@ export function createShip(x: number, y: number): IShip {
             particleSize: 1,
             particlesPerSecond: 20,
             particleLifetime: 1,
-            on: false},
+            on: false,
+            soundFilename: "res/sound/thrust.wav"},
         explosion: {
             particles: [],
             particleSize: 1,
             particlesPerSecond: 20,
             particleLifetime: 1,
             on: false,
-            sound: "res/sound/explosion.wav"
+            soundFilename: "res/sound/explosion.wav"
         },
     };
     return ship;

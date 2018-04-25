@@ -20,6 +20,7 @@ import { AgePred, ParticleRemover, IParticleGenInputs } from "../../Actors/Parti
 import { DrawContext } from "../../Common/DrawContext";
 import { ValueView } from "../../Views/ValueView";
 import { TextView } from "../../Views/TextView";
+import { ISoundInputs, Sound } from "../../Actors/Sound";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -205,6 +206,10 @@ export class AsteroidObjects {
             xOffset: ship.shape.offset.x,
             yOffset: ship.shape.offset.y,
         };});
+        var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, () => { return {
+            play: getExhaust().on,
+        };});
+        exhaustObj.actors.push(exhaustSound);
         // var exhaustController: IActor = AsteroidActors.createExhaustController(()=> { return {
         //     up: state.up,
         //     ship: state.ship,

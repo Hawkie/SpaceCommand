@@ -10,7 +10,7 @@ The bullet removal when player hits player
 
 the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
 
-put all helper static classes in one place
+put all helper static classes in one place - functions
 
 condense all the field generators
 
@@ -18,3 +18,5 @@ remove controllers  - use model state to determine key presses and inputs and th
 
 change singlegame object and multi game object to have functions to get model from parent state.
 implement keep in as an actor
+remove model from game object
+add sound to game object

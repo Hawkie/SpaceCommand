@@ -142,7 +142,7 @@ export class Field {
                     Vx: (Math.random() - 0.5) * 20,
                     Vy: (Math.random() * -30),
                     born: now,
-                    size: 3,
+                    size: explosion().particleSize,
                 };
                 var mover: IActor = new MoveConstVelocity(
                     () => p,

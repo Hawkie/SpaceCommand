@@ -2,8 +2,8 @@
 import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 
 export interface ISoundObject {
-    play();
-    pause();
+    play(): void;
+    pause(): void;
 }
 
 export class AudioObject implements ISoundObject {
@@ -15,13 +15,15 @@ export class AudioObject implements ISoundObject {
         this.audioElement.loop = this.loop;
     }
 
-    play() {
+    play(): void {
         this.audioElement.play();
     }
 
-    pause() {
+    pause(): void {
         this.audioElement.pause();
     }
+
+
 }
 
 export class AudioWithAmplifier implements ISoundObject {
