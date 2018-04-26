@@ -111,14 +111,6 @@ export class AsteroidState implements IGameState {
             this.keepIn(a.x, 0, 512, (newV: number)=> { a.x = newV; });
             this.keepIn(a.y, 0, 480, (newV: number)=> { a.y = newV; });
         });
-
-        // if all asteroids cleared, create more at next level
-        if (this.state.asteroids.asteroids.length === 0) {
-            this.state.score += 50;
-            this.state.level += 1;
-            // how do we ensure new asteroid objects bound to the new models in the state
-            this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
-        }
     }
 
     private keepIn(value: number, lowLimit:number, upLimit: number, f:(newV: number)=> void): void {
@@ -212,6 +204,19 @@ export class AsteroidState implements IGameState {
             }
         }
         this.state.score += 10;
+
+        // if all asteroids cleared, create more at next level
+        if (this.state.asteroids.asteroids.length === 0) {
+            this.state.score += 50;
+            this.state.level += 1;
+            // how do we ensure new asteroid objects bound to the new models in the state
+            this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
+            for (let n:number = 0; n < this.state.asteroids.asteroids.length; n++) {
+                let a:IAsteroid = this.state.asteroids.asteroids[n];
+                let asteroidObj: SingleGameObject<IAsteroid> = AsteroidObjects.createAsteroidObject(()=>a);
+                this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
+            }
+        }
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {
