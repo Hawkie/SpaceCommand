@@ -93,6 +93,8 @@ export class AsteroidActors {
             if (inputs.ship.crashed) {
                 inputs.ship.thrust.length = 0;
                 inputs.ship.explosion.on = true;
+                // exhaust with zero thrust creates trail of leaking debris which looks good.
+                inputs.ship.exhaust.on = true;
             } else {
                 inputs.ship.explosion.on = false;
             }

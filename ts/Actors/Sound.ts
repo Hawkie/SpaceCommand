@@ -1,5 +1,5 @@
 import { IActor } from "./Actor";
-import { AudioObject } from "../Sound/SoundObject";
+import { AudioObject, ISoundObject } from "../Sound/SoundObject";
 
 
 
@@ -9,21 +9,39 @@ export interface ISoundInputs {
 
 export class Sound implements IActor {
     private audioObject: AudioObject = null;
-    private playing: boolean = false;
-    constructor(private filename: string, private getInputs:() => ISoundInputs) {
-        this.audioObject= new AudioObject(filename);
+    private reset: boolean = true;
+    constructor(private filename: string,
+        private multiPlay: boolean,
+        private loop: boolean,
+        private getInputs:() => ISoundInputs,
+        private whenPlayed: ()=>void = ()=>null) {
+        this.audioObject= new AudioObject(this.filename, this.loop);
     }
 
     update(timeModifier: number): void {
         var inputs:ISoundInputs = this.getInputs();
-        if (inputs.play) {
-            if (this.playing === false) {
-                this.audioObject.play();
-                this.playing = true;
+        if (this.multiPlay) {
+            if (inputs.play) {
+                if (this.reset === true) {
+                    var newAudio: ISoundObject = new AudioObject(this.filename, this.loop);
+                    newAudio.play();
+                    this.reset = false;
+                    this.whenPlayed();
+                }
+            } else {
+                this.reset = true;
             }
         } else {
-            this.audioObject.pause();
-            this.playing = false;
+            if (inputs.play) {
+                // play only once while on
+                if (this.reset === true) {
+                    this.audioObject.play();
+                    this.whenPlayed();
+                }
+            } else {
+                this.audioObject.pause();
+                this.reset = true;
+            }
         }
     }
 }

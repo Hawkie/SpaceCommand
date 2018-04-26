@@ -21,12 +21,14 @@ import { DrawContext } from "../../Common/DrawContext";
 import { ValueView } from "../../Views/ValueView";
 import { TextView } from "../../Views/TextView";
 import { ISoundInputs, Sound } from "../../Actors/Sound";
+import { ScreenFlashView } from "../../Views/EffectViews";
+import { Flasher } from "../../Actors/Switches";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
     shipObj: SingleGameObject<IShip>;
     weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>;
-    asteroidObjs: SingleGameObject<IAsteroid>[];
+    asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>>;
     views: IView[];
     sceneObjs: IGameObject[];
 }
@@ -47,7 +49,12 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
     var shipBallObj: SingleGameObject<IRodInputs> = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
     var coinObj: SingleGameObject<ICoin> = AsteroidObjects.createCoinObject(()=>state.coin);
     var gShipObj: SingleGameObject<IGraphicShip> = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
-    var asteroidObjs: SingleGameObject<IAsteroid>[] =  AsteroidObjects.createAsteroidObjs(()=>state.asteroids);
+    var asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>> =  createAsteroidObjs(()=>state.asteroids.asteroids);
+    var breakSound:IActor = new Sound(state.asteroids.breakSoundFilename, true, false, () => { return {
+        play: state.asteroids.break,
+        };},
+        ()=> state.asteroids.break = false);
+    asteroidObjs.actors.push(breakSound);
 
     var title: IView = new TextView(()=>state.title, new Coordinate(10, 20), "Arial", 18);
     var score: IView = new TextView(()=>"Score:", new Coordinate(400, 20), "Arial", 18);
@@ -65,6 +72,16 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
     return aObjs;
 }
 
+export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
+        MultiGameObject<null, SingleGameObject<IAsteroid>> {
+    var asteroidArray: SingleGameObject<IAsteroid>[] = [];
+    var asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>> =
+        new MultiGameObject<null, SingleGameObject<IAsteroid>>(null, [], [], ()=>asteroidArray);
+    getAsteroids().forEach(a => {
+        asteroidObjs.getComponents().push(AsteroidObjects.createAsteroidObject(()=>a));
+    });
+    return asteroidObjs;
+}
 
 export class AsteroidObjects {
 
@@ -104,14 +121,6 @@ export class AsteroidObjects {
         };});
         shipObj.actors.push(shipController, explosionController);
         return shipObj;
-    }
-
-    public static createAsteroidObjs(getAsteroids: ()=> IAsteroid[]): SingleGameObject<IAsteroid>[] {
-        var asteroidObjs: SingleGameObject<IAsteroid>[] = [];
-        getAsteroids().forEach(a => {
-            asteroidObjs.push(AsteroidObjects.createAsteroidObject(()=>a));
-        });
-        return asteroidObjs;
     }
 
     public static createAsteroidObject(getAsteroid: ()=> IAsteroid): SingleGameObject<IAsteroid> {
@@ -206,7 +215,7 @@ export class AsteroidObjects {
             xOffset: ship.shape.offset.x,
             yOffset: ship.shape.offset.y,
         };});
-        var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, () => { return {
+        var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, false, true, () => { return {
             play: getExhaust().on,
         };});
         exhaustObj.actors.push(exhaustSound);
@@ -233,6 +242,28 @@ export class AsteroidObjects {
             xOffset: ship.shape.offset.x,
             yOffset: ship.shape.offset.y,
         };});
+        var explosionSound:IActor = new Sound(ship.explosion.soundFilename, true, false, () => { return {
+            play: getExplosion().on,
+        };});
+        explosionObj.actors.push(explosionSound);
+        var flashView: IView = new ScreenFlashView(()=> { return {
+            x: 0,
+            y: 0,
+            width: 480,
+            height: 512,
+            on: ship.crashed,
+            value: ship.explosion.flashScreenValue,
+        };});
+        explosionObj.views.push(flashView);
+        // add flasher to value so screen changes
+        var flasher:IActor = new Flasher(() => { return {
+            enabled: ship.crashed,
+            value: ship.explosion.flashScreenValue,
+            repeat: 10,
+        };}, (value:number)=> {
+            ship.explosion.flashScreenValue = value;
+        });
+        explosionObj.actors.push(flasher);
         return explosionObj;
     }
 

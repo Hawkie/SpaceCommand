@@ -20,10 +20,14 @@ export interface IAsteroidState {
     ball: IBall;
     coin: ICoin;
     level: number;
-    asteroids: IAsteroid[];
+    asteroids: IAsteroids;
     graphicShip: IGraphicShip;
     score: number;
     title: string;
+}
+
+export interface IConfig {
+
 }
 
 export interface IShip {
@@ -75,6 +79,7 @@ export interface IExplosion {
     particleSize: number;
     on: boolean;
     soundFilename: string;
+    flashScreenValue: number;
 }
 
 export interface IAsteroid {
@@ -88,7 +93,12 @@ export interface IAsteroid {
     type:number;
     shape: IShape;
     graphic: string;
-    breakSound: string;
+}
+
+export interface IAsteroids {
+    asteroids: IAsteroid[];
+    break: boolean;
+    breakSoundFilename: string;
 }
 
 export interface IGraphicShip {
@@ -129,8 +139,14 @@ export function createStateModel(): IAsteroidState {
     var ball: IBall = AsteroidModels.createBallObject(256, 280);
     var coin: ICoin = AsteroidModels.createCoin(new Coordinate(300, 400));
     var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
+    var asteroidState: IAsteroids = {
+        asteroids: asteroids,
+        break: false,
+        breakSoundFilename: "res/sound/blast.wav",
+    };
     var graphicShip: IGraphicShip = AsteroidModels.createGraphicShip(200, 100);
 
+    // things that change
     var stateVariables: IAsteroidState = {
         left: false,
         right: false,
@@ -140,7 +156,7 @@ export function createStateModel(): IAsteroidState {
         ball: ball,
         coin: coin,
         level: 3,
-        asteroids: asteroids,
+        asteroids: asteroidState,
         graphicShip: graphicShip,
         score: 0,
         title: "SpaceCommand",
@@ -195,11 +211,12 @@ export function createShip(x: number, y: number): IShip {
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
             particles: [],
-            particleSize: 1,
+            particleSize: 3,
             particlesPerSecond: 20,
             particleLifetime: 1,
             on: false,
-            soundFilename: "res/sound/explosion.wav"
+            soundFilename: "res/sound/explosion.wav",
+            flashScreenValue: 0,
         },
     };
     return ship;
@@ -258,7 +275,6 @@ export class AsteroidModels {
             type: type,
             shape: shape,
             graphic: "res/img/terrain.png",
-            breakSound: "res/sound/blast.wav",
         };
         return a;
     }

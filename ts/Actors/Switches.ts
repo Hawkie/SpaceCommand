@@ -5,7 +5,6 @@ export interface ISwitch {
     enabled: boolean;
     value: number;
     repeat: number;
-    speed: number;
 }
 
 export class Flasher implements IActor {

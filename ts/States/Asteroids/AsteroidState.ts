@@ -41,8 +41,8 @@ import { ArrayAmender } from "./AsteroidField";
 
 export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];
-    asteroidNoise: boolean;
-    asteroidHitSound: AudioObject = undefined;
+    // asteroidNoise: boolean;
+    // asteroidHitSound: AudioObject = undefined;
     helloSound: BufferObject = undefined;
     loaded: boolean;
     viewScale: number;
@@ -58,11 +58,11 @@ export class AsteroidState implements IGameState {
         ) {
         this.viewScale = 1;
         this.zoom = 1;
-        this.asteroidNoise = false;
+        // this.asteroidNoise = false;
 
-        this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
+        // this.asteroidHitSound = new AudioObject("res/sound/blast.wav");
         var asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(()=>
-            this.state.asteroids.map((a)=> { return {
+            this.state.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
             };}),
@@ -72,7 +72,7 @@ export class AsteroidState implements IGameState {
             };}),
             this.bulletHitAsteroid.bind(this));
         var asteroidPlayerDetector:IInteractor = new Multi2ShapeCollisionDetector(()=>
-            this.state.asteroids.map((a)=> { return {
+            this.state.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
             };}),
@@ -101,23 +101,23 @@ export class AsteroidState implements IGameState {
     update(lastDrawModifier: number): void {
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
         this.stateObj.sceneObjs.forEach(x=>x.update(lastDrawModifier));
-        this.stateObj.asteroidObjs.forEach(x=>x.update(lastDrawModifier));
+        this.stateObj.asteroidObjs.update(lastDrawModifier);
 
         // keep objects in screen. move to an actor!
         this.keepIn(this.state.ship.x, 0, 512, (newV: number)=> { this.state.ship.x = newV; });
         this.keepIn(this.state.ship.y, 0, 480, (newV: number)=> { this.state.ship.y = newV; });
 
-        this.state.asteroids.forEach((a)=> {
+        this.state.asteroids.asteroids.forEach((a)=> {
             this.keepIn(a.x, 0, 512, (newV: number)=> { a.x = newV; });
             this.keepIn(a.y, 0, 480, (newV: number)=> { a.y = newV; });
         });
 
         // if all asteroids cleared, create more at next level
-        if (this.state.asteroids.length === 0) {
+        if (this.state.asteroids.asteroids.length === 0) {
             this.state.score += 50;
             this.state.level += 1;
             // how do we ensure new asteroid objects bound to the new models in the state
-            this.state.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
+            this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
         }
     }
 
@@ -141,19 +141,19 @@ export class AsteroidState implements IGameState {
         drawingContext.zoom(this.zoom, this.zoom);
         this.sceneObjects.forEach(o => o.display(drawingContext));
         this.stateObj.sceneObjs.forEach(x=>x.display(drawingContext));
-        this.stateObj.asteroidObjs.forEach(x=>x.display(drawingContext));
+        this.stateObj.asteroidObjs.display(drawingContext);
         this.stateObj.views.forEach(x=>x.display(drawingContext));
         drawingContext.restore();
     }
 
     sound(actx: AudioContext): void {
-        if (this.asteroidNoise) {
-            this.asteroidNoise = false;
-            // if (this.helloSound !== undefined)
-            //    this.helloSound.play();
-            var asteroidHitSound: AudioObject = new AudioObject("res/sound/blast.wav");
-                asteroidHitSound.play();
-        }
+        // if (this.asteroidNoise) {
+        //     this.asteroidNoise = false;
+        //     // if (this.helloSound !== undefined)
+        //     //    this.helloSound.play();
+        //     var asteroidHitSound: AudioObject = new AudioObject("res/sound/blast.wav");
+        //         asteroidHitSound.play();
+        // }
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
@@ -192,29 +192,30 @@ export class AsteroidState implements IGameState {
 
     bulletHitAsteroid(i1: number, i2: number): void {
         // effect on asteroid
-        let a:IAsteroid = this.state.asteroids[i1];
-        this.asteroidNoise = true;
+        let a:IAsteroid = this.state.asteroids.asteroids[i1];
+        // this.asteroidNoise = true;
         // remove bullet - todo - remove bullet with function
         this.state.ship.weapon1.bullets.splice(i2, 1);
         // todo remove bullet obj
 
         // add two small asteroids
-        this.state.asteroids.splice(i1, 1);
-        this.stateObj.asteroidObjs.splice(i1, 1);
+        this.state.asteroids.break = true;
+        this.state.asteroids.asteroids.splice(i1, 1);
+        this.stateObj.asteroidObjs.getComponents().splice(i1, 1);
         // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {
                 var newAsteroid:IAsteroid = AsteroidModels.createAsteroidModelAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
-                this.state.asteroids.push(newAsteroid);
+                this.state.asteroids.asteroids.push(newAsteroid);
                 var asteroidObj: SingleGameObject<IAsteroid> = AsteroidObjects.createAsteroidObject(()=>newAsteroid);
-                this.stateObj.asteroidObjs.push(asteroidObj);
+                this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
         this.state.score += 10;
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {
-        var a: IAsteroid = this.state.asteroids[i1];
+        var a: IAsteroid = this.state.asteroids.asteroids[i1];
         var xImpact: number = a.Vx;
         var yImpact: number = a.Vy;
         this.state.ship.Vx = xImpact + Transforms.random(-2, 2);
