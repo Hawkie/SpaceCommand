@@ -200,6 +200,10 @@ export class AsteroidObjects {
             height: particle.size,
         };});
         let particleObj: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(getParticle, [mover], [view]);
+        var fireSound: IActor = new Sound("res/sound/raygun-01.mp3", true, false, ()=> { return {
+            play: true,
+        };});
+        particleObj.actors.push(fireSound);
         return particleObj;
     }
 
