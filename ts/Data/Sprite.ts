@@ -1,5 +1,5 @@
-﻿import { Coordinate } from "ts/Physics/Common";
-import { IGraphic, GraphicData } from "ts/Data/GraphicData";
+﻿import { Coordinate } from "ts/Data/Coordinate";
+import { IGraphic, Graphic } from "ts/Data/Graphic";
 
 export class SpriteFrame {
     constructor(public x: number,
@@ -18,7 +18,7 @@ export interface ISprite extends IGraphic {
 }
 
 
-export class Sprite extends GraphicData implements ISprite {
+export class Sprite extends Graphic implements ISprite {
 
     constructor(src: string,
         public frames: SpriteFrame[],

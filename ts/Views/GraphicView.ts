@@ -1,6 +1,6 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 // import { ILocated, I } from "ts/Data/PhysicsData";
-import { IGraphic, GraphicData } from "ts/Data/GraphicData";
+import { IGraphic, Graphic } from "ts/Data/Graphic";
 import { IView } from "ts/Views/View";
 
 export interface IGraphicViewInputs {
@@ -13,7 +13,7 @@ export interface IGraphicViewInputs {
 export class GraphicView implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: ()=> IGraphicViewInputs) {
-        this.graphic = new GraphicData(getInputs().graphic);
+        this.graphic = new Graphic(getInputs().graphic);
      }
 
     display(drawContext: DrawContext): void {
@@ -32,7 +32,7 @@ export interface IGraphicAngledViewInputs extends IGraphicViewInputs {
 export class GraphicAngledView implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: ()=> IGraphicAngledViewInputs) {
-        this.graphic = new GraphicData(getInputs().graphic);
+        this.graphic = new Graphic(getInputs().graphic);
      }
 
     display(drawContext: DrawContext): void {

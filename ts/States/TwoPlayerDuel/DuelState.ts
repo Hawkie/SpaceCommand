@@ -4,7 +4,7 @@
 // import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
 // import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
-// import { Coordinate, Vector } from "ts/Physics/Common";
+// import { Coordinate, Vector } from "ts/Data/Coordinate";
 // import { Transforms } from "ts/Physics/Transforms";
 // import { TextData } from "ts/Data/TextData";
 // import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
@@ -24,9 +24,9 @@
 // import { ValueObject } from "ts/GameObjects/ValueObject";
 // import { Field } from "ts/GameObjects/ParticleField";
 // import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
-// import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
-// import { GraphicData, IGraphic } from "ts/Data/GraphicData";
-// import { ShapeData, IShape } from "ts/Data/ShapeData";
+// import { ISprite, HorizontalSpriteSheet } from "ts/Data/Sprite";
+// import { Graphic, IGraphic } from "ts/Data/Graphic";
+// import { Shape, IShape } from "ts/Data/Shape";
 // import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
 // import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 // import { Spinner, PolyRotator } from "ts/Actors/Rotators";
@@ -235,7 +235,7 @@
 //     //    return this.players[0].weaponController.bullets.concat(this.players[1].weaponController.bullets);
 //     //}
 
-//     playerHitPlayer(i1: number, players: ShapedModel<SpaceShipData, ShapeData>[], i2: number, bullets: SingleGameObject<ILocated>[], playerHit: SpaceShipController) {
+//     playerHitPlayer(i1: number, players: ShapedModel<SpaceShipData, Shape>[], i2: number, bullets: SingleGameObject<ILocated>[], playerHit: SpaceShipController) {
 //         // remove bullet
 //         bullets.splice(i2, 1);
 
@@ -290,7 +290,7 @@
 //             player.chassisObj.model.physics.angle,
 //             5,
 //             0.5);
-//         var shapeData = player.thrustController.engine.model.shape;
+//         var Shape = player.thrustController.engine.model.shape;
 //         var mover: IActor = new MoveConstVelocity(() => { return {
 //             Vx: engineSeparateModel.velX,
 //             Vy: engineSeparateModel.velY,
@@ -312,7 +312,7 @@
 //         var view: IView = new PolyView(() => { return {
 //             x: engineSeparateModel.location.x,
 //             y: engineSeparateModel.location.y,
-//             shape: shapeData,
+//             shape: Shape,
 //         };});
 //         player.thrustController.engine.views = [view];
 //     }

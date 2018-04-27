@@ -1,6 +1,6 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 // import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
-import { ISprite } from "ts/Data/SpriteData";
+import { ISprite } from "ts/Data/Sprite";
 import { IView } from "ts/Views/View";
 
 export interface ISpriteLocated {

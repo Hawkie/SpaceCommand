@@ -4,7 +4,7 @@ export interface IGraphic {
     img: HTMLImageElement;
 }
 
-export class GraphicData implements IGraphic {
+export class Graphic implements IGraphic {
 
     loaded: boolean;
     img: HTMLImageElement;

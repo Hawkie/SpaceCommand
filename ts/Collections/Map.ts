@@ -46,7 +46,7 @@ export class Map<T> {
     //}
 }
 
-//import { Coordinate } from "ts/Physics/Common";
+//import { Coordinate } from "ts/Data/Coordinate";
 
 //let m: [number, number, [Coordinate]];
 //m[2, 10] = [new Coordinate(2,10)];

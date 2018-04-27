@@ -1,4 +1,5 @@
-import { Coordinate, Vector } from "../Physics/Common";
+import { Coordinate } from "../Data/Coordinate";
+import { Vector, IVector } from "../Data/Vector";
 
 export class Transforms {
 
@@ -40,13 +41,13 @@ export class Transforms {
     }
 
     // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
-    static CartesianToVector(x: number, y: number): Vector {
+    static CartesianToVector(x: number, y: number): IVector {
         var length: number = Math.sqrt(x * x + y * y);
         var angle: number = Math.atan2(x, y) * 180 / Math.PI;
         return new Vector(angle, length);
     }
 
-    static scale(points: Coordinate[], scaleX: number, scaleY:number) {
+    static scale(points: Coordinate[], scaleX: number, scaleY:number): void {
         points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });
     }
 

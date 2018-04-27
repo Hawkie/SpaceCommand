@@ -10,13 +10,13 @@ export class KeyStateProvider {
 
     private _keysDown: SparseArray<number> = new SparseArray<number>();
 
-    addKeyEvents() {
-        const kd = (e: KeyboardEvent) => {
+    addKeyEvents(): void {
+        const kd:any = (e: KeyboardEvent) => {
             this._keysDown.add(e.keyCode);
             console.log("Down" + e.type + e.keyCode + e.key);
             console.log(this._keysDown);
         };
-        const ku = (e: KeyboardEvent) => {
+        const ku:any = (e: KeyboardEvent) => {
             this._keysDown.remove(e.keyCode);
             console.log("Up" + e.type + e.keyCode + e.key);
             console.log(this._keysDown);
@@ -31,7 +31,7 @@ export class KeyStateProvider {
 }
 
 export enum Keys {
-    // Some handy key codes
+    // some handy key codes
     Tab = 9,
     Enter = 13,
     Shift = 16,
@@ -61,5 +61,4 @@ export enum Keys {
     W = 87,
     X = 88, // zoom out
     Z = 90, // zoom in
-    
 }

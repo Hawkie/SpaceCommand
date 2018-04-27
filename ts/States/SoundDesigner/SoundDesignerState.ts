@@ -2,7 +2,7 @@
 // import { SoundEffectData, SoundEffectsModel } from "ts/States/SoundDesigner/SoundEffectsModel";
 // import { FXObject } from "ts/Sound/FXObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
-// import { Coordinate } from "ts/Physics/Common";
+// import { Coordinate } from "ts/Data/Coordinate";
 // import { ControlPanel } from "ts/GameObjects/ControlPanel";
 // import { Slider } from "ts/Models/Controls/ControlPanelModel";
 // import { TextData } from "ts/Data/TextData";

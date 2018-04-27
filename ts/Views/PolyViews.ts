@@ -1,9 +1,9 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 // import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
-import { IShape } from "ts/Data/ShapeData";
+import { IShape } from "ts/Data/Shape";
 import { IView } from "ts/Views/View";
-import { IGraphic, GraphicData } from "ts/Data/GraphicData";
+import { IGraphic, Graphic } from "ts/Data/Graphic";
 
 export interface IRectangleView {
     x: number;
@@ -80,7 +80,7 @@ export interface IPolyGraphicView extends IPolyView {
 export class PolyGraphic implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: ()=> IPolyGraphicView) {
-        this.graphic = new GraphicData(getInputs().graphic);
+        this.graphic = new Graphic(getInputs().graphic);
      }
 
     display(drawContext: DrawContext): void {
@@ -104,7 +104,7 @@ export interface IPolyGraphicAngledView extends IPolyGraphicView {
 export class PolyGraphicAngled implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: ()=> IPolyGraphicAngledView) {
-        this.graphic = new GraphicData(getInputs().graphic);
+        this.graphic = new Graphic(getInputs().graphic);
      }
 
     display(drawContext: DrawContext): void {

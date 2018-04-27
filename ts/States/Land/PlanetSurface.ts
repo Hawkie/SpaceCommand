@@ -1,5 +1,5 @@
-import { Coordinate, ICoordinate } from "ts/Physics/Common";
-import { IShape, ShapeData } from "ts/Data/ShapeData";
+import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
+import { IShape, Shape } from "ts/Data/Shape";
 import { IActor } from "ts/Actors/Actor";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 // import { ShapedModel } from "ts/Models/DynamicModels";
@@ -10,7 +10,7 @@ export class PlanetSurfaceModel {
 
     constructor(startingPoint: ICoordinate) {
         var located:ICoordinate = startingPoint;
-        var shape:IShape = new ShapeData([]);
+        var shape:IShape = new Shape([]);
     }
     
     

@@ -1,15 +1,16 @@
 import { SingleGameObject } from "../../GameObjects/GameObject";
-import { IVector, Coordinate, ICoordinate, Vector } from "../../Physics/Common";
-import { IShape, ShapeData } from "../../Data/ShapeData";
+import { Coordinate, ICoordinate } from "../../Data/Coordinate";
+import { IShape, Shape } from "../../Data/Shape";
 import { Transforms } from "../../Physics/Transforms";
 import { MoveConstVelocity, IMoveOut } from "../../Actors/Movers";
 import { IActor, Actor } from "../../Actors/Actor";
 import { PolyRotator } from "../../Actors/Rotators";
 import { IView } from "../../Views/View";
 import { PolyView } from "../../Views/PolyViews";
-import { ISprite, HorizontalSpriteSheet } from "../../Data/SpriteData";
-import { IGraphic, GraphicData } from "../../Data/GraphicData";
+import { ISprite, HorizontalSpriteSheet } from "../../Data/Sprite";
+import { IGraphic, Graphic } from "../../Data/Graphic";
 import { IParticle } from "./ParticleField";
+import { IVector, Vector } from "../../Data/Vector";
 
 export interface IAsteroidState {
     left: boolean;
@@ -173,7 +174,7 @@ export function createShip(x: number, y: number): IShip {
     Transforms.scale(triangleShip, 2, 2);
 
     // var breakable = new BreakableData(20, 20, 0, false, false);
-    // var shape = new ShapeData(triangleShip);
+    // var shape = new Shape(triangleShip);
     // var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(breakable, physics, shape);
     var ship: IShip = {
         x: x,
@@ -263,7 +264,7 @@ export class AsteroidModels {
         var points: number[] = AsteroidModels.as[type];
         var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
         Transforms.scale(coords, size, size);
-        var shape: IShape = new ShapeData(coords);
+        var shape: IShape = new Shape(coords);
         var a: IAsteroid = {
             x: x,
             y: y,

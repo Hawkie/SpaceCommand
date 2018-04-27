@@ -1,6 +1,6 @@
 ﻿import { IActor } from "ts/Actors/Actor";
 import { DrawContext } from "ts/Common/DrawContext";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 // import { ILocated, IMoving  } from "ts/Data/PhysicsData";
 // import { ILocatedMoving } from "ts/Data/PhysicsData";
 

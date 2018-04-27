@@ -1,4 +1,4 @@
-﻿import { Coordinate, Vector } from "ts/Physics/Common";
+﻿import { Coordinate } from "ts/Data/Coordinate";
 import { Transforms } from "ts/Physics/Transforms";
 
 export interface IShape {
@@ -6,7 +6,7 @@ export interface IShape {
     offset: Coordinate;
 }
 
-export class ShapeData implements IShape {
+export class Shape implements IShape {
     constructor(public points: Coordinate[], public offset: Coordinate = new Coordinate(0,0)) { }
 }
 

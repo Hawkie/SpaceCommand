@@ -1,8 +1,8 @@
-import { Vector } from "ts/Physics/Common";
+import { Vector } from "ts/Data/Vector";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
 // import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 
 export interface IAcceleratorOutputs {
     dVx: number;

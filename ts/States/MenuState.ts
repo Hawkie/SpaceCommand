@@ -4,7 +4,7 @@ import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Assets } from "ts/Resources/Assets";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";

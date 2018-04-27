@@ -2,15 +2,15 @@
 // import { Assets } from "ts/Resources/Assets";
 // import { AudioObject } from "ts/Sound/SoundObject";
 
-// import { Coordinate, Vector } from "ts/Physics/Common";
+// import { Coordinate, Vector } from "ts/Data/Coordinate";
 // import { Transforms } from "ts/Physics/Transforms";
 // import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 // import { IGameState } from "ts/States/GameState";
 // import { SparseArray } from "ts/Collections/SparseArray";
 
 // import { ILocated, LocatedData } from "ts/Data/PhysicsData";
-// import { ShapeData } from "ts/Data/ShapeData";
-// import { Direction } from "ts/Data/WindData";
+// import { Shape } from "ts/Data/Shape";
+// import { Direction } from "ts/Data/Wind";
 // import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 // import { ShapedModel } from "ts/Models/DynamicModels";
 // import { WindModel } from "ts/States/Land/WindModel";
@@ -28,7 +28,7 @@
 // import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
 // import { ValueView } from "ts/Views/ValueView";
 // import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
-// import { GraphicData, IGraphic } from "ts/Data/GraphicData";
+// import { Graphic, IGraphic } from "ts/Data/Graphic";
 // import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
 // import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 // import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
@@ -207,7 +207,7 @@
 //         var model = new PlanetSurfaceModel(location);
 //         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
 //         surfaceGenerator.initSurface();
-//         var terrain = new GraphicData("res/img/terrain.png");
+//         var terrain = new Graphic("res/img/terrain.png");
 //         var surface: IView = new PolyGraphic(() => { return {
 //             x: model.physics.location.x,
 //             y: model.physics.location.y,

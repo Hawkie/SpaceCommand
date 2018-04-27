@@ -1,7 +1,7 @@
-﻿import { Coordinate } from "ts/Physics/Common";
+﻿import { Coordinate } from "ts/Data/Coordinate";
 import { IActor } from "ts/Actors/Actor";
-import { IWind, Direction } from "ts/Data/WindData";
-import { IShape, ShapeData } from "ts/Data/ShapeData";
+import { IWind, Direction } from "ts/Data/Wind";
+import { IShape, Shape } from "ts/Data/Shape";
 
 export class WindGenerator implements IActor {
     pointsRight: Coordinate[];

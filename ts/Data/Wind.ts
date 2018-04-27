@@ -1,4 +1,4 @@
-﻿import { Coordinate } from "ts/Physics/Common";
+﻿import { Coordinate } from "ts/Data/Coordinate";
 
 export enum Direction {
     left,
@@ -11,7 +11,7 @@ export interface IWind {
     windDirection: Direction;
 }
 
-export class WindData implements IWind {
+export class Wind implements IWind {
     constructor(public location: Coordinate,
         public value: number,
         public windDirection: Direction) { }

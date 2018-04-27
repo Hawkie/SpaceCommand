@@ -1,5 +1,5 @@
 import { IView } from "ts/Views/View";
-import { Coordinate, ICoordinate } from "ts/Physics/Common";
+import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
 import { DrawContext } from "ts/Common/DrawContext";
 
 

@@ -1,4 +1,4 @@
-import { Vector } from "ts/Physics/Common";
+import { Vector } from "ts/Data/Vector";
 import { IActor } from "ts/Actors/Actor";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 

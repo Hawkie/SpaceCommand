@@ -1,4 +1,4 @@
-import { Coordinate } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 
 export class DrawContext {
     constructor(private ctx: CanvasRenderingContext2D) {

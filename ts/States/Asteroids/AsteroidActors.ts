@@ -1,6 +1,6 @@
 import { IActor, Actor } from "../../Actors/Actor";
 import { IAsteroidState, IShip, IWeapon } from "./AsteroidModels";
-import { Coordinate } from "../../Physics/Common";
+import { Coordinate } from "../../Data/Coordinate";
 import { Transforms } from "../../Physics/Transforms";
 import { IParticle } from "./ParticleField";
 import { Sound } from "../../Actors/Sound";

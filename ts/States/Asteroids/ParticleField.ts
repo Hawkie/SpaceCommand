@@ -8,13 +8,14 @@ import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/Actors/
 import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
-import { Coordinate, Vector } from "ts/Physics/Common";
+import { Coordinate } from "ts/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
-import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
+import { ISprite, HorizontalSpriteSheet } from "ts/Data/Sprite";
 import { Transforms } from "ts/Physics/Transforms";
 import { IExhaust, IExplosion } from "ts/States/Asteroids/AsteroidModels";
+import { Vector, IVector } from "../../Data/Vector";
 
 export interface IParticle {
     x: number;
@@ -39,7 +40,7 @@ export interface IExplosionInputs {
 export interface IThrustInputs {
     x: number;
     y: number;
-    thrust: Vector;
+    thrust: IVector;
     xOffset: number;
     yOffset: number;
     gravityOn: boolean;

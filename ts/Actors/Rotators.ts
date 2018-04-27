@@ -1,7 +1,7 @@
 ﻿import { IActor } from "ts/Actors/Actor";
 import { DrawContext } from "ts/Common/DrawContext";
-import { Coordinate, ICoordinate } from "ts/Physics/Common";
-import { IShape } from "ts/Data/ShapeData";
+import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
+import { IShape } from "ts/Data/Shape";
 // import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
 import { Transforms } from "ts/Physics/Transforms";
 
