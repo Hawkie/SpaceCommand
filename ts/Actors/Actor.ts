@@ -13,3 +13,6 @@ export class Actor<T> implements IActor {
         this.set(state, timeModifier);
     }
 }
+
+export function f<TIn, TOut>(x: ()=>TIn, act:(x:TIn) => TOut, y:(y:TOut)=> void): void {
+}

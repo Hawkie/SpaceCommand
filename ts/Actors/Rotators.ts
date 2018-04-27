@@ -2,7 +2,7 @@
 import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate, ICoordinate } from "ts/Physics/Common";
 import { IShape } from "ts/Data/ShapeData";
-import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
+// import { ILocated, IAngled, IAngledRotating } from "ts/Data/PhysicsData";
 import { Transforms } from "ts/Physics/Transforms";
 
 export interface IPolyRotator {

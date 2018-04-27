@@ -1,7 +1,6 @@
 ﻿
 import { IView } from "ts/Views/View";
 import { DrawContext } from "ts/Common/DrawContext";
-import { ILocated } from "ts/Data/PhysicsData";
 
 export interface IFlashInputs {
     x: number;

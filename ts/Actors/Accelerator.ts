@@ -1,7 +1,7 @@
 import { Vector } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
-import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
+// import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
 import { Coordinate } from "ts/Physics/Common";
 
 export interface IAcceleratorOutputs {

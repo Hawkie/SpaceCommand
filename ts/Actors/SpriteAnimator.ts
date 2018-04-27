@@ -1,7 +1,7 @@
 ﻿import { IActor } from "ts/Actors/Actor";
 import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
-import { ILocated, IMoving  } from "ts/Data/PhysicsData";
+// import { ILocated, IMoving  } from "ts/Data/PhysicsData";
 import { ISprite } from "ts/Data/SpriteData";
 
 export interface ISpriteAnimator {
@@ -26,18 +26,19 @@ export class SpriteAnimator implements IActor {
         this.changeFrame();
     }
 
-    update(timeModifier: number) {
-        var now = Date.now();
+    update(timeModifier: number): void {
+        var now: number = Date.now();
         if (this.frameDurationSec.length > this.animationIndex) {
             this.durationSec = this.frameDurationSec[this.animationIndex];
         }
 
-        let timeElapsedSec = (now - this.lastChanged)/1000;
-        if (timeElapsedSec >= this.durationSec)
+        let timeElapsedSec: number = (now - this.lastChanged)/1000;
+        if (timeElapsedSec >= this.durationSec) {
             this.changeFrame();
+        }
     }
 
-    private changeFrame() {
+    private changeFrame(): void {
         if (this.animationFrames.length > this.animationIndex) {
             let frameIndex:number = this.animationFrames[this.animationIndex];
             if (this.spriteSheet.frames.length > frameIndex) {

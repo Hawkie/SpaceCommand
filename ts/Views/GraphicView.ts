@@ -1,5 +1,5 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { ILocated, IAngled, ILocatedAngled } from "ts/Data/PhysicsData";
+// import { ILocated, I } from "ts/Data/PhysicsData";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 import { IView } from "ts/Views/View";
 

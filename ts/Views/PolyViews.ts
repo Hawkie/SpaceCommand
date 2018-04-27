@@ -1,7 +1,7 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { Coordinate } from "ts/Physics/Common";
-import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
-import { IShape, ShapeData } from "ts/Data/ShapeData";
+// import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
+import { IShape } from "ts/Data/ShapeData";
 import { IView } from "ts/Views/View";
 import { IGraphic, GraphicData } from "ts/Data/GraphicData";
 

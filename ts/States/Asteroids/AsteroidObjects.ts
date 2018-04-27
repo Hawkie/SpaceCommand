@@ -15,7 +15,7 @@ import { CompositeAccelerator, IRodOutputs, IRodInputs } from "../../Actors/Acce
 // import { TextObject } from "../../GameObjects/TextObject";
 import { Coordinate } from "../../Physics/Common";
 // import { ValueObject } from "../../GameObjects/ValueObject";
-import { IParticle, Field } from "../../GameObjects/ParticleField";
+import { IParticle, Field } from "./ParticleField";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "../../Actors/ParticleFieldUpdater";
 import { DrawContext } from "../../Common/DrawContext";
 import { ValueView } from "../../Views/ValueView";

@@ -1,8 +1,7 @@
-﻿import { Coordinate } from "ts/Physics/Common";
+﻿import { Coordinate, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
 import { IActor } from "ts/Actors/Actor";
 import { IShape, ShapeData } from "ts/Data/ShapeData";
-import { ILocated } from "ts/Data/PhysicsData";
 
 export class SurfaceGenerator implements IActor {
     
@@ -11,7 +10,7 @@ export class SurfaceGenerator implements IActor {
     CHUNK: number;
     addedLeft: number;
 
-    constructor(private from: ILocated, private shape: IShape, private lower: number = -5, private upper: number = 5) {
+    constructor(private from: ICoordinate, private shape: IShape, private lower: number = -5, private upper: number = 5) {
         this.WIDTH = 520;
         this.HEIGHT = 480;
         this.CHUNK = 10;
@@ -34,8 +33,8 @@ export class SurfaceGenerator implements IActor {
 
     addSurface() {
         var buffer = (this.WIDTH / 2); // 260
-        var left = this.from.location.x - buffer; //256 - 260 = -4  // 1 - 260 = - 259 // 400 - 260 = 140
-        var right = this.from.location.x + buffer; // 256+260 = 516 // 1 + 260 = 261 // 400 + 260 = 660
+        var left = this.from.x - buffer; //256 - 260 = -4  // 1 - 260 = - 259 // 400 - 260 = 140
+        var right = this.from.x + buffer; // 256+260 = 516 // 1 + 260 = 261 // 400 + 260 = 660
         var leftIndex = Math.floor(left / this.CHUNK); // 0 // -25 // 14
         var rightIndex = Math.ceil(right / this.CHUNK); // 52 // 27 // 66
         var toAddLeft = leftIndex + this.addedLeft; // -0.4 // -26.5
@@ -52,7 +51,7 @@ export class SurfaceGenerator implements IActor {
         console.log("length " + this.shape.points.length);
         console.log("rightIndex " + rightIndex);
         console.log("toAdd " + toAddRight);
-        console.log("fromx " + this.from.location.x);
+        console.log("fromx " + this.from.x);
         if (toAddRight > 0) {
             this.shape.points.pop();
             for (let r = 0; toAddRight > r; r++) {

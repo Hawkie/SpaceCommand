@@ -8,7 +8,7 @@ import { Coordinate } from "ts/Physics/Common";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { Field } from "ts/GameObjects/ParticleField";
+import { Field } from "ts/States/Asteroids/ParticleField";
 import { TextView } from "../Views/TextView";
 import { IView } from "../Views/View";
 

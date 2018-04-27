@@ -3,10 +3,10 @@ import { Assets } from "ts/Resources/Assets";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
+// import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
 import { Coordinate, Vector, ICoordinate } from "ts/Physics/Common";
 import { Transforms } from "ts/Physics/Transforms";
-import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
+// import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { TextView } from "ts/Views/TextView";
 import { IView } from "ts/Views/View";
 import { PolyView, PolyGraphic, PolyGraphicAngled, CircleView, LineView } from "ts/Views/PolyViews";
@@ -19,7 +19,7 @@ import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/I
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject, IObject, ComponentObjects } from "ts/GameObjects/GameObject";
-import { Field, IThrustInputs } from "ts/GameObjects/ParticleField";
+import { Field, IThrustInputs } from "ts/States/Asteroids/ParticleField";
 // import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
 import { GraphicData, IGraphic } from "ts/Data/GraphicData";
@@ -36,7 +36,7 @@ import { Accelerator } from "ts/Actors/Accelerator";
 import { IActor } from "../../Actors/Actor";
 import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState, createStateModel } from "./AsteroidModels";
 import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "./AsteroidObjects";
-import { ArrayAmender } from "./AsteroidField";
+import { ArrayAmender } from "ts/States/Asteroids/AsteroidField";
 
 
 export class AsteroidState implements IGameState {

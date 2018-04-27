@@ -10,12 +10,11 @@ import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
 import { Coordinate, Vector } from "ts/Physics/Common";
 import { IGameObject, SingleGameObject, MultiGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
-import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
 import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
 import { Spinner } from "ts/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/Data/SpriteData";
-import { Transforms } from "../Physics/Transforms";
-import { IExhaust, IExplosion } from "../States/Asteroids/AsteroidModels";
+import { Transforms } from "ts/Physics/Transforms";
+import { IExhaust, IExplosion } from "ts/States/Asteroids/AsteroidModels";
 
 export interface IParticle {
     x: number;

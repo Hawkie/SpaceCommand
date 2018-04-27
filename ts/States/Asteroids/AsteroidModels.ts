@@ -9,7 +9,7 @@ import { IView } from "../../Views/View";
 import { PolyView } from "../../Views/PolyViews";
 import { ISprite, HorizontalSpriteSheet } from "../../Data/SpriteData";
 import { IGraphic, GraphicData } from "../../Data/GraphicData";
-import { IParticle } from "../../GameObjects/ParticleField";
+import { IParticle } from "./ParticleField";
 
 export interface IAsteroidState {
     left: boolean;
