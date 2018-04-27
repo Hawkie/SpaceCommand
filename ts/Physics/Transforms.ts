@@ -9,7 +9,7 @@ export class Transforms {
 
     static ArrayToPoints(array: number[]): Coordinate[] {
         let points: Coordinate[] = [];
-        for (let i = 0; i < array.length - 1; i+=2){
+        for (let i: number = 0; i < array.length - 1; i+=2){
             points.push(new Coordinate(array[i], array[i + 1]));
         }
         return points;

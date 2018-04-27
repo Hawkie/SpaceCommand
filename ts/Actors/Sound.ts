@@ -1,8 +1,6 @@
 import { IActor } from "./Actor";
 import { AudioObject, ISoundObject } from "../Sound/SoundObject";
 
-
-
 export interface ISoundInputs {
     play: boolean;
 }

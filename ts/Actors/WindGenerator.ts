@@ -27,15 +27,15 @@ export class WindGenerator implements IActor {
             new Coordinate(20, 10)];
     }
 
-    update(timeModifier: number) {
-        // TODO take lastTimeModifier into account
+    update(timeModifier: number): void {
+        // tODO take lastTimeModifier into account
         if (Math.random() < this.windChangeChance) {
             console.log("Changing wind!");
 
-            var wind = this.data.value;
-            var newWind = wind + Math.round((Math.random() * 8)) - 4;
-            var maxWind = Math.min(newWind, 5);
-            var minWind = Math.max(maxWind, -5);
+            var wind: number = this.data.value;
+            var newWind: number = wind + Math.round((Math.random() * 8)) - 4;
+            var maxWind: number = Math.min(newWind, 5);
+            var minWind: number = Math.max(maxWind, -5);
             this.data.value = minWind;
 
             if (this.data.value < 0) {

@@ -23,6 +23,7 @@ import { TextView } from "../../Views/TextView";
 import { ISoundInputs, Sound } from "../../Actors/Sound";
 import { ScreenFlashView } from "../../Views/EffectViews";
 import { Flasher } from "../../Actors/Switches";
+import { createWrapActor } from "../../Actors/Wrap";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -120,6 +121,17 @@ export class AsteroidObjects {
             ship: state.ship,
         };});
         shipObj.actors.push(shipController, explosionController);
+        var wrapx:IActor = createWrapActor(()=> { return {
+            value: ship.x,
+            lowLimit: 0,
+            upLimit: 512,
+        };}, (a)=>ship.x = a);
+        var wrapy:IActor = createWrapActor(()=> { return {
+            value: ship.y,
+            lowLimit: 0,
+            upLimit: 480,
+        };}, (a)=>ship.y = a);
+        shipObj.actors.push(wrapx, wrapy);
         return shipObj;
     }
 
@@ -142,6 +154,17 @@ export class AsteroidObjects {
         };}, (out: IShape)=> {
             asteroid.shape = out;
         });
+        var wrapx:IActor = createWrapActor(()=> { return {
+            value: asteroid.x,
+            lowLimit: 0,
+            upLimit: 512,
+        };}, (a)=>asteroid.x = a);
+        var wrapy:IActor = createWrapActor(()=> { return {
+            value: asteroid.y,
+            lowLimit: 0,
+            upLimit: 480,
+        };}, (a)=>asteroid.y = a);
+
         var view: IView = new PolyGraphicAngled(() => { return {
             x: asteroid.x,
             y: asteroid.y,
@@ -149,7 +172,8 @@ export class AsteroidObjects {
             graphic: asteroid.graphic,
             angle: asteroid.angle,
         };});
-        var asteroidObject: SingleGameObject<IAsteroid> = new SingleGameObject<IAsteroid>(getAsteroid, [mover, spinner, rotator], [view]);
+        var asteroidObject: SingleGameObject<IAsteroid> = new SingleGameObject<IAsteroid>(getAsteroid,
+            [mover, spinner, rotator, wrapx, wrapy], [view]);
         return asteroidObject;
     }
 
