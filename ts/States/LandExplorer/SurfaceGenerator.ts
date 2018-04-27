@@ -1,7 +1,7 @@
-﻿import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
+﻿import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/Physics/Transforms";
-import { IActor } from "ts/Actors/Actor";
-import { IShape, Shape } from "ts/Data/Shape";
+import { IActor } from "ts/gamelib/Actors/Actor";
+import { IShape, Shape } from "ts/gamelib/Data/Shape";
 
 export class SurfaceGenerator implements IActor {
     

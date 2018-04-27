@@ -1,16 +1,16 @@
 import { SingleGameObject } from "../../GameObjects/GameObject";
-import { Coordinate, ICoordinate } from "../../Data/Coordinate";
-import { IShape, Shape } from "../../Data/Shape";
+import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { Transforms } from "../../Physics/Transforms";
-import { MoveConstVelocity, IMoveOut } from "../../Actors/Movers";
-import { IActor, Actor } from "../../Actors/Actor";
-import { PolyRotator } from "../../Actors/Rotators";
+import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
+import { IActor, Actor } from "ts/gamelib/Actors/Actor";
+import { PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { IView } from "../../Views/View";
 import { PolyView } from "../../Views/PolyViews";
-import { ISprite, HorizontalSpriteSheet } from "../../Data/Sprite";
-import { IGraphic, Graphic } from "../../Data/Graphic";
+import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
+import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "./ParticleField";
-import { IVector, Vector } from "../../Data/Vector";
+import { IVector, Vector } from "ts/gamelib/Data/Vector";
 
 export interface IAsteroidState {
     left: boolean;

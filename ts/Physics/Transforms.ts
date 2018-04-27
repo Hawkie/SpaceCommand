@@ -1,5 +1,5 @@
-import { Coordinate } from "../Data/Coordinate";
-import { Vector, IVector } from "../Data/Vector";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Vector, IVector } from "ts/gamelib/Data/Vector";
 
 export class Transforms {
 

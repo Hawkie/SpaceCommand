@@ -1,4 +1,4 @@
-import { Coordinate } from "ts/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
 
 export class DrawContext {
     constructor(private ctx: CanvasRenderingContext2D) {

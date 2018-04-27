@@ -1,7 +1,7 @@
-﻿import { Vector } from "ts/Data/Vector";
+﻿import { Vector } from "ts/gamelib/Data/Vector";
 import { Transforms } from "ts/Physics/Transforms";
-import { IActor } from "ts/Actors/Actor";
-// import { ILocated, IMoving, IAngled, IForces } from "ts/Data/PhysicsData";
+import { IActor } from "ts/gamelib/Actors/Actor";
+// import { ILocated, IMoving, IAngled, IForces } from "ts/gamelib/Data/PhysicsData";
 
 export interface IRodInputs {
         readonly xFrom: number;

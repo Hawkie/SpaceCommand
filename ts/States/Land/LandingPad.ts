@@ -1,5 +1,5 @@
-﻿import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
-import { IShape, Shape } from "ts/Data/Shape";
+﻿import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { IShape, Shape } from "ts/gamelib/Data/Shape";
 
 export interface ILocated {
     location: Coordinate;

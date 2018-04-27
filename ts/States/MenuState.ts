@@ -4,7 +4,7 @@ import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Assets } from "ts/Resources/Assets";
 import { SparseArray } from "ts/Collections/SparseArray";
-import { Coordinate } from "ts/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
@@ -39,7 +39,8 @@ export class MenuState implements IGameState {
         var field2: IGameObject = Field.createBackgroundField(32, 2);
 
         var title: IView = new TextView(()=>"SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-        // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2), new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
+        // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2),
+        // new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
         let items: string[] = ["Asteroids"];
         return new MenuState("Menu", assets, actx, [title], [field1, field2], items);
     }
@@ -118,7 +119,9 @@ export class MenuState implements IGameState {
         }
     }
 
-    tests(lastTestModifier: number): void {}
+    tests(lastTestModifier: number): void {
+        //
+    }
 
     returnState(): number {
         let newState:number = undefined;

@@ -1,4 +1,4 @@
-import { Coordinate } from "../Data/Coordinate"
+import { Coordinate } from "ts/gamelib/Data/Coordinate"
 import { Transforms } from "../Physics/Transforms";
 //import { Polygon } from "../DisplayObjects/DisplayObject";
 import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";

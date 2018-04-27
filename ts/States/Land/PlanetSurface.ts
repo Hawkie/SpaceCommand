@@ -1,6 +1,6 @@
-import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
-import { IShape, Shape } from "ts/Data/Shape";
-import { IActor } from "ts/Actors/Actor";
+import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { IShape, Shape } from "ts/gamelib/Data/Shape";
+import { IActor } from "ts/gamelib/Actors/Actor";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 // import { ShapedModel } from "ts/Models/DynamicModels";
 import { Transforms } from "ts/Physics/Transforms";

@@ -1,9 +1,9 @@
-import { IActor, Actor } from "../../Actors/Actor";
+import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { IAsteroidState, IShip, IWeapon } from "./AsteroidModels";
-import { Coordinate } from "../../Data/Coordinate";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "../../Physics/Transforms";
 import { IParticle } from "./ParticleField";
-import { Sound } from "../../Actors/Sound";
+import { Sound } from "ts/gamelib/Actors/Sound";
 
 export interface IShipControlInputs {
     left: boolean;

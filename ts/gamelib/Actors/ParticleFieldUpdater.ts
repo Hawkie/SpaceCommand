@@ -1,5 +1,5 @@
-import { Vector } from "ts/Data/Vector";
-import { IActor } from "ts/Actors/Actor";
+import { Vector } from "ts/gamelib/Data/Vector";
+import { IActor } from "ts/gamelib/Actors/Actor";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export interface IParticleGenInputs {

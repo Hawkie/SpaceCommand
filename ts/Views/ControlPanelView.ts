@@ -1,4 +1,4 @@
-﻿import { Coordinate } from "ts/Data/Coordinate";
+﻿import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { DrawContext } from "ts/Common/DrawContext";
 import { IView } from "ts/Views/View";
 import { IControlPanelModel, ControlPanelModel, ISlider, Slider } from "ts/Models/Controls/ControlPanelModel";

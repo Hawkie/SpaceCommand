@@ -1,8 +1,8 @@
-﻿import { IActor } from "ts/Actors/Actor";
+﻿import { IActor } from "ts/gamelib/Actors/Actor";
 import { DrawContext } from "ts/Common/DrawContext";
-import { Coordinate } from "ts/Data/Coordinate";
-// import { ILocated, IMoving  } from "ts/Data/PhysicsData";
-import { ISprite } from "ts/Data/Sprite";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
+// import { ILocated, IMoving  } from "ts/gamelib/Data/PhysicsData";
+import { ISprite } from "ts/gamelib/Data/Sprite";
 
 export interface ISpriteAnimator {
 }

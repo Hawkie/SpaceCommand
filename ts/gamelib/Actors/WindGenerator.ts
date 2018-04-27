@@ -1,7 +1,7 @@
-﻿import { Coordinate } from "ts/Data/Coordinate";
-import { IActor } from "ts/Actors/Actor";
-import { IWind, Direction } from "ts/Data/Wind";
-import { IShape, Shape } from "ts/Data/Shape";
+﻿import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { IActor } from "ts/gamelib/Actors/Actor";
+import { IWind, Direction } from "ts/gamelib/Data/Wind";
+import { IShape, Shape } from "ts/gamelib/Data/Shape";
 
 export class WindGenerator implements IActor {
     pointsRight: Coordinate[];

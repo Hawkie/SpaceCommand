@@ -1,9 +1,9 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { Coordinate } from "ts/Data/Coordinate";
-// import { ILocated, ILocatedAngled } from "ts/Data/PhysicsData";
-import { IShape } from "ts/Data/Shape";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
+// import { ILocated, ILocatedAngled } from "ts/gamelib/Data/PhysicsData";
+import { IShape } from "ts/gamelib/Data/Shape";
 import { IView } from "ts/Views/View";
-import { IGraphic, Graphic } from "ts/Data/Graphic";
+import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 
 export interface IRectangleView {
     x: number;

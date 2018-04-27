@@ -4,10 +4,10 @@
 // import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
 // import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
-// import { Coordinate, Vector } from "ts/Data/Coordinate";
+// import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
 // import { Transforms } from "ts/Physics/Transforms";
-// import { TextData } from "ts/Data/TextData";
-// import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/Data/PhysicsData";
+// import { TextData } from "ts/gamelib/Data/TextData";
+// import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/gamelib/Data/PhysicsData";
 // import { TextView } from "ts/Views/TextView";
 // import { IView } from "ts/Views/View";
 // import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/Views/PolyViews";
@@ -15,7 +15,7 @@
 // import { IGameState, GameState } from "ts/States/GameState";
 // import { IInteractor } from "ts/Interactors/Interactor";
 // import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
-// import { SpaceShipData } from "ts/Data/ShipData";
+// import { SpaceShipData } from "ts/gamelib/Data/ShipData";
 // import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 // import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
@@ -24,19 +24,19 @@
 // import { ValueObject } from "ts/GameObjects/ValueObject";
 // import { Field } from "ts/GameObjects/ParticleField";
 // import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
-// import { ISprite, HorizontalSpriteSheet } from "ts/Data/Sprite";
-// import { Graphic, IGraphic } from "ts/Data/Graphic";
-// import { Shape, IShape } from "ts/Data/Shape";
+// import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
+// import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
+// import { Shape, IShape } from "ts/gamelib/Data/Shape";
 // import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
-// import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
-// import { Spinner, PolyRotator } from "ts/Actors/Rotators";
-// import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
-// import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/Actors/Accelerator";
+// import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
+// import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
+// import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
+// import { IAcceleratorInputs, IAcceleratorOutputs, Accelerator } from "ts/gamelib/Actors/Accelerator";
 // import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 // import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 // import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
 // import { AsteroidState } from "../Asteroids/AsteroidState";
-// import { IActor } from "../../Actors/Actor";
+// import { IActor } from "ts/gamelib/Actors/Actor";
 
 // export class Asteroid extends SingleGameObject<AsteroidModel> { }
 

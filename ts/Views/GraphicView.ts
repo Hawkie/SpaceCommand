@@ -1,6 +1,6 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-// import { ILocated, I } from "ts/Data/PhysicsData";
-import { IGraphic, Graphic } from "ts/Data/Graphic";
+// import { ILocated, I } from "ts/gamelib/Data/PhysicsData";
+import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IView } from "ts/Views/View";
 
 export interface IGraphicViewInputs {

@@ -2,7 +2,7 @@
 
 import { ControlPanelView } from "ts/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
-import { Coordinate, ICoordinate } from "ts/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 
 
 

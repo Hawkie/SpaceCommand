@@ -2,15 +2,15 @@
 // import { Assets } from "ts/Resources/Assets";
 // import { AudioObject } from "ts/Sound/SoundObject";
 
-// import { Coordinate, Vector } from "ts/Data/Coordinate";
+// import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
 // import { Transforms } from "ts/Physics/Transforms";
 // import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 // import { IGameState } from "ts/States/GameState";
 // import { SparseArray } from "ts/Collections/SparseArray";
 
-// import { ILocated, LocatedData } from "ts/Data/PhysicsData";
-// import { Shape } from "ts/Data/Shape";
-// import { Direction } from "ts/Data/Wind";
+// import { ILocated, LocatedData } from "ts/gamelib/Data/PhysicsData";
+// import { Shape } from "ts/gamelib/Data/Shape";
+// import { Direction } from "ts/gamelib/Data/Wind";
 // import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 // import { ShapedModel } from "ts/Models/DynamicModels";
 // import { WindModel } from "ts/States/Land/WindModel";
@@ -27,14 +27,14 @@
 // import { IView } from "ts/Views/View";
 // import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
 // import { ValueView } from "ts/Views/ValueView";
-// import { LandingShipData, SpaceShipData } from "ts/Data/ShipData";
-// import { Graphic, IGraphic } from "ts/Data/Graphic";
-// import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/Actors/Accelerator";
+// import { LandingShipData, SpaceShipData } from "ts/gamelib/Data/ShipData";
+// import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
+// import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
 // import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 // import { ExplosionController } from "ts/Controllers/Ship/ExplosionController";
-// import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
-// import { WindGenerator } from "ts/Actors/WindGenerator";
-// import { IActor } from "ts/Actors/Actor";
+// import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
+// import { WindGenerator } from "ts/gamelib/Actors/WindGenerator";
+// import { IActor } from "ts/gamelib/Actors/Actor";
 // import { WeaponController } from "ts/Controllers/Ship/WeaponController";
 // import { ThrustController } from "ts/Controllers/Ship/ThrustController";
 

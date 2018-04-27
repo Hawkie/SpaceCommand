@@ -1,21 +1,21 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 import { IView } from "ts/Views/View";
-import { IActor } from "ts/Actors/Actor";
+import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleGenInputs, ParticleGenerator,
-    ParticleRemover, PredGreaterThan, AgePred } from "ts/Actors/ParticleFieldUpdater";
-import { MoveConstVelocity, IMoveOut } from "ts/Actors/Movers";
-import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/Actors/Accelerator";
+    ParticleRemover, PredGreaterThan, AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
+import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
+import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
 import { CircleView, RectangleView } from "ts/Views/PolyViews";
 import { TextView } from "ts/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
-import { Coordinate } from "ts/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
-import { SpriteAnimator } from "ts/Actors/SpriteAnimator";
-import { Spinner } from "ts/Actors/Rotators";
-import { ISprite, HorizontalSpriteSheet } from "ts/Data/Sprite";
+import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
+import { Spinner } from "ts/gamelib/Actors/Rotators";
+import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { Transforms } from "ts/Physics/Transforms";
 import { IExhaust, IExplosion } from "ts/States/Asteroids/AsteroidModels";
-import { Vector, IVector } from "../../Data/Vector";
+import { Vector, IVector } from "ts/gamelib/Data/Vector";
 
 export interface IParticle {
     x: number;

@@ -1,4 +1,4 @@
-﻿import { Coordinate } from "ts/Data/Coordinate";
+﻿import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/Physics/Transforms";
 
 export interface IShape {

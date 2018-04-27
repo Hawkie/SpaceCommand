@@ -1,4 +1,4 @@
-﻿import { IActor } from "ts/Actors/Actor";
+﻿import { IActor } from "ts/gamelib/Actors/Actor";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
 export interface ISwitch {
