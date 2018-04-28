@@ -41,8 +41,8 @@ export class ComponentObjects<TComponent extends IGameObject> implements IGameOb
 
 
 // combi of single and component
-export class MultiGameObject<TModel, TComponent extends IGameObject> implements IGameObject, IObject<TModel> {
-    constructor(public model: ()=> TModel, public actors: IActor[], public views: IView[], public getComponents: ()=>TComponent[]) {
+export class MultiGameObject<TComponent extends IGameObject> implements IGameObject {
+    constructor(public actors: IActor[], public views: IView[], public getComponents: ()=>TComponent[]) {
     }
 
     update(timeModifier: number): void {

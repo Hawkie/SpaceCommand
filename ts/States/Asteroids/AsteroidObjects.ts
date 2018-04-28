@@ -28,8 +28,8 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
     shipObj: SingleGameObject<IShip>;
-    weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>;
-    asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>>;
+    weaponObj: MultiGameObject<SingleGameObject<IParticle>>;
+    asteroidObjs: MultiGameObject<SingleGameObject<IAsteroid>>;
     views: IView[];
     sceneObjs: IGameObject[];
 }
@@ -39,18 +39,18 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
     var state: IAsteroidState = getState();
     var shipObj: SingleGameObject<IShip> = AsteroidObjects.createShipObject(getState, ()=>state.ship);
 
-    var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>>
+    var weaponObj: MultiGameObject<SingleGameObject<IParticle>>
         = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
-    var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
+    var exhaustObj: MultiGameObject<SingleGameObject<IParticle>>
         = AsteroidObjects.createExhaustObj(()=>state.ship.exhaust, ()=>state.ship);
-    var explosionObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
+    var explosionObj: MultiGameObject<SingleGameObject<IParticle>>
         = AsteroidObjects.createExplosionObj(()=>state.ship.explosion, ()=>state.ship);
 
     var ballObj: SingleGameObject<IBall> = AsteroidObjects.createBallObject(()=>state.ball);
     var shipBallObj: SingleGameObject<IRodInputs> = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
     var coinObj: SingleGameObject<ICoin> = AsteroidObjects.createCoinObject(()=>state.coin);
     var gShipObj: SingleGameObject<IGraphicShip> = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
-    var asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>> =  createAsteroidObjs(()=>state.asteroids.asteroids);
+    var asteroidObjs: MultiGameObject<SingleGameObject<IAsteroid>> =  createAsteroidObjs(()=>state.asteroids.asteroids);
     var breakSound:IActor = new Sound(state.asteroids.breakSoundFilename, true, false, () => { return {
         play: state.asteroids.break,
         };},
@@ -74,10 +74,10 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
 }
 
 export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
-        MultiGameObject<null, SingleGameObject<IAsteroid>> {
+        MultiGameObject<SingleGameObject<IAsteroid>> {
     var asteroidArray: SingleGameObject<IAsteroid>[] = [];
-    var asteroidObjs: MultiGameObject<null, SingleGameObject<IAsteroid>> =
-        new MultiGameObject<null, SingleGameObject<IAsteroid>>(null, [], [], ()=>asteroidArray);
+    var asteroidObjs: MultiGameObject<SingleGameObject<IAsteroid>> =
+        new MultiGameObject<SingleGameObject<IAsteroid>>([], [], ()=>asteroidArray);
     getAsteroids().forEach(a => {
         asteroidObjs.getComponents().push(AsteroidObjects.createAsteroidObject(()=>a));
     });
@@ -177,11 +177,11 @@ export class AsteroidObjects {
         return asteroidObject;
     }
 
-    static createWeaponObject(getState: ()=>IAsteroidState, getWeapon:()=> IWeapon): MultiGameObject<IWeapon, SingleGameObject<IParticle>> {
+    static createWeaponObject(getState: ()=>IAsteroidState, getWeapon:()=> IWeapon): MultiGameObject<SingleGameObject<IParticle>> {
 
         var weapon: IWeapon = getWeapon();
         let bulletObjs: SingleGameObject<IParticle>[] = getWeapon().bullets.map((b)=> AsteroidObjects.createBulletObject(()=>b));
-        var weaponObj: MultiGameObject<IWeapon, SingleGameObject<IParticle>> = new MultiGameObject(getWeapon, [], [], ()=>bulletObjs);
+        var weaponObj: MultiGameObject<SingleGameObject<IParticle>> = new MultiGameObject([], [], ()=>bulletObjs);
         var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(
             ()=>weapon.bulletLifetime,
             (p: SingleGameObject<IParticle>)=> p.model().born
@@ -232,9 +232,9 @@ export class AsteroidObjects {
     }
 
     static createExhaustObj(getExhaust: ()=>IExhaust, getShip: ()=>IShip)
-        : MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+        : MultiGameObject<SingleGameObject<IParticle>> {
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> = Field.createExhaustObj(getExhaust, ()=> {
+        var exhaustObj: MultiGameObject<SingleGameObject<IParticle>> = Field.createExhaustObj(getExhaust, ()=> {
         return {
             x: ship.x,
             y: ship.y,
@@ -256,11 +256,11 @@ export class AsteroidObjects {
     }
 
     static createExplosionObj(getExplosion: ()=>IExplosion,
-        getShip: ()=>IShip): MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>> {
+        getShip: ()=>IShip): MultiGameObject<SingleGameObject<IParticle>> {
 
         var explosion: IExplosion = getExplosion();
         var ship: IShip = getShip();
-        var explosionObj: MultiGameObject<IParticleGenInputs, SingleGameObject<IParticle>>
+        var explosionObj: MultiGameObject<SingleGameObject<IParticle>>
             = Field.createExplosion(getExplosion, ()=> {
         return {
             x: ship.x,
