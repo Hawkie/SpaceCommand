@@ -1,6 +1,6 @@
 ﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 
-import { ControlPanelView } from "ts/Views/ControlPanelView";
+import { ControlPanelView } from "ts/gamelib/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 

@@ -2,7 +2,7 @@
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 // import { ILocated, ILocatedAngled } from "ts/gamelib/Data/PhysicsData";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { IView } from "ts/Views/View";
+import { IView } from "ts/gamelib/Views/View";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 
 export interface IRectangleView {

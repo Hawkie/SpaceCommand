@@ -1,14 +1,14 @@
 import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
     IWeapon, IExhaust, IExplosion, AsteroidModels } from "./AsteroidModels";
-import { IView } from "../../Views/View";
-import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "../../Views/PolyViews";
+import { IView } from "ts/gamelib/Views/View";
+import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject, IGameObject, MultiGameObject, ComponentObjects } from "../../GameObjects/GameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
-import { SpriteAngledView } from "../../Views/SpriteView";
-import { GraphicAngledView } from "../../Views/GraphicView";
+import { SpriteAngledView } from "ts/gamelib/Views/SpriteView";
+import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 import { IShape } from "ts/gamelib/Data/Shape";
 import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
@@ -18,10 +18,10 @@ import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IParticle, Field } from "./ParticleField";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { DrawContext } from "../../Common/DrawContext";
-import { ValueView } from "../../Views/ValueView";
-import { TextView } from "../../Views/TextView";
+import { ValueView } from "ts/gamelib/Views/ValueView";
+import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
-import { ScreenFlashView } from "../../Views/EffectViews";
+import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
 import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 

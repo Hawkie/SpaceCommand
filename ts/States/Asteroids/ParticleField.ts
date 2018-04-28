@@ -1,13 +1,13 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
-import { IView } from "ts/Views/View";
+import { IView } from "ts/gamelib/Views/View";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleGenInputs, ParticleGenerator,
     ParticleRemover, PredGreaterThan, AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
-import { CircleView, RectangleView } from "ts/Views/PolyViews";
-import { TextView } from "ts/Views/TextView";
-import { SpriteView, SpriteAngledView } from "ts/Views/SpriteView";
+import { CircleView, RectangleView } from "ts/gamelib/Views/PolyViews";
+import { TextView } from "ts/gamelib/Views/TextView";
+import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/SpriteView";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject, ComponentObjects } from "ts/GameObjects/GameObject";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";

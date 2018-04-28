@@ -8,10 +8,10 @@
 // import { Transforms } from "ts/Physics/Transforms";
 // import { TextData } from "ts/gamelib/Data/TextData";
 // import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/gamelib/Data/PhysicsData";
-// import { TextView } from "ts/Views/TextView";
-// import { IView } from "ts/Views/View";
-// import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/Views/PolyViews";
-// import { GraphicAngledView } from "ts/Views/GraphicView";
+// import { TextView } from "ts/gamelib/Views/TextView";
+// import { IView } from "ts/gamelib/Views/View";
+// import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/gamelib/Views/PolyViews";
+// import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 // import { IGameState, GameState } from "ts/States/GameState";
 // import { IInteractor } from "ts/Interactors/Interactor";
 // import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
@@ -27,7 +27,7 @@
 // import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 // import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
 // import { Shape, IShape } from "ts/gamelib/Data/Shape";
-// import { SpriteAngledView, SpriteView } from "ts/Views/SpriteView";
+// import { SpriteAngledView, SpriteView } from "ts/gamelib/Views/SpriteView";
 // import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 // import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
 // import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";

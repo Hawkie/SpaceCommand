@@ -9,8 +9,8 @@ import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { Field } from "ts/States/Asteroids/ParticleField";
-import { TextView } from "../Views/TextView";
-import { IView } from "../Views/View";
+import { TextView } from "ts/gamelib/Views/TextView";
+import { IView } from "ts/gamelib/Views/View";
 
 function createMenuItem(name: string, x: number, y: number): SingleGameObject<string> {
     var menuObject: SingleGameObject<string> = new SingleGameObject<string>(()=>name,

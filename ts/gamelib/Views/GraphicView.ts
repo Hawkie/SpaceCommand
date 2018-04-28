@@ -1,7 +1,7 @@
 ﻿import { DrawContext } from "ts/Common/DrawContext";
 // import { ILocated, I } from "ts/gamelib/Data/PhysicsData";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
-import { IView } from "ts/Views/View";
+import { IView } from "ts/gamelib/Views/View";
 
 export interface IGraphicViewInputs {
     x: number;

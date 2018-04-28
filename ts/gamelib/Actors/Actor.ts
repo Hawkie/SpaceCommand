@@ -26,6 +26,3 @@ export class Actor2<Tin, Tout> implements IActor {
         }
     }
 }
-
-export function f<TIn, TOut>(x: ()=>TIn, act:(x:TIn) => TOut, y:(y:TOut)=> void): void {
-}

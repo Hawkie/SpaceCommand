@@ -24,9 +24,9 @@
 // import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject"
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { Field } from "ts/GameObjects/ParticleField";
-// import { IView } from "ts/Views/View";
-// import { PolyView, PolyGraphic, CircleView } from "ts/Views/PolyViews";
-// import { ValueView } from "ts/Views/ValueView";
+// import { IView } from "ts/gamelib/Views/View";
+// import { PolyView, PolyGraphic, CircleView } from "ts/gamelib/Views/PolyViews";
+// import { ValueView } from "ts/gamelib/Views/ValueView";
 // import { LandingShipData, SpaceShipData } from "ts/gamelib/Data/ShipData";
 // import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
 // import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
