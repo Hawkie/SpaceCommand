@@ -50,10 +50,10 @@
 
 
 // export class LandExplorerState implements IGameState {
-//     wind: SingleGameObject<WindModel>;
-//     surface: SingleGameObject<PlanetSurfaceModel>;
-//     landingPad: SingleGameObject<LandingPadModel>;
-//     ballObject: SingleGameObject<IBallObject>;
+//     wind: SingleGameObject;
+//     surface: SingleGameObject;
+//     landingPad: SingleGameObject;
+//     ballObject: SingleGameObject;
 //     velocityText: TextObject;
 //     interactors: IInteractor[];
 
@@ -202,7 +202,7 @@
 //         return landingState;
 //     }
 
-//     static createPlanetSurfaceObject(location: Coordinate, from: ILocated): SingleGameObject<PlanetSurfaceModel> {
+//     static createPlanetSurfaceObject(location: Coordinate, from: ILocated): SingleGameObject {
         
 //         var model = new PlanetSurfaceModel(location);
 //         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
@@ -218,7 +218,7 @@
 //         return obj;
 //     }
 
-//     static createLandingPadObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<LandingPadModel> {
+//     static createLandingPadObject(surface: SingleGameObject {
 //         var placeIndex = Transforms.random(0, 50);
 //         var xy = surface.model.shape.points[placeIndex];
 //         var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.physics.location.x,
@@ -228,11 +228,11 @@
 //             y: padModel.physics.location.y,
 //             shape: padModel.shape,
 //         };});
-//         var obj = new SingleGameObject<LandingPadModel>(padModel, [], [padView]);
+//         var obj = new SingleGameObject(padModel, [], [padView]);
 //         return obj;
 //     }
 
-//     static createBallObject(surface: SingleGameObject<PlanetSurfaceModel>): SingleGameObject<IBallObject> {
+//     static createBallObject(surface: SingleGameObject {
 //         var placeIndex = Transforms.random(0, 50);
 //         var xy = surface.model.shape.points[placeIndex];
 //         var ballModel: IBallObject = {
@@ -261,11 +261,11 @@
 //                 ballModel.x += mOut.dx;
 //                 ballModel.y += mOut.dy;
 //             });
-//         var obj = new SingleGameObject<IBallObject>(ballModel, [mover], [ballView]);
+//         var obj = new SingleGameObject(ballModel, [mover], [ballView]);
 //         return obj;
 //     }
 
-//     static createWindDirectionIndicator(location: Coordinate): SingleGameObject<WindModel> {
+//     static createWindDirectionIndicator(location: Coordinate): SingleGameObject {
 //         var model: WindModel = new WindModel(location);
 //         var windGenerator: IActor = new WindGenerator(model.physics, model.shape);
 //         var viewArrow: IView = new PolyView(() => { return {
@@ -274,7 +274,7 @@
 //             shape: model.shape,
 //         };});
 //         var viewText: IView = new ValueView(model.physics, "{0} mph", "monospace", 12);
-//         var obj = new SingleGameObject<WindModel>(model, [windGenerator], [viewArrow, viewText]);
+//         var obj = new SingleGameObject(model, [windGenerator], [viewArrow, viewText]);
 //         return obj;
 //     }
 // }

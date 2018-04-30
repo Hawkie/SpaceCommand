@@ -38,7 +38,7 @@
 // import { AsteroidState } from "../Asteroids/AsteroidState";
 // import { IActor } from "ts/gamelib/Actors/Actor";
 
-// export class Asteroid extends SingleGameObject<AsteroidModel> { }
+// export class Asteroid extends SingleGameObject { }
 
 // export class DuelState extends GameState implements IGameState {
 //     // data objects
@@ -231,18 +231,18 @@
 //         return this.asteroids.map(a => a.model);
 //     }
 
-//     //bulletModels(): SingleGameObject<ILocated>[] {
+//     //bulletModels(): SingleGameObject[] {
 //     //    return this.players[0].weaponController.bullets.concat(this.players[1].weaponController.bullets);
 //     //}
 
-//     playerHitPlayer(i1: number, players: ShapedModel<SpaceShipData, Shape>[], i2: number, bullets: SingleGameObject<ILocated>[], playerHit: SpaceShipController) {
+//     playerHitPlayer(i1: number, players: ShapedModel<SpaceShipData, Shape>[], i2: number, bullets: SingleGameObject[], playerHit: SpaceShipController) {
 //         // remove bullet
 //         bullets.splice(i2, 1);
 
 //         playerHit.crash();
 //     }
 
-//     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject<ILocated>[], tag: SpaceShipController) {
+//     asteroidBulletHit(i1: number, asteroids: AsteroidModel[], i2: number, bullets: SingleGameObject[], tag: SpaceShipController) {
 //         // effect on asteroid
 //         let a = asteroids[i1];
 //         a.physics.velX += 2;

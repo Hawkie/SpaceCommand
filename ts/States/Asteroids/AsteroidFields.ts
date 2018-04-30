@@ -64,12 +64,12 @@ export interface IFieldInputs {
 export class AsteroidFields {
 
     // new field with simpler inputs and setter.
-    static createBackgroundField(speed: number, size: number):  MultiGameObject<SingleGameObject<IParticle>> {
+    static createBackgroundField(speed: number, size: number):  MultiGameObject<SingleGameObject> {
         var fieldModel: IParticle[] = [];
-        var fieldArray: SingleGameObject<IParticle>[] = [];
+        var fieldArray: SingleGameObject[] = [];
 
         // todo: change class to remove null later
-        let field: MultiGameObject<SingleGameObject<IParticle>> = new MultiGameObject<SingleGameObject<IParticle>>(
+        let field: MultiGameObject<SingleGameObject> = new MultiGameObject<SingleGameObject>(
             [], [], ()=>fieldArray);
 
         var get: () => IParticleGenInputs = ()=> { return {
@@ -90,7 +90,7 @@ export class AsteroidFields {
                     born: now,
                     size: size,
                 };
-                var newParticle: SingleGameObject<IParticle> = createParticleObject(p);
+                var newParticle: SingleGameObject = createParticleObject(p);
                 field.getComponents().push(newParticle);
                 fieldModel.push(p);
             }
@@ -110,8 +110,8 @@ export class AsteroidFields {
     }
 
     static createExplosion(explosion: ()=>IExplosion,
-        inputs: ()=> IExplosionInputs): MultiGameObject<SingleGameObject<IParticle>> {
-        var fieldArray: SingleGameObject<IParticle>[] = [];
+        inputs: ()=> IExplosionInputs): MultiGameObject<SingleGameObject> {
+        var fieldArray: SingleGameObject[] = [];
 
         var get: () => IParticleGenInputs = ()=> { return {
             on: explosion().on,
@@ -120,8 +120,8 @@ export class AsteroidFields {
             generationTimeInSec: 0.2,
         };};
         // todo: change class to remove null later
-        var field: MultiGameObject<SingleGameObject<IParticle>> =
-            new MultiGameObject<SingleGameObject<IParticle>>([], [], ()=>fieldArray);
+        var field: MultiGameObject<SingleGameObject> =
+            new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(get,
             (now: number) => {
@@ -134,7 +134,7 @@ export class AsteroidFields {
                     born: now,
                     size: explosion().particleSize,
                 };
-                var newParticle: SingleGameObject<IParticle> = createParticleObject(p);
+                var newParticle: SingleGameObject = createParticleObject(p);
                 if (source.gravityOn) {
                     var getAcceleratorProps: () => IAcceleratorInputs = () => {
                         return {
@@ -168,8 +168,8 @@ export class AsteroidFields {
     }
 
     static createExhaustObj(getExhaust: ()=>IExhaust,
-        getInputs: ()=> IThrustInputs): MultiGameObject<SingleGameObject<IParticle>> {
-        let fieldArray: SingleGameObject<IParticle>[] = [];
+        getInputs: ()=> IThrustInputs): MultiGameObject<SingleGameObject> {
+        let fieldArray: SingleGameObject[] = [];
         var exhaust: IExhaust = getExhaust();
 
         var get: () => IParticleGenInputs = ()=> { return {
@@ -179,8 +179,8 @@ export class AsteroidFields {
             generationTimeInSec: undefined,
         };};
 
-        var field: MultiGameObject<SingleGameObject<IParticle>> =
-            new MultiGameObject<SingleGameObject<IParticle>>([], [], ()=>fieldArray);
+        var field: MultiGameObject<SingleGameObject> =
+            new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(
             get,
@@ -196,7 +196,7 @@ export class AsteroidFields {
                     born: now,
                     size: 1,
                 };
-                var newParticle: SingleGameObject<IParticle> = createParticleObject(p);
+                var newParticle: SingleGameObject = createParticleObject(p);
                 if (source.gravityOn) {
                     var getAcceleratorProps: () => IAcceleratorInputs = () => {
                         return {
@@ -233,9 +233,9 @@ export class AsteroidFields {
     }
 
     // sprite field
-    static createSpriteField(): MultiGameObject<SingleGameObject<ISpinningParticle>> {
+    static createSpriteField(): MultiGameObject<SingleGameObject> {
         let fieldModel: ISpinningParticle[] = [];
-        let fieldArray: SingleGameObject<ISpinningParticle>[] = [];
+        let fieldArray: SingleGameObject[] = [];
         var get: () => IParticleGenInputs = ()=> { return {
             on: true,
             itemsPerSec: 1,
@@ -243,8 +243,8 @@ export class AsteroidFields {
             generationTimeInSec: undefined,
         };};
 
-        var field: MultiGameObject<SingleGameObject<ISpinningParticle>> =
-            new MultiGameObject<SingleGameObject<ISpinningParticle>>([], [], ()=>fieldArray);
+        var field: MultiGameObject<SingleGameObject> =
+            new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
 
         var generator: ParticleGenerator = new ParticleGenerator(
             get,
@@ -281,7 +281,7 @@ export class AsteroidFields {
                         sprite: sheet,
                 };
             });
-            var o: SingleGameObject<ISpinningParticle> = new SingleGameObject(()=>p, [mover, animator, spinner], [view]);
+            var o: SingleGameObject = new SingleGameObject([mover, animator, spinner], [view]);
             fieldModel.push(p);
             field.getComponents().push(o);
         });
@@ -298,7 +298,7 @@ export class AsteroidFields {
     }
 }
 
-function createParticleObject(p: IParticle): SingleGameObject<IParticle> {
+function createParticleObject(p: IParticle): SingleGameObject {
     var mover: IActor = new MoveConstVelocity(() => {
         return {
             Vx: p.Vx,
@@ -316,7 +316,7 @@ function createParticleObject(p: IParticle): SingleGameObject<IParticle> {
             height: p.size,
         };
     });
-    var newParticle: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(() => p, [mover], [view]);
+    var newParticle: SingleGameObject = new SingleGameObject([mover], [view]);
     return newParticle;
 }
 

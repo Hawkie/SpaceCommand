@@ -9,8 +9,8 @@ interface IArrayAmendments<T> {
 
 export class Syncer<T> implements IActor {
     constructor(private get: ()=>IArrayAmendments<T>,
-    private items: SingleGameObject<T>[],
-    private createObject: (t: T)=> SingleGameObject<T>) {}
+    private items: SingleGameObject[],
+    private createObject: (t: T)=> SingleGameObject) {}
     update(timeModifier: number): void {
         // var inputs: IArrayAmendments<T> =  this.get();
         ArrayAmender<T>(this.get, this.items, this.createObject);
@@ -18,12 +18,12 @@ export class Syncer<T> implements IActor {
 }
 
 export function ArrayAmender<T>(getInputs: ()=> IArrayAmendments<T>,
-    items: SingleGameObject<T>[],
-    createObject: (t: T)=> SingleGameObject<T>): void {
+    items: SingleGameObject[],
+    createObject: (t: T)=> SingleGameObject): void {
 
         var inputs:IArrayAmendments<T> = getInputs();
         inputs.newItems.forEach(element => {
-            var aObj:SingleGameObject<T> = createObject(element);
+            var aObj:SingleGameObject = createObject(element);
             items.push(aObj);
         });
         inputs.newItems = [];

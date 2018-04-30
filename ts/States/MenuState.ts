@@ -12,9 +12,8 @@ import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";
 
-function createMenuItem(name: string, x: number, y: number): SingleGameObject<string> {
-    var menuObject: SingleGameObject<string> = new SingleGameObject<string>(()=>name,
-    [],
+function createMenuItem(name: string, x: number, y: number): SingleGameObject {
+    var menuObject: SingleGameObject = new SingleGameObject([],
     [new TextView(()=>name, new Coordinate(x, y), this.font, this.size)]);
     return menuObject;
 }

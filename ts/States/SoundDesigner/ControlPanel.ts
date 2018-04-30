@@ -6,9 +6,11 @@ import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 
 
 
-export class ControlPanel<TModel extends IControlPanelModel> extends SingleGameObject<TModel> {
-    constructor(model: ()=>TModel, location: ICoordinate) {
+export class ControlPanel<TModel extends IControlPanelModel> extends SingleGameObject {
+    constructor(private model: ()=>TModel, location: ICoordinate) {
+        super([], []);
         var view: ControlPanelView = new ControlPanelView(model, location, 200);
-        super(model, [], [view]);
+        this.views.push(view);
+
     }
 }

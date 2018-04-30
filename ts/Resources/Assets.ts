@@ -5,21 +5,19 @@
 
 export class Assets {
 
-    constructor() { }
-
-    //Properties to help track the assets being loaded.
+    // properties to help track the assets being loaded.
     private toLoad: number = 0;
     private loaded: number = 0;
     soundData: BufferData<AudioBuffer>[] = [];
 
-    //File extensions for different types of sounds.
+    // file extensions for different types of sounds.
     audioExtensions: string[] = ["mp3", "ogg", "wav", "webm"];
 
-    load(actx: AudioContext, sources: string[], whenAllLoaded: () => void) {
+    load(actx: AudioContext, sources: string[], whenAllLoaded: () => void): void {
         console.log("Loading sounds..");
 
-        //Get a reference to this asset object so we can
-        //refer to it in the `forEach` loop ahead.
+        // get a reference to this asset object so we can
+        // refer to it in the `forEach` loop ahead.
         var self = this;
 
         //Find the number of files that need to be loaded.
@@ -38,7 +36,7 @@ export class Assets {
                 self.loadSound(actx, source, self.loadHandler.bind(self), whenAllLoaded);
             }
 
-            //Display a message if the file type isn't recognized.
+            // display a message if the file type isn't recognized.
             else {
                 console.log("File type not recognized: " + source);
             }

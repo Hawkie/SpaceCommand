@@ -9,7 +9,7 @@ import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject, IObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 import { AsteroidFields, IThrustInputs } from "ts/States/Asteroids/AsteroidFields";
 import { IShip, AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";
@@ -150,7 +150,7 @@ export class AsteroidState implements IGameState {
             for (let n:number = 0; n < 2; n++) {
                 var newAsteroid:IAsteroid = AsteroidModels.createAsteroidModelAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
                 this.state.asteroids.asteroids.push(newAsteroid);
-                var asteroidObj: SingleGameObject<IAsteroid> = AsteroidObjects.createAsteroidObject(()=>newAsteroid);
+                var asteroidObj: SingleGameObject = AsteroidObjects.createAsteroidObject(()=>newAsteroid);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
@@ -164,7 +164,7 @@ export class AsteroidState implements IGameState {
             this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
             for (let n:number = 0; n < this.state.asteroids.asteroids.length; n++) {
                 let a:IAsteroid = this.state.asteroids.asteroids[n];
-                let asteroidObj: SingleGameObject<IAsteroid> = AsteroidObjects.createAsteroidObject(()=>a);
+                let asteroidObj: SingleGameObject = AsteroidObjects.createAsteroidObject(()=>a);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
