@@ -1,4 +1,4 @@
-﻿// import { DrawContext} from "ts/Common/DrawContext";
+﻿// import { DrawContext} from "ts/gamelib/Common/DrawContext";
 // import { Assets } from "ts/Resources/Assets";
 // import { AmplifierSettings } from "ts/Sound/Amplifier";
 // import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
@@ -18,8 +18,8 @@
 // import { SpaceShipData } from "ts/gamelib/Data/ShipData";
 // import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
-// import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-// import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+// import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
+// import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { ValueObject } from "ts/GameObjects/ValueObject";
 // import { Field } from "ts/GameObjects/AsteroidFields";

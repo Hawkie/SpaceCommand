@@ -1,8 +1,7 @@
 ﻿import { IActor } from "ts/gamelib/Actors/Actor";
-import { DrawContext } from "ts/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape } from "ts/gamelib/Data/Shape";
-// import { ILocated, IAngled, IAngledRotating } from "ts/gamelib/Data/PhysicsData";
 import { Transforms } from "ts/Physics/Transforms";
 
 export interface IPolyRotator {

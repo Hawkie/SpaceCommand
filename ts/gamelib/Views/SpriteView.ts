@@ -1,4 +1,4 @@
-﻿import { DrawContext } from "ts/Common/DrawContext";
+﻿import { DrawContext } from "ts/gamelib/Common/DrawContext";
 // import { ILocated, IAngled, ILocatedAngled } from "ts/gamelib/Data/PhysicsData";
 import { ISprite } from "ts/gamelib/Data/Sprite";
 import { IView } from "ts/gamelib/Views/View";

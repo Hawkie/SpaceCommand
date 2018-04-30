@@ -1,4 +1,4 @@
-﻿import { DrawContext } from "ts/Common/DrawContext";
+﻿import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { IView } from "ts/gamelib/Views/View";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleGenInputs, ParticleGenerator,
@@ -9,7 +9,7 @@ import { CircleView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/SpriteView";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner } from "ts/gamelib/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";

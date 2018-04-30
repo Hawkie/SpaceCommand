@@ -1,4 +1,4 @@
-import { SingleGameObject } from "../../GameObjects/GameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { Transforms } from "../../Physics/Transforms";

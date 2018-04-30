@@ -3,7 +3,7 @@ import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SingleGameObject, IGameObject, MultiGameObject } from "../../GameObjects/GameObject";
+import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
@@ -15,7 +15,7 @@ import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IParticle, AsteroidFields } from "./AsteroidFields";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
-import { DrawContext } from "../../Common/DrawContext";
+import { DrawContext } from "../../gamelib/Common/DrawContext";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";

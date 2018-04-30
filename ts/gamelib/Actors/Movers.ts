@@ -1,8 +1,6 @@
 ﻿import { IActor } from "ts/gamelib/Actors/Actor";
-import { DrawContext } from "ts/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-// import { ILocated, IMoving  } from "ts/gamelib/Data/PhysicsData";
-// import { ILocatedMoving } from "ts/gamelib/Data/PhysicsData";
 
 export interface IMoveIn {
     Vx: number;

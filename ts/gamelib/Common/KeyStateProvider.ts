@@ -1,5 +1,5 @@
 ﻿import { SparseArray } from "ts/Collections/SparseArray";
-import { Canvas } from "ts/Common/Canvas";
+import { Canvas } from "ts/gamelib/Common/Canvas";
 import { IGameState } from "ts/States/GameState";
 
 

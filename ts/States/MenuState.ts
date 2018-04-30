@@ -1,13 +1,13 @@
-﻿import { DrawContext} from "ts/Common/DrawContext";
+﻿import { DrawContext} from "ts/gamelib/Common/DrawContext";
 import { AudioObject, AudioWithAmplifier  } from "ts/Sound/SoundObject";
 import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Assets } from "ts/Resources/Assets";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
-import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
+import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";

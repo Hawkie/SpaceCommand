@@ -1,10 +1,10 @@
-﻿// import { DrawContext} from "ts/Common/DrawContext";
+﻿// import { DrawContext} from "ts/gamelib/Common/DrawContext";
 // import { Assets } from "ts/Resources/Assets";
 // import { AudioObject } from "ts/Sound/SoundObject";
 
 // import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
 // import { Transforms } from "ts/Physics/Transforms";
-// import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
+// import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 // import { IGameState } from "ts/States/GameState";
 // import { SparseArray } from "ts/Collections/SparseArray";
 
@@ -21,7 +21,7 @@
 // import { IInteractor, Interactor } from "ts/Interactors/Interactor";
 // import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
 
-// import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject"
+// import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject"
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { Field } from "ts/GameObjects/AsteroidFields";
 // import { IView } from "ts/gamelib/Views/View";

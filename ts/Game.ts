@@ -1,5 +1,5 @@
-import { Canvas } from "ts/Common/Canvas";
-import { EventLoop } from "ts/Common/EventLoop";
+import { Canvas } from "ts/gamelib/Common/Canvas";
+import { EventLoop } from "ts/gamelib/Common/EventLoop";
 import { Assets } from "ts/Resources/Assets";
 
 import { IGameState } from "ts/States/GameState";

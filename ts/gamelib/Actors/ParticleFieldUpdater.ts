@@ -1,6 +1,6 @@
 import { Vector } from "ts/gamelib/Data/Vector";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 
 export interface IParticleGenInputs {
     on: boolean;

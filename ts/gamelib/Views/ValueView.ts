@@ -1,6 +1,6 @@
 ﻿import { IView } from "ts/gamelib/Views/View";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
-import { DrawContext } from "ts/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 
 
 

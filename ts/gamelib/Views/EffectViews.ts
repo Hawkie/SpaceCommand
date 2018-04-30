@@ -1,6 +1,6 @@
 ﻿
 import { IView } from "ts/gamelib/Views/View";
-import { DrawContext } from "ts/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 
 export interface IFlashInputs {
     x: number;

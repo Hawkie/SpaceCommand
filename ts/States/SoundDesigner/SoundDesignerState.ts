@@ -1,4 +1,4 @@
-﻿// import { DrawContext} from "ts/Common/DrawContext";
+﻿// import { DrawContext} from "ts/gamelib/Common/DrawContext";
 // import { SoundEffectData, SoundEffectsModel } from "ts/States/SoundDesigner/SoundEffectsModel";
 // import { FXObject } from "ts/Sound/FXObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
@@ -6,10 +6,10 @@
 // import { ControlPanel } from "ts/GameObjects/ControlPanel";
 // import { Slider } from "ts/Models/Controls/ControlPanelModel";
 // import { TextData } from "ts/gamelib/Data/TextData";
-// import { IGameObject } from "ts/GameObjects/GameObject";
+// import { IGameObject } from "ts/gamelib/GameObjects/GameObject";
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { IGameState, GameState } from "ts/States/GameState";
-// import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
+// import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 
 
 // export class SoundDesignerState extends GameState {

@@ -1,4 +1,4 @@
-import { DrawContext } from "ts/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IView } from "ts/gamelib/Views/View";
 

@@ -1,4 +1,4 @@
-import { DrawContext} from "ts/Common/DrawContext";
+import { DrawContext} from "ts/gamelib/Common/DrawContext";
 import { Assets } from "ts/Resources/Assets";
 import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
@@ -8,8 +8,8 @@ import { IView } from "ts/gamelib/Views/View";
 import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
-import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
+import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
+import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { AsteroidFields, IThrustInputs } from "ts/States/Asteroids/AsteroidFields";
 import { IShip, AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";

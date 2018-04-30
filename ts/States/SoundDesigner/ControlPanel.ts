@@ -1,4 +1,4 @@
-﻿import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
+﻿import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 
 import { ControlPanelView } from "ts/gamelib/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";

@@ -1,10 +1,8 @@
 ﻿import { IInteractor } from "ts/Interactors/Interactor";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/Physics/Transforms";
-// import { ILocated } from "ts/gamelib/Data/PhysicsData";
 import { IShape } from "ts/gamelib/Data/Shape";
-// import { IShapedModel, ShapedModel } from "ts/Models/DynamicModels";
-import { SingleGameObject } from "ts/GameObjects/GameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 
 
 export interface IShapedLocation {
