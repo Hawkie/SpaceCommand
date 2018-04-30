@@ -8,7 +8,7 @@ import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject } from "ts/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { Field } from "ts/States/Asteroids/ParticleField";
+import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";
 
@@ -33,10 +33,10 @@ export class MenuState implements IGameState {
     private assetsLoaded: boolean = false;
 
     static create(assets: Assets, actx:AudioContext): MenuState {
-        // var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+        // var field1 = new AsteroidFields('img/star.png', 512, 200, 32, 1);
 
-        var field1: IGameObject = Field.createBackgroundField(16, 1);
-        var field2: IGameObject = Field.createBackgroundField(32, 2);
+        var field1: IGameObject = AsteroidFields.createBackgroundField(16, 1);
+        var field2: IGameObject = AsteroidFields.createBackgroundField(32, 2);
 
         var title: IView = new TextView(()=>"SpaceCommander", new Coordinate(10, 20), "Arial", 18);
         // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2),

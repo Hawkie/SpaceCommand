@@ -1,6 +1,5 @@
 import { SingleGameObject, IGameObject } from "../../GameObjects/GameObject";
-import { ISyncedArray } from "./AsteroidModels";
-import { IActor } from "../../gamelib/Actors/Actor";
+import { IActor } from "ts/gamelib/Actors/Actor";
 
 interface IArrayAmendments<T> {
 

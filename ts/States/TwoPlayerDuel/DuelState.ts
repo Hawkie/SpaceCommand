@@ -22,7 +22,7 @@
 // import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject";
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { ValueObject } from "ts/GameObjects/ValueObject";
-// import { Field } from "ts/GameObjects/ParticleField";
+// import { Field } from "ts/GameObjects/AsteroidFields";
 // import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
 // import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 // import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";

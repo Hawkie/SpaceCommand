@@ -2,7 +2,7 @@ import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { IAsteroidState, IShip, IWeapon } from "./AsteroidModels";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "../../Physics/Transforms";
-import { IParticle } from "./ParticleField";
+import { IParticle } from "./AsteroidFields";
 import { Sound } from "ts/gamelib/Actors/Sound";
 
 export interface IShipControlInputs {

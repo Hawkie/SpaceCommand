@@ -23,7 +23,7 @@
 
 // import { IGameObject, SingleGameObject, MultiGameObject } from "ts/GameObjects/GameObject"
 // import { TextObject } from "ts/GameObjects/TextObject";
-// import { Field } from "ts/GameObjects/ParticleField";
+// import { Field } from "ts/GameObjects/AsteroidFields";
 // import { IView } from "ts/gamelib/Views/View";
 // import { PolyView, PolyGraphic, CircleView } from "ts/gamelib/Views/PolyViews";
 // import { ValueView } from "ts/gamelib/Views/ValueView";
@@ -166,7 +166,7 @@
 
 //     static create(assets: Assets, actx:AudioContext): LandExplorerState {
 //         // Background
-//         //var field1 = new ParticleField('img/star.png', 512, 200, 32, 1);
+//         //var field1 = new AsteroidFields('img/star.png', 512, 200, 32, 1);
 //         var field = Field.createBackgroundField(16, 2);
 
 //         // ship = space ship controller with gravity

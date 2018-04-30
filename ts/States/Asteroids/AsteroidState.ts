@@ -10,10 +10,10 @@ import { IInteractor } from "ts/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject, IObject } from "ts/GameObjects/GameObject";
-import { Field, IThrustInputs } from "ts/States/Asteroids/ParticleField";
-import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState, createStateModel } from "./AsteroidModels";
-import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "./AsteroidObjects";
-import { ArrayAmender } from "ts/States/Asteroids/AsteroidField";
+import { AsteroidFields, IThrustInputs } from "ts/States/Asteroids/AsteroidFields";
+import { IShip, AsteroidModels, IBall, IAsteroid,
+    IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";
+import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "ts/States/Asteroids/AsteroidObjects";
 
 
 export class AsteroidState implements IGameState {
@@ -58,8 +58,8 @@ export class AsteroidState implements IGameState {
 
     static createState(assets: Assets, actx: AudioContext): AsteroidState {
 
-        var field: IGameObject = Field.createBackgroundField(16, 2);
-        var spriteField: IGameObject = Field.createSpriteField();
+        var field: IGameObject = AsteroidFields.createBackgroundField(16, 2);
+        var spriteField: IGameObject = AsteroidFields.createSpriteField();
         var state: IAsteroidState = createStateModel();
         var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
         // get state objects and add asteroid objects
@@ -136,16 +136,15 @@ export class AsteroidState implements IGameState {
     bulletHitAsteroid(i1: number, i2: number): void {
         // effect on asteroid
         let a:IAsteroid = this.state.asteroids.asteroids[i1];
-        // this.asteroidNoise = true;
-        // remove bullet - todo - remove bullet with function
+        // remove bullet
         this.state.ship.weapon1.bullets.splice(i2, 1);
         this.stateObj.weaponObj.getComponents().splice(i2, 1);
-        // todo remove bullet obj
 
-        // add two small asteroids
+        // remove asteroid
         this.state.asteroids.playBreakSound = true;
         this.state.asteroids.asteroids.splice(i1, 1);
         this.stateObj.asteroidObjs.getComponents().splice(i1, 1);
+        // add two smaller asteroids
         // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {

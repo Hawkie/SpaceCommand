@@ -16,7 +16,6 @@ import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { Transforms } from "ts/Physics/Transforms";
 import { IExhaust, IExplosion } from "ts/States/Asteroids/AsteroidModels";
 import { Vector, IVector } from "ts/gamelib/Data/Vector";
-import { ArrayAmender, Syncer } from "./AsteroidField";
 
 export interface IParticle {
     x: number;
@@ -59,11 +58,10 @@ export interface IFieldInputs {
     size: number;
 }
 
-// particlefield inputs
 // source
 // generator Function
 // remove
-export class Field {
+export class AsteroidFields {
 
     // new field with simpler inputs and setter.
     static createBackgroundField(speed: number, size: number):  MultiGameObject<SingleGameObject<IParticle>> {
@@ -75,11 +73,12 @@ export class Field {
             [], [], ()=>fieldArray);
 
         var get: () => IParticleGenInputs = ()=> { return {
-            on: true,
-            itemsPerSec: 1,
-            maxGeneratedPerIteration: 1,
-            generationTimeInSec: undefined,
-        };};
+                on: true,
+                itemsPerSec: 1,
+                maxGeneratedPerIteration: 1,
+                generationTimeInSec: undefined,
+            };
+        };
         var generator: ParticleGenerator = new ParticleGenerator(
             get,
             (now: number) => {
@@ -91,32 +90,20 @@ export class Field {
                     born: now,
                     size: size,
                 };
-                var mover: IActor = new MoveConstVelocity(
-                    () => p,
-                    (out: IMoveOut) => {
-                        p.x += out.dx;
-                        p.y += out.dy;
-                    }
-                );
-                var view: IView = new RectangleView(() => { return {
-                    x: p.x,
-                    y: p.y,
-                    width: p.size,
-                    height: p.size,
-                };});
-                var newParticle: SingleGameObject<IParticle> = new SingleGameObject<IParticle>(()=>p, [mover], [view]);
-            field.getComponents().push(newParticle);
-            fieldModel.push(p);
-        });
-        var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(()=>5, (p: SingleGameObject<IParticle>)=> p.model().born);
-        var edge1:PredGreaterThan<IParticle>
-        = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
+                var newParticle: SingleGameObject<IParticle> = createParticleObject(p);
+                field.getComponents().push(newParticle);
+                fieldModel.push(p);
+            }
+        );
+        var age5: AgePred<IParticle> = new AgePred(()=>5, (p: IParticle)=> p.born);
+        var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
         var remover: ParticleRemover = new ParticleRemover(
             () => {
                 ParticleRemover.remove(
                     ()=>fieldModel,
                     field.getComponents,
-                    [edge1]);});
+                    [edge1]);
+                });
         // add the generator to the field object
         field.actors.push(generator, remover);
         return field;
@@ -147,20 +134,7 @@ export class Field {
                     born: now,
                     size: explosion().particleSize,
                 };
-                var mover: IActor = new MoveConstVelocity(
-                    () => p,
-                    (out: IMoveOut) => {
-                        p.x += out.dx;
-                        p.y += out.dy;
-                    }
-                );
-                var view:IView = new RectangleView(()=> { return {
-                    x: p.x,
-                    y: p.y,
-                    width: p.size,
-                    height: p.size,
-                };});
-                var newParticle: SingleGameObject<IParticle> =  new SingleGameObject<IParticle>(()=>p, [mover], [view]);
+                var newParticle: SingleGameObject<IParticle> = createParticleObject(p);
                 if (source.gravityOn) {
                     var getAcceleratorProps: () => IAcceleratorInputs = () => {
                         return {

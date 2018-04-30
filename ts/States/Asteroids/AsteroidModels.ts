@@ -9,7 +9,7 @@ import { IView } from "ts/gamelib/Views/View";
 import { PolyView } from "ts/gamelib/Views/PolyViews";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
-import { IParticle } from "./ParticleField";
+import { IParticle } from "./AsteroidFields";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
 
 export interface IAsteroidState {
@@ -141,7 +141,6 @@ export interface IBall {
 
 
 export function createStateModel(): IAsteroidState {
-
     var ship: IShip = createShip(256, 240);
     var ball: IBall = AsteroidModels.createBallObject(256, 280);
     var coin: ICoin = AsteroidModels.createCoin(new Coordinate(300, 400));
@@ -181,7 +180,6 @@ export function createShip(x: number, y: number): IShip {
 
     // var breakable = new BreakableData(20, 20, 0, false, false);
     // var shape = new Shape(triangleShip);
-    // var chassis = new GPSModel<IBreakable, ILocatedAngledMovingRotatingForces, IShape>(breakable, physics, shape);
     var ship: IShip = {
         x: x,
         y: y,
@@ -305,9 +303,7 @@ export class AsteroidModels {
     }
 
     static createCoin(location: Coordinate): ICoin {
-        // var l = new LocatedMovingAngledRotatingData(location, 0 , 0 , 45, 4);
         var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-        // var model = new GraphicModel<LocatedMovingAngledRotatingData, ISprite>(l, s);
         var coin: ICoin = {
             x: location.x,
             y: location.y,

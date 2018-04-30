@@ -1,9 +1,9 @@
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Vector, IVector } from "ts/gamelib/Data/Vector";
 
 export class Transforms {
 
-    static random(min: number, max: number) {
+    static random(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
@@ -16,18 +16,18 @@ export class Transforms {
     }
 
     static Rotate(points: Coordinate[], degrees: number): Coordinate[]{
-        var radians = degrees / 180 * Math.PI;
+        var radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
-        var c = Math.cos(radians);
-        var s = Math.sin(radians);
+        var c:number = Math.cos(radians);
+        var s:number = Math.sin(radians);
 
-        var newCoordinates = new Array<Coordinate>();
+        var newCoordinates:ICoordinate[] = [];
         // iterate thru each vertex and change position
-        for (var i = 0; i < points.length; i++) {
+        for (var i:number = 0; i < points.length; i++) {
             var x = c * points[i].x - s * points[i].y;
             var y = s * points[i].x + c * points[i].y;
-            var newCoordinate = new Coordinate(x, y);
+            var newCoordinate: ICoordinate = new Coordinate(x, y);
             newCoordinates.push(newCoordinate);
         }
         return newCoordinates;
