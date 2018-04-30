@@ -1,12 +1,12 @@
 ﻿import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 
-export interface ISoundObject {
+export interface IAudioObject {
     play(): void;
     pause(): void;
 }
 
-export class AudioObject implements ISoundObject {
+export class AudioObject implements IAudioObject {
     private audioElement: HTMLAudioElement;
 
     constructor(private source: string,
@@ -26,7 +26,7 @@ export class AudioObject implements ISoundObject {
 
 }
 
-export class AudioWithAmplifier implements ISoundObject {
+export class AudioWithAmplifier implements IAudioObject {
     private audioElement: HTMLAudioElement;
     private sourceNode: MediaElementAudioSourceNode;
     constructor(private source: string,
@@ -54,7 +54,7 @@ export class AudioWithAmplifier implements ISoundObject {
 }
 
 
-export class BufferObject implements ISoundObject {
+export class BufferObject implements IAudioObject {
 
     constructor(private actx: AudioContext,
         private buffer: AudioBuffer,

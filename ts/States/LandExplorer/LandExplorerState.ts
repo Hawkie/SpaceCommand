@@ -18,8 +18,8 @@
 // import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 
-// import { IInteractor, Interactor } from "ts/Interactors/Interactor";
-// import { ObjectCollisionDetector } from "ts/Interactors/CollisionDetector";
+// import { IInteractor, Interactor } from "ts/gamelib/Interactors/Interactor";
+// import { ObjectCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 
 // import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject"
 // import { TextObject } from "ts/GameObjects/TextObject";

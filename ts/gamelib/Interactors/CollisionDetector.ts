@@ -1,4 +1,4 @@
-﻿import { IInteractor } from "ts/Interactors/Interactor";
+﻿import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/Physics/Transforms";
 import { IShape } from "ts/gamelib/Data/Shape";

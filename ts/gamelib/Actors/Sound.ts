@@ -1,5 +1,5 @@
 import { IActor } from "./Actor";
-import { AudioObject, ISoundObject } from "ts/Sound/SoundObject";
+import { AudioObject, IAudioObject } from "ts/Sound/SoundObject";
 
 export interface ISoundInputs {
     play: boolean;
@@ -21,7 +21,7 @@ export class Sound implements IActor {
         if (this.multiPlay) {
             if (inputs.play) {
                 if (this.reset === true) {
-                    var newAudio: ISoundObject = new AudioObject(this.filename, this.loop);
+                    var newAudio: IAudioObject = new AudioObject(this.filename, this.loop);
                     newAudio.play();
                     this.reset = false;
                     this.whenPlayed();

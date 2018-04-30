@@ -1,6 +1,6 @@
 ﻿import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
-import { ISoundObject } from "ts/Sound/SoundObject";
+import { IAudioObject } from "ts/Sound/SoundObject";
 
 export class ControllerNode {
     constructor(public sourceNode: OscillatorNode,
@@ -8,7 +8,7 @@ export class ControllerNode {
 }
 
 
-export class FXObject implements ISoundObject {
+export class FXObject implements IAudioObject {
     private ampSettings: AmplifierSettings;
     constructor(private audioContext: AudioContext,
         private effect: SoundEffectData) {
