@@ -3,7 +3,7 @@ import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SingleGameObject, IGameObject, MultiGameObject, ComponentObjects } from "../../GameObjects/GameObject";
+import { SingleGameObject, IGameObject, MultiGameObject } from "../../GameObjects/GameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
@@ -12,9 +12,7 @@ import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 import { IShape } from "ts/gamelib/Data/Shape";
 import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
-// import { TextObject } from "../../GameObjects/TextObject";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-// import { ValueObject } from "../../GameObjects/ValueObject";
 import { IParticle, Field } from "./ParticleField";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { DrawContext } from "../../Common/DrawContext";
@@ -52,9 +50,9 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
     var gShipObj: SingleGameObject<IGraphicShip> = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
     var asteroidObjs: MultiGameObject<SingleGameObject<IAsteroid>> =  createAsteroidObjs(()=>state.asteroids.asteroids);
     var breakSound:IActor = new Sound(state.asteroids.breakSoundFilename, true, false, () => { return {
-        play: state.asteroids.break,
+        play: state.asteroids.playBreakSound,
         };},
-        ()=> state.asteroids.break = false);
+        ()=> state.asteroids.playBreakSound = false);
     asteroidObjs.actors.push(breakSound);
 
     var title: IView = new TextView(()=>state.title, new Coordinate(10, 20), "Arial", 18);
@@ -182,13 +180,14 @@ export class AsteroidObjects {
         var weapon: IWeapon = getWeapon();
         let bulletObjs: SingleGameObject<IParticle>[] = getWeapon().bullets.map((b)=> AsteroidObjects.createBulletObject(()=>b));
         var weaponObj: MultiGameObject<SingleGameObject<IParticle>> = new MultiGameObject([], [], ()=>bulletObjs);
-        var age5: AgePred<SingleGameObject<IParticle>> = new AgePred(
+        var age5: AgePred<IParticle> = new AgePred(
             ()=>weapon.bulletLifetime,
-            (p: SingleGameObject<IParticle>)=> p.model().born
+            (p: IParticle)=> p.born
         );
-        var remover: ParticleRemover<SingleGameObject<IParticle>> = new ParticleRemover<SingleGameObject<IParticle>>(
+        var remover: ParticleRemover = new ParticleRemover(
             () => {
                 ParticleRemover.remove(
+                    ()=>weapon.bullets,
                     weaponObj.getComponents,
                     [age5]);});
         // add the generator to the field object

@@ -1,22 +1,35 @@
 import { SingleGameObject, IGameObject } from "../../GameObjects/GameObject";
+import { ISyncedArray } from "./AsteroidModels";
+import { IActor } from "../../gamelib/Actors/Actor";
 
 interface IArrayAmendments<T> {
 
-    remove: number[];
-    add: T[];
-    existing: SingleGameObject<T>[];
+    oldItems: number[];
+    newItems: T[];
 }
 
-export function ArrayAmender<T>(getInputs: ()=> IArrayAmendments<T>, createObject: (t: T)=> SingleGameObject<T>): void {
+export class Syncer<T> implements IActor {
+    constructor(private get: ()=>IArrayAmendments<T>,
+    private items: SingleGameObject<T>[],
+    private createObject: (t: T)=> SingleGameObject<T>) {}
+    update(timeModifier: number): void {
+        // var inputs: IArrayAmendments<T> =  this.get();
+        ArrayAmender<T>(this.get, this.items, this.createObject);
+    }
+}
+
+export function ArrayAmender<T>(getInputs: ()=> IArrayAmendments<T>,
+    items: SingleGameObject<T>[],
+    createObject: (t: T)=> SingleGameObject<T>): void {
 
         var inputs:IArrayAmendments<T> = getInputs();
-        inputs.add.forEach(element => {
+        inputs.newItems.forEach(element => {
             var aObj:SingleGameObject<T> = createObject(element);
-            inputs.existing.push(aObj);
+            items.push(aObj);
         });
-        inputs.add = [];
-        inputs.remove.sort().reverse().forEach((i)=> {
-            inputs.existing.splice(i,1);
+        inputs.newItems = [];
+        inputs.oldItems.sort().reverse().forEach((i)=> {
+            items.splice(i,1);
         });
-        inputs.remove = [];
+        inputs.oldItems = [];
 }

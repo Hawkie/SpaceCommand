@@ -24,20 +24,20 @@ export class SingleGameObject<TModel> implements IGameObject, IObject<TModel> {
     }
 }
 
-export class ComponentObjects<TComponent extends IGameObject> implements IGameObject {
-    constructor(public getComponents: ()=> TComponent[]) {
-    }
+// export class ComponentObjects<TComponent extends IGameObject> implements IGameObject {
+//     constructor(public getComponents: ()=> TComponent[]) {
+//     }
 
-    update(timeModifier: number): void {
-        var components: TComponent[] = this.getComponents();
-        components.forEach(a => a.update(timeModifier));
-    }
+//     update(timeModifier: number): void {
+//         var components: TComponent[] = this.getComponents();
+//         components.forEach(a => a.update(timeModifier));
+//     }
 
-    display(drawContext: DrawContext): void {
-        var components: TComponent[] = this.getComponents();
-        components.forEach(e => e.display(drawContext));
-    }
-}
+//     display(drawContext: DrawContext): void {
+//         var components: TComponent[] = this.getComponents();
+//         components.forEach(e => e.display(drawContext));
+//     }
+// }
 
 
 // combi of single and component

@@ -9,7 +9,7 @@ import { IGameState } from "ts/States/GameState";
 import { IInteractor } from "ts/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject, IObject, ComponentObjects } from "ts/GameObjects/GameObject";
+import { IGameObject, SingleGameObject, MultiGameObject, IObject } from "ts/GameObjects/GameObject";
 import { Field, IThrustInputs } from "ts/States/Asteroids/ParticleField";
 import { IShip, AsteroidModels, IBall, IAsteroid, IGraphicShip, ICoin, IAsteroidState, createStateModel } from "./AsteroidModels";
 import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "./AsteroidObjects";
@@ -143,7 +143,7 @@ export class AsteroidState implements IGameState {
         // todo remove bullet obj
 
         // add two small asteroids
-        this.state.asteroids.break = true;
+        this.state.asteroids.playBreakSound = true;
         this.state.asteroids.asteroids.splice(i1, 1);
         this.stateObj.asteroidObjs.getComponents().splice(i1, 1);
         // arrayAmender<IAsteroid>(;

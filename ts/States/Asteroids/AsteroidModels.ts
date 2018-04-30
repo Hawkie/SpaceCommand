@@ -31,6 +31,12 @@ export interface IConfig {
 
 }
 
+export interface ISyncedArray<T> {
+    items: T[];
+    newItems: T[];
+    oldItems: number[];
+}
+
 export interface IShip {
     x: number;
     y: number;
@@ -65,7 +71,7 @@ export interface IWeapon {
 }
 
 export interface IExhaust {
-    particles: IParticle[];
+    particles: ISyncedArray<IParticle>;
     particlesPerSecond: number;
     particleLifetime: number;
     particleSize: number;
@@ -98,7 +104,7 @@ export interface IAsteroid {
 
 export interface IAsteroids {
     asteroids: IAsteroid[];
-    break: boolean;
+    playBreakSound: boolean;
     breakSoundFilename: string;
 }
 
@@ -142,7 +148,7 @@ export function createStateModel(): IAsteroidState {
     var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
     var asteroidState: IAsteroids = {
         asteroids: asteroids,
-        break: false,
+        playBreakSound: false,
         breakSoundFilename: "res/sound/blast.wav",
     };
     var graphicShip: IGraphicShip = AsteroidModels.createGraphicShip(200, 100);
@@ -204,7 +210,11 @@ export function createShip(x: number, y: number): IShip {
             bulletVelocity: 128,
         },
         exhaust: {
-            particles: [],
+            particles: {
+                items: [],
+                newItems: [],
+                oldItems: [],
+            },
             particleSize: 1,
             particlesPerSecond: 20,
             particleLifetime: 1,
