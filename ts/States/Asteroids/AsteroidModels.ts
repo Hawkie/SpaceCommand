@@ -142,15 +142,15 @@ export interface IBall {
 
 export function createStateModel(): IAsteroidState {
     var ship: IShip = createShip(256, 240);
-    var ball: IBall = AsteroidModels.createBallObject(256, 280);
-    var coin: ICoin = AsteroidModels.createCoin(new Coordinate(300, 400));
+    var ball: IBall = createBallObject(256, 280);
+    var coin: ICoin = createCoin(new Coordinate(300, 400));
     var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
     var asteroidState: IAsteroids = {
         asteroids: asteroids,
         playBreakSound: false,
         breakSoundFilename: "res/sound/blast.wav",
     };
-    var graphicShip: IGraphicShip = AsteroidModels.createGraphicShip(200, 100);
+    var graphicShip: IGraphicShip = createGraphicShip(200, 100);
 
     // things that change
     var stateVariables: IAsteroidState = {
@@ -231,6 +231,47 @@ export function createShip(x: number, y: number): IShip {
     return ship;
 }
 
+export function createGraphicShip(x: number, y:number): IGraphicShip {
+    var gShip: IGraphicShip = {
+        x: x,
+        y: y,
+        Vx: 0,
+        Vy: 0,
+        angle: 10,
+        spin: 0,
+        mass: 1,
+        graphic: "res/img/ship.png",
+    };
+    return gShip;
+}
+
+export function createCoin(location: Coordinate): ICoin {
+    var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+    var coin: ICoin = {
+        x: location.x,
+        y: location.y,
+        Vx: 0,
+        Vy: 0,
+        angle: 45,
+        spin: 4,
+        mass: 1,
+        sprite: s,
+    };
+    return coin;
+}
+
+export function createBallObject(x: number, y: number): IBall {
+    var ballModel: IBall = {
+        x: x,
+        y: y,
+        Vx: 0,
+        Vy: 0,
+        mass: 1,
+        r: 8,
+    };
+    return ballModel;
+}
+
 export class AsteroidModels {
 
 
@@ -286,46 +327,5 @@ export class AsteroidModels {
             graphic: "res/img/terrain.png",
         };
         return a;
-    }
-
-    public static createGraphicShip(x: number, y:number): IGraphicShip {
-        var gShip: IGraphicShip = {
-            x: x,
-            y: y,
-            Vx: 0,
-            Vy: 0,
-            angle: 10,
-            spin: 0,
-            mass: 1,
-            graphic: "res/img/ship.png",
-        };
-        return gShip;
-    }
-
-    static createCoin(location: Coordinate): ICoin {
-        var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-        var coin: ICoin = {
-            x: location.x,
-            y: location.y,
-            Vx: 0,
-            Vy: 0,
-            angle: 45,
-            spin: 4,
-            mass: 1,
-            sprite: s,
-        };
-        return coin;
-    }
-
-    static createBallObject(x: number, y: number): IBall {
-        var ballModel: IBall = {
-            x: x,
-            y: y,
-            Vx: 0,
-            Vy: 0,
-            mass: 1,
-            r: 8,
-        };
-        return ballModel;
     }
 }

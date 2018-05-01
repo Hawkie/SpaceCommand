@@ -13,7 +13,7 @@ import { IShape } from "ts/gamelib/Data/Shape";
 import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IParticle, AsteroidFields } from "./AsteroidFields";
+import { IParticle, AsteroidFields, createExhaustObj } from "./AsteroidFields";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { DrawContext } from "../../gamelib/Common/DrawContext";
 import { ValueView } from "ts/gamelib/Views/ValueView";
@@ -232,7 +232,7 @@ export class AsteroidObjects {
     static createExhaustObj(getExhaust: ()=>IExhaust, getShip: ()=>IShip)
         : MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<SingleGameObject> = AsteroidFields.createExhaustObj(getExhaust, ()=> {
+        var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(getExhaust, ()=> {
         return {
             x: ship.x,
             y: ship.y,

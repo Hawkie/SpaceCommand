@@ -44,11 +44,9 @@ export class AsteroidActors {
                 if (inputs.up) {
                     inputs.ship.thrust.length = inputs.ship.maxForwardForce;
                     inputs.ship.exhaust.on = true;
-                    // state.ship.on();
                 } else {
                     inputs.ship.thrust.length = 0;
                     inputs.ship.exhaust.on = false;
-                    // state.ship.off();
                 }
             }
         });
@@ -83,10 +81,6 @@ export class AsteroidActors {
         });
         return c;
     }
-//         this.bulletField.components.push(pObj);
-    //         this.laserSound.play();
-    //     }
-    // }
 
     static createExplosionController(get:()=>IExplosionControlInputs): IActor {
         var c: IActor = new Actor(get, (inputs, lastTimeModifier: number)=> {
