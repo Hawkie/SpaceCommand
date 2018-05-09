@@ -73,6 +73,7 @@ export interface IWeapon {
 export interface IExhaust {
     particles: ISyncedArray<IParticle>;
     particlesPerSecond: number;
+    maxParticlesPerSecond: number;
     particleLifetime: number;
     particleSize: number;
     on: boolean;
@@ -85,6 +86,8 @@ export interface IExplosion {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
+    explosionLifetime: number;
+    exploded: boolean;
     soundFilename: string;
     flashScreenValue: number;
 }
@@ -215,15 +218,18 @@ export function createShip(x: number, y: number): IShip {
             },
             particleSize: 1,
             particlesPerSecond: 20,
+            maxParticlesPerSecond: 50,
             particleLifetime: 1,
             on: false,
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
             particles: [],
             particleSize: 3,
-            particlesPerSecond: 20,
-            particleLifetime: 1,
+            particlesPerSecond: 200,
+            particleLifetime: 2,
             on: false,
+            explosionLifetime: 1,
+            exploded: false,
             soundFilename: "res/sound/explosion.wav",
             flashScreenValue: 0,
         },

@@ -8,27 +8,27 @@ import { AsteroidState } from "ts/States/Asteroids/AsteroidState";
 // import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
 // import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
 // import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
-import { MenuState } from "ts/States/MenuState";
+import { MenuState, createMenu } from "ts/States/MenuState";
 
 
 export class Game {
 
     // globals are doc and window
-    run(window, document): void {
+    run(window: any, document: any): void {
         console.log("Game Run()");
 
         var canvas: Canvas = new Canvas(512, 480, document);
-        var audioContext = new AudioContext();
-        var assets = new Assets();
+        var audioContext: AudioContext = new AudioContext();
+        var assets: Assets = new Assets();
         var states: IGameState[] = Game.createStates(assets, audioContext);
-        var gameloop = new EventLoop(window, canvas, audioContext, states);
+        var gameloop: EventLoop = new EventLoop(window, canvas, audioContext, states);
 
         gameloop.loop();
     }
 
     static createStates(assets: Assets, actx:AudioContext): IGameState[] {
 
-        var menuState: IGameState = MenuState.create(assets, actx);
+        var menuState: IGameState = createMenu(assets, actx);
         var asteroidState: IGameState = AsteroidState.createState(assets, actx);
         // var landingState = LandingState.create(assets, actx);
         // var soundDesigner = SoundDesignerState.create();
@@ -39,4 +39,4 @@ export class Game {
         var states: IGameState[] = [menuState, asteroidState];
         return states;
     }
-};
+}

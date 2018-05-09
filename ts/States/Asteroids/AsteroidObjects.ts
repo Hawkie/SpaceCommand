@@ -22,6 +22,7 @@ import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
 import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
+import { Timer } from "../../gamelib/Actors/Timers";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -245,11 +246,6 @@ export class AsteroidObjects {
             play: getExhaust().on,
         };});
         exhaustObj.actors.push(exhaustSound);
-        // var exhaustController: IActor = AsteroidActors.createExhaustController(()=> { return {
-        //     up: state.up,
-        //     ship: state.ship,
-        // };});
-        // exhaustObj.actors.push(exhaustController);
         return exhaustObj;
     }
 
@@ -290,6 +286,14 @@ export class AsteroidObjects {
             ship.explosion.flashScreenValue = value;
         });
         explosionObj.actors.push(flasher);
+        var timerTurnOff:IActor = new Timer(() => { return {
+            enabled: ship.crashed,
+            limit: ship.explosion.explosionLifetime,
+        };}, () => {
+            ship.explosion.on = false;
+            ship.explosion.exploded = true;
+        });
+        explosionObj.actors.push(timerTurnOff);
         return explosionObj;
     }
 

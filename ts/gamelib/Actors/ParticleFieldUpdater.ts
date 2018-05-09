@@ -1,30 +1,27 @@
 import { Vector } from "ts/gamelib/Data/Vector";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { ElapsedTimeLimit } from "./Timers";
 
 export interface IParticleGenInputs {
     on: boolean;
-    itemsPerSec: number;
-    maxGeneratedPerIteration?: number;
-    generationTimeInSec?: number;
 }
 
 // could use <T> instead of IGameObject
 export class ParticleGenerator implements IActor {
     constructor(private getIn: ()=> IParticleGenInputs,
-        private createParticle: (now: number) => void) {}
+        private createParticle: (now: number) => void,
+        private itemsPerSec: number,
+        private maxGeneratedPerIteration?: number,
+        private generationTimeInSec?: number) {}
 
-    // state variables
+    // used to calculated the particles per second
     private lastCheck: number = 0;
+    // used for calculating the time particles are generated
     private firstAdded: number = 0;
-
 
     update(lastTimeModifier: number): void {
         var inP: IParticleGenInputs = this.getIn();
-        this.generate(lastTimeModifier, inP);
-    }
-
-    generate(lastTimeModifier: number, inP: IParticleGenInputs): void {
         var now: number = Date.now();
         var on: boolean = inP.on;
         if (!on) {
@@ -34,14 +31,14 @@ export class ParticleGenerator implements IActor {
             var secSinceLast: number = (now - this.lastCheck) / 1000;
 
             // don't add if past generation time
-            if (inP.generationTimeInSec === undefined
+            if (this.generationTimeInSec === undefined
                 || this.firstAdded === 0
-                || ((now - this.firstAdded) / 1000) < inP.generationTimeInSec) {
+                || ((now - this.firstAdded) / 1000) < this.generationTimeInSec) {
 
                 // find the integer number of particles to add. conservatively round down
-                let toAdd: number = Math.floor(inP.itemsPerSec * secSinceLast);
-                if (inP.maxGeneratedPerIteration !== undefined) {
-                    toAdd = Math.min(toAdd, inP.maxGeneratedPerIteration);
+                let toAdd: number = Math.floor(this.itemsPerSec * secSinceLast);
+                if (this.maxGeneratedPerIteration !== undefined) {
+                    toAdd = Math.min(toAdd, this.maxGeneratedPerIteration);
                 }
                 for (let i: number = 0; i < toAdd; i++) {
                     this.createParticle(now);
@@ -54,6 +51,47 @@ export class ParticleGenerator implements IActor {
         }
     }
 }
+
+export interface IParticleGenInputs2 {
+    on: boolean;
+}
+
+// could use <T> instead of IGameObject
+export class ParticleGenerator2 implements IActor {
+    constructor(private getIn: ()=> IParticleGenInputs2,
+        private perSec: number,
+        private maxGen: number,
+        private createParticle: (now: number) => void) {}
+
+    // state variables
+    private lastCheck: number = 0;
+
+    update(lastTimeModifier: number): void {
+        var inP: IParticleGenInputs2 = this.getIn();
+        var now: number = Date.now();
+        var on: boolean = inP.on;
+        // reset if initialising
+        if (this.lastCheck === 0) {
+            this.lastCheck = now;
+        }
+        // reset if turned off
+        if (!on) {
+            this.lastCheck = now;
+        } else {
+            var secSinceLast: number = (now - this.lastCheck) / 1000;
+            // find the integer number of particles to add. conservatively round down
+            let toAdd: number = Math.floor(this.perSec * secSinceLast);
+            // limit max number of particles
+            toAdd = Math.min(toAdd, this.maxGen);
+            for (let i: number = 0; i < toAdd; i++) {
+                this.createParticle(now);
+                // reset if particles created
+                this.lastCheck = now;
+            }
+        }
+    }
+}
+
 
 export class ParticleRemover implements IActor {
     constructor(private removeFunction: ()=> void) {}
@@ -90,10 +128,11 @@ export class AgePred<TElement> implements IPred<TElement> {
 
     Test(element: TElement): boolean {
         if (this.lifeTimeInSec !== undefined) {
-            var ageInSec: number = (Date.now() - this.getBorn(element)) / 1000;
-            if (ageInSec > this.lifeTimeInSec()) {
-                return true;
-            }
+            return ElapsedTimeLimit(this.getBorn(element), this.lifeTimeInSec());
+            // var ageInSec: number = (Date.now() - this.getBorn(element)) / 1000;
+            // if (ageInSec > this.lifeTimeInSec()) {
+            //     return true;
+            // }
         }
         return false;
     }

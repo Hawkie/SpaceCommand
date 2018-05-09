@@ -20,6 +20,7 @@ export class SingleGameObject implements IGameObject {
     }
 }
 
+// an actor that keeps the model array in sync with the components
 // combi of single and component
 export class MultiGameObject<TComponent extends IGameObject> implements IGameObject {
     constructor(public actors: IActor[], public views: IView[], public getComponents: ()=>TComponent[]) {

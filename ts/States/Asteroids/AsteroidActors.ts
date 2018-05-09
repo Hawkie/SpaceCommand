@@ -85,10 +85,12 @@ export class AsteroidActors {
     static createExplosionController(get:()=>IExplosionControlInputs): IActor {
         var c: IActor = new Actor(get, (inputs, lastTimeModifier: number)=> {
             if (inputs.ship.crashed) {
-                inputs.ship.thrust.length = 0;
-                inputs.ship.explosion.on = true;
-                // exhaust with zero thrust creates trail of leaking debris which looks good.
-                inputs.ship.exhaust.on = true;
+                if (!inputs.ship.explosion.exploded) {
+                    inputs.ship.thrust.length = 0;
+                    inputs.ship.explosion.on = true;
+                    // exhaust with zero thrust creates trail of leaking debris which looks good.
+                    inputs.ship.exhaust.on = true;
+                }
             } else {
                 inputs.ship.explosion.on = false;
             }

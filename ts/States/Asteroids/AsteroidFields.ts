@@ -2,7 +2,7 @@
 import { IView } from "ts/gamelib/Views/View";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleGenInputs, ParticleGenerator,
-    ParticleRemover, PredGreaterThan, AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
+    ParticleRemover, PredGreaterThan, AgePred, IParticleGenInputs2, ParticleGenerator2 } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
 import { CircleView, RectangleView } from "ts/gamelib/Views/PolyViews";
@@ -63,20 +63,14 @@ export function createExhaustObj(getExhaust: () => IExhaust,
     let fieldArray: SingleGameObject[] = [];
     var exhaust: IExhaust = getExhaust();
 
-    var get: () => IParticleGenInputs = () => {
-        return {
-            on: exhaust.on,
-            itemsPerSec: exhaust.particlesPerSecond,
-            maxGeneratedPerIteration: 50,
-            generationTimeInSec: undefined,
-        };
-    };
-
     var field: MultiGameObject<SingleGameObject> =
         new MultiGameObject<SingleGameObject>([], [], () => fieldArray);
 
-    var generator: ParticleGenerator = new ParticleGenerator(
-        get,
+
+    var generator: ParticleGenerator2 = new ParticleGenerator2(
+        ()=> { return {on: getExhaust().on,};},
+        exhaust.particlesPerSecond,
+        exhaust.maxParticlesPerSecond,
         (now: number) => {
             var source: IThrustInputs = getInputs();
             var velocity: Coordinate = Transforms.VectorToCartesian(source.thrust.angle + Transforms.random(-5, 5) + 180,
@@ -89,25 +83,12 @@ export function createExhaustObj(getExhaust: () => IExhaust,
                 born: now,
                 size: 1,
             };
+            exhaust.particles.items.push(p);
+            // create view
             var newParticle: SingleGameObject = createParticleObject(p);
             if (source.gravityOn) {
-                var getAcceleratorProps: () => IAcceleratorInputs = () => {
-                    return {
-                        x: p.x,
-                        y: p.y,
-                        Vx: p.Vx,
-                        Vy: p.Vy,
-                        forces: [new Vector(180, 1)],
-                        mass: 0.1
-                    };
-                };
-                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
-                    p.Vx += out.dVx;
-                    p.Vy += out.dVy;
-                });
-                newParticle.actors.push(gravity);
+                addGravity(p, newParticle);
             }
-            exhaust.particles.items.push(p);
             field.getComponents().push(newParticle);
         });
     var age1: AgePred<IParticle> = new AgePred(() => exhaust.particleLifetime,
@@ -140,14 +121,13 @@ export class AsteroidFields {
             [], [], ()=>fieldArray);
 
         var get: () => IParticleGenInputs = ()=> { return {
-                on: true,
-                itemsPerSec: 1,
-                maxGeneratedPerIteration: 1,
-                generationTimeInSec: undefined,
+                on: true
             };
         };
-        var generator: ParticleGenerator = new ParticleGenerator(
+        var generator: ParticleGenerator2 = new ParticleGenerator2(
             get,
+            1,
+            1,
             (now: number) => {
                 var p: IParticle = {
                     x: 512 * Math.random(),
@@ -181,16 +161,15 @@ export class AsteroidFields {
         var fieldArray: SingleGameObject[] = [];
 
         var get: () => IParticleGenInputs = ()=> { return {
-            on: explosion().on,
-            itemsPerSec: explosion().particlesPerSecond,
-            maxGeneratedPerIteration: 50,
-            generationTimeInSec: 0.2,
+            on: explosion().on
         };};
         // todo: change class to remove null later
         var field: MultiGameObject<SingleGameObject> =
             new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
 
-        var generator: ParticleGenerator = new ParticleGenerator(get,
+        var generator: ParticleGenerator2 = new ParticleGenerator2(get,
+            explosion().particlesPerSecond,
+            50,
             (now: number) => {
                 var source: IExplosionInputs = inputs();
                 var p: IParticle = {
@@ -203,21 +182,7 @@ export class AsteroidFields {
                 };
                 var newParticle: SingleGameObject = createParticleObject(p);
                 if (source.gravityOn) {
-                    var getAcceleratorProps: () => IAcceleratorInputs = () => {
-                        return {
-                            x: p.x,
-                            y: p.y,
-                            Vx: p.Vx,
-                            Vy: p.Vy,
-                            forces: [new Vector(180, 1)],
-                            mass: 0.1
-                        };
-                    };
-                    var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
-                        p.Vx += out.dVx;
-                        p.Vy += out.dVy;
-                    });
-                    newParticle.actors.push(gravity);
+                    addGravity(p, newParticle);
                 }
                 explosion().particles.push(p);
                 field.getComponents().push(newParticle);
@@ -239,10 +204,7 @@ export class AsteroidFields {
         let fieldModel: ISpinningParticle[] = [];
         let fieldArray: SingleGameObject[] = [];
         var get: () => IParticleGenInputs = ()=> { return {
-            on: true,
-            itemsPerSec: 1,
-            maxGeneratedPerIteration: 1,
-            generationTimeInSec: undefined,
+            on: true
         };};
 
         var field: MultiGameObject<SingleGameObject> =
@@ -286,7 +248,10 @@ export class AsteroidFields {
             var o: SingleGameObject = new SingleGameObject([mover, animator, spinner], [view]);
             fieldModel.push(p);
             field.getComponents().push(o);
-        });
+        },
+        1,
+        1,
+        undefined);
         var age1: AgePred<ISpinningParticle> = new AgePred(()=>10, (p: ISpinningParticle)=> p.born);
             var remover: ParticleRemover = new ParticleRemover(
                 () => {
@@ -298,6 +263,24 @@ export class AsteroidFields {
             field.actors.push(generator, remover);
         return field;
     }
+}
+
+function addGravity(p: IParticle, newParticle: SingleGameObject): void {
+    var getAcceleratorProps: () => IAcceleratorInputs = () => {
+        return {
+            x: p.x,
+            y: p.y,
+            Vx: p.Vx,
+            Vy: p.Vy,
+            forces: [new Vector(180, 1)],
+            mass: 0.1
+        };
+    };
+    var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
+        p.Vx += out.dVx;
+        p.Vy += out.dVy;
+    });
+    newParticle.actors.push(gravity);
 }
 
 function createParticleObject(p: IParticle): SingleGameObject {
