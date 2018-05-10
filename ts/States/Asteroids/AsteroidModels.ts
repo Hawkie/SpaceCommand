@@ -78,6 +78,7 @@ export interface IParticleField {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
+    gravity: boolean;
 }
 // var field: IGameObject = AsteroidFields.createBackgroundField(16, 2);
 
@@ -188,6 +189,7 @@ export function createStarField(): IParticleField {
         particleLifetime: undefined,
         particleSize: 2,
         on: true,
+        gravity: false,
     };
 }
 
@@ -236,6 +238,7 @@ export function createShip(x: number, y: number): IShip {
                 maxParticlesPerSecond: 50,
                 particleLifetime: 1,
                 on: false,
+                gravity: false,
             },
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
@@ -246,6 +249,7 @@ export function createShip(x: number, y: number): IShip {
                 maxParticlesPerSecond: 50,
                 particleLifetime: 2,
                 on: false,
+                gravity: false,
             },
             explosionLifetime: 1,
             exploded: false,

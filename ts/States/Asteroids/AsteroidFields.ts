@@ -47,7 +47,6 @@ export interface IFieldInputs {
     Vy: number;
     vYLowSpread: number;
     vYHighSpread: number;
-    gravityOn: boolean;
 }
 
 export function createParticleField(particles: IParticle[],
@@ -55,6 +54,7 @@ export function createParticleField(particles: IParticle[],
     maxParticlesPerSecond: number,
     particleSize: number,
     particleLifetime: number,
+    gravity: boolean,
     fieldInputs: ()=>IFieldInputs,): MultiGameObject<SingleGameObject> {
 
     var fieldArray: SingleGameObject[] = [];
@@ -76,7 +76,7 @@ export function createParticleField(particles: IParticle[],
                 size: particleSize,
             };
             var newParticle: SingleGameObject = createParticleObject(p);
-            if (source.gravityOn) {
+            if (gravity) {
                 addGravity(p, newParticle);
             }
             particles.push(p);

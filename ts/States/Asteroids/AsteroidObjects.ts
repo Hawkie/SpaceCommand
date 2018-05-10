@@ -83,14 +83,16 @@ export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
     });
     return asteroidObjs;
 }
-
-export function createBackgroundField(getState: ()=>IParticleField, speed: number): MultiGameObject<SingleGameObject> {
-    var field: IParticleField = getState();
+// todo add the edge predicate to background
+//     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
+export function createBackgroundField(getField: ()=>IParticleField, speed: number): MultiGameObject<SingleGameObject> {
+    var field: IParticleField = getField();
     var starField: MultiGameObject<SingleGameObject> = createParticleField(field.particles,
         field.particlesPerSecond,
         field.maxParticlesPerSecond,
         field.particleSize,
         field.particleLifetime,
+        field.gravity,
         ()=> {
             return {
                 on: field.on,
@@ -108,7 +110,6 @@ export function createBackgroundField(getState: ()=>IParticleField, speed: numbe
                 Vy: speed,
                 vYLowSpread: 0,
                 vYHighSpread: 10,
-                gravityOn: false,
         };});
     return starField;
 }
@@ -267,6 +268,7 @@ export class AsteroidObjects {
             ship.exhaust.exhaustParticleField.maxParticlesPerSecond,
             ship.exhaust.exhaustParticleField.particleSize,
             ship.exhaust.exhaustParticleField.particleLifetime,
+            ship.exhaust.exhaustParticleField.gravity,
             ()=> {
                 var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
                 ship.thrust.length * 5 + Transforms.random(-5, 5));
@@ -286,7 +288,6 @@ export class AsteroidObjects {
                     Vy: velocity.y,
                     vYLowSpread: 0,
                     vYHighSpread: 0,
-                    gravityOn: false,
             };});
         var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, false, true, () => { return {
             play: ship.exhaust.exhaustParticleField.on,
@@ -303,6 +304,7 @@ export class AsteroidObjects {
                 ship.explosion.explosionParticleField.maxParticlesPerSecond,
                 ship.explosion.explosionParticleField.particleSize,
                 ship.explosion.explosionParticleField.particleLifetime,
+                ship.explosion.explosionParticleField.gravity,
                 ()=> { return {
                     on: ship.explosion.explosionParticleField.on,
                     x: ship.x,
@@ -319,7 +321,6 @@ export class AsteroidObjects {
                     Vy: ship.Vy,
                     vYLowSpread: -10,
                     vYHighSpread: 10,
-                    gravityOn: false,
             };});
         var explosionSound:IActor = new Sound(ship.explosion.soundFilename, true, false, () => { return {
             play: ship.explosion.explosionParticleField.on,

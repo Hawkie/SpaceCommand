@@ -45,6 +45,7 @@ function createMenuState(): IMenuState {
             particleLifetime: 40,
             particleSize: 1,
             on: true,
+            gravity: false,
         },
         starField2: {
             particles: [],
@@ -53,6 +54,7 @@ function createMenuState(): IMenuState {
             particleLifetime: 20,
             particleSize: 2,
             on: true,
+            gravity: false,
         },
         menuItems: ["Asteroids"],
         originalItems: [],
