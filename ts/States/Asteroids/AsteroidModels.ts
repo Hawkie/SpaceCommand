@@ -17,6 +17,7 @@ export interface IAsteroidState {
     right: boolean;
     up: boolean;
     fire: boolean;
+    starField: IParticleField;
     ship: IShip;
     ball: IBall;
     coin: ICoin;
@@ -70,23 +71,23 @@ export interface IWeapon {
     bulletLifetime: number;
 }
 
-export interface IExhaust {
-    particles: ISyncedArray<IParticle>;
-    particlesPerSecond: number;
-    maxParticlesPerSecond: number;
-    particleLifetime: number;
-    particleSize: number;
-    on: boolean;
-    soundFilename: string;
-}
-
-export interface IExplosion {
+export interface IParticleField {
     particles: IParticle[];
     particlesPerSecond: number;
     maxParticlesPerSecond: number;
     particleLifetime: number;
     particleSize: number;
     on: boolean;
+}
+// var field: IGameObject = AsteroidFields.createBackgroundField(16, 2);
+
+export interface IExhaust {
+    exhaustParticleField: IParticleField;
+    soundFilename: string;
+}
+
+export interface IExplosion {
+    explosionParticleField: IParticleField;
     explosionLifetime: number;
     exploded: boolean;
     soundFilename: string;
@@ -148,6 +149,7 @@ export interface IBall {
 
 
 export function createStateModel(): IAsteroidState {
+    var starField: IParticleField = createStarField();
     var ship: IShip = createShip(256, 240);
     var ball: IBall = createBallObject(256, 280);
     var coin: ICoin = createCoin(new Coordinate(300, 400));
@@ -165,6 +167,7 @@ export function createStateModel(): IAsteroidState {
         right: false,
         up: false,
         fire: false,
+        starField: starField,
         ship: ship,
         ball: ball,
         coin: coin,
@@ -175,6 +178,17 @@ export function createStateModel(): IAsteroidState {
         title: "SpaceCommand",
     };
     return stateVariables;
+}
+
+export function createStarField(): IParticleField {
+    return {
+        particles: [],
+        particlesPerSecond: 1,
+        maxParticlesPerSecond: 1,
+        particleLifetime: undefined,
+        particleSize: 2,
+        on: true,
+    };
 }
 
 export function createShip(x: number, y: number): IShip {
@@ -215,24 +229,24 @@ export function createShip(x: number, y: number): IShip {
             bulletVelocity: 128,
         },
         exhaust: {
-            particles: {
-                items: [],
-                newItems: [],
-                oldItems: [],
+            exhaustParticleField: {
+                particles: [],
+                particleSize: 1,
+                particlesPerSecond: 20,
+                maxParticlesPerSecond: 50,
+                particleLifetime: 1,
+                on: false,
             },
-            particleSize: 1,
-            particlesPerSecond: 20,
-            maxParticlesPerSecond: 50,
-            particleLifetime: 1,
-            on: false,
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
-            particles: [],
-            particleSize: 3,
-            particlesPerSecond: 200,
-            maxParticlesPerSecond: 50,
-            particleLifetime: 2,
-            on: false,
+            explosionParticleField: {
+                particles: [],
+                particleSize: 3,
+                particlesPerSecond: 200,
+                maxParticlesPerSecond: 50,
+                particleLifetime: 2,
+                on: false,
+            },
             explosionLifetime: 1,
             exploded: false,
             soundFilename: "res/sound/explosion.wav",

@@ -1,5 +1,5 @@
 import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
-    IWeapon, IExhaust, IExplosion, AsteroidModels } from "./AsteroidModels";
+    IWeapon, IExhaust, IExplosion, AsteroidModels, IParticleField } from "./AsteroidModels";
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
@@ -37,13 +37,14 @@ export interface IAsteroidStateObject {
 
 export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAsteroidStateObject {
     var state: IAsteroidState = getState();
-    var shipObj: SingleGameObject = AsteroidObjects.createShipObject(getState, ()=>state.ship);
 
+    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(()=>state.starField, 32);
+    var shipObj: SingleGameObject = AsteroidObjects.createShipObject(getState, ()=>state.ship);
     var weaponObj: MultiGameObject<SingleGameObject>
         = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
     var exhaustObj: MultiGameObject<SingleGameObject> = AsteroidObjects.createExhaustObj(()=> state.ship);
     var explosionObj: MultiGameObject<SingleGameObject>
-        = AsteroidObjects.createExplosionObj(()=>state.ship.explosion, ()=>state.ship);
+        = AsteroidObjects.createExplosionObj(()=>state.ship);
 
     var ballObj: SingleGameObject = AsteroidObjects.createBallObject(()=>state.ball);
     var shipBallObj: SingleGameObject = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
@@ -66,7 +67,7 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
         weaponObj: weaponObj,
         asteroidObjs: asteroidObjs,
         views: [title, score, scoreDisplay, angleDisplay],
-        sceneObjs: [shipObj,weaponObj, exhaustObj, explosionObj, shipBallObj,
+        sceneObjs: [starFieldObj, shipObj,weaponObj, exhaustObj, explosionObj, shipBallObj,
             coinObj, ballObj, gShipObj],
     };
     return aObjs;
@@ -81,6 +82,35 @@ export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
         asteroidObjs.getComponents().push(AsteroidObjects.createAsteroidObject(()=>a));
     });
     return asteroidObjs;
+}
+
+export function createBackgroundField(getState: ()=>IParticleField, speed: number): MultiGameObject<SingleGameObject> {
+    var field: IParticleField = getState();
+    var starField: MultiGameObject<SingleGameObject> = createParticleField(field.particles,
+        field.particlesPerSecond,
+        field.maxParticlesPerSecond,
+        field.particleSize,
+        field.particleLifetime,
+        ()=> {
+            return {
+                on: field.on,
+                x: 0,
+                xOffset: 0,
+                xLowSpread: 0,
+                xHighSpread: 512,
+                y: 0,
+                yOffset: 0,
+                yLowSpread: 0,
+                yHighSpread: 0,
+                Vx: 0,
+                vXLowSpread: 0,
+                vXHighSpread: 0,
+                Vy: speed,
+                vYLowSpread: 0,
+                vYHighSpread: 10,
+                gravityOn: false,
+        };});
+    return starField;
 }
 
 export class AsteroidObjects {
@@ -232,16 +262,16 @@ export class AsteroidObjects {
 
     static createExhaustObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.particles.items,
-            ship.exhaust.particlesPerSecond,
-            ship.exhaust.maxParticlesPerSecond,
-            ship.exhaust.particleSize,
-            ship.exhaust.particleLifetime,
+        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField.particles,
+            ship.exhaust.exhaustParticleField.particlesPerSecond,
+            ship.exhaust.exhaustParticleField.maxParticlesPerSecond,
+            ship.exhaust.exhaustParticleField.particleSize,
+            ship.exhaust.exhaustParticleField.particleLifetime,
             ()=> {
                 var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
                 ship.thrust.length * 5 + Transforms.random(-5, 5));
                 return {
-                    on: ship.exhaust.on,
+                    on: ship.exhaust.exhaustParticleField.on,
                     x: ship.x,
                     xOffset: ship.shape.offset.x,
                     xLowSpread: -2,
@@ -259,25 +289,22 @@ export class AsteroidObjects {
                     gravityOn: false,
             };});
         var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, false, true, () => { return {
-            play: ship.exhaust.on,
+            play: ship.exhaust.exhaustParticleField.on,
         };});
         exhaustObj.actors.push(exhaustSound);
         return exhaustObj;
     }
 
-    static createExplosionObj(getExplosion: ()=>IExplosion,
-        getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
-
-        var explosion: IExplosion = getExplosion();
+    static createExplosionObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
         var explosionObj: MultiGameObject<SingleGameObject>
-            = createParticleField(ship.explosion.particles,
-                ship.explosion.particlesPerSecond,
-                ship.explosion.maxParticlesPerSecond,
-                ship.explosion.particleSize,
-                ship.explosion.particleLifetime,
+            = createParticleField(ship.explosion.explosionParticleField.particles,
+                ship.explosion.explosionParticleField.particlesPerSecond,
+                ship.explosion.explosionParticleField.maxParticlesPerSecond,
+                ship.explosion.explosionParticleField.particleSize,
+                ship.explosion.explosionParticleField.particleLifetime,
                 ()=> { return {
-                    on: ship.explosion.on,
+                    on: ship.explosion.explosionParticleField.on,
                     x: ship.x,
                     xOffset: ship.shape.offset.x,
                     xLowSpread: -2,
@@ -295,7 +322,7 @@ export class AsteroidObjects {
                     gravityOn: false,
             };});
         var explosionSound:IActor = new Sound(ship.explosion.soundFilename, true, false, () => { return {
-            play: getExplosion().on,
+            play: ship.explosion.explosionParticleField.on,
         };});
         explosionObj.actors.push(explosionSound);
         var flashView: IView = new ScreenFlashView(()=> { return {
@@ -320,7 +347,7 @@ export class AsteroidObjects {
             enabled: ship.crashed,
             limit: ship.explosion.explosionLifetime,
         };}, () => {
-            ship.explosion.on = false;
+            ship.explosion.explosionParticleField.on = false;
             ship.explosion.exploded = true;
         });
         explosionObj.actors.push(timerTurnOff);

@@ -99,51 +99,6 @@ export function createParticleField(particles: IParticle[],
 // remove
 export class AsteroidFields {
 
-    // new field with simpler inputs and setter.
-    static createBackgroundField(speed: number, size: number):  MultiGameObject<SingleGameObject> {
-        var fieldModel: IParticle[] = [];
-        var fieldArray: SingleGameObject[] = [];
-
-        // todo: change class to remove null later
-        let field: MultiGameObject<SingleGameObject> = new MultiGameObject<SingleGameObject>(
-            [], [], ()=>fieldArray);
-
-        var get: () => IParticleGenInputs = ()=> { return {
-                on: true
-            };
-        };
-        var generator: ParticleGenerator2 = new ParticleGenerator2(
-            get,
-            1,
-            1,
-            (now: number) => {
-                var p: IParticle = {
-                    x: 512 * Math.random(),
-                    y: 0,
-                    Vx: 0,
-                    Vy: speed,
-                    born: now,
-                    size: size,
-                };
-                var newParticle: SingleGameObject = createParticleObject(p);
-                field.getComponents().push(newParticle);
-                fieldModel.push(p);
-            }
-        );
-        var age5: AgePred<IParticle> = new AgePred(()=>5, (p: IParticle)=> p.born);
-        var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
-        var remover: ParticleRemover = new ParticleRemover(
-            () => {
-                ParticleRemover.remove(
-                    ()=>fieldModel,
-                    field.getComponents,
-                    [edge1]);
-                });
-        // add the generator to the field object
-        field.actors.push(generator, remover);
-        return field;
-    }
-
     // sprite field
     static createSpriteField(): MultiGameObject<SingleGameObject> {
         let fieldModel: ISpinningParticle[] = [];

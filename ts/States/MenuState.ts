@@ -13,6 +13,8 @@ import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { IActor } from "ts/gamelib/Actors/Actor";
+import { IParticleField } from "./Asteroids/AsteroidModels";
+import { createBackgroundField } from "./Asteroids/AsteroidObjects";
 
 // function createMenuItem(name: string, x: number, y: number): SingleGameObject {
 //     var menuObject: SingleGameObject = new SingleGameObject([],
@@ -24,6 +26,8 @@ interface IMenuState {
     title: string;
     font: string;
     fontSize: number;
+    starField1: IParticleField;
+    starField2: IParticleField;
     menuItems: string[];
     originalItems: string[];
 }
@@ -34,6 +38,22 @@ function createMenuState(): IMenuState {
         title: "Menu",
         font: "Arial",
         fontSize: 18,
+        starField1: {
+            particles: [],
+            particlesPerSecond: 2,
+            maxParticlesPerSecond: 2,
+            particleLifetime: 40,
+            particleSize: 1,
+            on: true,
+        },
+        starField2: {
+            particles: [],
+            particlesPerSecond: 2,
+            maxParticlesPerSecond: 2,
+            particleLifetime: 20,
+            particleSize: 2,
+            on: true,
+        },
         menuItems: ["Asteroids"],
         originalItems: [],
     };
@@ -42,8 +62,8 @@ function createMenuState(): IMenuState {
 function createMenuObj(getState: ()=>IMenuState): IGameObject {
     var state: IMenuState = getState();
     var sound: Sound = new Sound(state.musicFilename, false, true, ()=> { return { play: true};});
-    var field1: IGameObject = AsteroidFields.createBackgroundField(16, 1);
-    var field2: IGameObject = AsteroidFields.createBackgroundField(32, 2);
+    var field1: IGameObject = createBackgroundField(() =>state.starField1, 16);
+    var field2: IGameObject = createBackgroundField(()=>state.starField2, 32);
 
     var title: IView = new TextView(()=>state.title, new Coordinate(10, 20), "Arial", 18);
     var gameObject: IGameObject = new MultiGameObject<SingleGameObject>([sound], [title], ()=> [field1, field2]);

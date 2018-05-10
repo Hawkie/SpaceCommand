@@ -58,14 +58,13 @@ export class AsteroidState implements IGameState {
 
     static createState(assets: Assets, actx: AudioContext): AsteroidState {
 
-        var field: IGameObject = AsteroidFields.createBackgroundField(16, 2);
         var spriteField: IGameObject = AsteroidFields.createSpriteField();
         var state: IAsteroidState = createStateModel();
         var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
         // get state objects and add asteroid objects
 
         var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
-            [field, spriteField]);
+            [spriteField]);
         return asteroidState;
     }
 

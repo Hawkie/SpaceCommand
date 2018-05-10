@@ -43,10 +43,10 @@ export class AsteroidActors {
                 }
                 if (inputs.up) {
                     inputs.ship.thrust.length = inputs.ship.maxForwardForce;
-                    inputs.ship.exhaust.on = true;
+                    inputs.ship.exhaust.exhaustParticleField.on = true;
                 } else {
                     inputs.ship.thrust.length = 0;
-                    inputs.ship.exhaust.on = false;
+                    inputs.ship.exhaust.exhaustParticleField.on = false;
                 }
             }
         });
@@ -87,12 +87,12 @@ export class AsteroidActors {
             if (inputs.ship.crashed) {
                 if (!inputs.ship.explosion.exploded) {
                     inputs.ship.thrust.length = 0;
-                    inputs.ship.explosion.on = true;
+                    inputs.ship.explosion.explosionParticleField.on = true;
                     // exhaust with zero thrust creates trail of leaking debris which looks good.
-                    inputs.ship.exhaust.on = true;
+                    inputs.ship.exhaust.exhaustParticleField.on = true;
                 }
             } else {
-                inputs.ship.explosion.on = false;
+                inputs.ship.explosion.explosionParticleField.on = false;
             }
         });
         return c;
