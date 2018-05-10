@@ -13,7 +13,7 @@ import { IShape } from "ts/gamelib/Data/Shape";
 import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IParticle, AsteroidFields, createExhaustObj } from "./AsteroidFields";
+import { IParticle, AsteroidFields, createParticleField } from "./AsteroidFields";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { DrawContext } from "../../gamelib/Common/DrawContext";
 import { ValueView } from "ts/gamelib/Views/ValueView";
@@ -23,6 +23,7 @@ import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
 import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Timer } from "../../gamelib/Actors/Timers";
+import { Transforms } from "../../Physics/Transforms";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -40,8 +41,7 @@ export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAstero
 
     var weaponObj: MultiGameObject<SingleGameObject>
         = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
-    var exhaustObj: MultiGameObject<SingleGameObject>
-        = AsteroidObjects.createExhaustObj(()=>state.ship.exhaust, ()=>state.ship);
+    var exhaustObj: MultiGameObject<SingleGameObject> = AsteroidObjects.createExhaustObj(()=> state.ship);
     var explosionObj: MultiGameObject<SingleGameObject>
         = AsteroidObjects.createExplosionObj(()=>state.ship.explosion, ()=>state.ship);
 
@@ -230,20 +230,36 @@ export class AsteroidObjects {
         return particleObj;
     }
 
-    static createExhaustObj(getExhaust: ()=>IExhaust, getShip: ()=>IShip)
-        : MultiGameObject<SingleGameObject> {
+    static createExhaustObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(getExhaust, ()=> {
-        return {
-            x: ship.x,
-            y: ship.y,
-            gravityOn: false,
-            thrust: ship.thrust,
-            xOffset: ship.shape.offset.x,
-            yOffset: ship.shape.offset.y,
-        };});
+        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.particles.items,
+            ship.exhaust.particlesPerSecond,
+            ship.exhaust.maxParticlesPerSecond,
+            ship.exhaust.particleSize,
+            ship.exhaust.particleLifetime,
+            ()=> {
+                var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
+                ship.thrust.length * 5 + Transforms.random(-5, 5));
+                return {
+                    on: ship.exhaust.on,
+                    x: ship.x,
+                    xOffset: ship.shape.offset.x,
+                    xLowSpread: -2,
+                    xHighSpread: 2,
+                    y: ship.y,
+                    yOffset: ship.shape.offset.y,
+                    yLowSpread: -2,
+                    yHighSpread: 2,
+                    Vx: velocity.x,
+                    vXLowSpread: 0,
+                    vXHighSpread: 0,
+                    Vy: velocity.y,
+                    vYLowSpread: 0,
+                    vYHighSpread: 0,
+                    gravityOn: false,
+            };});
         var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, false, true, () => { return {
-            play: getExhaust().on,
+            play: ship.exhaust.on,
         };});
         exhaustObj.actors.push(exhaustSound);
         return exhaustObj;
@@ -255,15 +271,29 @@ export class AsteroidObjects {
         var explosion: IExplosion = getExplosion();
         var ship: IShip = getShip();
         var explosionObj: MultiGameObject<SingleGameObject>
-            = AsteroidFields.createExplosion(getExplosion, ()=> {
-        return {
-            x: ship.x,
-            y: ship.y,
-            gravityOn: false,
-            thrust: ship.thrust,
-            xOffset: ship.shape.offset.x,
-            yOffset: ship.shape.offset.y,
-        };});
+            = createParticleField(ship.explosion.particles,
+                ship.explosion.particlesPerSecond,
+                ship.explosion.maxParticlesPerSecond,
+                ship.explosion.particleSize,
+                ship.explosion.particleLifetime,
+                ()=> { return {
+                    on: ship.explosion.on,
+                    x: ship.x,
+                    xOffset: ship.shape.offset.x,
+                    xLowSpread: -2,
+                    xHighSpread: 2,
+                    y: ship.y,
+                    yOffset: ship.shape.offset.y,
+                    yLowSpread: -2,
+                    yHighSpread: 2,
+                    Vx: ship.Vx,
+                    vXLowSpread: -10,
+                    vXHighSpread: 10,
+                    Vy: ship.Vy,
+                    vYLowSpread: -10,
+                    vYHighSpread: 10,
+                    gravityOn: false,
+            };});
         var explosionSound:IActor = new Sound(ship.explosion.soundFilename, true, false, () => { return {
             play: getExplosion().on,
         };});
@@ -274,16 +304,16 @@ export class AsteroidObjects {
             width: 480,
             height: 512,
             on: ship.crashed,
-            value: ship.explosion.flashScreenValue,
+            value: ship.explosion.flash.flashScreenValue,
         };});
         explosionObj.views.push(flashView);
         // add flasher to value so screen changes
         var flasher:IActor = new Flasher(() => { return {
             enabled: ship.crashed,
-            value: ship.explosion.flashScreenValue,
-            repeat: 10,
+            value: ship.explosion.flash.flashScreenValue,
+            repeat: ship.explosion.flash.flashRepeat,
         };}, (value:number)=> {
-            ship.explosion.flashScreenValue = value;
+            ship.explosion.flash.flashScreenValue = value;
         });
         explosionObj.actors.push(flasher);
         var timerTurnOff:IActor = new Timer(() => { return {

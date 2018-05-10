@@ -6,15 +6,16 @@ remove sound that doen't seem to work on a phone safari browser?
 
 fixes:
 
-The bullet removal when player hits player
-array model -> Object removal process (bullets aging not being removed from Obj)
-
+initialise sound problem
 the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
 
 put all helper static classes in one place - functions
 
 condense all the field generators
 
-implement keep in as an actor
 
-remove model from game object
+47534688
+auxillis
+03445712726rf
+
+
