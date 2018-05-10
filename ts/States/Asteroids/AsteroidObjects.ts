@@ -87,12 +87,7 @@ export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
 //     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
 export function createBackgroundField(getField: ()=>IParticleField, speed: number): MultiGameObject<SingleGameObject> {
     var field: IParticleField = getField();
-    var starField: MultiGameObject<SingleGameObject> = createParticleField(field.particles,
-        field.particlesPerSecond,
-        field.maxParticlesPerSecond,
-        field.particleSize,
-        field.particleLifetime,
-        field.gravity,
+    var starField: MultiGameObject<SingleGameObject> = createParticleField(field,
         ()=> {
             return {
                 on: field.on,
@@ -263,12 +258,7 @@ export class AsteroidObjects {
 
     static createExhaustObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField.particles,
-            ship.exhaust.exhaustParticleField.particlesPerSecond,
-            ship.exhaust.exhaustParticleField.maxParticlesPerSecond,
-            ship.exhaust.exhaustParticleField.particleSize,
-            ship.exhaust.exhaustParticleField.particleLifetime,
-            ship.exhaust.exhaustParticleField.gravity,
+        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField,
             ()=> {
                 var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
                 ship.thrust.length * 5 + Transforms.random(-5, 5));
@@ -299,12 +289,7 @@ export class AsteroidObjects {
     static createExplosionObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
         var ship: IShip = getShip();
         var explosionObj: MultiGameObject<SingleGameObject>
-            = createParticleField(ship.explosion.explosionParticleField.particles,
-                ship.explosion.explosionParticleField.particlesPerSecond,
-                ship.explosion.explosionParticleField.maxParticlesPerSecond,
-                ship.explosion.explosionParticleField.particleSize,
-                ship.explosion.explosionParticleField.particleLifetime,
-                ship.explosion.explosionParticleField.gravity,
+            = createParticleField(ship.explosion.explosionParticleField,
                 ()=> { return {
                     on: ship.explosion.explosionParticleField.on,
                     x: ship.x,

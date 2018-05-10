@@ -80,7 +80,6 @@ export interface IParticleField {
     on: boolean;
     gravity: boolean;
 }
-// var field: IGameObject = AsteroidFields.createBackgroundField(16, 2);
 
 export interface IExhaust {
     exhaustParticleField: IParticleField;

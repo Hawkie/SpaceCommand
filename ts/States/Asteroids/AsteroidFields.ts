@@ -14,7 +14,7 @@ import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner } from "ts/gamelib/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { Transforms } from "ts/Physics/Transforms";
-import { IExhaust, IExplosion } from "ts/States/Asteroids/AsteroidModels";
+import { IExhaust, IExplosion, IParticleField } from "ts/States/Asteroids/AsteroidModels";
 import { Vector, IVector } from "ts/gamelib/Data/Vector";
 
 export interface IParticle {
@@ -49,12 +49,7 @@ export interface IFieldInputs {
     vYHighSpread: number;
 }
 
-export function createParticleField(particles: IParticle[],
-    particlesPerSecond: number,
-    maxParticlesPerSecond: number,
-    particleSize: number,
-    particleLifetime: number,
-    gravity: boolean,
+export function createParticleField(particleField: IParticleField,
     fieldInputs: ()=>IFieldInputs,): MultiGameObject<SingleGameObject> {
 
     var fieldArray: SingleGameObject[] = [];
@@ -63,8 +58,8 @@ export function createParticleField(particles: IParticle[],
         new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
 
     var generator: ParticleGenerator2 = new ParticleGenerator2(fieldInputs,
-        particlesPerSecond,
-        maxParticlesPerSecond,
+        particleField.particlesPerSecond,
+        particleField.maxParticlesPerSecond,
         (now: number) => {
             var source: IFieldInputs = fieldInputs();
             var p: IParticle = {
@@ -73,20 +68,20 @@ export function createParticleField(particles: IParticle[],
                 Vx: source.Vx + Transforms.random(source.vXLowSpread, source.vXHighSpread),
                 Vy: source.Vy + Transforms.random(source.vYLowSpread, source.vYHighSpread),
                 born: now,
-                size: particleSize,
+                size: particleField.particleSize,
             };
             var newParticle: SingleGameObject = createParticleObject(p);
-            if (gravity) {
+            if (particleField.gravity) {
                 addGravity(p, newParticle);
             }
-            particles.push(p);
+            particleField.particles.push(p);
             field.getComponents().push(newParticle);
         });
-        var age1: AgePred<IParticle> = new AgePred(()=>particleLifetime, (p: IParticle)=> p.born);
+        var age1: AgePred<IParticle> = new AgePred(()=>particleField.particleLifetime, (p: IParticle)=> p.born);
         var remover: ParticleRemover = new ParticleRemover(
             () => {
                 ParticleRemover.remove(
-                    ()=>particles,
+                    ()=>particleField.particles,
                     field.getComponents,
                     [age1]);});
         // add the generator to the field object
