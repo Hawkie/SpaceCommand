@@ -2,8 +2,8 @@
 import { AudioObject, AudioWithAmplifier  } from "ts/Sound/SoundObject";
 import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
-import { Assets } from "ts/Resources/Assets";
-import { SparseArray } from "ts/Collections/SparseArray";
+import { Assets } from "ts/gamelib/Common/Assets";
+// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IGameState } from "ts/States/GameState";
@@ -16,11 +16,6 @@ import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleField } from "./Asteroids/AsteroidModels";
 import { createBackgroundField } from "./Asteroids/AsteroidObjects";
 
-// function createMenuItem(name: string, x: number, y: number): SingleGameObject {
-//     var menuObject: SingleGameObject = new SingleGameObject([],
-//     [new TextView(()=>name, new Coordinate(x, y), this.font, this.size)]);
-//     return menuObject;
-// }
 interface IMenuState {
     musicFilename: string;
     title: string;

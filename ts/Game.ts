@@ -1,6 +1,6 @@
 import { Canvas } from "ts/gamelib/Common/Canvas";
 import { EventLoop } from "ts/gamelib/Common/EventLoop";
-import { Assets } from "ts/Resources/Assets";
+import { Assets } from "ts/gamelib/Common/Assets";
 
 import { IGameState } from "ts/States/GameState";
 import { AsteroidState } from "ts/States/Asteroids/AsteroidState";

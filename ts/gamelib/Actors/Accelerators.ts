@@ -1,5 +1,5 @@
 ﻿import { Vector } from "ts/gamelib/Data/Vector";
-import { Transforms } from "ts/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IActor } from "ts/gamelib/Actors/Actor";
 // import { ILocated, IMoving, IAngled, IForces } from "ts/gamelib/Data/PhysicsData";
 

@@ -1,8 +1,8 @@
 import { DrawContext} from "ts/gamelib/Common/DrawContext";
-import { Assets } from "ts/Resources/Assets";
-import { SparseArray } from "ts/Collections/SparseArray";
+import { Assets } from "ts/gamelib/Common/Assets";
+// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
-import { Transforms } from "ts/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";
 import { IGameState } from "ts/States/GameState";

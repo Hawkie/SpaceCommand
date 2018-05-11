@@ -35,7 +35,6 @@ export class Assets {
                 //Create a sound sprite.
                 self.loadSound(actx, source, self.loadHandler.bind(self), whenAllLoaded);
             }
-
             // display a message if the file type isn't recognized.
             else {
                 console.log("File type not recognized: " + source);
@@ -63,7 +62,7 @@ export class Assets {
             sd.data = buffer;
             this.soundData.push(sd);
             dataHandler(sd, whenLoaded);
-        })); 
+        }));
 
         //Send the request to load the file.
         xhr.send();

@@ -3,7 +3,7 @@
 // import { AudioObject } from "ts/Sound/SoundObject";
 
 // import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
-// import { Transforms } from "ts/Physics/Transforms";
+// import { Transforms } from "ts/gamelib/Physics/Transforms";
 // import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 // import { IGameState } from "ts/States/GameState";
 // import { SparseArray } from "ts/Collections/SparseArray";

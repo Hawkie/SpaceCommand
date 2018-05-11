@@ -3,7 +3,7 @@ import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { LandingPadModel } from "ts/States/Land/LandingPad";
 // import { ShapedModel } from "ts/Models/DynamicModels";
-import { Transforms } from "ts/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 
 export class PlanetSurfaceModel {

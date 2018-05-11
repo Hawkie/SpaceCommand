@@ -5,7 +5,7 @@
 // import { SparseArray } from "ts/Collections/SparseArray";
 // import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
 // import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
-// import { Transforms } from "ts/Physics/Transforms";
+// import { Transforms } from "ts/gamelib/Physics/Transforms";
 // import { TextData } from "ts/gamelib/Data/TextData";
 // import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/gamelib/Data/PhysicsData";
 // import { TextView } from "ts/gamelib/Views/TextView";

@@ -23,7 +23,7 @@ import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
 import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Timer } from "../../gamelib/Actors/Timers";
-import { Transforms } from "../../Physics/Transforms";
+import { Transforms } from "../../gamelib/Physics/Transforms";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {

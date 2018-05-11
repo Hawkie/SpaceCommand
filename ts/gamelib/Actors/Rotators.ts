@@ -2,7 +2,7 @@
 import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { Transforms } from "ts/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
 
 export interface IPolyRotator {
     shape: IShape;

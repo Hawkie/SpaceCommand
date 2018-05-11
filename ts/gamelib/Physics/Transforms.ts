@@ -9,13 +9,13 @@ export class Transforms {
 
     static ArrayToPoints(array: number[]): Coordinate[] {
         let points: Coordinate[] = [];
-        for (let i: number = 0; i < array.length - 1; i+=2){
+        for (let i: number = 0; i < array.length - 1; i+=2) {
             points.push(new Coordinate(array[i], array[i + 1]));
         }
         return points;
     }
 
-    static Rotate(points: Coordinate[], degrees: number): Coordinate[]{
+    static Rotate(points: Coordinate[], degrees: number): Coordinate[] {
         var radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
@@ -25,8 +25,8 @@ export class Transforms {
         var newCoordinates:ICoordinate[] = [];
         // iterate thru each vertex and change position
         for (var i:number = 0; i < points.length; i++) {
-            var x = c * points[i].x - s * points[i].y;
-            var y = s * points[i].x + c * points[i].y;
+            var x: number = c * points[i].x - s * points[i].y;
+            var y: number = s * points[i].x + c * points[i].y;
             var newCoordinate: ICoordinate = new Coordinate(x, y);
             newCoordinates.push(newCoordinate);
         }
@@ -35,8 +35,8 @@ export class Transforms {
 
     static VectorToCartesian(degrees: number, length: number): Coordinate {
         var radians: number = degrees / 180 * Math.PI;
-        var x = Math.sin(radians) * length; // sin 0 = 0
-        var y = Math.cos(radians) * -length; // cos 0 = 1
+        var x: number = Math.sin(radians) * length; // sin 0 = 0
+        var y: number = Math.cos(radians) * -length; // cos 0 = 1
         return new Coordinate(x, y);
     }
 
@@ -51,15 +51,14 @@ export class Transforms {
         points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });
     }
 
-
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     static hasPoint(points: Coordinate[], startingLocation: Coordinate, testPoint: Coordinate): boolean {
-        var c = false;
-        for (var i = 0, j = points.length - 1; i < points.length; i += 1) {
-            var px1 = points[i].x + startingLocation.x;
-            var px2 = points[j].x + startingLocation.x;
-            var py1 = points[i].y + startingLocation.y;
-            var py2 = points[j].y + startingLocation.y;
+        var c: boolean = false;
+        for (var i: number = 0, j: number = points.length - 1; i < points.length; i += 1) {
+            var px1: number = points[i].x + startingLocation.x;
+            var px2: number = points[j].x + startingLocation.x;
+            var py1: number = points[i].y + startingLocation.y;
+            var py2: number = points[j].y + startingLocation.y;
             if ((py1 > testPoint.y !== py2 > testPoint.y) &&
                 (testPoint.x < (px2 - px1) * (testPoint.y - py1) / (py2 - py1) + px1)
             ) {
@@ -69,5 +68,4 @@ export class Transforms {
         }
         return c;
     }
-
 }

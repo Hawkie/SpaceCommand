@@ -1,7 +1,7 @@
 import { SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
-import { Transforms } from "../../Physics/Transforms";
+import { Transforms } from "../../gamelib/Physics/Transforms";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
@@ -244,9 +244,9 @@ export function createShip(x: number, y: number): IShip {
             explosionParticleField: {
                 particles: [],
                 particleSize: 3,
-                particlesPerSecond: 200,
+                particlesPerSecond: 100,
                 maxParticlesPerSecond: 50,
-                particleLifetime: 2,
+                particleLifetime: 5,
                 on: false,
                 gravity: false,
             },

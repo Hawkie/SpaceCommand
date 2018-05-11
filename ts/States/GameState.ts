@@ -1,5 +1,5 @@
 import { DrawContext} from "ts/gamelib/Common/DrawContext";
-import { SparseArray } from "ts/Collections/SparseArray";
+// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 
@@ -20,15 +20,25 @@ export abstract class GameState implements IGameState {
 
     constructor(public name: string = "Base State") { }
 
-    update(timeModifier: number) { }
+    update(timeModifier: number): void {
+        //
+     }
 
-    display(drawContext: DrawContext) { }
+    display(drawContext: DrawContext): void {
+        //
+    }
 
-    sound(actx: AudioContext) { }
+    sound(actx: AudioContext): void {
+       //
+     }
 
-    tests(lastTestModifier: number) { }
+    tests(lastTestModifier: number): void {
+        //
+     }
 
-    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number) { }
+    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number): void {
+        //
+     }
 
     returnState(): number { return undefined; }
 
