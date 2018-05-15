@@ -5,7 +5,7 @@
 // import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
 // import { Transforms } from "ts/gamelib/Physics/Transforms";
 // import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
-// import { IGameState } from "ts/States/GameState";
+// import { IGameState } from "ts/gamelib/States/GameState";
 // import { SparseArray } from "ts/Collections/SparseArray";
 
 // import { ILocated, LocatedData } from "ts/gamelib/Data/PhysicsData";
@@ -203,7 +203,6 @@
 //     }
 
 //     static createPlanetSurfaceObject(location: Coordinate, from: ILocated): SingleGameObject {
-        
 //         var model = new PlanetSurfaceModel(location);
 //         var surfaceGenerator = new SurfaceGenerator(from, model.shape);
 //         surfaceGenerator.initSurface();

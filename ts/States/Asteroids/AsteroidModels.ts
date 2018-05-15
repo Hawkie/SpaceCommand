@@ -13,10 +13,7 @@ import { IParticle } from "./AsteroidFields";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
 
 export interface IAsteroidState {
-    left: boolean;
-    right: boolean;
-    up: boolean;
-    fire: boolean;
+    controls: IControls;
     starField: IParticleField;
     ship: IShip;
     ball: IBall;
@@ -36,6 +33,13 @@ export interface ISyncedArray<T> {
     items: T[];
     newItems: T[];
     oldItems: number[];
+}
+
+export interface IControls {
+    left: boolean;
+    right: boolean;
+    up: boolean;
+    fire: boolean;
 }
 
 export interface IShip {
@@ -163,10 +167,12 @@ export function createStateModel(): IAsteroidState {
 
     // things that change
     var stateVariables: IAsteroidState = {
-        left: false,
-        right: false,
-        up: false,
-        fire: false,
+        controls: {
+            left: false,
+            right: false,
+            up: false,
+            fire: false,
+        },
         starField: starField,
         ship: ship,
         ball: ball,

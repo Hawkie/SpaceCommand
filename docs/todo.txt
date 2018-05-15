@@ -6,16 +6,15 @@ remove sound that doen't seem to work on a phone safari browser?
 
 fixes:
 
-initialise sound problem
+initialise sound problem - with asset
 the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
 
 put all helper static classes in one place - functions
+help on a menu item
 
-condense all the field generators
+how to initialise the states in gamelib
+improve and improve menu to gamelib
 
 
-47534688
-auxillis
-03445712726rf
 
 

@@ -3,10 +3,9 @@ import { AudioObject, AudioWithAmplifier  } from "ts/Sound/SoundObject";
 import { Amplifier } from "ts/Sound/Amplifier";
 import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Assets } from "ts/gamelib/Common/Assets";
-// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
-import { IGameState } from "ts/States/GameState";
+import { IGameState } from "ts/gamelib/States/GameState";
 import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { TextView } from "ts/gamelib/Views/TextView";
@@ -15,6 +14,26 @@ import { Sound } from "ts/gamelib/Actors/Sound";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleField } from "./Asteroids/AsteroidModels";
 import { createBackgroundField } from "./Asteroids/AsteroidObjects";
+import { AsteroidState, createState } from "ts/States/Asteroids/AsteroidState";
+// import { LandingState } from "ts/States/Land/LandingState";
+// import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
+// import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
+// import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
+
+export function createStates(assets: Assets, actx:AudioContext): IGameState[] {
+
+    var menuState: IGameState = createMenu(assets, actx);
+    var asteroidState: IGameState = createState(assets, actx);
+    // var landingState = LandingState.create(assets, actx);
+    // var soundDesigner = SoundDesignerState.create();
+    // var landExplorer = LandExplorerState.create(assets, actx);
+    // var duel = DuelState.createState(assets, actx);
+
+    // var states = [menuState, asteroidState, landingState, landExplorer, duel];
+    var states: IGameState[] = [menuState, asteroidState];
+    return states;
+}
+
 
 interface IMenuState {
     musicFilename: string;

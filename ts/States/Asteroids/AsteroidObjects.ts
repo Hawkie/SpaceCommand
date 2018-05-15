@@ -1,5 +1,7 @@
-import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
-    IWeapon, IExhaust, IExplosion, AsteroidModels, IParticleField } from "./AsteroidModels";
+import {
+    IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
+    IWeapon, IExhaust, IExplosion, AsteroidModels, IParticleField
+} from "./AsteroidModels";
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
@@ -19,11 +21,9 @@ import { DrawContext } from "../../gamelib/Common/DrawContext";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
-import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
-import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
-import { Timer } from "../../gamelib/Actors/Timers";
-import { Transforms } from "../../gamelib/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
+import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "./AsteroidShip";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -34,61 +34,61 @@ export interface IAsteroidStateObject {
     sceneObjs: IGameObject[];
 }
 
-
-export function createAsteroidStateObject(getState: ()=>IAsteroidState): IAsteroidStateObject {
+export function createAsteroidStateObject(getState: () => IAsteroidState): IAsteroidStateObject {
     var state: IAsteroidState = getState();
 
-    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(()=>state.starField, 32);
-    var shipObj: SingleGameObject = AsteroidObjects.createShipObject(getState, ()=>state.ship);
-    var weaponObj: MultiGameObject<SingleGameObject>
-        = AsteroidObjects.createWeaponObject(getState, ()=>state.ship.weapon1);
-    var exhaustObj: MultiGameObject<SingleGameObject> = AsteroidObjects.createExhaustObj(()=> state.ship);
-    var explosionObj: MultiGameObject<SingleGameObject>
-        = AsteroidObjects.createExplosionObj(()=>state.ship);
+    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => state.starField, 32);
+    var shipObj: SingleGameObject = createShipObject(()=> state.controls, () => state.ship);
+    var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>state.controls,
+    ()=> state.ship, () => state.ship.weapon1);
+    var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => state.ship);
+    var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => state.ship);
 
-    var ballObj: SingleGameObject = AsteroidObjects.createBallObject(()=>state.ball);
-    var shipBallObj: SingleGameObject = AsteroidObjects.createShipBallObject(()=>state.ship, ()=>state.ball);
-    var coinObj: SingleGameObject = AsteroidObjects.createCoinObject(()=>state.coin);
-    var gShipObj: SingleGameObject = AsteroidObjects.createGraphicShipObject(()=>state.graphicShip);
-    var asteroidObjs: MultiGameObject<SingleGameObject> =  createAsteroidObjs(()=>state.asteroids.asteroids);
-    var breakSound:IActor = new Sound(state.asteroids.breakSoundFilename, true, false, () => { return {
-        play: state.asteroids.playBreakSound,
-        };},
-        ()=> state.asteroids.playBreakSound = false);
+    var ballObj: SingleGameObject = createBallObject(() => state.ball);
+    var shipBallObj: SingleGameObject = createShipBallObject(() => state.ship, () => state.ball);
+    var coinObj: SingleGameObject = createCoinObject(() => state.coin);
+    var gShipObj: SingleGameObject = createGraphicShipObject(() => state.graphicShip);
+    var asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => state.asteroids.asteroids);
+    var breakSound: IActor = new Sound(state.asteroids.breakSoundFilename, true, false, () => {
+        return {
+            play: state.asteroids.playBreakSound,
+        };
+    },
+        () => state.asteroids.playBreakSound = false);
     asteroidObjs.actors.push(breakSound);
 
-    var title: IView = new TextView(()=>state.title, new Coordinate(10, 20), "Arial", 18);
-    var score: IView = new TextView(()=>"Score:", new Coordinate(400, 20), "Arial", 18);
-    var scoreDisplay: IView = new ValueView(()=>state.score, new Coordinate(460, 20), "Arial", 18);
-    var angleDisplay: IView = new ValueView(()=>state.ship.angle, new Coordinate(460, 40), "Arial", 18);
+    var title: IView = new TextView(() => state.title, new Coordinate(10, 20), "Arial", 18);
+    var score: IView = new TextView(() => "Score:", new Coordinate(400, 20), "Arial", 18);
+    var scoreDisplay: IView = new ValueView(() => state.score, new Coordinate(460, 20), "Arial", 18);
+    var angleDisplay: IView = new ValueView(() => state.ship.angle, new Coordinate(460, 40), "Arial", 18);
 
     var aObjs: IAsteroidStateObject = {
         shipObj: shipObj,
         weaponObj: weaponObj,
         asteroidObjs: asteroidObjs,
         views: [title, score, scoreDisplay, angleDisplay],
-        sceneObjs: [starFieldObj, shipObj,weaponObj, exhaustObj, explosionObj, shipBallObj,
+        sceneObjs: [starFieldObj, shipObj, weaponObj, exhaustObj, explosionObj, shipBallObj,
             coinObj, ballObj, gShipObj],
     };
     return aObjs;
 }
 
-export function createAsteroidObjs(getAsteroids: ()=> IAsteroid[]):
-        MultiGameObject<SingleGameObject> {
+export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
+    MultiGameObject<SingleGameObject> {
     var asteroidArray: SingleGameObject[] = [];
     var asteroidObjs: MultiGameObject<SingleGameObject> =
-        new MultiGameObject<SingleGameObject>([], [], ()=>asteroidArray);
+        new MultiGameObject<SingleGameObject>([], [], () => asteroidArray);
     getAsteroids().forEach(a => {
-        asteroidObjs.getComponents().push(AsteroidObjects.createAsteroidObject(()=>a));
+        asteroidObjs.getComponents().push(createAsteroidObject(() => a));
     });
     return asteroidObjs;
 }
 // todo add the edge predicate to background
 //     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
-export function createBackgroundField(getField: ()=>IParticleField, speed: number): MultiGameObject<SingleGameObject> {
+export function createBackgroundField(getField: () => IParticleField, speed: number): MultiGameObject<SingleGameObject> {
     var field: IParticleField = getField();
     var starField: MultiGameObject<SingleGameObject> = createParticleField(field,
-        ()=> {
+        () => {
             return {
                 on: field.on,
                 x: 0,
@@ -105,320 +105,144 @@ export function createBackgroundField(getField: ()=>IParticleField, speed: numbe
                 Vy: speed,
                 vYLowSpread: 0,
                 vYHighSpread: 10,
-        };});
+            };
+        });
     return starField;
 }
 
-export class AsteroidObjects {
-
-    static createShipObject(getState: ()=> IAsteroidState, getShip: ()=>IShip): SingleGameObject {
-        var ship: IShip = getShip();
-        var state: IAsteroidState = getState();
-        var mover: IActor = new MoveConstVelocity(() => { return {
-            Vx: ship.Vx,
-            Vy: ship.Vy,
-        };}, (out: IMoveOut)=> {
-            ship.x += out.dx;
-            ship.y += out.dy;
-        });
-        // adding ship thrust force
-        var rotator: IActor = new PolyRotator(() => { return {
-            angle: ship.angle,
-            shape: ship.shape,
-        };}, (out: IShape)=> {
-            ship.shape = out;
-        });
-
-        var shipView: IView = new PolyView(()=> { return {
-            x: ship.x,
-            y: ship.y,
-            shape: ship.shape,
-        };});
-
-        var shipObj: SingleGameObject = new SingleGameObject([mover, rotator], [shipView]);
-        var shipController: IActor = AsteroidActors.createShipController(()=> { return {
-            left: state.left,
-            right: state.right,
-            up: state.up,
-            ship: state.ship,
-        };});
-        var explosionController: IActor = AsteroidActors.createExplosionController(()=> { return {
-            ship: state.ship,
-        };});
-        shipObj.actors.push(shipController, explosionController);
-        var wrapx:IActor = createWrapActor(()=> { return {
-            value: ship.x,
-            lowLimit: 0,
-            upLimit: 512,
-        };}, (a)=>ship.x = a);
-        var wrapy:IActor = createWrapActor(()=> { return {
-            value: ship.y,
-            lowLimit: 0,
-            upLimit: 480,
-        };}, (a)=>ship.y = a);
-        shipObj.actors.push(wrapx, wrapy);
-        return shipObj;
-    }
-
-    public static createAsteroidObject(getAsteroid: ()=> IAsteroid): SingleGameObject {
-        var asteroid: IAsteroid = getAsteroid();
-        var mover: IActor = new MoveConstVelocity(() => { return {
+export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameObject {
+    var asteroid: IAsteroid = getAsteroid();
+    var mover: IActor = new MoveConstVelocity(() => {
+        return {
             Vx: asteroid.Vx,
             Vy: asteroid.Vy,
-        };}, (out: IMoveOut) => {
-                asteroid.x += out.dx;
-                asteroid.y += out.dy;
-            }
-        );
-        var spinner: IActor = new Spinner(() => {
-            return { spin: asteroid.spin };
-        }, (sOut)=> asteroid.angle += sOut.dAngle);
-        var rotator: IActor = new PolyRotator(() => { return {
+        };
+    }, (out: IMoveOut) => {
+        asteroid.x += out.dx;
+        asteroid.y += out.dy;
+    }
+    );
+    var spinner: IActor = new Spinner(() => {
+        return { spin: asteroid.spin };
+    }, (sOut) => asteroid.angle += sOut.dAngle);
+    var rotator: IActor = new PolyRotator(() => {
+        return {
             angle: asteroid.angle,
             shape: asteroid.shape,
-        };}, (out: IShape)=> {
-            asteroid.shape = out;
-        });
-        var wrapx:IActor = createWrapActor(()=> { return {
+        };
+    }, (out: IShape) => {
+        asteroid.shape = out;
+    });
+    var wrapx: IActor = createWrapActor(() => {
+        return {
             value: asteroid.x,
             lowLimit: 0,
             upLimit: 512,
-        };}, (a)=>asteroid.x = a);
-        var wrapy:IActor = createWrapActor(()=> { return {
+        };
+    }, (a) => asteroid.x = a);
+    var wrapy: IActor = createWrapActor(() => {
+        return {
             value: asteroid.y,
             lowLimit: 0,
             upLimit: 480,
-        };}, (a)=>asteroid.y = a);
+        };
+    }, (a) => asteroid.y = a);
 
-        var view: IView = new PolyGraphicAngled(() => { return {
+    var view: IView = new PolyGraphicAngled(() => {
+        return {
             x: asteroid.x,
             y: asteroid.y,
             shape: asteroid.shape,
             graphic: asteroid.graphic,
             angle: asteroid.angle,
-        };});
-        var asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
-        return asteroidObject;
-    }
+        };
+    });
+    var asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
+    return asteroidObject;
+}
 
-    static createWeaponObject(getState: ()=>IAsteroidState, getWeapon:()=> IWeapon): MultiGameObject<SingleGameObject> {
 
-        var weapon: IWeapon = getWeapon();
-        let bulletObjs: SingleGameObject[] = getWeapon().bullets.map((b)=> AsteroidObjects.createBulletObject(()=>b));
-        var weaponObj: MultiGameObject<SingleGameObject> = new MultiGameObject([], [], ()=>bulletObjs);
-        var age5: AgePred<IParticle> = new AgePred(
-            ()=>weapon.bulletLifetime,
-            (p: IParticle)=> p.born
-        );
-        var remover: ParticleRemover = new ParticleRemover(
-            () => {
-                ParticleRemover.remove(
-                    ()=>weapon.bullets,
-                    weaponObj.getComponents,
-                    [age5]);});
-        // add the generator to the field object
-        weaponObj.actors.push(remover);
+export function createBallObject(getBall: () => IBall): SingleGameObject {
+    var ball: IBall = getBall();
+    var ballView: IView = new CircleView(() => {
+        return {
+            x: ball.x,
+            y: ball.y,
+            r: ball.r,
+        };
+    });
+    var obj: SingleGameObject = new SingleGameObject([], [ballView]);
+    return obj;
+}
 
-        var state: IAsteroidState = getState();
-        var weaponController: IActor = AsteroidActors.createWeaponController(()=> { return {
-            fire: state.fire,
-            ship: state.ship,
-            weapon: state.ship.weapon1,
-        };}, (newParticle: IParticle) => {
-            state.ship.weapon1.bullets.push(newParticle);
-            var bulletObj: SingleGameObject = AsteroidObjects.createBulletObject(()=>newParticle);
-            weaponObj.getComponents().push(bulletObj);
-        });
-        weaponObj.actors.push(weaponController);
-        return weaponObj;
-    }
+export function createShipBallObject(getShip: () => IShip, getBall: () => IBall): SingleGameObject {
+    var ship: IShip = getShip();
+    var ball: IBall = getBall();
+    var rod: CompositeAccelerator = new CompositeAccelerator(() => {
+        return {
+            xFrom: ship.x,
+            yFrom: ship.y,
+            VxFrom: ship.Vx,
+            VyFrom: ship.Vy,
+            forces: [ship.thrust],
+            massFrom: ship.mass,
+            xTo: ball.x,
+            yTo: ball.y,
+            VxTo: ball.Vx,
+            VyTo: ball.Vy,
+            massTo: ball.mass
+        };
+    }, (out: IRodOutputs) => {
+        ship.x += out.dxFrom;
+        ship.y += out.dyFrom;
+        ship.Vx += out.dVxFrom;
+        ship.Vy += out.dVyFrom;
+        ball.x = out.xTo;
+        ball.y = out.yTo;
+    });
 
-    static createBulletObject(getParticle: ()=>IParticle): SingleGameObject {
-        var particle: IParticle = getParticle();
-        var mover: IActor = new MoveConstVelocity(
-            () => particle,
-            (out: IMoveOut) => {
-                particle.x += out.dx;
-                particle.y += out.dy;
-            }
-        );
-        var view:IView = new RectangleView(()=> { return {
-            x: particle.x,
-            y: particle.y,
-            width: particle.size,
-            height: particle.size,
-        };});
-        let particleObj: SingleGameObject = new SingleGameObject([mover], [view]);
-        var fireSound: IActor = new Sound("res/sound/raygun-01.mp3", true, false, ()=> { return {
-            play: true,
-        };});
-        particleObj.actors.push(fireSound);
-        return particleObj;
-    }
+    // create rod view as a line from ball to ship
+    var line: LineView = new LineView(() => {
+        return {
+            xFrom: ball.x,
+            yFrom: ball.y,
+            xTo: ship.x,
+            yTo: ship.y,
+        };
+    });
+    var r: SingleGameObject = new SingleGameObject([rod], [line]);
+    return r;
+}
 
-    static createExhaustObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
-        var ship: IShip = getShip();
-        var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField,
-            ()=> {
-                var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
-                ship.thrust.length * 5 + Transforms.random(-5, 5));
-                return {
-                    on: ship.exhaust.exhaustParticleField.on,
-                    x: ship.x,
-                    xOffset: ship.shape.offset.x,
-                    xLowSpread: -2,
-                    xHighSpread: 2,
-                    y: ship.y,
-                    yOffset: ship.shape.offset.y,
-                    yLowSpread: -2,
-                    yHighSpread: 2,
-                    Vx: velocity.x,
-                    vXLowSpread: 0,
-                    vXHighSpread: 0,
-                    Vy: velocity.y,
-                    vYLowSpread: 0,
-                    vYHighSpread: 0,
-            };});
-        var exhaustSound:IActor = new Sound(ship.exhaust.soundFilename, false, true, () => { return {
-            play: ship.exhaust.exhaustParticleField.on,
-        };});
-        exhaustObj.actors.push(exhaustSound);
-        return exhaustObj;
-    }
+export function createCoinObject(getCoin: () => ICoin): SingleGameObject {
+    var coin: ICoin = getCoin();
+    var animator: IActor = new SpriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+    var spinner: Spinner = new Spinner(() => {
+        return { spin: coin.spin };
+    }, (sOut) => coin.angle += sOut.dAngle);
 
-    static createExplosionObj(getShip: ()=>IShip): MultiGameObject<SingleGameObject> {
-        var ship: IShip = getShip();
-        var explosionObj: MultiGameObject<SingleGameObject>
-            = createParticleField(ship.explosion.explosionParticleField,
-                ()=> { return {
-                    on: ship.explosion.explosionParticleField.on,
-                    x: ship.x,
-                    xOffset: ship.shape.offset.x,
-                    xLowSpread: -2,
-                    xHighSpread: 2,
-                    y: ship.y,
-                    yOffset: ship.shape.offset.y,
-                    yLowSpread: -2,
-                    yHighSpread: 2,
-                    Vx: ship.Vx,
-                    vXLowSpread: -10,
-                    vXHighSpread: 10,
-                    Vy: ship.Vy,
-                    vYLowSpread: -10,
-                    vYHighSpread: 10,
-            };});
-        var explosionSound:IActor = new Sound(ship.explosion.soundFilename, true, false, () => { return {
-            play: ship.explosion.explosionParticleField.on,
-        };});
-        explosionObj.actors.push(explosionSound);
-        var flashView: IView = new ScreenFlashView(()=> { return {
-            x: 0,
-            y: 0,
-            width: 480,
-            height: 512,
-            on: ship.crashed,
-            value: ship.explosion.flash.flashScreenValue,
-        };});
-        explosionObj.views.push(flashView);
-        // add flasher to value so screen changes
-        var flasher:IActor = new Flasher(() => { return {
-            enabled: ship.crashed,
-            value: ship.explosion.flash.flashScreenValue,
-            repeat: ship.explosion.flash.flashRepeat,
-        };}, (value:number)=> {
-            ship.explosion.flash.flashScreenValue = value;
-        });
-        explosionObj.actors.push(flasher);
-        var timerTurnOff:IActor = new Timer(() => { return {
-            enabled: ship.crashed,
-            limit: ship.explosion.explosionLifetime,
-        };}, () => {
-            ship.explosion.explosionParticleField.on = false;
-            ship.explosion.exploded = true;
-        });
-        explosionObj.actors.push(timerTurnOff);
-        return explosionObj;
-    }
-
-    static createBallObject(getBall: ()=>IBall): SingleGameObject {
-        var ball: IBall = getBall();
-        var ballView: IView = new CircleView(() => {
-            return {
-                x: ball.x,
-                y: ball.y,
-                r: ball.r,
-            };
-        });
-        var obj: SingleGameObject  = new SingleGameObject([], [ballView]);
-        return obj;
-    }
-
-    static createShipBallObject(getShip: ()=>IShip, getBall: ()=>IBall): SingleGameObject {
-        var ship: IShip = getShip();
-        var ball: IBall = getBall();
-        var rod: CompositeAccelerator = new CompositeAccelerator(() => {
-            return {
-                xFrom: ship.x,
-                yFrom: ship.y,
-                VxFrom: ship.Vx,
-                VyFrom: ship.Vy,
-                forces: [ship.thrust],
-                massFrom: ship.mass,
-                xTo: ball.x,
-                yTo: ball.y,
-                VxTo: ball.Vx,
-                VyTo: ball.Vy,
-                massTo: ball.mass
-            };
-        }, (out: IRodOutputs) => {
-                ship.x += out.dxFrom;
-                ship.y += out.dyFrom;
-                ship.Vx += out.dVxFrom;
-                ship.Vy += out.dVyFrom;
-                ball.x = out.xTo;
-                ball.y = out.yTo;
-        });
-
-        // create rod view as a line from ball to ship
-        var line: LineView = new LineView(()=> {
-            return {
-                xFrom: ball.x,
-                yFrom: ball.y,
-                xTo: ship.x,
-                yTo: ship.y,
-            };
-        });
-        var r: SingleGameObject = new SingleGameObject([rod], [line]);
-        return r;
-    }
-
-    static createCoinObject(getCoin: ()=>ICoin): SingleGameObject {
-        var coin:ICoin = getCoin();
-        var animator: IActor = new SpriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-        var spinner: Spinner = new Spinner(()=> {
-            return { spin: coin.spin };
-        }, (sOut)=> coin.angle += sOut.dAngle);
-
-        var view: IView = new SpriteAngledView(() => { return {
+    var view: IView = new SpriteAngledView(() => {
+        return {
             x: coin.x,
             y: coin.y,
             angle: coin.angle,
             sprite: coin.sprite,
-        };});
-        var coinObj: SingleGameObject = new SingleGameObject([animator, spinner], [view]);
-        return coinObj;
-    }
+        };
+    });
+    var coinObj: SingleGameObject = new SingleGameObject([animator, spinner], [view]);
+    return coinObj;
+}
 
-    public static createGraphicShipObject(getGraphicShip: ()=>IGraphicShip): SingleGameObject {
-        var graphicShip: IGraphicShip = getGraphicShip();
-        var shipView: IView = new GraphicAngledView(() => { return {
+export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): SingleGameObject {
+    var graphicShip: IGraphicShip = getGraphicShip();
+    var shipView: IView = new GraphicAngledView(() => {
+        return {
             x: graphicShip.x,
             y: graphicShip.y,
             angle: graphicShip.angle,
             graphic: graphicShip.graphic,
-        };});
-        var obj: SingleGameObject = new SingleGameObject([], [shipView]);
-        return obj;
-    }
-
+        };
+    });
+    var obj: SingleGameObject = new SingleGameObject([], [shipView]);
+    return obj;
 }

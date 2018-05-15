@@ -1,7 +1,7 @@
 import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { IAsteroidState, IShip, IWeapon } from "./AsteroidModels";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { Transforms } from "../../gamelib/Physics/Transforms";
+import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IParticle } from "./AsteroidFields";
 import { Sound } from "ts/gamelib/Actors/Sound";
 
@@ -26,7 +26,6 @@ export interface IExhaustControlInputs {
 export interface IExplosionControlInputs {
     ship: IShip;
 }
-
 
 export class AsteroidActors {
     static createShipController(getInputs:()=>IShipControlInputs): IActor {
@@ -97,5 +96,4 @@ export class AsteroidActors {
         });
         return c;
     }
-
 }

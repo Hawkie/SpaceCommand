@@ -1,5 +1,4 @@
 import { DrawContext} from "ts/gamelib/Common/DrawContext";
-// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 

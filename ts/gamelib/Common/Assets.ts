@@ -20,11 +20,11 @@ export class Assets {
         // refer to it in the `forEach` loop ahead.
         var self = this;
 
-        //Find the number of files that need to be loaded.
+        // find the number of files that need to be loaded.
         self.toLoad = sources.length;
         sources.forEach((source) => {
 
-            //Find the file extension of the asset.
+            // find the file extension of the asset.
             var extension = source.split('.').pop();
 
             //#### Sounds

@@ -1,11 +1,10 @@
 import { DrawContext} from "ts/gamelib/Common/DrawContext";
 import { Assets } from "ts/gamelib/Common/Assets";
-// import { SparseArray } from "ts/Collections/SparseArray";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { IView } from "ts/gamelib/Views/View";
-import { IGameState } from "ts/States/GameState";
+import { IGameState } from "ts/gamelib/States/GameState";
 import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
@@ -13,8 +12,19 @@ import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameO
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { IShip, AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";
-import { AsteroidObjects, IAsteroidStateObject, createAsteroidStateObject } from "ts/States/Asteroids/AsteroidObjects";
+import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/States/Asteroids/AsteroidObjects";
 
+export function createState(assets: Assets, actx: AudioContext): AsteroidState {
+
+    var spriteField: IGameObject = AsteroidFields.createSpriteField();
+    var state: IAsteroidState = createStateModel();
+    var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
+    // get state objects and add asteroid objects
+
+    var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
+        [spriteField]);
+    return asteroidState;
+}
 
 export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];
@@ -56,18 +66,6 @@ export class AsteroidState implements IGameState {
     }
 
 
-    static createState(assets: Assets, actx: AudioContext): AsteroidState {
-
-        var spriteField: IGameObject = AsteroidFields.createSpriteField();
-        var state: IAsteroidState = createStateModel();
-        var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
-        // get state objects and add asteroid objects
-
-        var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
-            [spriteField]);
-        return asteroidState;
-    }
-
     update(lastDrawModifier: number): void {
         this.sceneObjects.forEach(o => o.update(lastDrawModifier));
         this.stateObj.sceneObjs.forEach(x=>x.update(lastDrawModifier));
@@ -100,24 +98,24 @@ export class AsteroidState implements IGameState {
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
         if (keys.isKeyDown(Keys.UpArrow)) {
-            this.state.up = true;
+            this.state.controls.up = true;
         } else {
-            this.state.up = false;
+            this.state.controls.up = false;
         }
         if (keys.isKeyDown(Keys.LeftArrow)) {
-            this.state.left = true;
+            this.state.controls.left = true;
         } else {
-            this.state.left = false;
+            this.state.controls.left = false;
         }
         if (keys.isKeyDown(Keys.RightArrow)) {
-            this.state.right = true;
+            this.state.controls.right = true;
         } else {
-            this.state.right = false;
+            this.state.controls.right = false;
         }
         if (keys.isKeyDown(Keys.SpaceBar)) {
-            this.state.fire = true;
+            this.state.controls.fire = true;
         } else {
-            this.state.fire = false;
+            this.state.controls.fire = false;
         }
         if (keys.isKeyDown(Keys.Z)) {
             this.viewScale = 0.01;
@@ -149,7 +147,7 @@ export class AsteroidState implements IGameState {
             for (let n:number = 0; n < 2; n++) {
                 var newAsteroid:IAsteroid = AsteroidModels.createAsteroidModelAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
                 this.state.asteroids.asteroids.push(newAsteroid);
-                var asteroidObj: SingleGameObject = AsteroidObjects.createAsteroidObject(()=>newAsteroid);
+                var asteroidObj: SingleGameObject = createAsteroidObject(()=>newAsteroid);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
@@ -163,7 +161,7 @@ export class AsteroidState implements IGameState {
             this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
             for (let n:number = 0; n < this.state.asteroids.asteroids.length; n++) {
                 let a:IAsteroid = this.state.asteroids.asteroids[n];
-                let asteroidObj: SingleGameObject = AsteroidObjects.createAsteroidObject(()=>a);
+                let asteroidObj: SingleGameObject = createAsteroidObject(()=>a);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }

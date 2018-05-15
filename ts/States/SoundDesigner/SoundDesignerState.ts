@@ -8,7 +8,7 @@
 // import { TextData } from "ts/gamelib/Data/TextData";
 // import { IGameObject } from "ts/gamelib/GameObjects/GameObject";
 // import { TextObject } from "ts/GameObjects/TextObject";
-// import { IGameState, GameState } from "ts/States/GameState";
+// import { IGameState, GameState } from "ts/gamelib/States/GameState";
 // import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 
 

@@ -12,7 +12,7 @@
 // import { IView } from "ts/gamelib/Views/View";
 // import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/gamelib/Views/PolyViews";
 // import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
-// import { IGameState, GameState } from "ts/States/GameState";
+// import { IGameState, GameState } from "ts/gamelib/States/GameState";
 // import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 // import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 // import { SpaceShipData } from "ts/gamelib/Data/ShipData";
