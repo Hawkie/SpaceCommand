@@ -14,7 +14,7 @@ import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner } from "ts/gamelib/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IExhaust, IExplosion, IParticleField } from "ts/States/Asteroids/AsteroidModels";
+import { IParticleField } from "ts/States/Asteroids/AsteroidModels";
 import { Vector, IVector } from "ts/gamelib/Data/Vector";
 
 export interface IParticle {

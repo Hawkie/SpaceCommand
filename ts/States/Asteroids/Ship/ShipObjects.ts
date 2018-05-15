@@ -1,6 +1,4 @@
-import { IShip, IWeapon, IExhaust, IExplosion, AsteroidModels,
-        IParticleField, IAsteroidState, IControls
-} from "ts/States/Asteroids/AsteroidModels";
+import { AsteroidModels, IParticleField, IAsteroidState, IControls } from "ts/States/Asteroids/AsteroidModels";
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
@@ -8,18 +6,19 @@ import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameO
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { AsteroidActors } from "./AsteroidActors";
+import { createExplosionController, createShipController, createWeaponController } from "ts/States/Asteroids/Ship/ShipActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IParticle, AsteroidFields, createParticleField } from "./AsteroidFields";
+import { IParticle, AsteroidFields, createParticleField } from "ts/States/Asteroids/AsteroidFields";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
-import { DrawContext } from "../../gamelib/Common/DrawContext";
+import { DrawContext } from "ts/gamelib/Common/DrawContext";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
 import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Timer } from "ts/gamelib/Actors/Timers";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
+import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
 
 export function createShipObject(getControls: () => IControls, getShip: () => IShip): SingleGameObject {
     var ship: IShip = getShip();
@@ -52,7 +51,7 @@ export function createShipObject(getControls: () => IControls, getShip: () => IS
     });
 
     var shipObj: SingleGameObject = new SingleGameObject([mover, rotator], [shipView]);
-    var shipController: IActor = AsteroidActors.createShipController(() => {
+    var shipController: IActor = createShipController(() => {
         return {
             left: controls.left,
             right: controls.right,
@@ -60,7 +59,7 @@ export function createShipObject(getControls: () => IControls, getShip: () => IS
             ship: ship,
         };
     });
-    var explosionController: IActor = AsteroidActors.createExplosionController(() => {
+    var explosionController: IActor = createExplosionController(() => {
         return {
             ship: ship,
         };
@@ -105,7 +104,7 @@ export function createWeaponObject(getControls: () => IControls,
     // add the generator to the field object
     weaponObj.actors.push(remover);
 
-    var weaponController: IActor = AsteroidActors.createWeaponController(() => {
+    var weaponController: IActor = createWeaponController(() => {
         return {
             fire: getControls().fire,
             ship: getShip(),

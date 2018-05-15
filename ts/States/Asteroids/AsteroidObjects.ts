@@ -1,7 +1,4 @@
-import {
-    IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, IShip,
-    IWeapon, IExhaust, IExplosion, AsteroidModels, IParticleField
-} from "./AsteroidModels";
+import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
@@ -12,7 +9,6 @@ import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { SpriteAngledView } from "ts/gamelib/Views/SpriteView";
 import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { AsteroidActors } from "./AsteroidActors";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IParticle, AsteroidFields, createParticleField } from "./AsteroidFields";
@@ -23,7 +19,8 @@ import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "./AsteroidShip";
+import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/States/Asteroids/Ship/ShipObjects";
+import { IShip } from "./Ship/ShipState";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -38,6 +35,7 @@ export function createAsteroidStateObject(getState: () => IAsteroidState): IAste
     var state: IAsteroidState = getState();
 
     var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => state.starField, 32);
+
     var shipObj: SingleGameObject = createShipObject(()=> state.controls, () => state.ship);
     var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>state.controls,
     ()=> state.ship, () => state.ship.weapon1);
@@ -83,6 +81,7 @@ export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
     });
     return asteroidObjs;
 }
+
 // todo add the edge predicate to background
 //     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
 export function createBackgroundField(getField: () => IParticleField, speed: number): MultiGameObject<SingleGameObject> {

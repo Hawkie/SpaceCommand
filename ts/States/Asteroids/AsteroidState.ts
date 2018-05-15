@@ -10,7 +10,7 @@ import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/g
 import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
-import { IShip, AsteroidModels, IBall, IAsteroid,
+import { AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";
 import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/States/Asteroids/AsteroidObjects";
 
