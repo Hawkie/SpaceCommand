@@ -16,6 +16,7 @@ import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IParticleField } from "ts/States/Asteroids/AsteroidModels";
 import { Vector, IVector } from "ts/gamelib/Data/Vector";
+import { addGravity } from "../Shared/Gravity";
 
 export interface IParticle {
     x: number;
@@ -71,9 +72,14 @@ export function createParticleField(particleField: IParticleField,
                 size: particleField.particleSize,
             };
             var newParticle: SingleGameObject = createParticleObject(p);
-            if (particleField.gravity) {
-                addGravity(p, newParticle);
-            }
+            addGravity(()=> { return {
+                x: p.x,
+                y: p.y,
+                Vx: p.Vx,
+                Vy: p.Vy,
+                mass: 1,
+                gravityStrength: particleField.gravityStrength,
+            };}, newParticle);
             particleField.particles.push(p);
             field.getComponents().push(newParticle);
         });
@@ -158,24 +164,6 @@ export class AsteroidFields {
             field.actors.push(generator, remover);
         return field;
     }
-}
-
-function addGravity(p: IParticle, newParticle: SingleGameObject): void {
-    var getAcceleratorProps: () => IAcceleratorInputs = () => {
-        return {
-            x: p.x,
-            y: p.y,
-            Vx: p.Vx,
-            Vy: p.Vy,
-            forces: [new Vector(180, 1)],
-            mass: 0.1
-        };
-    };
-    var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
-        p.Vx += out.dVx;
-        p.Vy += out.dVy;
-    });
-    newParticle.actors.push(gravity);
 }
 
 function createParticleObject(p: IParticle): SingleGameObject {

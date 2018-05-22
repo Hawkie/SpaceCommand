@@ -4,6 +4,7 @@ import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IParticle } from "ts/States/Asteroids/AsteroidFields";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { IShip, IWeapon } from "./ShipState";
+import { Accelerator, IAcceleratorOutputs } from "../../../gamelib/Actors/Accelerator";
 
 export interface IShipControlInputs {
     left: boolean;
@@ -50,6 +51,8 @@ export function createShipController(getInputs: () => IShipControlInputs): IActo
     });
     return c;
 }
+
+
 
 export function createWeaponController(get: () => IWeaponControlInputs, set: (newBullet: IParticle) => void): IActor {
     var c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {

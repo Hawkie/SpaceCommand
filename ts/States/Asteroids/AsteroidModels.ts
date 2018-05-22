@@ -45,7 +45,7 @@ export interface IParticleField {
     particleLifetime: number;
     particleSize: number;
     on: boolean;
-    gravity: boolean;
+    gravityStrength: number;
 }
 
 export interface IAsteroid {
@@ -101,7 +101,7 @@ export interface IBall {
 
 export function createStateModel(): IAsteroidState {
     var starField: IParticleField = createStarField();
-    var ship: IShip = createShip(256, 240);
+    var ship: IShip = createShip(256, 240, 0);
     var ball: IBall = createBallObject(256, 280);
     var coin: ICoin = createCoin(new Coordinate(300, 400));
     var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
@@ -141,7 +141,7 @@ export function createStarField(): IParticleField {
         particleLifetime: undefined,
         particleSize: 2,
         on: true,
-        gravity: false,
+        gravityStrength: 10,
     };
 }
 

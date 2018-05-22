@@ -18,6 +18,7 @@ export interface IShip {
     spin: number;
     mass: number;
     shape: IShape;
+    gravityStrength: number;
     hitPoints: number;
     damage: number;
     armour: number;
@@ -57,7 +58,7 @@ export interface IExplosion {
     };
 }
 
-export function createShip(x: number, y: number): IShip {
+export function createShip(x: number, y: number, gravityStrength: number): IShip {
     var triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),
         new Coordinate(0, 1),
@@ -77,6 +78,7 @@ export function createShip(x: number, y: number): IShip {
         spin: 0,
         mass: 1,
         shape: {points: triangleShip, offset: {x:0, y:0}},
+        gravityStrength: gravityStrength,
         hitPoints: 100,
         damage: 0,
         armour: 0,
@@ -102,7 +104,7 @@ export function createShip(x: number, y: number): IShip {
                 maxParticlesPerSecond: 50,
                 particleLifetime: 1,
                 on: false,
-                gravity: false,
+                gravityStrength: gravityStrength,
             },
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
@@ -113,7 +115,7 @@ export function createShip(x: number, y: number): IShip {
                 maxParticlesPerSecond: 50,
                 particleLifetime: 5,
                 on: false,
-                gravity: false,
+                gravityStrength: gravityStrength,
             },
             explosionLifetime: 1,
             exploded: false,

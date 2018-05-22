@@ -19,6 +19,8 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Timer } from "ts/gamelib/Actors/Timers";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
+import { addGravity } from "../../Shared/Gravity";
+import Accelerator, { IAcceleratorOutputs } from "../../../gamelib/Actors/Accelerator";
 
 export function createShipObject(getControls: () => IControls, getShip: () => IShip): SingleGameObject {
     var ship: IShip = getShip();
@@ -80,8 +82,36 @@ export function createShipObject(getControls: () => IControls, getShip: () => IS
         };
     }, (a) => ship.y = a);
     shipObj.actors.push(wrapx, wrapy);
+    addGravity(() => { return {
+        x: ship.x,
+        y: ship.y,
+        Vx: ship.Vx,
+        Vy: ship.Vy,
+        mass: ship.mass,
+        gravityStrength: ship.gravityStrength,
+    };}, shipObj);
     return shipObj;
 }
+
+export function createShipAccelerator(getShip: () => IShip): SingleGameObject {
+    var ship: IShip = getShip();
+
+    var thrust: Accelerator = new Accelerator(() => {
+        return {
+            x: ship.x,
+            y: ship.y,
+            Vx: ship.Vx,
+            Vy: ship.Vy,
+            forces: [ship.thrust],
+            mass: ship.mass,
+        };
+    }, (out: IAcceleratorOutputs) => {
+        ship.Vx += out.dVx;
+        ship.Vy += out.dVy;
+    });
+    return new SingleGameObject([thrust],[]);
+}
+
 
 export function createWeaponObject(getControls: () => IControls,
     getShip: () => IShip,

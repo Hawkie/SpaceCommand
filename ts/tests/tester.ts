@@ -1,13 +1,11 @@
-import { Coordinate } from "ts/gamelib/Data/Coordinate"
+import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "../gamelib/Physics/Transforms";
 //import { Polygon } from "../DisplayObjects/DisplayObject";
-import { PlanetSurfaceModel } from "ts/States/Land/PlanetSurface";
 
 
 export class Tester {
 
     allTests() {
-        this.testPlanetSurfaceGenerator();
         this.testVector();
         this.testCollision(false, 5,5);
         this.testCollision(true, 4.9,4.9); // TODO should pass?
@@ -31,12 +29,6 @@ export class Tester {
         var t = Transforms.hasPoint(p, new Coordinate(0,0), c);
         console.log("Point(" + c.x + "," + c.y + ") " + t + " " + Tester.pass(expected, t));
     }
-
-     testPlanetSurfaceGenerator() {
-         var s = new Coordinate(0, 0); 
-         var surface = new PlanetSurfaceModel(s);
-         PlanetSurfaceModel.generateSurface(s, 600);
-     }
 
      testMap() {
              let m: { [i: number]: number } = { 2: 2, 4: 5, 5: 7 };

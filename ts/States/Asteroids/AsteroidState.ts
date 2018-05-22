@@ -28,7 +28,6 @@ export function createState(assets: Assets, actx: AudioContext): AsteroidState {
 
 export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];
-    loaded: boolean;
     viewScale: number;
     zoom: number;
     exitState: boolean = false;

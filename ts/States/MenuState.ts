@@ -15,6 +15,7 @@ import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleField } from "./Asteroids/AsteroidModels";
 import { createBackgroundField } from "./Asteroids/AsteroidObjects";
 import { AsteroidState, createState } from "ts/States/Asteroids/AsteroidState";
+import { LandExplorerState, createLEState } from "./LandExplorer/LandExplorerState";
 // import { LandingState } from "ts/States/Land/LandingState";
 // import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";
 // import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
@@ -26,11 +27,11 @@ export function createStates(assets: Assets, actx:AudioContext): IGameState[] {
     var asteroidState: IGameState = createState(assets, actx);
     // var landingState = LandingState.create(assets, actx);
     // var soundDesigner = SoundDesignerState.create();
-    // var landExplorer = LandExplorerState.create(assets, actx);
+    var landExplorer: IGameState = createLEState(assets, actx);
     // var duel = DuelState.createState(assets, actx);
 
     // var states = [menuState, asteroidState, landingState, landExplorer, duel];
-    var states: IGameState[] = [menuState, asteroidState];
+    var states: IGameState[] = [menuState, asteroidState, landExplorer];
     return states;
 }
 
@@ -59,7 +60,7 @@ function createMenuState(): IMenuState {
             particleLifetime: 40,
             particleSize: 1,
             on: true,
-            gravity: false,
+            gravityStrength: 0,
         },
         starField2: {
             particles: [],
@@ -68,9 +69,9 @@ function createMenuState(): IMenuState {
             particleLifetime: 20,
             particleSize: 2,
             on: true,
-            gravity: false,
+            gravityStrength: 0,
         },
-        menuItems: ["Asteroids"],
+        menuItems: ["Asteroids", "Lander"],
         originalItems: [],
     };
 }

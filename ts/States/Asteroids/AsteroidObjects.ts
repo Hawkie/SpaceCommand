@@ -245,3 +245,4 @@ export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): Sin
     var obj: SingleGameObject = new SingleGameObject([], [shipView]);
     return obj;
 }
+
