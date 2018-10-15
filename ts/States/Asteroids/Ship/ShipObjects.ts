@@ -10,7 +10,8 @@ import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameO
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { createExplosionController, createShipController, createWeaponController } from "ts/States/Asteroids/Ship/ShipActors";
+import { createExplosionController, createShipController } from "ts/States/Asteroids/Ship/ShipActors";
+import { createWeaponController } from "ts/States/Asteroids/Ship/createWeaponController";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IParticle, AsteroidFields, createParticleField } from "ts/States/Asteroids/AsteroidFields";
@@ -24,8 +25,9 @@ import { Timer } from "ts/gamelib/Actors/Timers";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
 import { addGravity } from "../../Shared/Gravity";
-import Accelerator, { IAcceleratorOutputs } from "../../../gamelib/Actors/Accelerator";
+import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IStateConfig } from "ts/gamelib/States/StateConfig";
+import { Vector } from "../../../gamelib/Data/Vector";
 
 export function createShipObject(getStateConfig: () => IStateConfig, getControls: () => IControls, getShip: () => IShip): SingleGameObject {
     var stateConfig: IStateConfig = getStateConfig();
@@ -90,14 +92,25 @@ export function createShipObject(getStateConfig: () => IStateConfig, getControls
         }, (a) => ship.y = a);
         shipObj.actors.push(wrapx, wrapy);
     }
-    addGravity(() => { return {
-        x: ship.x,
-        y: ship.y,
-        Vx: ship.Vx,
-        Vy: ship.Vy,
-        mass: ship.mass,
-        gravityStrength: ship.gravityStrength,
-    };}, shipObj);
+
+    // add Gravity
+    if (ship.gravityStrength !== 0) {
+        var getAcceleratorProps: () => IAcceleratorInputs = () => {
+            return {
+                x: ship.x,
+                y: ship.y,
+                Vx: ship.Vx,
+                Vy: ship.Vy,
+                forces: [new Vector(180, ship.gravityStrength)],
+                mass: ship.mass
+            };
+        };
+        var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
+            ship.Vx += out.dVx;
+            ship.Vy += out.dVy;
+        });
+        shipObj.actors.push(gravity);
+    }
     return shipObj;
 }
 

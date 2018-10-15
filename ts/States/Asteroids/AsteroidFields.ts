@@ -73,14 +73,23 @@ export function createParticleField(particleField: IParticleField,
                 size: particleField.particleSize,
             };
             var newParticle: SingleGameObject = createParticleObject(p);
-            addGravity(()=> { return {
-                x: p.x,
-                y: p.y,
-                Vx: p.Vx,
-                Vy: p.Vy,
-                mass: 1,
-                gravityStrength: particleField.gravityStrength,
-            };}, newParticle);
+            if (particleField.gravityStrength !== 0) {
+                var getAcceleratorProps: () => IAcceleratorInputs = () => {
+                    return {
+                        x: p.x,
+                        y: p.y,
+                        Vx: p.Vx,
+                        Vy: p.Vy,
+                        forces: [new Vector(180, particleField.gravityStrength)],
+                        mass: 1,
+                    };
+                };
+                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
+                    p.Vx += out.dVx;
+                    p.Vy += out.dVy;
+                });
+                newParticle.actors.push(gravity);
+            }
             particleField.particles.push(p);
             field.getComponents().push(newParticle);
         });

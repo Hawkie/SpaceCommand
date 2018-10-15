@@ -9,9 +9,9 @@ export interface IAcceleratorOutputs {
     dVy: number;
 }
 
-export class Out implements IAcceleratorOutputs {
-    constructor(public dVx:number = 0, public dVy:number = 0) {}
-}
+// export class Out implements IAcceleratorOutputs {
+//     constructor(public dVx:number = 0, public dVy:number = 0) {}
+// }
 
 export interface IAcceleratorInputs {
     readonly x: number;
@@ -36,7 +36,10 @@ export class Accelerator implements IActor {
     }
 
     static accelerate(timeModifer: number, props: IAcceleratorInputs): IAcceleratorOutputs {
-        var vChange: IAcceleratorOutputs = new Out(0, 0);
+        var vChange: IAcceleratorOutputs = {
+            dVx: 0,
+            dVy: 0,
+        };
         props.forces.forEach((f) => {
             let velChange: Coordinate = Transforms.VectorToCartesian(f.angle, f.length/props.mass * timeModifer);
             vChange.dVx += velChange.x;
