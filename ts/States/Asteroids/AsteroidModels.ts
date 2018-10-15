@@ -7,23 +7,8 @@ import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "./AsteroidFields";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
 import { createShip, IShip } from "ts/States/Asteroids/Ship/ShipState";
-
-export interface IAsteroidState {
-    controls: IControls;
-    starField: IParticleField;
-    ship: IShip;
-    ball: IBall;
-    coin: ICoin;
-    level: number;
-    asteroids: IAsteroids;
-    graphicShip: IGraphicShip;
-    score: number;
-    title: string;
-}
-
-export interface IConfig {
-
-}
+import { IStateConfig } from "ts/gamelib/States/StateConfig";
+import { IAsteroidModel } from "./IAsteroidModel";
 
 export interface ISyncedArray<T> {
     items: T[];
@@ -99,7 +84,7 @@ export interface IBall {
 }
 
 
-export function createStateModel(): IAsteroidState {
+export function createStateModel(): IAsteroidModel {
     var starField: IParticleField = createStarField();
     var ship: IShip = createShip(256, 240, 0);
     var ball: IBall = createBallObject(256, 280);
@@ -111,9 +96,14 @@ export function createStateModel(): IAsteroidState {
         breakSoundFilename: "res/sound/blast.wav",
     };
     var graphicShip: IGraphicShip = createGraphicShip(200, 100);
+    var stateConfig: IStateConfig = {
+        screenWrap: true,
+        gravity: false,
+    };
 
     // things that change
-    var stateVariables: IAsteroidState = {
+    var stateVariables: IAsteroidModel = {
+        stateConfig: stateConfig,
         controls: {
             left: false,
             right: false,

@@ -11,13 +11,14 @@ import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { AsteroidModels, IBall, IAsteroid,
-    IGraphicShip, ICoin, IAsteroidState, createStateModel } from "ts/States/Asteroids/AsteroidModels";
+    IGraphicShip, ICoin, createStateModel } from "ts/States/Asteroids/AsteroidModels";
+import { IAsteroidModel } from "./IAsteroidModel";
 import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/States/Asteroids/AsteroidObjects";
 
 export function createState(assets: Assets, actx: AudioContext): AsteroidState {
 
     var spriteField: IGameObject = AsteroidFields.createSpriteField();
-    var state: IAsteroidState = createStateModel();
+    var state: IAsteroidModel = createStateModel();
     var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
     // get state objects and add asteroid objects
 
@@ -35,7 +36,7 @@ export class AsteroidState implements IGameState {
     constructor(public name: string,
         private assets: Assets,
         private actx: AudioContext,
-        private state: IAsteroidState,
+        private state: IAsteroidModel,
         private stateObj: IAsteroidStateObject,
         private sceneObjects: IGameObject[]
         ) {

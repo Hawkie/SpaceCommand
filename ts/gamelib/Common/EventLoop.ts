@@ -6,11 +6,12 @@ import { KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
 export class EventLoop {
 
     currentState: IGameState;
-    constructor(private window: Window,
+    constructor(private document: Document,
+        private window: Window,
         private canvas: Canvas,
         private audioContext: AudioContext,
         private states: IGameState[]) {
-        this.keyStateProvider = new KeyStateProvider(this.window);
+        this.keyStateProvider = new KeyStateProvider(this.document);
         this.currentState = states[0];
     }
 

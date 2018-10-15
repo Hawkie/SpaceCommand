@@ -1,6 +1,10 @@
-import { IAsteroidState, IBall, ICoin, IGraphicShip, IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
+import { IBall, ICoin, IGraphicShip, IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
+import { IAsteroidModel } from "./IAsteroidModel";
 import { IView } from "ts/gamelib/Views/View";
-import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
+import { PolyView, LineView } from "ts/gamelib/Views/PolyViews";
+import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
+import { RectangleView } from "ts/gamelib/Views/RectangleView";
+import { CircleView } from "ts/gamelib/Views/CircleView";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
@@ -21,6 +25,7 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/States/Asteroids/Ship/ShipObjects";
 import { IShip } from "./Ship/ShipState";
+import { IStateConfig } from "ts/gamelib/States/StateConfig";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -31,12 +36,10 @@ export interface IAsteroidStateObject {
     sceneObjs: IGameObject[];
 }
 
-export function createAsteroidStateObject(getState: () => IAsteroidState): IAsteroidStateObject {
-    var state: IAsteroidState = getState();
-
+export function createAsteroidStateObject(getState: () => IAsteroidModel): IAsteroidStateObject {
+    var state: IAsteroidModel = getState();
     var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => state.starField, 32);
-
-    var shipObj: SingleGameObject = createShipObject(()=> state.controls, () => state.ship);
+    var shipObj: SingleGameObject = createShipObject(() => state.stateConfig, ()=> state.controls, () => state.ship);
     var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>state.controls,
     ()=> state.ship, () => state.ship.weapon1);
     var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => state.ship);

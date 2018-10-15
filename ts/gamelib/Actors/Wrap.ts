@@ -1,4 +1,5 @@
-import { IActor, Actor, Actor2 } from "./Actor";
+import { IActor, Actor } from "./Actor";
+import { Actor2 } from "./Actor2";
 
 export interface IWrap {
     value: number;

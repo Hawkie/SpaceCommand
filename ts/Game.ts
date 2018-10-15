@@ -15,7 +15,7 @@ export class Game {
         var audioContext: AudioContext = new AudioContext();
         var assets: Assets = new Assets();
         var states: IGameState[] = createStates(assets, audioContext);
-        var gameloop: EventLoop = new EventLoop(window, canvas, audioContext, states);
+        var gameloop: EventLoop = new EventLoop(document, window, canvas, audioContext, states);
 
         gameloop.loop();
     }

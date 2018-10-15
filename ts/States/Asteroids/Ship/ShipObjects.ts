@@ -1,6 +1,10 @@
-import { AsteroidModels, IParticleField, IAsteroidState, IControls } from "ts/States/Asteroids/AsteroidModels";
+import { AsteroidModels, IParticleField, IControls } from "ts/States/Asteroids/AsteroidModels";
+import { IAsteroidModel } from "../IAsteroidModel";
 import { IView } from "ts/gamelib/Views/View";
-import { CircleView, PolyGraphicAngled, PolyView, LineView, RectangleView } from "ts/gamelib/Views/PolyViews";
+import { PolyView, LineView } from "ts/gamelib/Views/PolyViews";
+import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
+import { RectangleView } from "ts/gamelib/Views/RectangleView";
+import { CircleView } from "ts/gamelib/Views/CircleView";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
@@ -21,8 +25,10 @@ import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
 import { addGravity } from "../../Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs } from "../../../gamelib/Actors/Accelerator";
+import { IStateConfig } from "ts/gamelib/States/StateConfig";
 
-export function createShipObject(getControls: () => IControls, getShip: () => IShip): SingleGameObject {
+export function createShipObject(getStateConfig: () => IStateConfig, getControls: () => IControls, getShip: () => IShip): SingleGameObject {
+    var stateConfig: IStateConfig = getStateConfig();
     var ship: IShip = getShip();
     var controls: IControls = getControls();
     var mover: IActor = new MoveConstVelocity(() => {
@@ -67,21 +73,23 @@ export function createShipObject(getControls: () => IControls, getShip: () => IS
         };
     });
     shipObj.actors.push(shipController, explosionController);
-    var wrapx: IActor = createWrapActor(() => {
-        return {
-            value: ship.x,
-            lowLimit: 0,
-            upLimit: 512,
-        };
-    }, (a) => ship.x = a);
-    var wrapy: IActor = createWrapActor(() => {
-        return {
-            value: ship.y,
-            lowLimit: 0,
-            upLimit: 480,
-        };
-    }, (a) => ship.y = a);
-    shipObj.actors.push(wrapx, wrapy);
+    if (stateConfig.screenWrap) {
+        var wrapx: IActor = createWrapActor(() => {
+            return {
+                value: ship.x,
+                lowLimit: 0,
+                upLimit: 512,
+            };
+        }, (a) => ship.x = a);
+        var wrapy: IActor = createWrapActor(() => {
+            return {
+                value: ship.y,
+                lowLimit: 0,
+                upLimit: 480,
+            };
+        }, (a) => ship.y = a);
+        shipObj.actors.push(wrapx, wrapy);
+    }
     addGravity(() => { return {
         x: ship.x,
         y: ship.y,

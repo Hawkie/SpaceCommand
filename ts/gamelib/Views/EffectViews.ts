@@ -1,15 +1,7 @@
 ﻿
 import { IView } from "ts/gamelib/Views/View";
 import { DrawContext } from "ts/gamelib/Common/DrawContext";
-
-export interface IFlashInputs {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    on: boolean;
-    value: number;
-}
+import { IFlashInputs } from "./IFlashInputs";
 
 // 512, 480
 export class ScreenFlashView implements IView {

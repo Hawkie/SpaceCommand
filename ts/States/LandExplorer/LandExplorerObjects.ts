@@ -1,4 +1,4 @@
-import { ILandExplorer } from "./LandExplorerModels";
+import { ILandExplorer } from "./ILandExplorer";
 import { SingleGameObject, MultiGameObject, IGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { createShipObject, createWeaponObject, createExhaustObj,
     createExplosionObj, createShipAccelerator } from "../Asteroids/Ship/ShipObjects";
@@ -6,7 +6,7 @@ import { IView } from "../../gamelib/Views/View";
 import { createBackgroundField } from "../Asteroids/AsteroidObjects";
 import { TextView } from "../../gamelib/Views/TextView";
 import { Coordinate, ICoordinate } from "../../gamelib/Data/Coordinate";
-import { PolyGraphic } from "../../gamelib/Views/PolyViews";
+import { PolyGraphic } from "../../gamelib/Views/PolyGraphic";
 import { Graphic, IGraphic } from "../../gamelib/Data/Graphic";
 import { ISurface, SurfaceGenerator2, ISurfaceGeneration } from "./SurfaceGenerator";
 import { IAcceleratorInputs } from "../../gamelib/Actors/Accelerator";
@@ -27,7 +27,7 @@ export interface ILandExplorerObjects {
 
 export function createLandExplorerObjects(getState: () => ILandExplorer): ILandExplorerObjects {
     var state: ILandExplorer = getState();
-    var shipObj: SingleGameObject = createShipObject(() => state.controls, () => state.ship);
+    var shipObj: SingleGameObject = createShipObject(() => state.stateConfig, () => state.controls, () => state.ship);
     var shipThrust: SingleGameObject = createShipAccelerator(() => state.ship);
     var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(
         () => state.controls,

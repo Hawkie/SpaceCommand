@@ -13,7 +13,13 @@ put all helper static classes in one place - functions
 help on a menu item
 
 how to initialise the states in gamelib
-improve and improve menu to gamelib
+improve menu to gamelib
+
+Land Explorer
+fix gravity for ship
+remove wrap
+add collision
+surface extender
 
 
 

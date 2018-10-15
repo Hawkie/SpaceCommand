@@ -13,7 +13,9 @@ import { IInteractor, Interactor } from "ts/gamelib/Interactors/Interactor";
 import { ObjectCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { IView } from "ts/gamelib/Views/View";
-import { PolyView, PolyGraphic, CircleView } from "ts/gamelib/Views/PolyViews";
+import { PolyView } from "ts/gamelib/Views/PolyViews";
+import { PolyGraphic } from "ts/gamelib/Views/PolyGraphic";
+import { CircleView } from "ts/gamelib/Views/CircleView";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
 import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
@@ -22,7 +24,8 @@ import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { WindGenerator } from "ts/gamelib/Actors/WindGenerator";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { Assets } from "ts/gamelib/Common/Assets";
-import { ILandExplorer, createModel } from "./LandExplorerModels";
+import { createModel } from "./LandExplorerModels";
+import { ILandExplorer } from "./ILandExplorer";
 import { ILandExplorerObjects, createLandExplorerObjects } from "./LandExplorerObjects";
 
 

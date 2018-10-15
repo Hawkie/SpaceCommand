@@ -7,6 +7,8 @@ export interface IGameObject extends IActor, IView {
     views: IView[];
 }
 
+
+
 export class SingleGameObject implements IGameObject {
     constructor(public actors: IActor[], public views: IView[]) {
     }

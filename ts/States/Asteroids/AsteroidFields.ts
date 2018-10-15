@@ -5,7 +5,8 @@ import { IParticleGenInputs, ParticleGenerator,
     ParticleRemover, PredGreaterThan, AgePred, IParticleGenInputs2, ParticleGenerator2 } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
-import { CircleView, RectangleView } from "ts/gamelib/Views/PolyViews";
+import { RectangleView } from "ts/gamelib/Views/RectangleView";
+import { CircleView } from "ts/gamelib/Views/CircleView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/SpriteView";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";

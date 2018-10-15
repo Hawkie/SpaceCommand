@@ -4,7 +4,7 @@ import { IGameState } from "ts/gamelib/States/GameState";
 
 
 export class KeyStateProvider {
-    constructor(private window: Window) {
+    constructor(private document: Document) {
         this.addKeyEvents();
     }
 
@@ -13,18 +13,18 @@ export class KeyStateProvider {
     addKeyEvents(): void {
         const kd:any = (e: KeyboardEvent) => {
             this._keysDown.add(e.keyCode);
-            console.log("Down" + e.type + e.keyCode + e.key);
+            console.log("Down" + e.type + e.keyCode + e.key + e.code);
             console.log(this._keysDown);
         };
         const ku:any = (e: KeyboardEvent) => {
             this._keysDown.remove(e.keyCode);
-            console.log("Up" + e.type + e.keyCode + e.key);
+            console.log("Up" + e.type + e.keyCode + e.key + e.code);
             console.log(this._keysDown);
         };
-        this.window.addEventListener("keydown", kd, false);
-        this.window.addEventListener("keypress", kd, false);
-        this.window.addEventListener("onkeydown", kd, false);
-        this.window.addEventListener("keyup", ku, false);
+        this.document.addEventListener("keyup", ku, false);
+        this.document.addEventListener("keydown", kd, false);
+        // this.window.addEventListener("keypress", kd, false);
+        // this.window.addEventListener("onkeydown", kd, false);
     }
 
     isKeyDown(key: number): boolean { return this._keysDown.contains(key); }
