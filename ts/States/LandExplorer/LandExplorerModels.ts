@@ -21,7 +21,7 @@ export function createModel(): ILandExplorer {
 
     var stateConfig: IStateConfig = {
         screenWrap: false,
-        gravity: false,
+        gravity: true,
     };
 
     var starField: IParticleField = createStarField();
