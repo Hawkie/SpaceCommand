@@ -3,6 +3,12 @@ The start of a two dimensional, strategic highly playable, space adventure game 
 
 ![Menu](docs/SpaceCommandMenu.png)
 
+Initial Starting point is Asteroids and Lander Game
+
+![Asteroids](docs/SpaceCommandAsteroids.png)
+
+![Lander](docs/SpaceCommandLander.png)
+
 Player starts with small ship, building a fleet, where each ship can be controlled directly or commanded with high level commands
 and upgrade.
 
