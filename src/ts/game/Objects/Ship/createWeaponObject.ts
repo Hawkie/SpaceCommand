@@ -3,11 +3,13 @@ import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { createWeaponController } from "ts/game/Objects/Ship/Controllers/createWeaponController";
-import { IParticle } from "ts/game/States/Asteroids/AsteroidFields";
+import { IParticle } from "ts/game/Objects/Particle/IParticle";
 import { AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { ParticleRemover } from "ts/gamelib/Actors/ParticleRemover";
 import { IShip, IWeapon } from "./IShip";
 import { createBulletObject } from "./createBulletObject";
+
+// creates a weapon object
 export function createWeaponObject(getControls: () => IControls,
   getShip: () => IShip,
   getWeapon: () => IWeapon): MultiGameObject<SingleGameObject> {

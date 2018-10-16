@@ -3,7 +3,7 @@ import { RectangleView } from "ts/gamelib/Views/RectangleView";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { IParticle } from "ts/game/States/Asteroids/AsteroidFields";
+import { IParticle } from "ts/game/Objects/Particle/IParticle";
 import { Sound } from "ts/gamelib/Actors/Sound";
 
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {

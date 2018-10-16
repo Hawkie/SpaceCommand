@@ -2,7 +2,7 @@ import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
-import { IParticle } from "./AsteroidFields";
+import { IParticle } from "../../Objects/Particle/IParticle";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
 import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
 import { IAsteroidModel } from "./IAsteroidModel";

@@ -8,7 +8,8 @@ import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IParticleField } from "ts/game/States/Asteroids/AsteroidModels";
 import { Vector } from "ts/gamelib/Data/Vector";
 import { createParticleObject } from "./createParticleObject";
-import { IFieldInputs, IParticle } from "../../States/Asteroids/AsteroidFields";
+import { IFieldInputs } from "./IFieldInputs";
+import { IParticle } from "./IParticle";
 
 // creates a particle field of game objects
 export function createParticleField(particleField: IParticleField, fieldInputs: () => IFieldInputs): MultiGameObject<SingleGameObject> {

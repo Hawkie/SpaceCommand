@@ -13,7 +13,7 @@ import { IView } from "ts/gamelib/Views/View";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticleField } from "./Asteroids/AsteroidModels";
-import { createBackgroundField } from "./Asteroids/AsteroidObjects";
+import { createBackgroundField } from "../Objects/Particle/createBackgroundField";
 import { AsteroidState } from "ts/game/States/Asteroids/AsteroidState";
 import { createState } from "ts/game/States/Asteroids/createState";
 import { LandExplorerState, createLEState } from "./LandExplorer/LandExplorerState";

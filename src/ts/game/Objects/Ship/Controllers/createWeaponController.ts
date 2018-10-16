@@ -1,8 +1,17 @@
 import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IParticle } from "ts/game/States/Asteroids/AsteroidFields";
-import { IWeaponControlInputs } from "../ShipActors";
+import { IParticle } from "ts/game/Objects/Particle/IParticle";
+import { IShip, IWeapon } from "../../Ship/IShip";
+
+export interface IWeaponControlInputs {
+    fire: boolean;
+    ship: IShip;
+    weapon: IWeapon;
+}
+
+// creates a controller that accepts a fire control and uses ship and weapon
+// to create bullets as a particle field
 export function createWeaponController(get: () => IWeaponControlInputs, set: (newBullet: IParticle) => void): IActor {
     var c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {
         if (!inputs.ship.crashed) {

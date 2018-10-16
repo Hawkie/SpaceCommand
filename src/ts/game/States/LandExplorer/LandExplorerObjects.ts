@@ -7,7 +7,7 @@ import { createExplosionObj } from "../../Objects/Ship/createExplosionObj";
 import { createExhaustObj } from "../../Objects/Ship/createExhaustObj";
 import { createWeaponObject } from "../../Objects/Ship/createWeaponObject";
 import { IView } from "../../../gamelib/Views/View";
-import { createBackgroundField } from "../Asteroids/AsteroidObjects";
+import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
 import { TextView } from "../../../gamelib/Views/TextView";
 import { Coordinate, ICoordinate } from "../../../gamelib/Data/Coordinate";
 import { PolyGraphic } from "../../../gamelib/Views/PolyGraphic";

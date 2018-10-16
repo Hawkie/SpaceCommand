@@ -1,4 +1,4 @@
-import { IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
+import { IAsteroid, AsteroidModels } from "./AsteroidModels";
 import { IAsteroidModel } from "./IAsteroidModel";
 import { IView } from "ts/gamelib/Views/View";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
@@ -6,7 +6,6 @@ import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { createParticleField } from "../../Objects/Asteroids/createParticleField";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
@@ -20,6 +19,7 @@ import { createGraphicShipObject } from "../../Objects/Asteroids/createGraphicSh
 import { createAsteroidObject } from "../../Objects/Asteroids/createAsteroidObject";
 import { createBallObject } from "../../Objects/Asteroids/createBallObject";
 import { createShipBallObject } from "../../Objects/Asteroids/createShipBallObject";
+import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -77,33 +77,6 @@ export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
         asteroidObjs.getComponents().push(createAsteroidObject(() => a));
     });
     return asteroidObjs;
-}
-
-// todo add the edge predicate to background
-//     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
-export function createBackgroundField(getField: () => IParticleField, speed: number): MultiGameObject<SingleGameObject> {
-    var field: IParticleField = getField();
-    var starField: MultiGameObject<SingleGameObject> = createParticleField(field,
-        () => {
-            return {
-                on: field.on,
-                x: 0,
-                xOffset: 0,
-                xLowSpread: 0,
-                xHighSpread: 512,
-                y: 0,
-                yOffset: 0,
-                yLowSpread: 0,
-                yHighSpread: 0,
-                Vx: 0,
-                vXLowSpread: 0,
-                vXHighSpread: 0,
-                Vy: speed,
-                vYLowSpread: 0,
-                vYHighSpread: 10,
-            };
-        });
-    return starField;
 }
 
 

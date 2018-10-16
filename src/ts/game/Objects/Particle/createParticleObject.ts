@@ -3,7 +3,7 @@ import { IActor } from "ts/gamelib/Actors/Actor";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { RectangleView } from "ts/gamelib/Views/RectangleView";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IParticle } from "../../States/Asteroids/AsteroidFields";
+import { IParticle } from "./IParticle";
 
 // creates a constantly moving particle with rectangle shape
 export function createParticleObject(p: IParticle): SingleGameObject {
