@@ -1,4 +1,4 @@
-﻿import { IActor } from "ts/gamelib/Actors/Actor";
+﻿import { IActor } from "../Actors/Actor";
 
 export interface IMoveIn {
     Vx: number;
@@ -18,14 +18,15 @@ export class MoveConstVelocity implements IActor {
 
     update(timeModifier: number): void {
         var mIn: IMoveIn = this.getIn();
-        this.setOut(MoveConstVelocity.move(timeModifier, mIn));
+        this.setOut(move(timeModifier, mIn.Vx, mIn.Vy));
     }
 
-    static move(timeModifier: number, mIn: IMoveIn): IMoveOut {
-        var mOut: IMoveOut = {
-            dx: mIn.Vx * timeModifier,
-            dy: mIn.Vy * timeModifier,
-        };
-        return mOut;
-    }
+
+}
+
+export function move(timeModifier: number, Vx: number, Vy: number): IMoveOut {
+    return {
+        dx: Vx * timeModifier,
+        dy: Vy * timeModifier,
+    };
 }

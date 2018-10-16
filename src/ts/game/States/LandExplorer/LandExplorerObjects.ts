@@ -71,9 +71,7 @@ export function createPlanetSurfaceObject(getFrom: () => ICoordinate,
     getSurface: () => ISurface, texture: string): SingleGameObject {
     var from: ICoordinate = getFrom();
     var surface: ISurface = getSurface();
-
     var surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
-
     var surfaceView: IView = new PolyGraphic(() => {
         return {
             x: from.x,

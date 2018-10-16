@@ -21,27 +21,27 @@ test("vectorToCartesian180", () => {
 });
 
 test("vectorToCartesian90", () => {
-    var out: ICoordinate = Transforms.VectorToCartesian(90, 10);
-    expect(out.x).toBeCloseTo(10);
-    expect(out.y).toBeCloseTo(0, 14);
+    var result: ICoordinate = Transforms.VectorToCartesian(90, 10);
+    expect(result.x).toBeCloseTo(10);
+    expect(result.y).toBeCloseTo(0, 14);
 });
 
 test("vectorToCartesian270", () => {
-    var out: ICoordinate = Transforms.VectorToCartesian(270, 10);
-    expect(out.x).toBeCloseTo(-10);
-    expect(out.y).toBeCloseTo(0, 14);
+    var result: ICoordinate = Transforms.VectorToCartesian(270, 10);
+    expect(result.x).toBeCloseTo(-10);
+    expect(result.y).toBeCloseTo(0, 14);
 });
 
 test.each([[30, 10, 5, -8.66]])("VectorToCartesians", (angle, length, expX, expY) => {
-    var out: ICoordinate = Transforms.VectorToCartesian(angle, length);
-    expect(out.x).toBeCloseTo(expX);
-    expect(out.y).toBeCloseTo(expY);
+    var result: ICoordinate = Transforms.VectorToCartesian(angle, length);
+    expect(result.x).toBeCloseTo(expX);
+    expect(result.y).toBeCloseTo(expY);
 });
 
 test.each([[4, 3, 53.13, 5]])("CartesianToVector", (x, y, expAngle, expLength) => {
-    var out: IVector = Transforms.CartesianToVector(x, y);
-    expect(out.angle).toBeCloseTo(expAngle, 2);
-    expect(out.length).toBeCloseTo(expLength, 1);
+    var result: IVector = Transforms.CartesianToVector(x, y);
+    expect(result.angle).toBeCloseTo(expAngle, 2);
+    expect(result.length).toBeCloseTo(expLength, 1);
 });
 
 test.each([[2,2,2,4,4]])("Scale", (x, y, scale, expX, expY) => {

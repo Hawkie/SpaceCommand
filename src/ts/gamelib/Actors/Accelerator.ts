@@ -1,7 +1,7 @@
-import { Vector } from "../Data/Vector";
+import { Vector, IVector } from "../Data/Vector";
 import { Transforms } from "../Physics/Transforms";
 import { IActor } from "../Actors/Actor";
-import { Coordinate } from "../Data/Coordinate";
+import { Coordinate, ICoordinate } from "../Data/Coordinate";
 
 export interface IAcceleratorInputs {
     readonly forces: Vector[];
@@ -17,28 +17,29 @@ export interface IAcceleratorOutputs {
 // a= F/m, where dVx and dVy are the cartesian components of acceleration over that time period.
 export class Accelerator implements IActor {
 
-    constructor(private getProps: () => IAcceleratorInputs,
+    constructor(private getInputs: () => IAcceleratorInputs,
         private setOut:(out: IAcceleratorOutputs) => void) {
 
     }
 
     update(timeModifier: number): void {
-        var out:IAcceleratorOutputs = Accelerator.accelerate(timeModifier, this.getProps());
-        this.setOut(out);
+        var input: IAcceleratorInputs = this.getInputs();
+        var result:IAcceleratorOutputs = accelerate(timeModifier, input.forces, input.mass);
+        this.setOut(result);
     }
+}
 
-    static accelerate(timeModifer: number, props: IAcceleratorInputs): IAcceleratorOutputs {
-        var vChange: IAcceleratorOutputs = {
-            dVx: 0,
-            dVy: 0,
-        };
-        props.forces.forEach((f) => {
-            let velChange: Coordinate = Transforms.VectorToCartesian(f.angle, f.length/props.mass * timeModifer);
-            vChange.dVx += velChange.x;
-            vChange.dVy += velChange.y;
-        });
-        return vChange;
-    }
+export function accelerate(timeModifer: number, forces: IVector[], mass: number): IAcceleratorOutputs {
+    var vChange: IAcceleratorOutputs = {
+        dVx: 0,
+        dVy: 0,
+    };
+    forces.forEach((f) => {
+        let velChange: ICoordinate = Transforms.VectorToCartesian(f.angle, f.length/mass * timeModifer);
+        vChange.dVx += velChange.x;
+        vChange.dVy += velChange.y;
+    });
+    return vChange;
 }
 
 export default Accelerator;

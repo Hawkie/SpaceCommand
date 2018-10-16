@@ -9,8 +9,7 @@
     "url": "https://github.com/Hawkie/SpaceCommand"
   },
   "scripts": {
-    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "pretest": "npm run lint",
+    "jest-w": "jest --watch",
     "test": "jest"
   },
   "keywords": [],

@@ -1,13 +1,23 @@
-import Accelerator, { IAcceleratorInputs, IAcceleratorOutputs } from "./Accelerator";
-import { Vector } from "../Data/Vector";
+import { IAcceleratorOutputs, accelerate } from "./Accelerator";
+import { Vector, IVector } from "../Data/Vector";
 
 
 test("accelerate", () => {
-    var input: IAcceleratorInputs = {
-        forces: [new Vector(180, 10)],
-        mass: 10
-    };
-    var out: IAcceleratorOutputs = Accelerator.accelerate(1000, input);
-    expect(out.dVx).toBeCloseTo(0);
-    expect(out.dVy).toBe(10/input.mass*1000);
+    const ONE_FORCE_DOWN: IVector[] = [new Vector(180, 10)];
+    const MASS: number = 10;
+
+    const result: IAcceleratorOutputs = accelerate(1000, ONE_FORCE_DOWN, MASS);
+    expect(result.dVx).toBeCloseTo(0);
+    expect(result.dVy).toBeCloseTo(10/MASS*1000);
+});
+
+test("accelerateWithTwoForces", () => {
+    const LENGTH: number = 10;
+    const FORCES: IVector[] = [new Vector(180, LENGTH), new Vector(90, LENGTH)];
+    const MASS: number = 10;
+    const TIMEMODIFIER: number = 1000;
+
+    var result: IAcceleratorOutputs = accelerate(TIMEMODIFIER, FORCES, MASS);
+    expect(result.dVx).toBeCloseTo(10/MASS*TIMEMODIFIER);
+    expect(result.dVy).toBeCloseTo(10/MASS*TIMEMODIFIER);
 });

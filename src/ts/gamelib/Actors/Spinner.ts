@@ -1,4 +1,4 @@
-import { IActor } from "ts/gamelib/Actors/Actor";
+import { IActor } from "../Actors/Actor";
 export interface ISpinnerInputs {
     spin: number;
 }
@@ -10,12 +10,14 @@ export class Spinner implements IActor {
     constructor(private getIn: () => ISpinnerInputs, private setOut: (out: ISpinnerOutputs) => void) {
     }
     update(timeModifier: number): void {
-        var sOut: ISpinnerOutputs = Spinner.spin(timeModifier, this.getIn());
+        const input: ISpinnerInputs = this.getIn();
+        var sOut: ISpinnerOutputs = spin(timeModifier, input.spin);
         this.setOut(sOut);
     }
-    static spin(timeModifier: number, sIn: ISpinnerInputs): ISpinnerOutputs {
-        return {
-            dAngle: sIn.spin * timeModifier
-        };
-    }
+}
+
+export function spin(timeModifier: number, spin: number): ISpinnerOutputs {
+    return {
+        dAngle: spin * timeModifier
+    };
 }

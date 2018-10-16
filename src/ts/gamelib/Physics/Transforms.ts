@@ -18,7 +18,7 @@ export class Transforms {
     }
 
     // rotate the set of coordiantes about the origin.
-    static Rotate(points: Coordinate[], degrees: number): Coordinate[] {
+    static Rotate(points: Coordinate[], degrees: number): ICoordinate[] {
         var radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
@@ -40,7 +40,7 @@ export class Transforms {
     // for angles of 180 we think going down the screen = positive y values
     // for angle of 90 we think right on screen = positive x values
     // for angle of 270 we think left on screen = negative x values
-    static VectorToCartesian(degrees: number, length: number): Coordinate {
+    static VectorToCartesian(degrees: number, length: number): ICoordinate {
         var radians: number = degrees / 180 * Math.PI;
         var x: number = Math.sin(radians) * length; // sin 0 = 0
         var y: number = Math.cos(radians) * -length; // cos 0 = 1
