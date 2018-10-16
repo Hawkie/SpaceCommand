@@ -1,6 +1,13 @@
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IView } from "ts/gamelib/Views/View";
-import { IRectangleView } from "./IRectangleView";
+
+export interface IRectangleView {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export class RectangleView implements IView {
     constructor(private getIn: () => IRectangleView) {
     }

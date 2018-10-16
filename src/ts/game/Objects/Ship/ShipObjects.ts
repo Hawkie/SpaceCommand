@@ -1,6 +1,7 @@
 import { AsteroidModels, IParticleField, IControls } from "ts/game/States/Asteroids/AsteroidModels";
 import { IView } from "ts/gamelib/Views/View";
-import { PolyView, LineView } from "ts/gamelib/Views/PolyViews";
+import { PolyView } from "ts/gamelib/Views/PolyViews";
+import { LineView } from "ts/gamelib/Views/LineView";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";

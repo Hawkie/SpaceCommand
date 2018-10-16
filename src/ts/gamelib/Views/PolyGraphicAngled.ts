@@ -1,7 +1,12 @@
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IView } from "ts/gamelib/Views/View";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
-import { IPolyGraphicAngledView } from "./IPolyGraphicAngledView";
+import { IPolyGraphicView } from "./PolyGraphic";
+
+export interface IPolyGraphicAngledView extends IPolyGraphicView {
+    angle: number;
+}
+
 export class PolyGraphicAngled implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: () => IPolyGraphicAngledView) {

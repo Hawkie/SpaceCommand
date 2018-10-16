@@ -1,6 +1,12 @@
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IView } from "ts/gamelib/Views/View";
-import { ICircleView } from "./ICircleView";
+
+export interface ICircleView {
+    x: number;
+    y: number;
+    r: number;
+}
+
 export class CircleView implements IView {
     constructor(private getInputs: () => ICircleView) {
     }

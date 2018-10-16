@@ -1,31 +1,11 @@
 ﻿import { DrawContext} from "ts/gamelib/1Common/DrawContext";
-import { AudioObject } from "ts/Sound/SoundObject";
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { Vector } from "ts/gamelib/Data/Vector";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 import { IGameState } from "ts/gamelib/GameState/GameState";
-import { Shape } from "ts/gamelib/Data/Shape";
-import { Direction } from "ts/gamelib/Data/Wind";
-import { WindModel } from "ts/game/States/Land/WindModel";
-import { LandingPadModel } from "ts/game/States/Land/LandingPad";
 import { IInteractor, Interactor } from "ts/gamelib/Interactors/Interactor";
-import { ObjectCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
-import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IView } from "ts/gamelib/Views/View";
-import { PolyView } from "ts/gamelib/Views/PolyViews";
-import { PolyGraphic } from "ts/gamelib/Views/PolyGraphic";
-import { CircleView } from "ts/gamelib/Views/CircleView";
-import { ValueView } from "ts/gamelib/Views/ValueView";
-import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
-import { IAcceleratorInputs, Accelerator, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
 import { Assets } from "ts/gamelib/1Common/Assets";
 import { createModel } from "./LandExplorerModels";
 import { ILandExplorer } from "./ILandExplorer";
 import { ILandExplorerObjects, createLandExplorerObjects } from "./LandExplorerObjects";
-
 
 export function createLEState(assets: Assets, actx: AudioContext): LandExplorerState {
     var state: ILandExplorer = createModel();

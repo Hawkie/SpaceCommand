@@ -1,5 +1,5 @@
 import { IBall } from "../../States/Asteroids/AsteroidModels";
-import { LineView } from "ts/gamelib/Views/PolyViews";
+import { LineView } from "ts/gamelib/Views/LineView";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { CompositeAccelerator, IRodOutputs } from "../../../gamelib/Actors/CompositeAccelerator";
 import { IShip } from "../Ship/IShip";

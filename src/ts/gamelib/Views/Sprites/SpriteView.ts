@@ -1,9 +1,8 @@
 ﻿import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-// import { ILocated, IAngled, ILocatedAngled } from "ts/gamelib/Data/PhysicsData";
 import { ISprite } from "ts/gamelib/Data/Sprite";
 import { IView } from "ts/gamelib/Views/View";
 
-export interface ISpriteLocated {
+export interface ISpriteView {
     x: number;
     y: number;
     sprite: ISprite;
@@ -11,10 +10,10 @@ export interface ISpriteLocated {
 
 // binds data object to drawable item
 export class SpriteView implements IView {
-    constructor(private getInputs: ()=>ISpriteLocated) { }
+    constructor(private getInputs: ()=>ISpriteView) { }
 
     display(drawContext: DrawContext): void {
-        var inputs: ISpriteLocated = this.getInputs();
+        var inputs: ISpriteView = this.getInputs();
         if (inputs.sprite.loaded) {
             drawContext.drawSprite(inputs.sprite.img,
                 inputs.sprite.frame.x,
@@ -29,7 +28,7 @@ export class SpriteView implements IView {
     }
 }
 
-export interface ISpriteAngled extends ISpriteLocated {
+export interface ISpriteAngled extends ISpriteView {
     angle: number;
 }
 
