@@ -4,7 +4,7 @@ import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { Vector } from "ts/gamelib/Data/Vector";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
-import { IGameState } from "ts/gamelib/States/GameState";
+import { IGameState } from "ts/gamelib/GameState/GameState";
 import { Shape } from "ts/gamelib/Data/Shape";
 import { Direction } from "ts/gamelib/Data/Wind";
 import { WindModel } from "ts/States/Land/WindModel";

@@ -1,5 +1,5 @@
 import { Canvas } from "ts/gamelib/1Common/Canvas";
-import { IGameState } from "ts/gamelib/States/GameState";
+import { IGameState } from "ts/gamelib/GameState/GameState";
 import { KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 
 export class EventLoop {

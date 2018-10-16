@@ -4,7 +4,7 @@ import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { ISurfaceGeneration, ISurface, initSurface } from "./SurfaceGenerator";
 import { ICoordinate } from "../../gamelib/Data/Coordinate";
 import { ILandExplorer } from "./ILandExplorer";
-import { IStateConfig } from "../../gamelib/States/StateConfig";
+import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
 
 export function createModel(): ILandExplorer {
     var ship: IShip = createShip(256, 240, 10);

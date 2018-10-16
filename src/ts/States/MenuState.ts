@@ -5,7 +5,7 @@ import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
 import { Assets } from "ts/gamelib/1Common/Assets";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
-import { IGameState } from "ts/gamelib/States/GameState";
+import { IGameState } from "ts/gamelib/GameState/GameState";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
 import { TextView } from "ts/gamelib/Views/TextView";

@@ -2,7 +2,7 @@ import { Canvas } from "ts/gamelib/1Common/Canvas";
 import { EventLoop } from "ts/gamelib/1Common/EventLoop";
 import { Assets } from "ts/gamelib/1Common/Assets";
 import { createStates } from "ts/States/MenuState";
-import { IGameState } from "ts/gamelib/States/GameState";
+import { IGameState } from "ts/gamelib/GameState/GameState";
 
 
 export class Game {

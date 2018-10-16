@@ -7,7 +7,7 @@ import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "./AsteroidFields";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
 import { createShip, IShip } from "ts/States/Asteroids/Ship/ShipState";
-import { IStateConfig } from "ts/gamelib/States/StateConfig";
+import { IStateConfig } from "ts/gamelib/GameState/stateConfig";
 import { IAsteroidModel } from "./IAsteroidModel";
 
 export interface ISyncedArray<T> {

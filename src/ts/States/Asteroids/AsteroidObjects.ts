@@ -24,7 +24,7 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/States/Asteroids/Ship/ShipObjects";
 import { IShip } from "./Ship/ShipState";
-import { IStateConfig } from "ts/gamelib/States/StateConfig";
+import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {

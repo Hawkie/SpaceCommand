@@ -25,7 +25,7 @@ import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
 import { addGravity } from "../../Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
-import { IStateConfig } from "ts/gamelib/States/StateConfig";
+import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
 import { Vector } from "../../../gamelib/Data/Vector";
 
 export function createShipObject(getStateConfig: () => IStateConfig, getControls: () => IControls, getShip: () => IShip): SingleGameObject {
