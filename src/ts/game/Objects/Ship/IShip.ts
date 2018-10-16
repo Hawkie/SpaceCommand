@@ -64,7 +64,7 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         new Coordinate(0, 1),
         new Coordinate(2, 2),
         new Coordinate(0, -4)];
-    Transforms.scale(triangleShip, 2, 2);
+    var scaledShip: ICoordinate[] = Transforms.Scale(triangleShip, 2, 2);
 
     // var breakable = new BreakableData(20, 20, 0, false, false);
     // var shape = new Shape(triangleShip);
@@ -77,7 +77,7 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         angle: 0,
         spin: 0,
         mass: 1,
-        shape: {points: triangleShip, offset: {x:0, y:0}},
+        shape: {points: scaledShip, offset: {x:0, y:0}},
         gravityStrength: gravityStrength,
         hitPoints: 100,
         damage: 0,

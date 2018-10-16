@@ -3,10 +3,12 @@ import { Vector, IVector } from "../Data/Vector";
 
 export class Transforms {
 
+    // generates a random number between min and max
     static random(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    // conerts a simple array of repeating xy values to Icoordinates[]
     static ArrayToPoints(array: number[]): Coordinate[] {
         let points: Coordinate[] = [];
         for (let i: number = 0; i < array.length - 1; i+=2) {
@@ -15,6 +17,7 @@ export class Transforms {
         return points;
     }
 
+    // rotate the set of coordiantes about the origin.
     static Rotate(points: Coordinate[], degrees: number): Coordinate[] {
         var radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
@@ -44,6 +47,9 @@ export class Transforms {
         return new Coordinate(x, y);
     }
 
+    // takes x and y lengths and returns angle and length vector.
+    // converts the angle to degrees (e.g. *180/PI)
+    // angle are zero for vertical and increase clockwise (not anticlockwise as is common in maths)
     // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
     static CartesianToVector(x: number, y: number): IVector {
         var length: number = Math.sqrt(x * x + y * y);
@@ -51,10 +57,19 @@ export class Transforms {
         return new Vector(angle, length);
     }
 
-    static scale(points: Coordinate[], scaleX: number, scaleY:number): void {
-        points.forEach(p => { p.x *= scaleX; p.y *= scaleY; });
+    // scales a coordinate x and y from origin to new position.
+    // warning mutable operation to be changed to non mutable!
+    static Scale(points: ICoordinate[], scaleX: number, scaleY:number): ICoordinate[] {
+        var newCoordinates:ICoordinate[] = [];
+        // iterate thru each vertex and change position
+        points.forEach(p => {
+            var newCoordinate: ICoordinate = new Coordinate(p.x *= scaleX, p.y *= scaleY);
+            newCoordinates.push(newCoordinate);
+        });
+        return newCoordinates;
     }
 
+    // accurate collision detection algorithm
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     static hasPoint(points: Coordinate[], startingLocation: Coordinate, testPoint: Coordinate): boolean {
         var c: boolean = false;

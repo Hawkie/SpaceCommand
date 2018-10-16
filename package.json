@@ -1,6 +1,7 @@
 {
   "name": "SpaceCommand",
   "private": true,
+  "description": "Evolving framework for simple space line game",
   "version": "0.0.1",
   "main": "main.js",
   "repository": {

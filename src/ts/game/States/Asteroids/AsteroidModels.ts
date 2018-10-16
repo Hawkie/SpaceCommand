@@ -213,8 +213,8 @@ export class AsteroidModels {
         var type:number = Transforms.random(0, 4);
         var points: number[] = AsteroidModels.as[type];
         var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
-        Transforms.scale(coords, size, size);
-        var shape: IShape = new Shape(coords);
+        var scaledShape: ICoordinate[] = Transforms.Scale(coords, size, size);
+        var shape: IShape = new Shape(scaledShape);
         var a: IAsteroid = {
             x: x,
             y: y,
