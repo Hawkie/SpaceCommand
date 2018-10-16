@@ -2,11 +2,11 @@ import { move, IMoveOut } from "./Movers";
 
 
 test("mover", () => {
-    const Vx: number = 10;
+    const Vx: number = 5;
     const Vy: number = 10;
     const TIMEMODIFIER: number = 1000;
 
     var result: IMoveOut = move(TIMEMODIFIER, Vx, Vy);
-    expect(result.dx).toBeCloseTo(Vx*TIMEMODIFIER);
-    expect(result.dy).toBeCloseTo(Vy*TIMEMODIFIER);
+    expect(result.dx).toBeCloseTo(5000);
+    expect(result.dy).toBeCloseTo(10000);
 });

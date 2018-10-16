@@ -1,4 +1,4 @@
-import { IBall } from "../../States/Asteroids/AsteroidModels";
+import { IBall } from "../../States/Asteroids/createAsteroidData";
 import { LineView } from "ts/gamelib/Views/LineView";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { CompositeAccelerator, IRodOutputs } from "../../../gamelib/Actors/CompositeAccelerator";

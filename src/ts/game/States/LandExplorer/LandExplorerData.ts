@@ -1,12 +1,21 @@
 import { IShip, createShip } from "../../Objects/Ship/IShip";
-import { IParticleField, createStarField } from "../Asteroids/AsteroidModels";
-import { IShape, Shape } from "ts/gamelib/Data/Shape";
-import { ISurfaceGeneration, ISurface, initSurface } from "./SurfaceGenerator";
+import { IParticleField, createStarFieldData, IControls } from "../Asteroids/createAsteroidData";
+import { ISurfaceGeneration, ISurface, initSurface } from "../../Actors/SurfaceGenerator";
 import { ICoordinate } from "../../../gamelib/Data/Coordinate";
-import { ILandExplorer } from "./ILandExplorer";
-import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
+import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 
-export function createModel(): ILandExplorer {
+export interface ILandExplorerData {
+    title: string;
+    stateConfig: IGameStateConfig;
+    controls: IControls;
+    ship: IShip;
+    starField: IParticleField;
+    surfaceGenerator: ISurfaceGeneration;
+    surface: ISurface;
+    surfaceImg: string;
+}
+
+export function createLandExplorerData(): ILandExplorerData {
     var ship: IShip = createShip(256, 240, 10);
     var surfaceGenerator: ISurfaceGeneration = {
         resolution: 5,
@@ -19,12 +28,12 @@ export function createModel(): ILandExplorer {
         points: points,
     };
 
-    var stateConfig: IStateConfig = {
+    var stateConfig: IGameStateConfig = {
         screenWrap: false,
         gravity: true,
     };
 
-    var starField: IParticleField = createStarField();
+    var starField: IParticleField = createStarFieldData();
     return {
         title: "Space Commander",
         stateConfig: stateConfig,

@@ -1,4 +1,4 @@
-import { IBall } from "../../States/Asteroids/AsteroidModels";
+import { IBall } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "ts/gamelib/Views/View";
 import { CircleView } from "ts/gamelib/Views/CircleView";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";

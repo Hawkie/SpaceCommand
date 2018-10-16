@@ -1,5 +1,5 @@
 
-export  interface IStateConfig {
+export  interface IGameStateConfig {
     screenWrap: boolean;
     gravity: boolean;
 }

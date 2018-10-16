@@ -10,12 +10,21 @@ import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { AsteroidModels, IBall, IAsteroid,
-    IGraphicShip, ICoin } from "ts/game/States/Asteroids/AsteroidModels";
-import { IAsteroidModel } from "./IAsteroidModel";
-import { IAsteroidStateObject } from "ts/game/States/Asteroids/AsteroidObjects";
+    IGraphicShip, ICoin, IAsteroidData, createAsteroidData } from "./createAsteroidData";
+import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
 import { createAsteroidObject } from "ts/game/Objects/Asteroids/createAsteroidObject";
+import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 
-export class AsteroidState implements IGameState {
+export function createGameState(assets: Assets, actx: AudioContext): AsteroidGameState {
+    var spriteField: IGameObject = createSpriteField();
+    var state: IAsteroidData = createAsteroidData();
+    var stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
+    // get state objects and add asteroid objects
+    var asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", assets, actx, state, stateObj, [spriteField]);
+    return asteroidState;
+}
+
+export class AsteroidGameState implements IGameState {
     interactors: IInteractor[] = [];
     viewScale: number;
     zoom: number;
@@ -24,30 +33,30 @@ export class AsteroidState implements IGameState {
     constructor(public name: string,
         private assets: Assets,
         private actx: AudioContext,
-        private state: IAsteroidModel,
+        private dataModel: IAsteroidData,
         private stateObj: IAsteroidStateObject,
         private sceneObjects: IGameObject[]
         ) {
         this.viewScale = 1;
         this.zoom = 1;
         var asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(()=>
-            this.state.asteroids.asteroids.map((a)=> { return {
+            this.dataModel.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
             };}),
-            ()=> this.state.ship.weapon1.bullets.map((b)=> { return {
+            ()=> this.dataModel.ship.weapon1.bullets.map((b)=> { return {
                 x: b.x,
                 y: b.y,
             };}),
             this.bulletHitAsteroid.bind(this));
         var asteroidPlayerDetector:IInteractor = new Multi2ShapeCollisionDetector(()=>
-            this.state.asteroids.asteroids.map((a)=> { return {
+            this.dataModel.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
             };}),
             ()=> { return {
-                location: {x: this.state.ship.x, y: this.state.ship.y },
-                shape: this.state.ship.shape,
+                location: {x: this.dataModel.ship.x, y: this.dataModel.ship.y },
+                shape: this.dataModel.ship.shape,
             };},
             this.asteroidPlayerHit.bind(this));
         this.interactors = [asteroidBulletDetector, asteroidPlayerDetector];
@@ -65,8 +74,8 @@ export class AsteroidState implements IGameState {
         drawingContext.clear();
         // this.angle.model.value = this.player.chassisObj.model.physics.angle;
         drawingContext.save();
-        let x: number  = this.state.ship.x;
-        let y: number = this.state.ship.y;
+        let x: number  = this.dataModel.ship.x;
+        let y: number = this.dataModel.ship.y;
         drawingContext.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         // move origin to location of ship - location of ship factored by zoom
         // if zoom = 1 no change
@@ -86,24 +95,24 @@ export class AsteroidState implements IGameState {
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
         if (keys.isKeyDown(Keys.UpArrow)) {
-            this.state.controls.up = true;
+            this.dataModel.controls.up = true;
         } else {
-            this.state.controls.up = false;
+            this.dataModel.controls.up = false;
         }
         if (keys.isKeyDown(Keys.LeftArrow)) {
-            this.state.controls.left = true;
+            this.dataModel.controls.left = true;
         } else {
-            this.state.controls.left = false;
+            this.dataModel.controls.left = false;
         }
         if (keys.isKeyDown(Keys.RightArrow)) {
-            this.state.controls.right = true;
+            this.dataModel.controls.right = true;
         } else {
-            this.state.controls.right = false;
+            this.dataModel.controls.right = false;
         }
         if (keys.isKeyDown(Keys.SpaceBar)) {
-            this.state.controls.fire = true;
+            this.dataModel.controls.fire = true;
         } else {
-            this.state.controls.fire = false;
+            this.dataModel.controls.fire = false;
         }
         if (keys.isKeyDown(Keys.Z)) {
             this.viewScale = 0.01;
@@ -120,35 +129,35 @@ export class AsteroidState implements IGameState {
 
     bulletHitAsteroid(i1: number, i2: number): void {
         // effect on asteroid
-        let a:IAsteroid = this.state.asteroids.asteroids[i1];
+        let a:IAsteroid = this.dataModel.asteroids.asteroids[i1];
         // remove bullet
-        this.state.ship.weapon1.bullets.splice(i2, 1);
+        this.dataModel.ship.weapon1.bullets.splice(i2, 1);
         this.stateObj.weaponObj.getComponents().splice(i2, 1);
 
         // remove asteroid
-        this.state.asteroids.playBreakSound = true;
-        this.state.asteroids.asteroids.splice(i1, 1);
+        this.dataModel.asteroids.playBreakSound = true;
+        this.dataModel.asteroids.asteroids.splice(i1, 1);
         this.stateObj.asteroidObjs.getComponents().splice(i1, 1);
         // add two smaller asteroids
         // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {
-                var newAsteroid:IAsteroid = AsteroidModels.createAsteroidModelAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
-                this.state.asteroids.asteroids.push(newAsteroid);
+                var newAsteroid:IAsteroid = AsteroidModels.createAsteroidDataAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
+                this.dataModel.asteroids.asteroids.push(newAsteroid);
                 var asteroidObj: SingleGameObject = createAsteroidObject(()=>newAsteroid);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
-        this.state.score += 10;
+        this.dataModel.score += 10;
 
         // if all asteroids cleared, create more at next level
-        if (this.state.asteroids.asteroids.length === 0) {
-            this.state.score += 50;
-            this.state.level += 1;
+        if (this.dataModel.asteroids.asteroids.length === 0) {
+            this.dataModel.score += 50;
+            this.dataModel.level += 1;
             // how do we ensure new asteroid objects bound to the new models in the state
-            this.state.asteroids.asteroids = AsteroidModels.createAsteroidModels(this.state.level);
-            for (let n:number = 0; n < this.state.asteroids.asteroids.length; n++) {
-                let a:IAsteroid = this.state.asteroids.asteroids[n];
+            this.dataModel.asteroids.asteroids = AsteroidModels.createAsteroidsData(this.dataModel.level);
+            for (let n:number = 0; n < this.dataModel.asteroids.asteroids.length; n++) {
+                let a:IAsteroid = this.dataModel.asteroids.asteroids[n];
                 let asteroidObj: SingleGameObject = createAsteroidObject(()=>a);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
@@ -156,12 +165,12 @@ export class AsteroidState implements IGameState {
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {
-        var a: IAsteroid = this.state.asteroids.asteroids[i1];
+        var a: IAsteroid = this.dataModel.asteroids.asteroids[i1];
         var xImpact: number = a.Vx;
         var yImpact: number = a.Vy;
-        this.state.ship.Vx = xImpact + Transforms.random(-2, 2);
-        this.state.ship.Vy = yImpact + Transforms.random(-2, 2);
-        this.state.ship.crashed = true;
+        this.dataModel.ship.Vx = xImpact + Transforms.random(-2, 2);
+        this.dataModel.ship.Vy = yImpact + Transforms.random(-2, 2);
+        this.dataModel.ship.crashed = true;
     }
 
     tests(lastTestModifier: number): void {

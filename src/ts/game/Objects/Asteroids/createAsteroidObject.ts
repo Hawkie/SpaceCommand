@@ -1,4 +1,4 @@
-import { IAsteroid } from "../../States/Asteroids/AsteroidModels";
+import { IAsteroid } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "ts/gamelib/Views/View";
 import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";

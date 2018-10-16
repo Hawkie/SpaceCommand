@@ -4,8 +4,21 @@ import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { IParticle } from "../../Objects/Particle/IParticle";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
-import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
-import { IAsteroidModel } from "./IAsteroidModel";
+import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
+
+export interface IAsteroidData {
+    stateConfig: IGameStateConfig;
+    controls: IControls;
+    starField: IParticleField;
+    ship: IShip;
+    ball: IBall;
+    coin: ICoin;
+    level: number;
+    asteroids: IAsteroids;
+    graphicShip: IGraphicShip;
+    score: number;
+    title: string;
+}
 
 export interface ISyncedArray<T> {
     items: T[];
@@ -81,25 +94,25 @@ export interface IBall {
 }
 
 
-export function createStateModel(): IAsteroidModel {
-    var starField: IParticleField = createStarField();
+export function createAsteroidData(): IAsteroidData {
+    var starField: IParticleField = createStarFieldData();
     var ship: IShip = createShip(256, 240, 0);
-    var ball: IBall = createBall(256, 280);
-    var coin: ICoin = createCoin(new Coordinate(300, 400));
-    var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
+    var ball: IBall = createBallData(256, 280);
+    var coin: ICoin = createCoinData(new Coordinate(300, 400));
+    var asteroids: IAsteroid[] = AsteroidModels.createAsteroidsData(3);
     var asteroidState: IAsteroids = {
         asteroids: asteroids,
         playBreakSound: false,
         breakSoundFilename: "res/sound/blast.wav",
     };
-    var graphicShip: IGraphicShip = createGraphicShip(200, 100);
-    var stateConfig: IStateConfig = {
+    var graphicShip: IGraphicShip = createGraphicShipData(200, 100);
+    var stateConfig: IGameStateConfig = {
         screenWrap: true,
         gravity: false,
     };
 
     // things that change
-    var stateVariables: IAsteroidModel = {
+    var stateVariables: IAsteroidData = {
         stateConfig: stateConfig,
         controls: {
             left: false,
@@ -120,7 +133,7 @@ export function createStateModel(): IAsteroidModel {
     return stateVariables;
 }
 
-export function createStarField(): IParticleField {
+export function createStarFieldData(): IParticleField {
     return {
         particles: [],
         particlesPerSecond: 1,
@@ -132,7 +145,7 @@ export function createStarField(): IParticleField {
     };
 }
 
-export function createGraphicShip(x: number, y:number): IGraphicShip {
+export function createGraphicShipData(x: number, y:number): IGraphicShip {
     var gShip: IGraphicShip = {
         x: x,
         y: y,
@@ -146,7 +159,7 @@ export function createGraphicShip(x: number, y:number): IGraphicShip {
     return gShip;
 }
 
-export function createCoin(location: Coordinate): ICoin {
+export function createCoinData(location: Coordinate): ICoin {
     var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
     var coin: ICoin = {
         x: location.x,
@@ -161,7 +174,7 @@ export function createCoin(location: Coordinate): ICoin {
     return coin;
 }
 
-export function createBall(x: number, y: number): IBall {
+export function createBallData(x: number, y: number): IBall {
     var ballModel: IBall = {
         x: x,
         y: y,
@@ -185,16 +198,16 @@ export class AsteroidModels {
     static as = [AsteroidModels.a1, AsteroidModels.a2, AsteroidModels.a3, AsteroidModels.a4, AsteroidModels.a5];
 
 
-    public static createAsteroidModels(level: number): IAsteroid[] {
+    public static createAsteroidsData(level: number): IAsteroid[] {
         var asteroids: IAsteroid[] = [];
         for (var i: number = 0; i < level; i++) {
-            var a: IAsteroid = AsteroidModels.createAsteroidModel(3);
+            var a: IAsteroid = AsteroidModels.createAsteroidData(3);
             asteroids.push(a);
         }
         return asteroids;
     }
 
-    public static createAsteroidModel(size: number): IAsteroid {
+    public static createAsteroidData(size: number): IAsteroid {
         let xy: number = Transforms.random(0, 3);
         let x: number = Transforms.random(0,512), y: number = Transforms.random(0, 480);
         if (xy === 0) {
@@ -206,10 +219,10 @@ export class AsteroidModels {
         } else if (xy === 3) {
             y = Transforms.random(380, 480);
         }
-        return AsteroidModels.createAsteroidModelAt(x,y, 0, 0, size);
+        return AsteroidModels.createAsteroidDataAt(x,y, 0, 0, size);
     }
 
-    public static createAsteroidModelAt(x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
+    public static createAsteroidDataAt(x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
         var type:number = Transforms.random(0, 4);
         var points: number[] = AsteroidModels.as[type];
         var coords: ICoordinate[] = Transforms.ArrayToPoints(points);

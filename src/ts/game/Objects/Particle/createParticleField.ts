@@ -5,7 +5,7 @@ import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IParticleField } from "ts/game/States/Asteroids/AsteroidModels";
+import { IParticleField } from "../../States/Asteroids/createAsteroidData";
 import { Vector } from "ts/gamelib/Data/Vector";
 import { createParticleObject } from "./createParticleObject";
 import { IFieldInputs } from "./IFieldInputs";

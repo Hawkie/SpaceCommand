@@ -70,6 +70,7 @@ export class Transforms {
     }
 
     // accurate collision detection algorithm
+    // use shape with a starting position
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     static hasPoint(points: Coordinate[], startingLocation: Coordinate, testPoint: Coordinate): boolean {
         var c: boolean = false;

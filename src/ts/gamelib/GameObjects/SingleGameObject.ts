@@ -2,6 +2,8 @@ import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IView } from "ts/gamelib/Views/View";
 import { IGameObject } from "./IGameObject";
+
+
 export class SingleGameObject implements IGameObject {
     constructor(public actors: IActor[], public views: IView[]) {
     }

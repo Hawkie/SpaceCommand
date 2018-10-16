@@ -2,6 +2,7 @@ import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IView } from "ts/gamelib/Views/View";
 import { IGameObject } from "./IGameObject";
+
 // an actor that keeps the model array in sync with the components
 // combi of single and component
 export class MultiGameObject<TComponent extends IGameObject> implements IGameObject {

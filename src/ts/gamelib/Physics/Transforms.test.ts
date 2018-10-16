@@ -49,3 +49,58 @@ test.each([[2,2,2,4,4]])("Scale", (x, y, scale, expX, expY) => {
     expect(result[0].x).toBeCloseTo(expX);
     expect(result[0].y).toBeCloseTo(expY);
 });
+
+test("hasPoint_WithOffset2020and2121_isInside", () => {
+    const points: ICoordinate[] = [new Coordinate(0,0),
+        new Coordinate(0,10),
+        new Coordinate(10,10),
+        new Coordinate(10,0)];
+    const origin:Coordinate = new Coordinate(20,20);
+    const testPoint:Coordinate = new Coordinate(21,21);
+    expect(Transforms.hasPoint(points, origin, testPoint)).toBe(true);
+});
+
+describe.each([[-0.1,0], [0,-0.1], [0,10.1], [10.1, 0], [10,10]])(
+        ".with(%d, %d)",
+        (x, y) => {
+        test("hasPointOutsideOffset 0, 0", () => {
+            const points: ICoordinate[] = [new Coordinate(0,0),
+                new Coordinate(0,10),
+                new Coordinate(10,10),
+                new Coordinate(10,0)];
+            const origin:Coordinate = new Coordinate(0,0);
+            const testPoint:Coordinate = new Coordinate(x,y);
+            expect(Transforms.hasPoint(points, origin, testPoint)).toBe(false);
+        });
+    },
+);
+
+describe.each([[0,0],[0,9.9], [9.9,0], [9.9,9.9], [5, 5]])(
+    ".with(%d, %d)",
+    (x, y) => {
+    test("hasPointInsideOffset 0, 0", () => {
+        const points: ICoordinate[] = [new Coordinate(0,0),
+            new Coordinate(0,10),
+            new Coordinate(10,10),
+            new Coordinate(10,0)];
+        const origin:Coordinate = new Coordinate(0,0);
+        const testPoint:Coordinate = new Coordinate(x,y);
+        expect(Transforms.hasPoint(points, origin, testPoint)).toBe(true);
+        });
+    },
+);
+
+describe.each([[1,1], [8.9,1], [1,8.9], [8.9,8.9], [6, 6]])(
+    ".with(%d, %d)",
+    (x, y) => {
+    test("insideTrueWithOffset 1, 1", () => {
+        const points: ICoordinate[] = [new Coordinate(0,0),
+            new Coordinate(0,10),
+            new Coordinate(10,10),
+            new Coordinate(10,0)];
+        const origin:Coordinate = new Coordinate(1,1);
+        const testPoint:Coordinate = new Coordinate(x,y);
+        expect(Transforms.hasPoint(points, origin, testPoint)).toBe(true);
+        });
+    },
+);

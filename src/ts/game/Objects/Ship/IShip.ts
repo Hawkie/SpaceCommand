@@ -6,7 +6,7 @@ import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "ts/game/Objects/Particle/IParticle";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
-import { IParticleField } from "ts/game/States/Asteroids/AsteroidModels";
+import { IParticleField } from "../../States/Asteroids/createAsteroidData";
 
 export interface IShip {
     x: number;

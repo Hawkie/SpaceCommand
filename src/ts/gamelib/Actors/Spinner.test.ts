@@ -5,5 +5,5 @@ test("spinTest", () => {
     const TIMEMODIFIER: number = 1000;
 
     var result: ISpinnerOutputs = spin(TIMEMODIFIER, SPIN);
-    expect(result.dAngle).toBeCloseTo(SPIN*TIMEMODIFIER);
+    expect(result.dAngle).toBeCloseTo(10000);
 });

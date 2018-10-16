@@ -1,4 +1,4 @@
-import { ICoin } from "../../States/Asteroids/AsteroidModels";
+import { ICoin } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "ts/gamelib/Views/View";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";

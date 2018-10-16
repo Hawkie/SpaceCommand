@@ -1,4 +1,4 @@
-import { IGraphicShip } from "../../States/Asteroids/AsteroidModels";
+import { IGraphicShip } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "ts/gamelib/Views/View";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";

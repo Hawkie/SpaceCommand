@@ -1,4 +1,4 @@
-import { AsteroidModels, IParticleField, IControls } from "ts/game/States/Asteroids/AsteroidModels";
+import { AsteroidModels, IParticleField, IControls } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "ts/gamelib/Views/View";
 import { PolyView } from "ts/gamelib/Views/PolyViews";
 import { LineView } from "ts/gamelib/Views/LineView";
@@ -13,11 +13,13 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { IShip } from "./IShip";
 import { addGravity } from "../../States/Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
-import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
+import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { Vector } from "../../../gamelib/Data/Vector";
 
-export function createShipObject(getStateConfig: () => IStateConfig, getControls: () => IControls, getShip: () => IShip): SingleGameObject {
-    var stateConfig: IStateConfig = getStateConfig();
+export function createShipObject(getStateConfig: () => IGameStateConfig,
+    getControls: () => IControls,
+    getShip: () => IShip): SingleGameObject {
+    var stateConfig: IGameStateConfig = getStateConfig();
     var ship: IShip = getShip();
     var controls: IControls = getControls();
     var mover: IActor = new MoveConstVelocity(() => {

@@ -1,4 +1,3 @@
-import { ILandExplorer } from "./ILandExplorer";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
@@ -12,11 +11,12 @@ import { TextView } from "../../../gamelib/Views/TextView";
 import { Coordinate, ICoordinate } from "../../../gamelib/Data/Coordinate";
 import { PolyGraphic } from "../../../gamelib/Views/PolyGraphic";
 import { Graphic, IGraphic } from "../../../gamelib/Data/Graphic";
-import { ISurface, SurfaceGenerator2, ISurfaceGeneration } from "./SurfaceGenerator";
+import { ISurface, SurfaceGenerator2, ISurfaceGeneration } from "../../Actors/SurfaceGenerator";
 import { IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IActor } from "../../../gamelib/Actors/Actor";
+import { ILandExplorerData } from "./createLandExplorerData";
 
-export interface ILandExplorerObjects {
+export interface ILandExplorerStateObjects {
     shipObj: SingleGameObject;
     weaponObj: MultiGameObject<SingleGameObject>;
     exhaustObj: MultiGameObject<SingleGameObject>;
@@ -29,31 +29,31 @@ export interface ILandExplorerObjects {
     sceneObjs: IGameObject[];
 }
 
-export function createLandExplorerObjects(getState: () => ILandExplorer): ILandExplorerObjects {
-    var state: ILandExplorer = getState();
-    var shipObj: SingleGameObject = createShipObject(() => state.stateConfig, () => state.controls, () => state.ship);
-    var shipThrust: SingleGameObject = createShipAccelerator(() => state.ship);
+export function createLandExplorerStateObjects(getData: () => ILandExplorerData): ILandExplorerStateObjects {
+    var data: ILandExplorerData = getData();
+    var shipObj: SingleGameObject = createShipObject(() => data.stateConfig, () => data.controls, () => data.ship);
+    var shipThrust: SingleGameObject = createShipAccelerator(() => data.ship);
     var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(
-        () => state.controls,
-        () => state.ship,
-        () => state.ship.weapon1);
-    var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => state.ship);
-    var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => state.ship);
+        () => data.controls,
+        () => data.ship,
+        () => data.ship.weapon1);
+    var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
+    var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
 
     var surfaceObj: SingleGameObject = createPlanetSurfaceObject(() => {
         return {
-            x: state.ship.x,
-            y: state.ship.y,
+            x: data.ship.x,
+            y: data.ship.y,
         };
     },
-        () => state.surfaceGenerator,
-        () => state.surface,
-        state.surfaceImg);
+        () => data.surfaceGenerator,
+        () => data.surface,
+        data.surfaceImg);
 
-    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => state.starField, 32);
+    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
 
     // ship = space ship controller with gravity
-    var title: IView = new TextView(() => state.title, new Coordinate(10, 20), "Arial", 18);
+    var title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
 
     return {
         shipObj: shipObj,
