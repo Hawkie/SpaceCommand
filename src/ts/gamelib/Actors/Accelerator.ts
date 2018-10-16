@@ -1,7 +1,7 @@
-import { Vector } from "ts/gamelib/Data/Vector";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Vector } from "../Data/Vector";
+import { Transforms } from "../Physics/Transforms";
+import { IActor } from "../Actors/Actor";
+import { Coordinate } from "../Data/Coordinate";
 
 export interface IAcceleratorInputs {
     readonly forces: Vector[];

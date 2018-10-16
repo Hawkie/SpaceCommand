@@ -1,5 +1,5 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
-import { Vector, IVector } from "ts/gamelib/Data/Vector";
+import { Coordinate, ICoordinate } from "../Data/Coordinate";
+import { Vector, IVector } from "../Data/Vector";
 
 export class Transforms {
 
@@ -33,6 +33,10 @@ export class Transforms {
         return newCoordinates;
     }
 
+    // for angles of 0 we think go up screen = negative y values
+    // for angles of 180 we think going down the screen = positive y values
+    // for angle of 90 we think right on screen = positive x values
+    // for angle of 270 we think left on screen = negative x values
     static VectorToCartesian(degrees: number, length: number): Coordinate {
         var radians: number = degrees / 180 * Math.PI;
         var x: number = Math.sin(radians) * length; // sin 0 = 0

@@ -1,7 +1,7 @@
 import { IBall } from "../../States/Asteroids/AsteroidModels";
 import { LineView } from "ts/gamelib/Views/PolyViews";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { CompositeAccelerator, IRodOutputs } from "ts/gamelib/Actors/Accelerators";
+import { CompositeAccelerator, IRodOutputs } from "../../../gamelib/Actors/CompositeAccelerator";
 import { IShip } from "../Ship/IShip";
 
 // create a ship and ball attached by a line with a composite accelerator to

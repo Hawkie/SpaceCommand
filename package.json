@@ -2,13 +2,24 @@
   "name": "SpaceCommand",
   "private": true,
   "version": "0.0.1",
+  "main": "main.js",
   "repository": {
     "type": "GIT",
     "url": "https://github.com/Hawkie/SpaceCommand"
   },
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "pretest": "npm run lint",
+    "test": "jest"
+  },
   "keywords": [],
   "author": "SpaceCommandTeam",
-  "dependencies": {
-    "requirejs": "2.2.0"
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^23.3.5",
+    "jest": "^23.6.0",
+    "requirejs": "^2.2.0",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.3"
   }
 }

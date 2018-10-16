@@ -3,7 +3,9 @@
         "target": "es6",
         "module": "amd",
         "sourceMap": true,
-        "outFile": "main.js"
+        "outFile": "main.js",
+        "outDir": "./lib",
+        "esModuleInterop": true 
     },
     "exclude":[
         "ts/Server"
