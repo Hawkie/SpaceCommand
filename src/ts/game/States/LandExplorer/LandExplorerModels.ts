@@ -1,8 +1,8 @@
-import { IShip, createShip } from "ts/States/Asteroids/Ship/ShipState";
+import { IShip, createShip } from "ts/game/States/Asteroids/Ship/ShipState";
 import { IParticleField, createStarField } from "../Asteroids/AsteroidModels";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { ISurfaceGeneration, ISurface, initSurface } from "./SurfaceGenerator";
-import { ICoordinate } from "../../gamelib/Data/Coordinate";
+import { ICoordinate } from "../../../gamelib/Data/Coordinate";
 import { ILandExplorer } from "./ILandExplorer";
 import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
 

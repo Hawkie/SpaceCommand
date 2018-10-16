@@ -6,7 +6,7 @@ import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "./AsteroidFields";
 import { IVector, Vector } from "ts/gamelib/Data/Vector";
-import { createShip, IShip } from "ts/States/Asteroids/Ship/ShipState";
+import { createShip, IShip } from "ts/game/States/Asteroids/Ship/ShipState";
 import { IStateConfig } from "ts/gamelib/GameState/stateConfig";
 import { IAsteroidModel } from "./IAsteroidModel";
 

@@ -9,11 +9,11 @@ import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
-import { AsteroidFields } from "ts/States/Asteroids/AsteroidFields";
+import { AsteroidFields } from "ts/game/States/Asteroids/AsteroidFields";
 import { AsteroidModels, IBall, IAsteroid,
-    IGraphicShip, ICoin, createStateModel } from "ts/States/Asteroids/AsteroidModels";
+    IGraphicShip, ICoin, createStateModel } from "ts/game/States/Asteroids/AsteroidModels";
 import { IAsteroidModel } from "./IAsteroidModel";
-import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/States/Asteroids/AsteroidObjects";
+import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/game/States/Asteroids/AsteroidObjects";
 
 export function createState(assets: Assets, actx: AudioContext): AsteroidState {
 

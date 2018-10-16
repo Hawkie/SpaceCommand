@@ -2,15 +2,15 @@ import { ILandExplorer } from "./ILandExplorer";
 import { SingleGameObject, MultiGameObject, IGameObject } from "ts/gamelib/GameObjects/GameObject";
 import { createShipObject, createWeaponObject, createExhaustObj,
     createExplosionObj, createShipAccelerator } from "../Asteroids/Ship/ShipObjects";
-import { IView } from "../../gamelib/Views/View";
+import { IView } from "../../../gamelib/Views/View";
 import { createBackgroundField } from "../Asteroids/AsteroidObjects";
-import { TextView } from "../../gamelib/Views/TextView";
-import { Coordinate, ICoordinate } from "../../gamelib/Data/Coordinate";
-import { PolyGraphic } from "../../gamelib/Views/PolyGraphic";
-import { Graphic, IGraphic } from "../../gamelib/Data/Graphic";
+import { TextView } from "../../../gamelib/Views/TextView";
+import { Coordinate, ICoordinate } from "../../../gamelib/Data/Coordinate";
+import { PolyGraphic } from "../../../gamelib/Views/PolyGraphic";
+import { Graphic, IGraphic } from "../../../gamelib/Data/Graphic";
 import { ISurface, SurfaceGenerator2, ISurfaceGeneration } from "./SurfaceGenerator";
-import { IAcceleratorInputs } from "../../gamelib/Actors/Accelerator";
-import { IActor } from "../../gamelib/Actors/Actor";
+import { IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
+import { IActor } from "../../../gamelib/Actors/Actor";
 
 export interface ILandExplorerObjects {
     shipObj: SingleGameObject;

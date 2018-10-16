@@ -1,5 +1,4 @@
-﻿import { SoundEffectData } from "ts/States/SoundDesigner/SoundEffectsModel";
-import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
+﻿import { Amplifier, AmplifierSettings } from "ts/Sound/Amplifier";
 
 export interface IAudioObject {
     play(): void;

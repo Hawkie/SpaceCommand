@@ -1,4 +1,4 @@
-import { AsteroidModels, IParticleField, IControls } from "ts/States/Asteroids/AsteroidModels";
+import { AsteroidModels, IParticleField, IControls } from "ts/game/States/Asteroids/AsteroidModels";
 import { IAsteroidModel } from "../IAsteroidModel";
 import { IView } from "ts/gamelib/Views/View";
 import { PolyView, LineView } from "ts/gamelib/Views/PolyViews";
@@ -10,11 +10,11 @@ import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameO
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { createExplosionController, createShipController } from "ts/States/Asteroids/Ship/ShipActors";
-import { createWeaponController } from "ts/States/Asteroids/Ship/createWeaponController";
+import { createExplosionController, createShipController } from "ts/game/States/Asteroids/Ship/ShipActors";
+import { createWeaponController } from "ts/game/States/Asteroids/Ship/createWeaponController";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IParticle, AsteroidFields, createParticleField } from "ts/States/Asteroids/AsteroidFields";
+import { IParticle, AsteroidFields, createParticleField } from "ts/game/States/Asteroids/AsteroidFields";
 import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "ts/gamelib/Views/EffectViews";
@@ -22,11 +22,11 @@ import { Flasher } from "ts/gamelib/Actors/Switches";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Timer } from "ts/gamelib/Actors/Timers";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IShip, IWeapon } from "ts/States/Asteroids/Ship/ShipState";
+import { IShip, IWeapon } from "ts/game/States/Asteroids/Ship/ShipState";
 import { addGravity } from "../../Shared/Gravity";
-import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
+import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../../gamelib/Actors/Accelerator";
 import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
-import { Vector } from "../../../gamelib/Data/Vector";
+import { Vector } from "../../../../gamelib/Data/Vector";
 
 export function createShipObject(getStateConfig: () => IStateConfig, getControls: () => IControls, getShip: () => IShip): SingleGameObject {
     var stateConfig: IStateConfig = getStateConfig();

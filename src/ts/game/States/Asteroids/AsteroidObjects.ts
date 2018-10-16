@@ -22,7 +22,7 @@ import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/States/Asteroids/Ship/ShipObjects";
+import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/game/States/Asteroids/Ship/ShipObjects";
 import { IShip } from "./Ship/ShipState";
 import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
 
