@@ -1,4 +1,6 @@
 import { IActor } from "./Actor";
+
+
 export class Actor2<Tin, Tout> implements IActor {
     constructor(private fin: () => Tin, private feval: (input: Tin) => Tout, private fout: (o: Tout) => void) {
     }

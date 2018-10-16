@@ -5,6 +5,7 @@ import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { IParticle } from "ts/game/States/Asteroids/AsteroidFields";
 import { Sound } from "ts/gamelib/Actors/Sound";
+
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {
     var particle: IParticle = getParticle();
     var mover: IActor = new MoveConstVelocity(() => particle, (out: IMoveOut) => {

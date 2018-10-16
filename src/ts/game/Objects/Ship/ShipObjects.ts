@@ -27,7 +27,7 @@ export function createShipObject(getStateConfig: () => IStateConfig, getControls
         ship.x += out.dx;
         ship.y += out.dy;
     });
-    // adding ship thrust force
+    // adding ship rotator
     var rotator: IActor = new PolyRotator(() => {
         return {
             angle: ship.angle,

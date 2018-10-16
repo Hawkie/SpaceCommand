@@ -10,6 +10,8 @@ export interface IMoveOut {
     dy: number;
 }
 
+// the Move Actor is used to apply velocity (over a discreet time period)
+// to an objects position (x,y). The change of position is passed to the calling object to apply it to the data model.
 export class MoveConstVelocity implements IActor {
     constructor(private getIn: () => IMoveIn, private setOut: (out: IMoveOut)=>void) {
     }

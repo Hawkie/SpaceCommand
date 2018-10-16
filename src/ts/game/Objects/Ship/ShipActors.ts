@@ -25,6 +25,8 @@ export interface IExplosionControlInputs {
     ship: IShip;
 }
 
+// create controller that accepts left, right and up controlls and applies them to the ship object
+// uses ship control inputs as the source of the ship configuration
 export function createShipController(getInputs: () => IShipControlInputs): IActor {
     var c: IActor = new Actor(getInputs, (inputs, lastTimeModifier: number) => {
         if (!inputs.ship.crashed) {

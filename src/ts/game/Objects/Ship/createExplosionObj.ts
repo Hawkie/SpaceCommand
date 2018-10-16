@@ -2,7 +2,7 @@ import { IView } from "ts/gamelib/Views/View";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { createParticleField } from "ts/game/States/Asteroids/AsteroidFields";
+import { createParticleField } from "ts/game/Objects/Asteroids/createParticleField";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "../../../gamelib/Views/ScreenFlashView";
 import { Flasher } from "ts/gamelib/Actors/Switches";

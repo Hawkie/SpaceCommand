@@ -2,32 +2,17 @@ import { DrawContext} from "ts/gamelib/1Common/DrawContext";
 import { Assets } from "ts/gamelib/1Common/Assets";
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { TextView } from "ts/gamelib/Views/TextView";
-import { IView } from "ts/gamelib/Views/View";
 import { IGameState } from "ts/gamelib/GameState/GameState";
 import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { AsteroidFields } from "ts/game/States/Asteroids/AsteroidFields";
 import { AsteroidModels, IBall, IAsteroid,
-    IGraphicShip, ICoin, createStateModel } from "ts/game/States/Asteroids/AsteroidModels";
+    IGraphicShip, ICoin } from "ts/game/States/Asteroids/AsteroidModels";
 import { IAsteroidModel } from "./IAsteroidModel";
-import { IAsteroidStateObject, createAsteroidStateObject, createAsteroidObject } from "ts/game/States/Asteroids/AsteroidObjects";
-
-export function createState(assets: Assets, actx: AudioContext): AsteroidState {
-
-    var spriteField: IGameObject = AsteroidFields.createSpriteField();
-    var state: IAsteroidModel = createStateModel();
-    var stateObj: IAsteroidStateObject = createAsteroidStateObject(()=>state);
-    // get state objects and add asteroid objects
-
-    var asteroidState: AsteroidState = new AsteroidState("Asteroids", assets, actx, state, stateObj,
-        [spriteField]);
-    return asteroidState;
-}
+import { IAsteroidStateObject } from "ts/game/States/Asteroids/AsteroidObjects";
+import { createAsteroidObject } from "ts/game/Objects/Asteroids/createAsteroidObject";
 
 export class AsteroidState implements IGameState {
     interactors: IInteractor[] = [];

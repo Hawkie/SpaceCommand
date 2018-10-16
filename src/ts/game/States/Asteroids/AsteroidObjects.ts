@@ -1,34 +1,25 @@
-import { IBall, ICoin, IGraphicShip, IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
+import { IAsteroid, AsteroidModels, IParticleField } from "./AsteroidModels";
 import { IAsteroidModel } from "./IAsteroidModel";
 import { IView } from "ts/gamelib/Views/View";
-import { PolyView, LineView } from "ts/gamelib/Views/PolyViews";
-import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
-import { RectangleView } from "ts/gamelib/Views/RectangleView";
-import { CircleView } from "ts/gamelib/Views/CircleView";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
-import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
-import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteView";
-import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
-import { IShape } from "ts/gamelib/Data/Shape";
-import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IParticle, AsteroidFields, createParticleField } from "./AsteroidFields";
+import { createParticleField } from "../../Objects/Asteroids/createParticleField";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
-import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { createShipObject } from "ts/game/Objects/Ship/ShipObjects";
 import { createExplosionObj } from "ts/game/Objects/Ship/createExplosionObj";
 import { createExhaustObj } from "ts/game/Objects/Ship/createExhaustObj";
 import { createWeaponObject } from "ts/game/Objects/Ship/createWeaponObject";
-import { IShip } from "../../Objects/Ship/IShip";
-import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
+import { createCoinObject } from "../../Objects/Asteroids/createCoinObject";
+import { createGraphicShipObject } from "../../Objects/Asteroids/createGraphicShipObject";
+import { createAsteroidObject } from "../../Objects/Asteroids/createAsteroidObject";
+import { createBallObject } from "../../Objects/Asteroids/createBallObject";
+import { createShipBallObject } from "../../Objects/Asteroids/createShipBallObject";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -115,140 +106,4 @@ export function createBackgroundField(getField: () => IParticleField, speed: num
     return starField;
 }
 
-export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameObject {
-    var asteroid: IAsteroid = getAsteroid();
-    var mover: IActor = new MoveConstVelocity(() => {
-        return {
-            Vx: asteroid.Vx,
-            Vy: asteroid.Vy,
-        };
-    }, (out: IMoveOut) => {
-        asteroid.x += out.dx;
-        asteroid.y += out.dy;
-    }
-    );
-    var spinner: IActor = new Spinner(() => {
-        return { spin: asteroid.spin };
-    }, (sOut) => asteroid.angle += sOut.dAngle);
-    var rotator: IActor = new PolyRotator(() => {
-        return {
-            angle: asteroid.angle,
-            shape: asteroid.shape,
-        };
-    }, (out: IShape) => {
-        asteroid.shape = out;
-    });
-    var wrapx: IActor = createWrapActor(() => {
-        return {
-            value: asteroid.x,
-            lowLimit: 0,
-            upLimit: 512,
-        };
-    }, (a) => asteroid.x = a);
-    var wrapy: IActor = createWrapActor(() => {
-        return {
-            value: asteroid.y,
-            lowLimit: 0,
-            upLimit: 480,
-        };
-    }, (a) => asteroid.y = a);
-
-    var view: IView = new PolyGraphicAngled(() => {
-        return {
-            x: asteroid.x,
-            y: asteroid.y,
-            shape: asteroid.shape,
-            graphic: asteroid.graphic,
-            angle: asteroid.angle,
-        };
-    });
-    var asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
-    return asteroidObject;
-}
-
-
-export function createBallObject(getBall: () => IBall): SingleGameObject {
-    var ball: IBall = getBall();
-    var ballView: IView = new CircleView(() => {
-        return {
-            x: ball.x,
-            y: ball.y,
-            r: ball.r,
-        };
-    });
-    var obj: SingleGameObject = new SingleGameObject([], [ballView]);
-    return obj;
-}
-
-export function createShipBallObject(getShip: () => IShip, getBall: () => IBall): SingleGameObject {
-    var ship: IShip = getShip();
-    var ball: IBall = getBall();
-    var rod: CompositeAccelerator = new CompositeAccelerator(() => {
-        return {
-            xFrom: ship.x,
-            yFrom: ship.y,
-            VxFrom: ship.Vx,
-            VyFrom: ship.Vy,
-            forces: [ship.thrust],
-            massFrom: ship.mass,
-            xTo: ball.x,
-            yTo: ball.y,
-            VxTo: ball.Vx,
-            VyTo: ball.Vy,
-            massTo: ball.mass
-        };
-    }, (out: IRodOutputs) => {
-        ship.x += out.dxFrom;
-        ship.y += out.dyFrom;
-        ship.Vx += out.dVxFrom;
-        ship.Vy += out.dVyFrom;
-        ball.x = out.xTo;
-        ball.y = out.yTo;
-    });
-
-    // create rod view as a line from ball to ship
-    var line: LineView = new LineView(() => {
-        return {
-            xFrom: ball.x,
-            yFrom: ball.y,
-            xTo: ship.x,
-            yTo: ship.y,
-        };
-    });
-    var r: SingleGameObject = new SingleGameObject([rod], [line]);
-    return r;
-}
-
-export function createCoinObject(getCoin: () => ICoin): SingleGameObject {
-    var coin: ICoin = getCoin();
-    var animator: IActor = new SpriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-    var spinner: Spinner = new Spinner(() => {
-        return { spin: coin.spin };
-    }, (sOut) => coin.angle += sOut.dAngle);
-
-    var view: IView = new SpriteAngledView(() => {
-        return {
-            x: coin.x,
-            y: coin.y,
-            angle: coin.angle,
-            sprite: coin.sprite,
-        };
-    });
-    var coinObj: SingleGameObject = new SingleGameObject([animator, spinner], [view]);
-    return coinObj;
-}
-
-export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): SingleGameObject {
-    var graphicShip: IGraphicShip = getGraphicShip();
-    var shipView: IView = new GraphicAngledView(() => {
-        return {
-            x: graphicShip.x,
-            y: graphicShip.y,
-            angle: graphicShip.angle,
-            graphic: graphicShip.graphic,
-        };
-    });
-    var obj: SingleGameObject = new SingleGameObject([], [shipView]);
-    return obj;
-}
 

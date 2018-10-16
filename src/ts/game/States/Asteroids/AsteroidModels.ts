@@ -1,11 +1,8 @@
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
-import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IParticle } from "./AsteroidFields";
-import { IVector, Vector } from "ts/gamelib/Data/Vector";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
 import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
 import { IAsteroidModel } from "./IAsteroidModel";
@@ -87,7 +84,7 @@ export interface IBall {
 export function createStateModel(): IAsteroidModel {
     var starField: IParticleField = createStarField();
     var ship: IShip = createShip(256, 240, 0);
-    var ball: IBall = createBallObject(256, 280);
+    var ball: IBall = createBall(256, 280);
     var coin: ICoin = createCoin(new Coordinate(300, 400));
     var asteroids: IAsteroid[] = AsteroidModels.createAsteroidModels(3);
     var asteroidState: IAsteroids = {
@@ -164,7 +161,7 @@ export function createCoin(location: Coordinate): ICoin {
     return coin;
 }
 
-export function createBallObject(x: number, y: number): IBall {
+export function createBall(x: number, y: number): IBall {
     var ballModel: IBall = {
         x: x,
         y: y,

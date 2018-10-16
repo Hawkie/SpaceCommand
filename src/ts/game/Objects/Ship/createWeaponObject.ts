@@ -4,7 +4,8 @@ import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { createWeaponController } from "ts/game/Objects/Ship/Controllers/createWeaponController";
 import { IParticle } from "ts/game/States/Asteroids/AsteroidFields";
-import { AgePred, ParticleRemover } from "ts/gamelib/Actors/ParticleFieldUpdater";
+import { AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
+import { ParticleRemover } from "ts/gamelib/Actors/ParticleRemover";
 import { IShip, IWeapon } from "./IShip";
 import { createBulletObject } from "./createBulletObject";
 export function createWeaponObject(getControls: () => IControls,

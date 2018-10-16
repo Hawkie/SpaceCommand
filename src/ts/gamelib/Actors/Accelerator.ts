@@ -4,10 +4,6 @@ import { IActor } from "ts/gamelib/Actors/Actor";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 
 export interface IAcceleratorInputs {
-    readonly x: number;
-    readonly y: number;
-    readonly Vx: number;
-    readonly Vy: number;
     readonly forces: Vector[];
     readonly mass: number;
 }
@@ -16,6 +12,9 @@ export interface IAcceleratorOutputs {
     dVy: number;
 }
 
+// the Accelerator actor must be used to convert forces (and mass) to acceleration
+// accelerator takes a vector of the current forces and a mass and creates a set of cartesian accelerations
+// a= F/m, where dVx and dVy are the cartesian components of acceleration over that time period.
 export class Accelerator implements IActor {
 
     constructor(private getProps: () => IAcceleratorInputs,

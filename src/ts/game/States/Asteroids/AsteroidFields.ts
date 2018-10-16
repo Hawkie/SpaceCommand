@@ -1,10 +1,9 @@
 ﻿import { IView } from "ts/gamelib/Views/View";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { IParticleGenInputs, ParticleGenerator,
-    ParticleRemover, PredGreaterThan, AgePred, IParticleGenInputs2, ParticleGenerator2 } from "ts/gamelib/Actors/ParticleFieldUpdater";
+import { IParticleGenInputs, PredGreaterThan, AgePred, IParticleGenInputs2 } from "ts/gamelib/Actors/ParticleFieldUpdater";
+import { ParticleRemover } from "ts/gamelib/Actors/ParticleRemover";
+import { ParticleGenerator } from "ts/gamelib/Actors/ParticleGenerator";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
-import { RectangleView } from "ts/gamelib/Views/RectangleView";
 import { CircleView } from "ts/gamelib/Views/CircleView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteView";
@@ -13,11 +12,9 @@ import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
-import { Spinner } from "ts/gamelib/Actors/Rotators";
+import { Spinner } from "ts/gamelib/Actors/Spinner";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IParticleField } from "ts/game/States/Asteroids/AsteroidModels";
-import { Vector, IVector } from "ts/gamelib/Data/Vector";
+import { IVector } from "ts/gamelib/Data/Vector";
 import { addGravity } from "../Shared/Gravity";
 
 export interface IParticle {
@@ -50,60 +47,6 @@ export interface IFieldInputs {
     Vy: number;
     vYLowSpread: number;
     vYHighSpread: number;
-}
-
-export function createParticleField(particleField: IParticleField,
-    fieldInputs: ()=>IFieldInputs,): MultiGameObject<SingleGameObject> {
-
-    var fieldArray: SingleGameObject[] = [];
-    // todo: change class to remove null later
-    var field: MultiGameObject<SingleGameObject> =
-        new MultiGameObject<SingleGameObject>([], [], ()=>fieldArray);
-
-    var generator: ParticleGenerator2 = new ParticleGenerator2(fieldInputs,
-        particleField.particlesPerSecond,
-        particleField.maxParticlesPerSecond,
-        (now: number) => {
-            var source: IFieldInputs = fieldInputs();
-            var p: IParticle = {
-                x: source.x + source.xOffset + Transforms.random(source.xLowSpread, source.xHighSpread),
-                y: source.y + source.yOffset + Transforms.random(source.yLowSpread, source.yHighSpread),
-                Vx: source.Vx + Transforms.random(source.vXLowSpread, source.vXHighSpread),
-                Vy: source.Vy + Transforms.random(source.vYLowSpread, source.vYHighSpread),
-                born: now,
-                size: particleField.particleSize,
-            };
-            var newParticle: SingleGameObject = createParticleObject(p);
-            if (particleField.gravityStrength !== 0) {
-                var getAcceleratorProps: () => IAcceleratorInputs = () => {
-                    return {
-                        x: p.x,
-                        y: p.y,
-                        Vx: p.Vx,
-                        Vy: p.Vy,
-                        forces: [new Vector(180, particleField.gravityStrength)],
-                        mass: 1,
-                    };
-                };
-                var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
-                    p.Vx += out.dVx;
-                    p.Vy += out.dVy;
-                });
-                newParticle.actors.push(gravity);
-            }
-            particleField.particles.push(p);
-            field.getComponents().push(newParticle);
-        });
-        var age1: AgePred<IParticle> = new AgePred(()=>particleField.particleLifetime, (p: IParticle)=> p.born);
-        var remover: ParticleRemover = new ParticleRemover(
-            () => {
-                ParticleRemover.remove(
-                    ()=>particleField.particles,
-                    field.getComponents,
-                    [age1]);});
-        // add the generator to the field object
-        field.actors.push(generator, remover);
-    return field;
 }
 
 // source
@@ -177,25 +120,4 @@ export class AsteroidFields {
     }
 }
 
-function createParticleObject(p: IParticle): SingleGameObject {
-    var mover: IActor = new MoveConstVelocity(() => {
-        return {
-            Vx: p.Vx,
-            Vy: p.Vy,
-        };
-    }, (out: IMoveOut) => {
-        p.x += out.dx;
-        p.y += out.dy;
-    });
-    var view: IView = new RectangleView(() => {
-        return {
-            x: p.x,
-            y: p.y,
-            width: p.size,
-            height: p.size,
-        };
-    });
-    var newParticle: SingleGameObject = new SingleGameObject([mover], [view]);
-    return newParticle;
-}
 
