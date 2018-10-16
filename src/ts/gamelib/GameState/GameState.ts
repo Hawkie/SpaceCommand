@@ -1,7 +1,6 @@
 import { DrawContext} from "ts/gamelib/1Common/DrawContext";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
 
-
 export interface IGameState {
     name: string;
     update(lastDrawModifier : number): void;
@@ -11,8 +10,6 @@ export interface IGameState {
     tests(lastTestModifier: number): void;
     returnState(): number;
 }
-
-
 
 export abstract class GameState implements IGameState {
 

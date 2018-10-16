@@ -2,7 +2,7 @@
 import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShape } from "ts/gamelib/Data/Shape";
-import { SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 
 
 export interface IShapedLocation {

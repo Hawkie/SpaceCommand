@@ -1,4 +1,5 @@
-import { SingleGameObject, IGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../GameObjects/IGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 
 interface IArrayAmendments<T> {

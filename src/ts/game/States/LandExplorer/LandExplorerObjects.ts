@@ -1,7 +1,11 @@
 import { ILandExplorer } from "./ILandExplorer";
-import { SingleGameObject, MultiGameObject, IGameObject } from "ts/gamelib/GameObjects/GameObject";
-import { createShipObject, createWeaponObject, createExhaustObj,
-    createExplosionObj, createShipAccelerator } from "../Asteroids/Ship/ShipObjects";
+import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
+import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
+import { createShipObject, createShipAccelerator } from "../../Objects/Ship/ShipObjects";
+import { createExplosionObj } from "../../Objects/Ship/createExplosionObj";
+import { createExhaustObj } from "../../Objects/Ship/createExhaustObj";
+import { createWeaponObject } from "../../Objects/Ship/createWeaponObject";
 import { IView } from "../../../gamelib/Views/View";
 import { createBackgroundField } from "../Asteroids/AsteroidObjects";
 import { TextView } from "../../../gamelib/Views/TextView";

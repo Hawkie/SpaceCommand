@@ -1,6 +1,7 @@
 import { Vector } from "ts/gamelib/Data/Vector";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../GameObjects/IGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { ElapsedTimeLimit } from "./Timers";
 
 export interface IParticleGenInputs {

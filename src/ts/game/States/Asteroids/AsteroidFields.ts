@@ -7,9 +7,11 @@ import { Accelerator, IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib
 import { RectangleView } from "ts/gamelib/Views/RectangleView";
 import { CircleView } from "ts/gamelib/Views/CircleView";
 import { TextView } from "ts/gamelib/Views/TextView";
-import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/SpriteView";
+import { SpriteView, SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteView";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
+import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner } from "ts/gamelib/Actors/Rotators";
 import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";

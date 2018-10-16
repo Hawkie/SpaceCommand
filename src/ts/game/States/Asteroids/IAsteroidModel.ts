@@ -1,5 +1,5 @@
-import { IShip } from "ts/game/States/Asteroids/Ship/ShipState";
-import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
+import { IShip } from "../../Objects/Ship/IShip";
+import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
 import { IControls, IParticleField, IBall, ICoin, IAsteroids, IGraphicShip } from "./AsteroidModels";
 export interface IAsteroidModel {
     stateConfig: IStateConfig;

@@ -1,10 +1,10 @@
-import { IShip, createShip } from "ts/game/States/Asteroids/Ship/ShipState";
+import { IShip, createShip } from "../../Objects/Ship/IShip";
 import { IParticleField, createStarField } from "../Asteroids/AsteroidModels";
 import { IShape, Shape } from "ts/gamelib/Data/Shape";
 import { ISurfaceGeneration, ISurface, initSurface } from "./SurfaceGenerator";
 import { ICoordinate } from "../../../gamelib/Data/Coordinate";
 import { ILandExplorer } from "./ILandExplorer";
-import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
+import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
 
 export function createModel(): ILandExplorer {
     var ship: IShip = createShip(256, 240, 10);

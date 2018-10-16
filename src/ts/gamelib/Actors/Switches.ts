@@ -1,5 +1,6 @@
 ﻿import { IActor } from "ts/gamelib/Actors/Actor";
-import { IGameObject, SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../GameObjects/IGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 
 export interface ISwitch {
     enabled: boolean;

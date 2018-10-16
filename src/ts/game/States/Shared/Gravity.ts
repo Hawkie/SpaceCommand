@@ -1,6 +1,6 @@
 import { Vector } from "ts/gamelib/Data/Vector";
 import Accelerator, { IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
-import { SingleGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IGravity } from "./IGravity";
 
 // use Strategy pattern, pass in a set function of the target object

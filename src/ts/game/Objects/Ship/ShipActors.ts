@@ -1,7 +1,7 @@
 import { IActor, Actor } from "ts/gamelib/Actors/Actor";
 import { Sound } from "ts/gamelib/Actors/Sound";
-import { IShip, IWeapon } from "./ShipState";
-import { Accelerator, IAcceleratorOutputs } from "../../../../gamelib/Actors/Accelerator";
+import { IShip, IWeapon } from "./IShip";
+import { Accelerator, IAcceleratorOutputs } from "../../../gamelib/Actors/Accelerator";
 
 export interface IShipControlInputs {
     left: boolean;

@@ -6,25 +6,29 @@ import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
 import { RectangleView } from "ts/gamelib/Views/RectangleView";
 import { CircleView } from "ts/gamelib/Views/CircleView";
 import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SingleGameObject, IGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
+import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";
-import { SpriteAngledView } from "ts/gamelib/Views/SpriteView";
+import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteView";
 import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 import { IShape } from "ts/gamelib/Data/Shape";
 import { CompositeAccelerator, IRodOutputs, IRodInputs } from "ts/gamelib/Actors/Accelerators";
 import { Coordinate } from "ts/gamelib/Data/Coordinate";
 import { IParticle, AsteroidFields, createParticleField } from "./AsteroidFields";
-import { AgePred, ParticleRemover, IParticleGenInputs } from "ts/gamelib/Actors/ParticleFieldUpdater";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { createShipObject, createWeaponObject, createExhaustObj, createExplosionObj } from "ts/game/States/Asteroids/Ship/ShipObjects";
-import { IShip } from "./Ship/ShipState";
-import { IStateConfig } from "ts/gamelib/GameState/StateConfig";
+import { createShipObject } from "ts/game/Objects/Ship/ShipObjects";
+import { createExplosionObj } from "ts/game/Objects/Ship/createExplosionObj";
+import { createExhaustObj } from "ts/game/Objects/Ship/createExhaustObj";
+import { createWeaponObject } from "ts/game/Objects/Ship/createWeaponObject";
+import { IShip } from "../../Objects/Ship/IShip";
+import { IStateConfig } from "../../../gamelib/GameState/IStateConfig";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {

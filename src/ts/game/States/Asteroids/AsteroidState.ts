@@ -8,7 +8,9 @@ import { IGameState } from "ts/gamelib/GameState/GameState";
 import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 import { Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
 import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
-import { IGameObject, SingleGameObject, MultiGameObject } from "ts/gamelib/GameObjects/GameObject";
+import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
+import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { AsteroidFields } from "ts/game/States/Asteroids/AsteroidFields";
 import { AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, createStateModel } from "ts/game/States/Asteroids/AsteroidModels";
