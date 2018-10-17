@@ -19,6 +19,9 @@ To build:
 6) You can run the jest tests using: npm run test
 
 To Run:
+Because the whole project compiles down to javascript, goto the directory and open the file index.html in chrome.
+
+To host on a server: 
 It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
 It does not currently work with node or parcel because of requirejs and amd module setup.

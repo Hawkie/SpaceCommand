@@ -1,6 +1,4 @@
-﻿
-import { SparseArray } from "ts/gamelib/Collections/SparseArray";
-
+﻿import { SparseArray } from "src/ts/gamelib/Collections/SparseArray";
 
 export class KeyStateProvider {
     constructor(private document: Document) {
