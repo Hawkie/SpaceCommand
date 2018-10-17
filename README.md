@@ -1,5 +1,5 @@
 #  SpaceCommand
-The start of a two dimensional, strategic highly playable, space adventure game involving asteroids, space combat, planetry landings, planetry combat. 
+The start of a two dimensional, strategic, highly playable, space adventure game involving asteroids, space combat, planetry landings.
 
 ![Menu](docs/SpaceCommandMenu.png)
 
@@ -19,7 +19,7 @@ To build:
 6) You can run the jest tests using. (npm run test)
 
 To Run:
-Its harder than I thought to host locally. A good article explaining the issues is here:
+It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
 It does not currently work with node or parcel because of requirejs and amd module setup.
 (will fix this soon by hosting the component inside a react component)
