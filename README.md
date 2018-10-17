@@ -11,7 +11,7 @@ Initial Starting point is Asteroids and Lander Game
 
 
 To build:
-1) Download the Space Command files from github files to your dev directory using git clone
+1) Download the Space Command files from github to your dev directory using git clone
 2) You will need npm (node package manager). To install goto nodejs download page.
 3) You will need the typescript compiler. Use npm to install typescript globally: npm install typescript -g
 4) You need to download the js dependencies into the node_modules directory using: npm install. 
@@ -22,9 +22,9 @@ To Run:
 It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
 It does not currently work with node or parcel because of requirejs and amd module setup.
-(will fix this soon by hosting the component inside a react component)
+(will fix this soon by hosting the canvas element inside a react component)
 So to host, it is made easily possible with Visual Studio Code and the Live Server extension. 
-1) Open VSC
+1) Open Visual Studio Code.
 2) Download the Live Server extension in Visual Studio Code extensions
 3) Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
 
