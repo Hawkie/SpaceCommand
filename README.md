@@ -25,11 +25,18 @@ Because the whole project compiles down to javascript, goto the directory and op
 
 Controls
 Keys only - no mouse atm.
+
+In Menu mode:
+Up and Down arrows to select game
+Enter to select.
+
+In Game Mode:
 Left and Right Arrow keys to rotate ship.
 Up Arrow to thrust
 Space to fire
 Z and X to zoom in and out
-
+Esc to return to menu
+f5 to reload and reset game
 --- 
 
 To host on a server: 
