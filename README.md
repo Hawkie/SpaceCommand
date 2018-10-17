@@ -21,6 +21,17 @@ To build:
 To Run:
 Because the whole project compiles down to javascript, goto the directory and open the file index.html in chrome.
 
+---
+
+Controls
+Keys only - no mouse atm.
+Left and Right Arrow keys to rotate ship.
+Up Arrow to thrust
+Space to fire
+Z and X to zoom in and out
+
+--- 
+
 To host on a server: 
 It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
