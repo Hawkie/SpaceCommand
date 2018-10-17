@@ -13,6 +13,9 @@ export class RectangleView implements IView {
     }
     display(drawContext: DrawContext): void {
         var rectangle: IRectangleView = this.getIn();
-        drawContext.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        drawContext.fillRect(rectangle.x,
+            rectangle.y,
+            rectangle.width,
+            rectangle.height);
     }
 }

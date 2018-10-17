@@ -19,7 +19,10 @@ export class ScreenFlashView implements IView {
         var inputs: IScreenFlashInputs = this.getInputs();
         if (inputs.on) {
             if (inputs.value === 1) {
-                drawContext.fillRect(inputs.x, inputs.y, inputs.width, inputs.height);
+                drawContext.fillRect(inputs.x,
+                    inputs.y,
+                    inputs.width,
+                    inputs.height);
                 drawContext.fill();
             }
         }

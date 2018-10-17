@@ -10,9 +10,7 @@ import { createBackgroundField } from "../../Objects/Particle/createBackgroundFi
 import { TextView } from "../../../gamelib/Views/TextView";
 import { Coordinate, ICoordinate } from "../../../gamelib/Data/Coordinate";
 import { PolyGraphic } from "../../../gamelib/Views/PolyGraphic";
-import { Graphic, IGraphic } from "../../../gamelib/Data/Graphic";
 import { ISurface, SurfaceGenerator2, ISurfaceGeneration } from "../../Actors/SurfaceGenerator";
-import { IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { ILandExplorerData } from "./createLandExplorerData";
 
@@ -27,11 +25,13 @@ export interface ILandExplorerStateObjects {
     // ballObject: SingleGameObject;
     views: IView[];
     sceneObjs: IGameObject[];
+    backgroundObjs: IGameObject[];
 }
 
 export function createLandExplorerStateObjects(getData: () => ILandExplorerData): ILandExplorerStateObjects {
     var data: ILandExplorerData = getData();
-    var shipObj: SingleGameObject = createShipObject(() => data.stateConfig, () => data.controls, () => data.ship);
+    var shipObj: SingleGameObject = createShipObject(() => data.stateConfig,
+        () => data.controls, () => data.ship);
     var shipThrust: SingleGameObject = createShipAccelerator(() => data.ship);
     var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(
         () => data.controls,
@@ -40,12 +40,13 @@ export function createLandExplorerStateObjects(getData: () => ILandExplorerData)
     var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
     var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
 
+    // background objects
     var surfaceObj: SingleGameObject = createPlanetSurfaceObject(() => {
-        return {
-            x: data.ship.x,
-            y: data.ship.y,
-        };
-    },
+            return {
+                x: data.ship.x,
+                y: data.ship.y,
+            };
+        },
         () => data.surfaceGenerator,
         () => data.surface,
         data.surfaceImg);
@@ -62,7 +63,8 @@ export function createLandExplorerStateObjects(getData: () => ILandExplorerData)
         explosionObj: explosionObj,
         surfaceObj: surfaceObj,
         views: [title],
-        sceneObjs: [shipObj, shipThrust, weaponObj, exhaustObj, explosionObj, surfaceObj],
+        sceneObjs: [shipObj, shipThrust, weaponObj, exhaustObj, explosionObj],
+        backgroundObjs: [surfaceObj, starFieldObj],
     };
 }
 
@@ -74,8 +76,8 @@ export function createPlanetSurfaceObject(getFrom: () => ICoordinate,
     var surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
     var surfaceView: IView = new PolyGraphic(() => {
         return {
-            x: from.x,
-            y: from.y,
+            x: 0,
+            y: 0,
             shape: {
                 offset: { x: 0, y: 0 },
                 points: surface.points,

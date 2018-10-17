@@ -45,6 +45,7 @@ export class SpriteAngledView implements IView {
             drawContext.rotate(inputs.angle);
             drawContext.translate(-xOffset, -yOffset);
 
+            // tODO: use single drawsprite function
             drawContext.drawSprite(inputs.sprite.img,
                 inputs.sprite.frame.x,
                 inputs.sprite.frame.y,

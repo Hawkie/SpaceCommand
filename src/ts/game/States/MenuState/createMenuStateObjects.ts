@@ -7,6 +7,7 @@ import { IView } from "ts/gamelib/Views/View";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
 import { IMenuData } from "./createMenuData";
+
 export function createMenuStateObjects(getData: () => IMenuData): IGameObject {
     var data: IMenuData = getData();
     var sound: Sound = new Sound(data.musicFilename, false, true, () => { return { play: true }; });
@@ -16,6 +17,8 @@ export function createMenuStateObjects(getData: () => IMenuData): IGameObject {
     var gameObject: IGameObject = new MultiGameObject<SingleGameObject>([sound], [title], () => [field1, field2]);
     let x: number = 200;
     let y: number = 100;
+
+    // todo: crude for loop
     for (let i: number = 0; i < data.menuItems.length; i++) {
         data.originalItems.push(data.menuItems[i]);
         gameObject.views.push(new TextView(() => data.menuItems[i], new Coordinate(x, y), data.font, data.fontSize));

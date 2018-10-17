@@ -58,7 +58,8 @@ export class LandExplorerGameState implements IGameState {
 
     update(lastDrawModifier : number): void {
         // this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.chassisObj.model.physics.velY));
-        this.stateObj.sceneObjs.forEach(x=>x.update(lastDrawModifier));
+        this.stateObj.sceneObjs.forEach(x => x.update(lastDrawModifier));
+        this.stateObj.backgroundObjs.forEach(b => b.update(lastDrawModifier));
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
@@ -100,7 +101,6 @@ export class LandExplorerGameState implements IGameState {
 
         // objects not affected by movement
         this.stateObj.views.forEach(x=>x.display(drawingContext));
-
         // scene objects
         drawingContext.save();
         let x: number = this.state.ship.x;
@@ -111,9 +111,8 @@ export class LandExplorerGameState implements IGameState {
         drawingContext.zoom(this.zoom, this.zoom);
 
         this.stateObj.sceneObjs.forEach(x=>x.display(drawingContext));
-
+        this.stateObj.backgroundObjs.forEach(x=>x.display(drawingContext));
         drawingContext.restore();
-
     }
 
     sound(actx: AudioContext): void {

@@ -9,7 +9,9 @@ export class ObjectCollisionDetector implements IInteractor {
     }
     test(lastTestModifier: number): void {
         var model1: IShapedLocation = this.getModel1();
-        if (Transforms.hasPoint(model1.shape.points, model1.location, this.point)) {
+        if (Transforms.hasPoint(model1.shape.points,
+            model1.location,
+            this.point)) {
             this.hit();
         }
     }

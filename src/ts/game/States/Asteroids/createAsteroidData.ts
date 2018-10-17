@@ -139,7 +139,7 @@ export function createStarFieldData(): IParticleField {
         particlesPerSecond: 1,
         maxParticlesPerSecond: 1,
         particleLifetime: undefined,
-        particleSize: 2,
+        particleSize: 8,
         on: true,
         gravityStrength: 10,
     };
@@ -181,7 +181,7 @@ export function createBallData(x: number, y: number): IBall {
         Vx: 0,
         Vy: 0,
         mass: 1,
-        r: 8,
+        r: 10,
     };
     return ballModel;
 }
