@@ -14,7 +14,9 @@ To build:
 1) Download the Space Command files from github files to your dev directory using git clone
 2) You will need npm (node package manager). To install goto nodejs download page.
 3) You will need the typescript compiler. Use npm to install typescript globally. npm install typescript -g
-4) Build the project. run npm run build. This runs tsc on the project using the tsconfig.json settings.
+4) You need to install the files using npm install. 
+5) Build the project. run npm run build. This runs tsc on the project using the tsconfig.json settings.
+6) You can run the jest tests using. (npm run test)
 
 To Run:
 Its harder than I thought to host locally. A good article explaining the issues is here:
