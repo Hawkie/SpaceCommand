@@ -10,7 +10,8 @@
   },
   "scripts": {
     "jest-w": "jest --watch",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "SpaceCommandTeam",

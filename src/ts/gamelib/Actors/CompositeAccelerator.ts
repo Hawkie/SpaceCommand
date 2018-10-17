@@ -42,8 +42,11 @@ export class CompositeAccelerator implements IActor {
         var rOut: IRodOutputs = this.applyRod(timeModifer, rIn);
         this.setOutputs(rOut);
     }
+
 // from is ship
 // to is ball
+// see the following link for how centripetal forces work
+// http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html
     applyRod(timeModifer: number, rIn: IRodInputs): IRodOutputs  {
 
         // work out angle from ship to ball

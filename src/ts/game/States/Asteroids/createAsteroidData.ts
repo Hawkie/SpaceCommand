@@ -139,7 +139,7 @@ export function createStarFieldData(): IParticleField {
         particlesPerSecond: 1,
         maxParticlesPerSecond: 1,
         particleLifetime: undefined,
-        particleSize: 8,
+        particleSize: 1,
         on: true,
         gravityStrength: 10,
     };
