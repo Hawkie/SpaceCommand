@@ -5,7 +5,7 @@ export class Canvas {
     canvas : any;
     ctx : any;
     c : DrawContext;
-    constructor(width : number, height : number, document : any) {
+    constructor(width : number, height : number, document : Document) {
         this.canvas = document.createElement("canvas");
         this.canvas.width = width;
         this.canvas.height = height;

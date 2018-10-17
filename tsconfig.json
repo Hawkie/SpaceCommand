@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es5",
         "module": "amd",
         "sourceMap": true,
         "outFile": "main.js",
@@ -8,6 +8,6 @@
         "esModuleInterop": true 
     },
     "exclude":[
-        "ts/Server"
+        "ts/Server", "node_modules"
     ]
 }

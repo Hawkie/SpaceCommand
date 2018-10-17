@@ -1,4 +1,5 @@
-﻿import { Slider, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
+﻿import { ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
+import { Slider } from "ts/Models/Controls/Slider";
 import { AmplifierSettings } from "ts/Sound/Amplifier";
 
 export class SoundEffectData {

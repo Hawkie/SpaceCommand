@@ -1,5 +1,5 @@
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IView } from "ts/gamelib/Views/View";
+import { IView } from "../Views/View";
 import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
 import { IPolyGraphicView } from "./PolyGraphic";
 

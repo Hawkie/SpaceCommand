@@ -3,6 +3,7 @@ ts/**/*.js.map
 api/**/*.dll
 api/**/*.pdb
 api/**/Debug
+.cache
 .vscode
 /.vs
 /node_modules

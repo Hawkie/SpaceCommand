@@ -1,7 +1,8 @@
 ﻿import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 import { IView } from "ts/gamelib/Views/View";
-import { IControlPanelModel, ControlPanelModel, ISlider, Slider } from "ts/Models/Controls/ControlPanelModel";
+import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
+import { Slider } from "ts/Models/Controls/Slider";
 
 export class ControlPanelView implements IView {
 

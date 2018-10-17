@@ -8,7 +8,7 @@ import { IGameState } from "ts/gamelib/GameState/GameState";
 export class Game {
 
     // globals are doc and window
-    run(window: any, document: any): void {
+    run(window: Window, document: Document): void {
         console.log("Game Run()");
 
         var canvas: Canvas = new Canvas(512, 480, document);
