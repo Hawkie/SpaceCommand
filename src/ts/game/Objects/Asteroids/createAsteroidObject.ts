@@ -6,7 +6,7 @@ import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
 import { Spinner } from "ts/gamelib/Actors/Spinner";
-import { IShape } from "ts/gamelib/Data/Shape";
+import { IShape } from "ts/gamelib/DataTypes/Shape";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 
 // creates a graphical view asteroid with and spin, velocity

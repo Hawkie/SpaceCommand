@@ -4,7 +4,7 @@ import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 import { Spinner } from "ts/gamelib/Actors/Spinner";
-import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteView";
+import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteAngledView";
 
 // creates a spinning coin
 export function createCoinObject(getCoin: () => ICoin): SingleGameObject {

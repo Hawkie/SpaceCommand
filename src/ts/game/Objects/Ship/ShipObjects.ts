@@ -6,7 +6,7 @@ import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
 import { PolyRotator } from "ts/gamelib/Actors/Rotators";
-import { IShape } from "ts/gamelib/Data/Shape";
+import { IShape } from "ts/gamelib/DataTypes/Shape";
 import { createExplosionController } from "ts/game/Objects/Ship/Controllers/createExplosionController";
 import { createShipController } from "ts/game/Objects/Ship/Controllers/createShipController";
 import { createWrapActor } from "ts/gamelib/Actors/Wrap";
@@ -14,7 +14,7 @@ import { IShip } from "./IShip";
 import { addGravity } from "../../States/Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
-import { Vector } from "../../../gamelib/Data/Vector";
+import { Vector } from "../../../gamelib/DataTypes/Vector";
 
 export function createShipObject(getStateConfig: () => IGameStateConfig,
     getControls: () => IControls,

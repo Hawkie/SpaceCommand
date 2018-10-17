@@ -1,7 +1,7 @@
-import { Vector, IVector } from "../Data/Vector";
+import { Vector, IVector } from "../DataTypes/Vector";
 import { Transforms } from "../Physics/Transforms";
 import { IActor } from "../Actors/Actor";
-import { Coordinate, ICoordinate } from "../Data/Coordinate";
+import { Coordinate, ICoordinate } from "../DataTypes/Coordinate";
 
 export interface IAcceleratorInputs {
     readonly forces: Vector[];

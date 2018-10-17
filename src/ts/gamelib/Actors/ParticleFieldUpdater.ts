@@ -1,4 +1,4 @@
-import { Vector } from "ts/gamelib/Data/Vector";
+import { Vector } from "ts/gamelib/DataTypes/Vector";
 import { IGameObject } from "../GameObjects/IGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { ElapsedTimeLimit } from "./Timers";

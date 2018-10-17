@@ -1,5 +1,5 @@
 import { IInteractor } from "ts/gamelib/Interactors/Interactor";
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShapedLocation } from "./CollisionDetector";
 

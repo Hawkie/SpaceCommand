@@ -1,4 +1,4 @@
-﻿import { Vector } from "ts/gamelib/Data/Vector";
+﻿import { Vector } from "ts/gamelib/DataTypes/Vector";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IActor } from "ts/gamelib/Actors/Actor";
 

@@ -1,4 +1,4 @@
-import { Vector } from "ts/gamelib/Data/Vector";
+import { Vector } from "ts/gamelib/DataTypes/Vector";
 import Accelerator, { IAcceleratorInputs, IAcceleratorOutputs } from "ts/gamelib/Actors/Accelerator";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 

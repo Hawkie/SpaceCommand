@@ -4,7 +4,7 @@ import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { ValueView } from "ts/gamelib/Views/ValueView";
 import { TextView } from "ts/gamelib/Views/TextView";
 import { ISoundInputs, Sound } from "ts/gamelib/Actors/Sound";

@@ -1,5 +1,5 @@
-﻿import { Coordinate } from "ts/gamelib/Data/Coordinate";
-import { IGraphic, Graphic } from "ts/gamelib/Data/Graphic";
+﻿import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { IGraphic, Graphic } from "ts/gamelib/DataTypes/Graphic";
 
 export class SpriteFrame {
     constructor(public x: number,

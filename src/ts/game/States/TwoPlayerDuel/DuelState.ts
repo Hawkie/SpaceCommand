@@ -4,10 +4,10 @@
 // import { AudioObject, AudioWithAmplifier, BufferObject } from "ts/Sound/SoundObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
 // import { IPhysical, ShapedModel } from "ts/Models/DynamicModels";
-// import { Coordinate, Vector } from "ts/gamelib/Data/Coordinate";
+// import { Coordinate, Vector } from "ts/gamelib/DataTypes/Coordinate";
 // import { Transforms } from "ts/gamelib/Physics/Transforms";
-// import { TextData } from "ts/gamelib/Data/TextData";
-// import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/gamelib/Data/PhysicsData";
+// import { TextData } from "ts/gamelib/DataTypes/TextData";
+// import { ILocated, LocatedData, LocatedMovingAngledRotatingData, LocatedMovingAngledRotatingForces  } from "ts/gamelib/DataTypes/PhysicsData";
 // import { TextView } from "ts/gamelib/Views/TextView";
 // import { IView } from "ts/gamelib/Views/View";
 // import { PolyView, PolyGraphic, PolyGraphicAngled } from "ts/gamelib/Views/PolyViews";
@@ -15,7 +15,7 @@
 // import { IGameState, GameState } from "ts/gamelib/States/GameState";
 // import { IInteractor } from "ts/gamelib/Interactors/Interactor";
 // import { ObjectCollisionDetector, Multi2ShapeCollisionDetector, Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
-// import { SpaceShipData } from "ts/gamelib/Data/ShipData";
+// import { SpaceShipData } from "ts/gamelib/DataTypes/ShipData";
 // import { ShipComponents } from "ts/Controllers/Ship/ShipComponents";
 // import { SpaceShipController } from "ts/Controllers/Ship/ShipController";
 // import { Keys, KeyStateProvider } from "ts/gamelib/Common/KeyStateProvider";
@@ -24,9 +24,9 @@
 // import { ValueObject } from "ts/GameObjects/ValueObject";
 // import { Field } from "ts/GameObjects/AsteroidFields";
 // import { AsteroidModel } from "ts/States/Asteroids/AsteroidModel";
-// import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
-// import { Graphic, IGraphic } from "ts/gamelib/Data/Graphic";
-// import { Shape, IShape } from "ts/gamelib/Data/Shape";
+// import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/DataTypes/Sprite";
+// import { Graphic, IGraphic } from "ts/gamelib/DataTypes/Graphic";
+// import { Shape, IShape } from "ts/gamelib/DataTypes/Shape";
 // import { SpriteAngledView, SpriteView } from "ts/gamelib/Views/SpriteView";
 // import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
 // import { Spinner, PolyRotator } from "ts/gamelib/Actors/Rotators";

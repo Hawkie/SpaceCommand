@@ -1,5 +1,5 @@
-import { Coordinate, ICoordinate } from "../Data/Coordinate";
-import { Vector, IVector } from "../Data/Vector";
+import { Coordinate, ICoordinate } from "../DataTypes/Coordinate";
+import { Vector, IVector } from "../DataTypes/Vector";
 
 export class Transforms {
 

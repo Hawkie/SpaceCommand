@@ -1,7 +1,7 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
-import { IShape, Shape } from "ts/gamelib/Data/Shape";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { IShape, Shape } from "ts/gamelib/DataTypes/Shape";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/Data/Sprite";
+import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/DataTypes/Sprite";
 import { IParticle } from "../../Objects/Particle/IParticle";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";

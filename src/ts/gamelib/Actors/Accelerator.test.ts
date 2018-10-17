@@ -1,5 +1,5 @@
 import { IAcceleratorOutputs, accelerate } from "./Accelerator";
-import { Vector, IVector } from "../Data/Vector";
+import { Vector, IVector } from "../DataTypes/Vector";
 
 
 test("accelerate", () => {

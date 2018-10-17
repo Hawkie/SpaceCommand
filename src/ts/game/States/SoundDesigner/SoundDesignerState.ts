@@ -2,10 +2,10 @@
 // import { SoundEffectData, SoundEffectsModel } from "ts/States/SoundDesigner/SoundEffectsModel";
 // import { FXObject } from "ts/Sound/FXObject";
 // import { SparseArray } from "ts/Collections/SparseArray";
-// import { Coordinate } from "ts/gamelib/Data/Coordinate";
+// import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
 // import { ControlPanel } from "ts/GameObjects/ControlPanel";
 // import { Slider } from "ts/Models/Controls/ControlPanelModel";
-// import { TextData } from "ts/gamelib/Data/TextData";
+// import { TextData } from "ts/gamelib/DataTypes/TextData";
 // import { IGameObject } from "ts/gamelib/GameObjects/GameObject";
 // import { TextObject } from "ts/GameObjects/TextObject";
 // import { IGameState, GameState } from "ts/gamelib/States/GameState";

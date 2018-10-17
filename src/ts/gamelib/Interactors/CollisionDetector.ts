@@ -1,7 +1,7 @@
 ﻿import { IInteractor } from "ts/gamelib/Interactors/Interactor";
-import { ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IShape } from "ts/gamelib/Data/Shape";
+import { IShape } from "ts/gamelib/DataTypes/Shape";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 
 

@@ -1,5 +1,5 @@
 ﻿import { IView } from "ts/gamelib/Views/View";
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { DrawContext } from "ts/gamelib/1Common/DrawContext";
 
 export class ValueView implements IView {

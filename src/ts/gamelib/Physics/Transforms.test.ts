@@ -1,6 +1,6 @@
 import { Transforms } from "./Transforms";
-import { Coordinate, ICoordinate } from "../Data/Coordinate";
-import { IVector } from "../Data/Vector";
+import { Coordinate, ICoordinate } from "../DataTypes/Coordinate";
+import { IVector } from "../DataTypes/Vector";
 
 test("vectorToCartesian0", () => {
     var out: ICoordinate = Transforms.VectorToCartesian(0, 10);

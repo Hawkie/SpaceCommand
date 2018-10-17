@@ -1,6 +1,6 @@
 import { DrawContext} from "ts/gamelib/1Common/DrawContext";
 import { Assets } from "ts/gamelib/1Common/Assets";
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IGameState } from "ts/gamelib/GameState/GameState";
 import { IInteractor } from "ts/gamelib/Interactors/Interactor";

@@ -3,7 +3,7 @@ import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 
 import { ControlPanelView } from "ts/gamelib/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 
 
 

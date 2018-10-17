@@ -1,7 +1,7 @@
 import { IShip, createShip } from "../../Objects/Ship/IShip";
 import { IParticleField, createStarFieldData, IControls } from "../Asteroids/createAsteroidData";
 import { ISurfaceGeneration, ISurface, initSurface } from "../../Actors/SurfaceGenerator";
-import { ICoordinate } from "../../../gamelib/Data/Coordinate";
+import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 
 export interface ILandExplorerData {

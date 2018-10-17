@@ -1,6 +1,6 @@
 ﻿import { IActor } from "ts/gamelib/Actors/Actor";
-import { Coordinate, ICoordinate } from "ts/gamelib/Data/Coordinate";
-import { IShape } from "ts/gamelib/Data/Shape";
+import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { IShape } from "ts/gamelib/DataTypes/Shape";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 
 export interface IPolyRotator {

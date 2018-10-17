@@ -1,7 +1,7 @@
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { IActor } from "ts/gamelib/Actors/Actor";
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { createParticleField } from "ts/game/Objects/Particle/createParticleField";
 import { Sound } from "ts/gamelib/Actors/Sound";
 import { Transforms } from "ts/gamelib/Physics/Transforms";

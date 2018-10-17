@@ -6,7 +6,7 @@ import { Assets } from "ts/gamelib/1Common/Assets";
 import { createLandExplorerData, ILandExplorerData } from "./createLandExplorerData";
 import { ILandExplorerStateObjects, createLandExplorerStateObjects } from "./createLandExplorerStateObjects";
 import { ObjectCollisionDetector } from "../../../gamelib/Interactors/ObjectCollisionDetector";
-import { Shape } from "../../../gamelib/Data/Shape";
+import { Shape } from "../../../gamelib/DataTypes/Shape";
 
 export function createLandExplorerGameState(assets: Assets, actx: AudioContext): LandExplorerGameState {
     var dataModel: ILandExplorerData = createLandExplorerData();

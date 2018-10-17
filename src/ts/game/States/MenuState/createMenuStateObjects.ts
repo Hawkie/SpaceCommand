@@ -1,4 +1,4 @@
-import { Coordinate } from "ts/gamelib/Data/Coordinate";
+import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
