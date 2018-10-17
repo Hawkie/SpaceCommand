@@ -18,7 +18,9 @@ To build:
 
 To Run:
 It does not currently work with node. Instead you will need to host the files on a web server.
-This is easy with Visual Studio Code. Open VSC
+It does not work with parcel either - because of a requirejs dependency and amd module dependency.
+(will fix this soon by hosting the component inside a react component)
+So to host, it is made easily possible with Visual Studio Code and the Live Server extension. Open VSC
  a) download the Live Server extension in Visual Studio Code extensions
  b) Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
 
