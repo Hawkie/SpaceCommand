@@ -39,6 +39,9 @@ Esc to return to menu
 f5 to reload and reset game
 --- 
 
+The game is hosted on a free hosting provider at:  http://spacecommand.000webhostapp.com/
+If you do not hear the sound initially - press f5 to refresh.
+
 To host on a server: 
 It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
