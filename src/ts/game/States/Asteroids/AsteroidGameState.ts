@@ -16,11 +16,11 @@ import { createAsteroidObject } from "ts/game/Objects/Asteroids/createAsteroidOb
 import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 
 export function createGameState(assets: Assets, actx: AudioContext): AsteroidGameState {
-    var spriteField: IGameObject = createSpriteField();
-    var state: IAsteroidData = createAsteroidData();
-    var stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
+    let spriteField: IGameObject = createSpriteField();
+    let state: IAsteroidData = createAsteroidData();
+    let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
     // get state objects and add asteroid objects
-    var asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", assets, actx, state, stateObj, [spriteField]);
+    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", assets, actx, state, stateObj, [spriteField]);
     return asteroidState;
 }
 
@@ -39,7 +39,7 @@ export class AsteroidGameState implements IGameState {
         ) {
         this.viewScale = 1;
         this.zoom = 1;
-        var asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(()=>
+        let asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(()=>
             this.dataModel.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
@@ -49,7 +49,7 @@ export class AsteroidGameState implements IGameState {
                 y: b.y,
             };}),
             this.bulletHitAsteroid.bind(this));
-        var asteroidPlayerDetector:IInteractor = new Multi2ShapeCollisionDetector(()=>
+        let asteroidPlayerDetector:IInteractor = new Multi2ShapeCollisionDetector(()=>
             this.dataModel.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
                 shape: a.shape,
@@ -142,9 +142,9 @@ export class AsteroidGameState implements IGameState {
         // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {
-                var newAsteroid:IAsteroid = AsteroidModels.createAsteroidDataAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
+                let newAsteroid:IAsteroid = AsteroidModels.createAsteroidDataAt(a.x, a.y, a.Vx, a.Vy, a.size - 1);
                 this.dataModel.asteroids.asteroids.push(newAsteroid);
-                var asteroidObj: SingleGameObject = createAsteroidObject(()=>newAsteroid);
+                let asteroidObj: SingleGameObject = createAsteroidObject(()=>newAsteroid);
                 this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
             }
         }
@@ -165,9 +165,9 @@ export class AsteroidGameState implements IGameState {
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {
-        var a: IAsteroid = this.dataModel.asteroids.asteroids[i1];
-        var xImpact: number = a.Vx;
-        var yImpact: number = a.Vy;
+        let a: IAsteroid = this.dataModel.asteroids.asteroids[i1];
+        let xImpact: number = a.Vx;
+        let yImpact: number = a.Vy;
         this.dataModel.ship.Vx = xImpact + Transforms.random(-2, 2);
         this.dataModel.ship.Vy = yImpact + Transforms.random(-2, 2);
         this.dataModel.ship.crashed = true;

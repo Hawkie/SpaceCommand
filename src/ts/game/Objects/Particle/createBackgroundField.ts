@@ -3,10 +3,10 @@ import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
 import { createParticleField } from "./createParticleField";
 // todo add the edge predicate to background
-//     var edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
+//     let edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
 export function createBackgroundField(getField: () => IParticleField, speed: number): MultiGameObject<SingleGameObject> {
-    var field: IParticleField = getField();
-    var starField: MultiGameObject<SingleGameObject> = createParticleField(field, () => {
+    let field: IParticleField = getField();
+    let starField: MultiGameObject<SingleGameObject> = createParticleField(field, () => {
         return {
             on: field.on,
             x: 0,

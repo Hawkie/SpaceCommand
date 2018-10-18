@@ -8,12 +8,12 @@ import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteAngledView";
 
 // creates a spinning coin
 export function createCoinObject(getCoin: () => ICoin): SingleGameObject {
-    var coin: ICoin = getCoin();
-    var animator: IActor = new SpriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
-    var spinner: Spinner = new Spinner(() => {
+    let coin: ICoin = getCoin();
+    let animator: IActor = new SpriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
+    let spinner: Spinner = new Spinner(() => {
         return { spin: coin.spin };
     }, (sOut) => coin.angle += sOut.dAngle);
-    var view: IView = new SpriteAngledView(() => {
+    let view: IView = new SpriteAngledView(() => {
         return {
             x: coin.x,
             y: coin.y,
@@ -21,6 +21,6 @@ export function createCoinObject(getCoin: () => ICoin): SingleGameObject {
             sprite: coin.sprite,
         };
     });
-    var coinObj: SingleGameObject = new SingleGameObject([animator, spinner], [view]);
+    let coinObj: SingleGameObject = new SingleGameObject([animator, spinner], [view]);
     return coinObj;
 }

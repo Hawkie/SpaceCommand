@@ -16,12 +16,12 @@ export class PolyRotator implements IActor {
     }
 
     update(timeModifier: number): void {
-        var inputs: IPolyRotator = this.getInputs();
+        let inputs: IPolyRotator = this.getInputs();
         if (this.previousAngle !== inputs.angle) {
-            var rotateAngle: number = inputs.angle - this.previousAngle;
+            let rotateAngle: number = inputs.angle - this.previousAngle;
             // rotate the difference
-            var newPoints: ICoordinate[] = Transforms.Rotate(inputs.shape.points, rotateAngle);
-            var newOffset: ICoordinate = Transforms.Rotate([inputs.shape.offset], rotateAngle).pop();
+            let newPoints: ICoordinate[] = Transforms.Rotate(inputs.shape.points, rotateAngle);
+            let newOffset: ICoordinate = Transforms.Rotate([inputs.shape.offset], rotateAngle).pop();
             this.previousAngle = inputs.angle;
             this.setOut({points: newPoints, offset: newOffset});
         }

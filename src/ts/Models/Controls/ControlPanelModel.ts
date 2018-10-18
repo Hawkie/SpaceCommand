@@ -20,8 +20,8 @@ export class ControlPanelModel implements IActor, IControlPanelModel {
     }
 
     onIncrease(amount: number = 1): void {
-        var v: number = this.sliders[this.selectedControl].value;
-        var c: number = this.sliders[this.selectedControl].stepSize;
+        let v: number = this.sliders[this.selectedControl].value;
+        let c: number = this.sliders[this.selectedControl].stepSize;
         v += c;
         if (v > this.sliders[this.selectedControl].max) {
             v = this.sliders[this.selectedControl].min;
@@ -30,8 +30,8 @@ export class ControlPanelModel implements IActor, IControlPanelModel {
     }
 
     onDecrease(amount: number = 1): void {
-        var v: number = this.sliders[this.selectedControl].value;
-        var c: number = this.sliders[this.selectedControl].stepSize;
+        let v: number = this.sliders[this.selectedControl].value;
+        let c: number = this.sliders[this.selectedControl].stepSize;
         v -= c;
         if (v < this.sliders[this.selectedControl].min) {
             v = this.sliders[this.selectedControl].max;

@@ -12,9 +12,9 @@ export class PolyView implements IView {
     constructor(private getInputs:()=> IPolyView) { }
 
     display(drawContext: DrawContext): void {
-        var inputs: IPolyView = this.getInputs();
-        var x: number = inputs.x + inputs.shape.offset.x;
-        var y: number = inputs.y + inputs.shape.offset.y;
+        let inputs: IPolyView = this.getInputs();
+        let x: number = inputs.x + inputs.shape.offset.x;
+        let y: number = inputs.y + inputs.shape.offset.y;
         drawContext.drawP(x, y, inputs.shape.points);
         drawContext.fill();
     }

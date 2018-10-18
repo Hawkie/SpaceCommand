@@ -12,9 +12,9 @@ export class ParticleGenerator2 implements IActor {
     // state variables
     private lastCheck: number = 0;
     update(lastTimeModifier: number): void {
-        var inP: IParticleGenInputs2 = this.getIn();
-        var now: number = Date.now();
-        var on: boolean = inP.on;
+        let inP: IParticleGenInputs2 = this.getIn();
+        let now: number = Date.now();
+        let on: boolean = inP.on;
         // reset if initialising
         if (this.lastCheck === 0) {
             this.lastCheck = now;
@@ -23,7 +23,7 @@ export class ParticleGenerator2 implements IActor {
         if (!on) {
             this.lastCheck = now;
         } else {
-            var secSinceLast: number = (now - this.lastCheck) / 1000;
+            let secSinceLast: number = (now - this.lastCheck) / 1000;
             // find the integer number of particles to add. conservatively round down
             let toAdd: number = Math.floor(this.perSec * secSinceLast);
             // limit max number of particles

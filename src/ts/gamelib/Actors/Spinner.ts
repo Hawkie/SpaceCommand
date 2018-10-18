@@ -11,7 +11,7 @@ export class Spinner implements IActor {
     }
     update(timeModifier: number): void {
         const input: ISpinnerInputs = this.getIn();
-        var sOut: ISpinnerOutputs = spin(timeModifier, input.spin);
+        let sOut: ISpinnerOutputs = spin(timeModifier, input.spin);
         this.setOut(sOut);
     }
 }

@@ -9,10 +9,10 @@ export interface ISpriteAngled extends ISpriteView {
 export class SpriteAngledView implements IView {
     constructor(private getInputs: () => ISpriteAngled) { }
     display(drawContext: DrawContext): void {
-        var inputs: ISpriteAngled = this.getInputs();
+        let inputs: ISpriteAngled = this.getInputs();
         if (inputs.sprite.loaded) {
-            var xOffset: number = inputs.x + (inputs.sprite.frame.width * inputs.sprite.scaleX / 2);
-            var yOffset: number = inputs.y + (inputs.sprite.frame.height * inputs.sprite.scaleY / 2);
+            let xOffset: number = inputs.x + (inputs.sprite.frame.width * inputs.sprite.scaleX / 2);
+            let yOffset: number = inputs.y + (inputs.sprite.frame.height * inputs.sprite.scaleY / 2);
             drawContext.save();
             drawContext.translate(xOffset, yOffset);
             drawContext.rotate(inputs.angle);

@@ -10,7 +10,7 @@ export class ValueView implements IView {
     }
 
     display(drawingContext: DrawContext): void {
-        var value: number = this.getModel();
+        let value: number = this.getModel();
         drawingContext.drawText(this.location.x,
             this.location.y,
             value.toString(),

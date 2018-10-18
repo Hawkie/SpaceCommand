@@ -14,7 +14,7 @@ export class Flasher implements IActor {
     constructor(public getSwitch: ()=> ISwitch, private valueOut: (value:number)=> void) { }
 
     update(timeModifier: number): void {
-        var inputs:ISwitch = this.getSwitch();
+        let inputs:ISwitch = this.getSwitch();
         if (inputs.enabled) {
             if (this.flashed < inputs.repeat) {
                 if (inputs.value === 0) {

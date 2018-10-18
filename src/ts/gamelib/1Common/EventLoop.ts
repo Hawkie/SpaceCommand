@@ -15,8 +15,8 @@ export class EventLoop {
     }
 
     loop(): void {
-        var lastTime: number = 0;
-        var myLoop: FrameRequestCallback = (time => {
+        let lastTime: number = 0;
+        let myLoop: FrameRequestCallback = (time => {
             const delta: number = time - lastTime;
             if (delta < 1000) {
                 this.processOneFrame(delta / 1000);
@@ -35,7 +35,7 @@ export class EventLoop {
         gs.tests(delta);
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);
-        var newState: number = gs.returnState();
+        let newState: number = gs.returnState();
         if (newState !== undefined) {
             this.currentState = this.states[newState];
         }

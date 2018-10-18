@@ -33,7 +33,7 @@ export class SliderView implements IView {
     }
 
     display(drawContext: DrawContext): void {
-        var factor: number = this.model.value / (this.model.max - this.model.min);
+        let factor: number = this.model.value / (this.model.max - this.model.min);
 
         if (this.model.enabled) {
             drawContext.fillRect(this.location.x + 10, this.location.y, 2, 2);

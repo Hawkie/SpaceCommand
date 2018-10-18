@@ -11,8 +11,8 @@ import { createWrapActor } from "ts/gamelib/Actors/Wrap";
 
 // creates a graphical view asteroid with and spin, velocity
 export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameObject {
-    var asteroid: IAsteroid = getAsteroid();
-    var mover: IActor = new MoveConstVelocity(() => {
+    let asteroid: IAsteroid = getAsteroid();
+    let mover: IActor = new MoveConstVelocity(() => {
         return {
             Vx: asteroid.Vx,
             Vy: asteroid.Vy,
@@ -21,10 +21,10 @@ export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameOb
         asteroid.x += out.dx;
         asteroid.y += out.dy;
     });
-    var spinner: IActor = new Spinner(() => {
+    let spinner: IActor = new Spinner(() => {
         return { spin: asteroid.spin };
     }, (sOut) => asteroid.angle += sOut.dAngle);
-    var rotator: IActor = new PolyRotator(() => {
+    let rotator: IActor = new PolyRotator(() => {
         return {
             angle: asteroid.angle,
             shape: asteroid.shape,
@@ -32,21 +32,21 @@ export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameOb
     }, (out: IShape) => {
         asteroid.shape = out;
     });
-    var wrapx: IActor = createWrapActor(() => {
+    let wrapx: IActor = createWrapActor(() => {
         return {
             value: asteroid.x,
             lowLimit: 0,
             upLimit: 512,
         };
     }, (a) => asteroid.x = a);
-    var wrapy: IActor = createWrapActor(() => {
+    let wrapy: IActor = createWrapActor(() => {
         return {
             value: asteroid.y,
             lowLimit: 0,
             upLimit: 480,
         };
     }, (a) => asteroid.y = a);
-    var view: IView = new PolyGraphicAngled(() => {
+    let view: IView = new PolyGraphicAngled(() => {
         return {
             x: asteroid.x,
             y: asteroid.y,
@@ -55,6 +55,6 @@ export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameOb
             angle: asteroid.angle,
         };
     });
-    var asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
+    let asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
     return asteroidObject;
 }

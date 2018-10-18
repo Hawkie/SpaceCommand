@@ -13,10 +13,10 @@ export class PolyGraphic implements IView {
         this.graphic = new Graphic(getInputs().graphic);
     }
     display(drawContext: DrawContext): void {
-        var inputs: IPolyGraphicView = this.getInputs();
+        let inputs: IPolyGraphicView = this.getInputs();
         if (this.graphic.loaded) {
-            var x: number = inputs.x + inputs.shape.offset.x;
-            var y: number = inputs.y + inputs.shape.offset.y;
+            let x: number = inputs.x + inputs.shape.offset.x;
+            let y: number = inputs.y + inputs.shape.offset.y;
             drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
             let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);

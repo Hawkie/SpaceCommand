@@ -23,14 +23,14 @@ export class Accelerator implements IActor {
     }
 
     update(timeModifier: number): void {
-        var input: IAcceleratorInputs = this.getInputs();
-        var result:IAcceleratorOutputs = accelerate(timeModifier, input.forces, input.mass);
+        let input: IAcceleratorInputs = this.getInputs();
+        let result:IAcceleratorOutputs = accelerate(timeModifier, input.forces, input.mass);
         this.setOut(result);
     }
 }
 
 export function accelerate(timeModifer: number, forces: IVector[], mass: number): IAcceleratorOutputs {
-    var vChange: IAcceleratorOutputs = {
+    let vChange: IAcceleratorOutputs = {
         dVx: 0,
         dVy: 0,
     };

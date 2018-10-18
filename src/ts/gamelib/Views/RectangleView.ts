@@ -12,7 +12,7 @@ export class RectangleView implements IView {
     constructor(private getIn: () => IRectangleView) {
     }
     display(drawContext: DrawContext): void {
-        var rectangle: IRectangleView = this.getIn();
+        let rectangle: IRectangleView = this.getIn();
         drawContext.fillRect(rectangle.x,
             rectangle.y,
             rectangle.width,

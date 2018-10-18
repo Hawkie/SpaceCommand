@@ -84,7 +84,7 @@
 //         this.asteroids = asteroids;
 //         this.asteroidNoise = false;
 
-//         // var echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
+//         // let echoEffect: AmplifierSettings = new AmplifierSettings(1, 1, 1, 0.1, 0, false, [0.3, 0.3, 2000], [1, 0.1, 0]);
 //         // assets.load(actx, ["res/sound/blast.wav", "res/sound/hello.wav"], () => {
 //         //     this.asteroidHitSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/blast.wav")[0].data);
 //         //     this.helloSound = new BufferObject(actx, assets.soundData.filter(x => x.source === "res/sound/hello.wav")[0].data, echoEffect);
@@ -95,28 +95,28 @@
 //         this.interactors = [];
 
 //         this.players.forEach(player => {
-//             var asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this),
+//             let asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(this.asteroidModels.bind(this),
 //                 () => player.weaponController.bullets,
 //                 player,
 //                 this.asteroidBulletHit.bind(this));
 //             this.interactors.push(asteroidBulletDetector);
-//             var asteroidPlayerDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+//             let asteroidPlayerDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
 //                 player.chassisObj.model,
 //                 player,
 //                 this.asteroidPlayerHit.bind(this));
 //             this.interactors.push(asteroidPlayerDetector);
-//             var asteroidEngineDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
+//             let asteroidEngineDetector: IInteractor = new Multi2ShapeCollisionDetector(this.asteroidModels.bind(this),
 //                 player.thrustController.engine.model,
 //                 player,
 //                 this.asteroidEngineHit.bind(this));
 //             this.interactors.push(asteroidEngineDetector);
 //         });
-//         var player1ShootPlayer2Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[0].chassisObj.model],
+//         let player1ShootPlayer2Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[0].chassisObj.model],
 //         () => this.players[1].weaponController.bullets,
 //             this.players[0],
 //             this.playerHitPlayer.bind(this));
 //         this.interactors.push(player1ShootPlayer2Detector);
-//         var player2ShootPlayer1Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[1].chassisObj.model], 
+//         let player2ShootPlayer1Detector: IInteractor = new Multi2FieldCollisionDetector(() => [this.players[1].chassisObj.model], 
 //             () => this.players[0].weaponController.bullets,
 //             this.players[1],
 //             this.playerHitPlayer.bind(this));
@@ -194,7 +194,7 @@
 //             this.asteroidNoise = false;
 //             //if (this.helloSound !== undefined)
 //             //    this.helloSound.play();
-//             var asteroidHitSound = new AudioObject("res/sound/blast.wav");
+//             let asteroidHitSound = new AudioObject("res/sound/blast.wav");
 //             asteroidHitSound.play();
 //         }
 //     }
@@ -271,45 +271,45 @@
 //     }
 
 //     asteroidPlayerHit(i1: number, asteroids: AsteroidModel[], i2: number, playerc: Coordinate[], player:SpaceShipController) {
-//         var a = asteroids[i1];
-//         var xImpact = a.physics.velX;
-//         var yImpact = a.physics.velY;
+//         let a = asteroids[i1];
+//         let xImpact = a.physics.velX;
+//         let yImpact = a.physics.velY;
 //         player.chassisObj.model.physics.velX = xImpact + Transforms.random(-2, 2);
 //         player.chassisObj.model.physics.velY = yImpact + Transforms.random(-2, 2);
 //         player.crash();
 //     }
 
 //     asteroidEngineHit(i1: number, asteroids: AsteroidModel[], i2: number, playerx: Coordinate[], player:SpaceShipController) {
-//         var a = asteroids[i1];
-//         var xImpact = a.physics.velX;
-//         var yImpact = a.physics.velY;
-//         var engineSeparateModel = new LocatedMovingAngledRotatingForces(new Coordinate(player.chassisObj.model.physics.location.x,
+//         let a = asteroids[i1];
+//         let xImpact = a.physics.velX;
+//         let yImpact = a.physics.velY;
+//         let engineSeparateModel = new LocatedMovingAngledRotatingForces(new Coordinate(player.chassisObj.model.physics.location.x,
 //             player.chassisObj.model.physics.location.y),
 //             xImpact + Transforms.random(-2, 2),
 //             yImpact + Transforms.random(-2, 2),
 //             player.chassisObj.model.physics.angle,
 //             5,
 //             0.5);
-//         var Shape = player.thrustController.engine.model.shape;
-//         var mover: IActor = new MoveConstVelocity(() => { return {
+//         let Shape = player.thrustController.engine.model.shape;
+//         let mover: IActor = new MoveConstVelocity(() => { return {
 //             Vx: engineSeparateModel.velX,
 //             Vy: engineSeparateModel.velY,
 //         };}, (out: IMoveOut)=> {
 //             engineSeparateModel.location.x += out.dx;
 //             engineSeparateModel.location.y += out.dy;
 //         });
-//         var rotator: IActor = new PolyRotator(() => { return {
+//         let rotator: IActor = new PolyRotator(() => { return {
 //             angle: engineSeparateModel.angle,
 //             shape: player.thrustController.engine.model.shape,
 //         };}, (out: IShape)=> {
 //             player.thrustController.engine.model.shape = out;
 //         });
-//         var spinner: Spinner = new Spinner(() => {
+//         let spinner: Spinner = new Spinner(() => {
 //             return {spin: engineSeparateModel.spin};
 //         }, (sOut)=> engineSeparateModel.angle += sOut.dAngle);
 //         player.thrustController.engine.model.physics = engineSeparateModel;
 //         player.thrustController.engine.actors = [mover, rotator, spinner];
-//         var view: IView = new PolyView(() => { return {
+//         let view: IView = new PolyView(() => { return {
 //             x: engineSeparateModel.location.x,
 //             y: engineSeparateModel.location.y,
 //             shape: Shape,
@@ -331,10 +331,10 @@
 //     }
 
 //     static createPlayer(location: Coordinate, angle:number, actx: AudioContext): SpaceShipController {
-//         var shipData = new SpaceShipData(location, 0, 0, angle, 0, 1);
-//         var chassisObj = ShipComponents.createShipObj(shipData);
+//         let shipData = new SpaceShipData(location, 0, 0, angle, 0, 1);
+//         let chassisObj = ShipComponents.createShipObj(shipData);
 //         chassisObj.model.physics.forces.push(new Vector(chassisObj.model.physics.angle, 0));
-//         var getAcceleratorProps: () => IAcceleratorInputs = () => {
+//         let getAcceleratorProps: () => IAcceleratorInputs = () => {
 //             return {
 //                 x: chassisObj.model.physics.location.x,
 //                 y:chassisObj.model.physics.location.y,
@@ -344,25 +344,25 @@
 //                 mass:chassisObj.model.physics.mass
 //             };
 //         };
-//         var accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
+//         let accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs)=> {
 //             chassisObj.model.physics.velX += out.dVx;
 //             chassisObj.model.physics.velY += out.dVy;
 //         });
 //         chassisObj.actors.push(accelerator);
 
-//         var weaponController1 = WeaponController.createWeapon(chassisObj.model.physics, actx);
-//         var thrustController1 = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, false);
-//         var explosionController1 = ExplosionController.createExplosion(chassisObj.model.physics, false);
-//         var shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);
+//         let weaponController1 = WeaponController.createWeapon(chassisObj.model.physics, actx);
+//         let thrustController1 = ThrustController.createThrust(chassisObj.model.physics, chassisObj.model.shape, false);
+//         let explosionController1 = ExplosionController.createExplosion(chassisObj.model.physics, false);
+//         let shipController1 = new SpaceShipController(shipData, chassisObj, weaponController1, thrustController1, explosionController1);
 //         return shipController1;
 //     }
 
 //     static createState(assets: Assets, actx: AudioContext): DuelState {
 
-//         var field: IGameObject = Field.createBackgroundField(16, 2);
+//         let field: IGameObject = Field.createBackgroundField(16, 2);
 
-//         //var star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
-//         //var spriteField = Field.createSpriteField();
+//         //let star: DynamicModel<ILocatedAngled> = new DynamicModel<ILocatedAngled>();
+//         //let spriteField = Field.createSpriteField();
 
 //         // special
 //         let player1 = DuelState.createPlayer(new Coordinate(394, 120), 180, actx);
@@ -372,11 +372,11 @@
 
 //         let alien: IGameObject = AsteroidState.createGraphicShip(new Coordinate(200, 100));
 
-//         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-//         var score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
-//         var valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
+//         let text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+//         let score: IGameObject = new TextObject("Score:", new Coordinate(400, 20), "Arial", 18);
+//         let valueDisplay: ValueObject = new ValueObject(0, new Coordinate(460, 20), "Arial", 18);
 
-//         var asteroidState = new DuelState("Duel", assets, actx, [player1, player2], [text, score, valueDisplay], [field, alien, player1, player2], asteroids, valueDisplay);
+//         let asteroidState = new DuelState("Duel", assets, actx, [player1, player2], [text, score, valueDisplay], [field, alien, player1, player2], asteroids, valueDisplay);
 //         return asteroidState;
 //     }
 // }

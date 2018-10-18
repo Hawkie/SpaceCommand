@@ -41,7 +41,7 @@ export class HorizontalSpriteSheet extends Sprite {
         index:number = 0,
         scaleX: number = 1,
         scaleY: number = 1) {
-        var frames: SpriteFrame[] = [];
+        let frames: SpriteFrame[] = [];
         for (let i: number = 0; i < totalFrames; i++) {
             let w: number = i * width;
             frames.push(new SpriteFrame(w, 0, width, height));

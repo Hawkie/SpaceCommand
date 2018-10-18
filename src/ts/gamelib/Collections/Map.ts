@@ -12,7 +12,7 @@ export class Map<T> {
     }
 
     add(key: number, value: T): void {
-        var index: number = this.keys.indexOf(key);
+        let index: number = this.keys.indexOf(key);
         this.keys.push(key);
         this.keys.sort();
         this.items[key] = value;

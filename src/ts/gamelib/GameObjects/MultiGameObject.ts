@@ -9,12 +9,12 @@ export class MultiGameObject<TComponent extends IGameObject> implements IGameObj
     constructor(public actors: IActor[], public views: IView[], public getComponents: () => TComponent[]) {
     }
     update(timeModifier: number): void {
-        var components: TComponent[] = this.getComponents();
+        let components: TComponent[] = this.getComponents();
         components.forEach(a => a.update(timeModifier));
         this.actors.forEach(a => a.update(timeModifier));
     }
     display(drawContext: DrawContext): void {
-        var components: TComponent[] = this.getComponents();
+        let components: TComponent[] = this.getComponents();
         components.forEach(e => e.display(drawContext));
         this.views.forEach(e => e.display(drawContext));
     }

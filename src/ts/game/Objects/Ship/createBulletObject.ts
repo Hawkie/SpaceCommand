@@ -7,12 +7,12 @@ import { IParticle } from "ts/game/Objects/Particle/IParticle";
 import { Sound } from "ts/gamelib/Actors/Sound";
 
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {
-    var particle: IParticle = getParticle();
-    var mover: IActor = new MoveConstVelocity(() => particle, (out: IMoveOut) => {
+    let particle: IParticle = getParticle();
+    let mover: IActor = new MoveConstVelocity(() => particle, (out: IMoveOut) => {
         particle.x += out.dx;
         particle.y += out.dy;
     });
-    var view: IView = new RectangleView(() => {
+    let view: IView = new RectangleView(() => {
         return {
             x: particle.x,
             y: particle.y,
@@ -21,7 +21,7 @@ export function createBulletObject(getParticle: () => IParticle): SingleGameObje
         };
     });
     let particleObj: SingleGameObject = new SingleGameObject([mover], [view]);
-    var fireSound: IActor = new Sound("res/sound/raygun-01.mp3", true, false, () => {
+    let fireSound: IActor = new Sound("res/sound/raygun-01.mp3", true, false, () => {
         return {
             play: true,
         };

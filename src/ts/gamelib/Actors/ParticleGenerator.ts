@@ -13,14 +13,14 @@ export class ParticleGenerator implements IActor {
     // used for calculating the time particles are generated
     private firstAdded: number = 0;
     update(lastTimeModifier: number): void {
-        var inP: IParticleGenInputs = this.getIn();
-        var now: number = Date.now();
-        var on: boolean = inP.on;
+        let inP: IParticleGenInputs = this.getIn();
+        let now: number = Date.now();
+        let on: boolean = inP.on;
         if (!on) {
             this.lastCheck = now;
             this.firstAdded = 0;
         } else {
-            var secSinceLast: number = (now - this.lastCheck) / 1000;
+            let secSinceLast: number = (now - this.lastCheck) / 1000;
             // don't add if past generation time
             if (this.generationTimeInSec === undefined
                 || this.firstAdded === 0

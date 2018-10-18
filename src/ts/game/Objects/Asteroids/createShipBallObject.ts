@@ -7,9 +7,9 @@ import { IShip } from "../Ship/IShip";
 // create a ship and ball attached by a line with a composite accelerator to
 // handle the physics between the two objects
 export function createShipBallObject(getShip: () => IShip, getBall: () => IBall): SingleGameObject {
-    var ship: IShip = getShip();
-    var ball: IBall = getBall();
-    var rod: CompositeAccelerator = new CompositeAccelerator(() => {
+    let ship: IShip = getShip();
+    let ball: IBall = getBall();
+    let rod: CompositeAccelerator = new CompositeAccelerator(() => {
         return {
             xFrom: ship.x,
             yFrom: ship.y,
@@ -32,7 +32,7 @@ export function createShipBallObject(getShip: () => IShip, getBall: () => IBall)
         ball.y = out.yTo;
     });
     // create rod view as a line from ball to ship
-    var line: LineView = new LineView(() => {
+    let line: LineView = new LineView(() => {
         return {
             xFrom: ball.x,
             yFrom: ball.y,
@@ -40,6 +40,6 @@ export function createShipBallObject(getShip: () => IShip, getBall: () => IBall)
             yTo: ship.y,
         };
     });
-    var r: SingleGameObject = new SingleGameObject([rod], [line]);
+    let r: SingleGameObject = new SingleGameObject([rod], [line]);
     return r;
 }

@@ -22,7 +22,7 @@ export class AgePred<TElement> implements IPred<TElement> {
     Test(element: TElement): boolean {
         if (this.lifeTimeInSec !== undefined) {
             return ElapsedTimeLimit(this.getBorn(element), this.lifeTimeInSec());
-            // var ageInSec: number = (Date.now() - this.getBorn(element)) / 1000;
+            // let ageInSec: number = (Date.now() - this.getBorn(element)) / 1000;
             // if (ageInSec > this.lifeTimeInSec()) {
             //     return true;
             // }

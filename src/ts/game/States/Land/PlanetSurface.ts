@@ -9,18 +9,18 @@
 // export class PlanetSurfaceModel {
 
 //     constructor(startingPoint: ICoordinate) {
-//         var located:ICoordinate = startingPoint;
-//         var shape:IShape = new Shape([]);
+//         let located:ICoordinate = startingPoint;
+//         let shape:IShape = new Shape([]);
 //     }
     
     
 //     static generateSurface(startingPoint: Coordinate, surfaceLength : number, xMin:number = 20, xMax:number = 40, yMin:number = -20, yMax:number = 20) : Coordinate[]{
         
-//         var points : Coordinate[] = [];
-//         var padLocation : Coordinate = undefined;
+//         let points : Coordinate[] = [];
+//         let padLocation : Coordinate = undefined;
         
-//         var x = 0, y = 0;
-//         var sameY = false;
+//         let x = 0, y = 0;
+//         let sameY = false;
 //         points.push(new Coordinate(-1, 200));
 //         while(true){
 //             points.push(new Coordinate(x, y));

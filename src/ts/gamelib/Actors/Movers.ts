@@ -17,7 +17,7 @@ export class MoveConstVelocity implements IActor {
     }
 
     update(timeModifier: number): void {
-        var mIn: IMoveIn = this.getIn();
+        let mIn: IMoveIn = this.getIn();
         this.setOut(move(timeModifier, mIn.Vx, mIn.Vy));
     }
 

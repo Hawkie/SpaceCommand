@@ -29,19 +29,19 @@ export interface ILandExplorerStateObjects {
 }
 
 export function createLandExplorerStateObjects(getData: () => ILandExplorerData): ILandExplorerStateObjects {
-    var data: ILandExplorerData = getData();
-    var shipObj: SingleGameObject = createShipObject(() => data.stateConfig,
+    let data: ILandExplorerData = getData();
+    let shipObj: SingleGameObject = createShipObject(() => data.stateConfig,
         () => data.controls, () => data.ship);
-    var shipThrust: SingleGameObject = createShipAccelerator(() => data.ship);
-    var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(
+    let shipThrust: SingleGameObject = createShipAccelerator(() => data.ship);
+    let weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(
         () => data.controls,
         () => data.ship,
         () => data.ship.weapon1);
-    var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
-    var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
+    let exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
+    let explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
 
     // background objects
-    var surfaceObj: SingleGameObject = createPlanetSurfaceObject(() => {
+    let surfaceObj: SingleGameObject = createPlanetSurfaceObject(() => {
             return {
                 x: data.ship.x,
                 y: data.ship.y,
@@ -51,10 +51,10 @@ export function createLandExplorerStateObjects(getData: () => ILandExplorerData)
         () => data.surface,
         data.surfaceImg);
 
-    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
+    let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
 
     // ship = space ship controller with gravity
-    var title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
+    let title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
 
     return {
         shipObj: shipObj,
@@ -71,10 +71,10 @@ export function createLandExplorerStateObjects(getData: () => ILandExplorerData)
 export function createPlanetSurfaceObject(getFrom: () => ICoordinate,
     getSurfaceGenerator: () => ISurfaceGeneration,
     getSurface: () => ISurface, texture: string): SingleGameObject {
-    var from: ICoordinate = getFrom();
-    var surface: ISurface = getSurface();
-    var surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
-    var surfaceView: IView = new PolyGraphic(() => {
+    let from: ICoordinate = getFrom();
+    let surface: ISurface = getSurface();
+    let surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
+    let surfaceView: IView = new PolyGraphic(() => {
         return {
             x: 0,
             y: 0,
@@ -85,6 +85,6 @@ export function createPlanetSurfaceObject(getFrom: () => ICoordinate,
             graphic: texture,
         };
     });
-    var obj: SingleGameObject = new SingleGameObject([surfaceExtender], [surfaceView]);
+    let obj: SingleGameObject = new SingleGameObject([surfaceExtender], [surfaceView]);
     return obj;
 }

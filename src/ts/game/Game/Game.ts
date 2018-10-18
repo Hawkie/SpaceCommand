@@ -11,11 +11,11 @@ export class Game {
     run(window: Window, document: Document): void {
         console.log("Game Run()");
 
-        var canvas: Canvas = new Canvas(512, 480, document);
-        var audioContext: AudioContext = new AudioContext();
-        var assets: Assets = new Assets();
-        var states: IGameState[] = createGameStates(assets, audioContext);
-        var gameloop: EventLoop = new EventLoop(document, window, canvas, audioContext, states);
+        let canvas: Canvas = new Canvas(512, 480, document);
+        let audioContext: AudioContext = new AudioContext();
+        let assets: Assets = new Assets();
+        let states: IGameState[] = createGameStates(assets, audioContext);
+        let gameloop: EventLoop = new EventLoop(document, window, canvas, audioContext, states);
 
         gameloop.loop();
     }

@@ -8,9 +8,9 @@ import { createMenuStateObjects } from "./createMenuStateObjects";
 
 // when creating a game state - create the data and then bind to the objects
 export function createMenuState(assets: Assets, actx:AudioContext): MenuState {
-    // var field1 = new AsteroidFields('img/star.png', 512, 200, 32, 1);
-    var menuData: IMenuData = createMenuData();
-    var gameObject: IGameObject = createMenuStateObjects(()=>menuData);
+    // let field1 = new AsteroidFields('img/star.png', 512, 200, 32, 1);
+    let menuData: IMenuData = createMenuData();
+    let gameObject: IGameObject = createMenuStateObjects(()=>menuData);
         // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2),
     // new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
     return new MenuState("Menu", assets, ()=>menuData, ()=>gameObject);
@@ -55,7 +55,7 @@ export class MenuState implements IGameState {
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
-        var now: number = Date.now();
+        let now: number = Date.now();
         const menuData: IMenuData = this.menuDataCallback();
         if ((now - this.lastMoved) > 150) {
             this.lastMoved = now;

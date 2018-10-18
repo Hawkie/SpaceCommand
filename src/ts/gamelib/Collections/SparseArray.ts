@@ -10,7 +10,7 @@ export class SparseArray<T> extends Array<T> {
     }
 
     public remove(item : T): void {
-        var index: number = this.indexOf(item);
+        let index: number = this.indexOf(item);
         if (index > -1) {
             this.splice(index,1);
         }

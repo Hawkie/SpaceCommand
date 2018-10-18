@@ -12,8 +12,8 @@ import { IShip } from "./IShip";
 // creates a two particle fields to represent the ship exploding.
 // turns on when the ship crashes.
 export function createExplosionObj(getShip: () => IShip): MultiGameObject<SingleGameObject> {
-    var ship: IShip = getShip();
-    var explosionObj: MultiGameObject<SingleGameObject> = createParticleField(ship.explosion.explosionParticleField, () => {
+    let ship: IShip = getShip();
+    let explosionObj: MultiGameObject<SingleGameObject> = createParticleField(ship.explosion.explosionParticleField, () => {
         return {
             on: ship.explosion.explosionParticleField.on,
             x: ship.x,
@@ -32,13 +32,13 @@ export function createExplosionObj(getShip: () => IShip): MultiGameObject<Single
             vYHighSpread: 10,
         };
     });
-    var explosionSound: IActor = new Sound(ship.explosion.soundFilename, true, false, () => {
+    let explosionSound: IActor = new Sound(ship.explosion.soundFilename, true, false, () => {
         return {
             play: ship.explosion.explosionParticleField.on,
         };
     });
     explosionObj.actors.push(explosionSound);
-    var flashView: IView = new ScreenFlashView(() => {
+    let flashView: IView = new ScreenFlashView(() => {
         return {
             x: 0,
             y: 0,
@@ -50,7 +50,7 @@ export function createExplosionObj(getShip: () => IShip): MultiGameObject<Single
     });
     explosionObj.views.push(flashView);
     // add flasher to value so screen changes
-    var flasher: IActor = new Flasher(() => {
+    let flasher: IActor = new Flasher(() => {
         return {
             enabled: ship.crashed,
             value: ship.explosion.flash.flashScreenValue,
@@ -60,7 +60,7 @@ export function createExplosionObj(getShip: () => IShip): MultiGameObject<Single
         ship.explosion.flash.flashScreenValue = value;
     });
     explosionObj.actors.push(flasher);
-    var timerTurnOff: IActor = new Timer(() => {
+    let timerTurnOff: IActor = new Timer(() => {
         return {
             enabled: ship.crashed,
             limit: ship.explosion.explosionLifetime,

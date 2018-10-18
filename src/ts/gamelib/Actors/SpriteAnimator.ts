@@ -27,7 +27,7 @@ export class SpriteAnimator implements IActor {
     }
 
     update(timeModifier: number): void {
-        var now: number = Date.now();
+        let now: number = Date.now();
         if (this.frameDurationSec.length > this.animationIndex) {
             this.durationSec = this.frameDurationSec[this.animationIndex];
         }

@@ -23,25 +23,25 @@ export class FXObject implements IAudioObject {
     }
 
     play() {
-        var actx = this.audioContext;
-        var oscillators: ControllerNode[] = [];
-        var sourceNode = this.createOscillator(this.audioContext,
+        let actx = this.audioContext;
+        let oscillators: ControllerNode[] = [];
+        let sourceNode = this.createOscillator(this.audioContext,
             this.effect.type,
             this.effect.frequencyValue);
-        var amplifier: Amplifier = new Amplifier(actx, sourceNode, this.ampSettings);
+        let amplifier: Amplifier = new Amplifier(actx, sourceNode, this.ampSettings);
         oscillators.push(new ControllerNode(sourceNode, amplifier));
 
         if (this.effect.dissonance > 0) {
-            var dOsc1 = this.createOscillator(this.audioContext,
+            let dOsc1 = this.createOscillator(this.audioContext,
                 "sawtooth",
                 this.effect.frequencyValue + this.effect.dissonance);
-            var amplifier1: Amplifier = new Amplifier(actx, dOsc1, this.ampSettings);
+            let amplifier1: Amplifier = new Amplifier(actx, dOsc1, this.ampSettings);
             oscillators.push(new ControllerNode(dOsc1, amplifier1));
                 
-            var dOsc2 = this.createOscillator(this.audioContext,
+            let dOsc2 = this.createOscillator(this.audioContext,
                 "sawtooth",
                 this.effect.frequencyValue - this.effect.dissonance);
-            var amplifier2: Amplifier = new Amplifier(actx, dOsc2, this.ampSettings);
+            let amplifier2: Amplifier = new Amplifier(actx, dOsc2, this.ampSettings);
             oscillators.push(new ControllerNode(dOsc2, amplifier2));
                  
         }
@@ -63,7 +63,7 @@ export class FXObject implements IAudioObject {
     }
 
     private playOscillator(node: OscillatorNode, amplifier: Amplifier, wait: number, duration: number, volumeValue: number, attack: number, decay: number, pitchBendAmount: number, pitchDown: boolean) {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         amplifier.reset();
         if (pitchBendAmount > 0) this.pitchBend(node, pitchDown, wait, pitchBendAmount, attack, decay);
 
@@ -82,8 +82,9 @@ export class FXObject implements IAudioObject {
     private createOscillator(actx: AudioContext,
         type: OscillatorType,
         frequencyValue: number): OscillatorNode {
+            // toDO fix var
         var actx = this.audioContext;
-        var oscillator: OscillatorNode = actx.createOscillator();
+        let oscillator: OscillatorNode = actx.createOscillator();
         oscillator.type = type;
         oscillator.frequency.value = frequencyValue;
         return oscillator;
@@ -91,12 +92,12 @@ export class FXObject implements IAudioObject {
 
     ////The `pitchBend` function
     private pitchBend(oscillatorNode: OscillatorNode, pitchUp: boolean, wait: number, pitchBendAmount: number, attack: number, decay: number) {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         //If `reverse` is true, make the note drop in frequency. Useful for
         //shooting sounds
 
         //Get the frequency of the current oscillator
-        var frequency = oscillatorNode.frequency.value;
+        let frequency = oscillatorNode.frequency.value;
 
         //If `pitchUp` is false, make the sound drop in pitch
         if (!pitchUp) {

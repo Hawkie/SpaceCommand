@@ -7,7 +7,7 @@ import { IParticle } from "./IParticle";
 
 // creates a constantly moving particle with rectangle shape
 export function createParticleObject(p: IParticle): SingleGameObject {
-    var mover: IActor = new MoveConstVelocity(() => {
+    let mover: IActor = new MoveConstVelocity(() => {
         return {
             Vx: p.Vx,
             Vy: p.Vy,
@@ -16,7 +16,7 @@ export function createParticleObject(p: IParticle): SingleGameObject {
         p.x += out.dx;
         p.y += out.dy;
     });
-    var view: IView = new RectangleView(() => {
+    let view: IView = new RectangleView(() => {
         return {
             x: p.x,
             y: p.y,
@@ -24,6 +24,6 @@ export function createParticleObject(p: IParticle): SingleGameObject {
             height: p.size,
         };
     });
-    var newParticle: SingleGameObject = new SingleGameObject([mover], [view]);
+    let newParticle: SingleGameObject = new SingleGameObject([mover], [view]);
     return newParticle;
 }

@@ -38,8 +38,8 @@ export class CompositeAccelerator implements IActor {
     }
 
     update(timeModifer: number): void {
-        var rIn: IRodInputs = this.getInputs();
-        var rOut: IRodOutputs = this.applyRod(timeModifer, rIn);
+        let rIn: IRodInputs = this.getInputs();
+        let rOut: IRodOutputs = this.applyRod(timeModifer, rIn);
         this.setOutputs(rOut);
     }
 
@@ -50,22 +50,22 @@ export class CompositeAccelerator implements IActor {
     applyRod(timeModifer: number, rIn: IRodInputs): IRodOutputs  {
 
         // work out angle from ship to ball
-        // var x = this.toL.location.x - this.fromL.location.x;
-        // var y = this.toL.location.y - this.fromL.location.y;
-        var x: number = rIn.xTo - rIn.xFrom;
-        var y: number = rIn.yTo - rIn.yFrom;
+        // let x = this.toL.location.x - this.fromL.location.x;
+        // let y = this.toL.location.y - this.fromL.location.y;
+        let x: number = rIn.xTo - rIn.xFrom;
+        let y: number = rIn.yTo - rIn.yFrom;
         // invert y because of screen axis.
 
         // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
         // this produces correct angle after we have inverted y axis (as per screen resolutions)
-        // var vecBallToShip = Transforms.CartesianToVector(-x, y);
-        var bar: Vector = Transforms.CartesianToVector(x, -y);
-        var barAngleRadians: number = bar.angle / 180 * Math.PI;
-        var Bsin: number = Math.sin(barAngleRadians); // sin 0 = 0
-        var Bcos: number = Math.cos(barAngleRadians); // cos 0 = 1
-        var totalMass: number = (rIn.massFrom + rIn.massTo);
+        // let vecBallToShip = Transforms.CartesianToVector(-x, y);
+        let bar: Vector = Transforms.CartesianToVector(x, -y);
+        let barAngleRadians: number = bar.angle / 180 * Math.PI;
+        let Bsin: number = Math.sin(barAngleRadians); // sin 0 = 0
+        let Bcos: number = Math.cos(barAngleRadians); // cos 0 = 1
+        let totalMass: number = (rIn.massFrom + rIn.massTo);
 
-        var out: IRodOutputs = {
+        let out: IRodOutputs = {
                 dxFrom: 0,
                 dyFrom: 0,
                 dVxFrom: 0,
@@ -78,7 +78,7 @@ export class CompositeAccelerator implements IActor {
         // perp to bar acts on own mass
         rIn.forces.forEach((f) => {
             // parallel cos x cos, y cos
-            var diffRadians: number = barAngleRadians - f.angle / 180 * Math.PI; // 0, 0 = 0
+            let diffRadians: number = barAngleRadians - f.angle / 180 * Math.PI; // 0, 0 = 0
 
             // cos 0 = 1, cos 180 = -1, cos 90 = 0
             // sin 180 = 0, sin 90 = 1
@@ -87,14 +87,14 @@ export class CompositeAccelerator implements IActor {
 // input forces translated to tangental and centripetal of ball and ship angle.
 
 // acceleration centipetal(Ac) and tangental(At)
-            // var forceV = Transforms.VectorToAxis(f.angle, f.length, v.angle);
-            var Dsin: number = Math.sin(diffRadians);
-            var Dcos: number = Math.cos(diffRadians);
-            var radForceAngle: number = f.angle / 180 * Math.PI;
+            // let forceV = Transforms.VectorToAxis(f.angle, f.length, v.angle);
+            let Dsin: number = Math.sin(diffRadians);
+            let Dcos: number = Math.cos(diffRadians);
+            let radForceAngle: number = f.angle / 180 * Math.PI;
 
 // thrust Forces in alignment with centripetal (Fc) applied to ball and ship. = (*m / m)
-            var Ac: number = Dcos * f.length / totalMass;
-            var Vc: number = Ac * timeModifer;
+            let Ac: number = Dcos * f.length / totalMass;
+            let Vc: number = Ac * timeModifer;
 
             // changes to Vel in direction of rod
         //     this.fromM.velX += Bsin * Vc;
@@ -105,7 +105,7 @@ export class CompositeAccelerator implements IActor {
                 out.dVyFrom -= Bcos * Vc;
 
 // tangental forces (Ft) applied to angular Force (Av) only.
-            var Ft: number = Dsin * f.length;
+            let Ft: number = Dsin * f.length;
             this.angularForce += Ft;
 
 // convert centripetal velocities to centripetal forces for circular motions.
@@ -113,21 +113,21 @@ export class CompositeAccelerator implements IActor {
         });
 
 // tangental acceleration on ship (ASt)
-        var ASt: number = this.angularForce / rIn.massFrom;
-        var VSt: number = ASt * timeModifer;
+        let ASt: number = this.angularForce / rIn.massFrom;
+        let VSt: number = ASt * timeModifer;
         // vel on ship due to angular vel
-        var VSx: number = 0;
-        var VSy: number = 0;
+        let VSx: number = 0;
+        let VSy: number = 0;
         VSx -= Bcos * VSt;
         VSy += Bsin * VSt;
 
         // vel on ship due to centipetal
-        var cmShipRadius: number = this.barLength * (totalMass - rIn.massFrom) / totalMass;
+        let cmShipRadius: number = this.barLength * (totalMass - rIn.massFrom) / totalMass;
 
         // centripetal Force(FSc) = m * Av^2 / r
-        var FSc: number = rIn.massFrom * Math.pow(VSt, 2)  / cmShipRadius;
-        var ASc: number = (FSc / rIn.massFrom);
-        var VSc: number = ASc * timeModifer;
+        let FSc: number = rIn.massFrom * Math.pow(VSt, 2)  / cmShipRadius;
+        let ASc: number = (FSc / rIn.massFrom);
+        let VSc: number = ASc * timeModifer;
         VSx += Bsin * VSc;
         VSy -= Bcos * VSc;
 
@@ -139,14 +139,14 @@ export class CompositeAccelerator implements IActor {
         out.dyFrom -= VSy * timeModifer;
 
 // change tangental distance of ship
-        var dsXst: number = VSt * timeModifer;
+        let dsXst: number = VSt * timeModifer;
 
 // using sin
-        var da: number = Math.asin((dsXst/2)/cmShipRadius)*2;
+        let da: number = Math.asin((dsXst/2)/cmShipRadius)*2;
         barAngleRadians += da;
 
-        var dx: number = Math.sin(barAngleRadians)* this.barLength;
-        var dy: number = Math.cos(barAngleRadians)* this.barLength;
+        let dx: number = Math.sin(barAngleRadians)* this.barLength;
+        let dy: number = Math.cos(barAngleRadians)* this.barLength;
 
 // calc position of ball
         // this.toL.location.x = this.fromL.location.x + dx;

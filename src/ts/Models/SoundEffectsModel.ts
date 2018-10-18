@@ -49,7 +49,7 @@ export class SoundEffectsModel extends ControlPanelModel {
     sliders: Slider[];
 
     constructor() {
-        var sliders = [new Slider("frequency(Hz)", 1046, 0, 10000, 10),
+        let sliders = [new Slider("frequency(Hz)", 1046, 0, 10000, 10),
             new Slider("attack(sec)", 0, 0, 10, 0.05),
             new Slider("decay(sec)", 0.3, 0, 10, 0.05),
             new Slider("type", 3, 0, 3, 1), // "sine", "triangle", "square", "sawtooth"
@@ -71,13 +71,13 @@ export class SoundEffectsModel extends ControlPanelModel {
     }
 
     get ampSettings(): AmplifierSettings {
-        var echo = undefined;
+        let echo = undefined;
         if (this.sliders[10].enabled) {
             echo = [this.sliders[10].value,
                 this.sliders[11].value,
                 this.sliders[12].value];
         }
-        var reverb = undefined;
+        let reverb = undefined;
         if (this.sliders[13].enabled) {
             reverb = [this.sliders[13].value,
                 this.sliders[14].value,
@@ -94,7 +94,7 @@ export class SoundEffectsModel extends ControlPanelModel {
     }
 
     get sfxData(): SoundEffectData {
-        var sfxData = new SoundEffectData();
+        let sfxData = new SoundEffectData();
         sfxData.frequencyValue = this.sliders[0].value;
         sfxData.attack = this.sliders[1].value;
         sfxData.decay = this.sliders[2].value;

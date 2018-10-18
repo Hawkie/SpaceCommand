@@ -15,18 +15,18 @@ export class Amplifier {
     private gainNode: GainNode;
 
     constructor(private audioContext: AudioContext, source: AudioNode, private settings: AmplifierSettings) {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         this.gainNode = this.audioContext.createGain();
         this.gainNode.gain.value = settings.volumeValue;
         source.connect(this.gainNode);
 
-        var panNode: AudioNode = this.createPanNode(actx, settings.panValue);
+        let panNode: AudioNode = this.createPanNode(actx, settings.panValue);
         panNode.connect(actx.destination);
         this.gainNode.connect(panNode);
-        var endNode: AudioNode = panNode;
+        let endNode: AudioNode = panNode;
 
         if (settings.echo !== undefined) {
-            var echoNode = this.createEcho(settings.echo);
+            let echoNode = this.createEcho(settings.echo);
             this.gainNode.connect(echoNode);
             echoNode.connect(endNode);
         }
@@ -37,7 +37,7 @@ export class Amplifier {
     }
 
     reset() {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         if (this.settings.attack > 0) this.fadeIn(this.gainNode, this.settings.wait, this.settings.volumeValue, this.settings.attack);
         if (this.settings.decay > 0) this.fadeOut(this.gainNode, this.settings.volumeValue, this.settings.attack, this.settings.wait, this.settings.decay);
     }
@@ -45,7 +45,7 @@ export class Amplifier {
 
     createPanNode(actx:AudioContext, panValue:number): AudioNode {
         // Pan
-        var stereoPan: StereoPannerNode,
+        let stereoPan: StereoPannerNode,
             Panner: PannerNode,
             pan: any;
         if (!actx.createStereoPanner) {
@@ -63,17 +63,17 @@ export class Amplifier {
     }
 
     addReverb(startNode: AudioNode, reverb: number[], reverse: boolean, pan:AudioNode) {
-        var actx = this.audioContext;
-        var convolver = actx.createConvolver();
+        let actx = this.audioContext;
+        let convolver = actx.createConvolver();
         convolver.buffer = this.impulseResponse(reverb[0], reverb[1], reverse, actx);
         startNode.connect(convolver);
         convolver.connect(pan);
     }
 
     createEcho(echo: number[]) : AudioNode {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         //Create the nodes
-        var feedback = actx.createGain(),
+        let feedback = actx.createGain(),
             delay = actx.createDelay(),
             filter = actx.createBiquadFilter();
 
@@ -97,7 +97,7 @@ export class Amplifier {
 
     //The `fadeIn` function
     fadeIn(volumeNode: GainNode, wait: number, volumeValue: number, attack: number) {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         //Set the volume to 0 so that you can fade
         //in from silence
         volumeNode.gain.value = 0;
@@ -112,7 +112,7 @@ export class Amplifier {
 
     ////The `fadeOut` function
     fadeOut(volumeNode: GainNode, volumeValue: number, attack: number, wait: number, decay:number) {
-        var actx = this.audioContext;
+        let actx = this.audioContext;
         volumeNode.gain.linearRampToValueAtTime(
             volumeValue, actx.currentTime + attack + wait
         );
@@ -135,22 +135,22 @@ export class Amplifier {
 
         //The length of the buffer.
         // TODO check you can do this with audio buffered data?!
-        var length = actx.sampleRate * duration;
+        let length = actx.sampleRate * duration;
 
         //Create an audio buffer (an empty sound container) to store the reverb effect.
-        var impulse = actx.createBuffer(2, length, actx.sampleRate);
+        let impulse = actx.createBuffer(2, length, actx.sampleRate);
 
         //Use `getChannelData` to initialize empty arrays to store sound data for
         //the left and right channels.
-        var left = impulse.getChannelData(0),
+        let left = impulse.getChannelData(0),
             right = impulse.getChannelData(1);
 
         //Loop through each sample-frame and fill the channel
         //data with random noise.
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
 
             //Apply the reverse effect, if `reverse` is `true`.
-            var n;
+            let n;
             if (reverse) {
                 n = length - i;
             } else {
@@ -200,21 +200,21 @@ export class Amplifier {
 
 //    AudioContext.prototype.internal_createGain = AudioContext.prototype.createGain;
 //    AudioContext.prototype.createGain = function () {
-//        var node = this.internal_createGain();
+//        let node = this.internal_createGain();
 //        fixSetTarget(node.gain);
 //        return node;
 //    };
 
 //    AudioContext.prototype.internal_createDelay = AudioContext.prototype.createDelay;
 //    AudioContext.prototype.createDelay = function (maxDelayTime) {
-//        var node = maxDelayTime ? this.internal_createDelay(maxDelayTime) : this.internal_createDelay();
+//        let node = maxDelayTime ? this.internal_createDelay(maxDelayTime) : this.internal_createDelay();
 //        fixSetTarget(node.delayTime);
 //        return node;
 //    };
 
 //    AudioContext.prototype.internal_createBufferSource = AudioContext.prototype.createBufferSource;
 //    AudioContext.prototype.createBufferSource = function () {
-//        var node = this.internal_createBufferSource();
+//        let node = this.internal_createBufferSource();
 //        if (!node.start) {
 //            node.start = function (when, offset, duration) {
 //                if (offset || duration)
@@ -247,7 +247,7 @@ export class Amplifier {
 
 //    AudioContext.prototype.internal_createDynamicsCompressor = AudioContext.prototype.createDynamicsCompressor;
 //    AudioContext.prototype.createDynamicsCompressor = function () {
-//        var node = this.internal_createDynamicsCompressor();
+//        let node = this.internal_createDynamicsCompressor();
 //        fixSetTarget(node.threshold);
 //        fixSetTarget(node.knee);
 //        fixSetTarget(node.ratio);
@@ -259,7 +259,7 @@ export class Amplifier {
 
 //    AudioContext.prototype.internal_createBiquadFilter = AudioContext.prototype.createBiquadFilter;
 //    AudioContext.prototype.createBiquadFilter = function () {
-//        var node = this.internal_createBiquadFilter();
+//        let node = this.internal_createBiquadFilter();
 //        fixSetTarget(node.frequency);
 //        fixSetTarget(node.detune);
 //        fixSetTarget(node.Q);
@@ -270,7 +270,7 @@ export class Amplifier {
 //    if (AudioContext.prototype.hasOwnProperty('createOscillator')) {
 //        AudioContext.prototype.internal_createOscillator = AudioContext.prototype.createOscillator;
 //        AudioContext.prototype.createOscillator = function () {
-//            var node = this.internal_createOscillator();
+//            let node = this.internal_createOscillator();
 //            if (!node.start) {
 //                node.start = function (when) {
 //                    this.noteOn(when || 0);

@@ -63,14 +63,14 @@ export class BufferObject implements IAudioObject {
 
     play() {
         //Create a sound node.
-        var actx = this.actx;
-        var sourceNode: AudioBufferSourceNode = actx.createBufferSource();
+        let actx = this.actx;
+        let sourceNode: AudioBufferSourceNode = actx.createBufferSource();
 
         //Set the sound node's buffer property to the loaded sound.
         sourceNode.buffer = this.buffer;
         sourceNode.loop = this.loop;
         if (this.settings !== undefined) {
-            var amplifier = new Amplifier(actx, sourceNode, this.settings);
+            let amplifier = new Amplifier(actx, sourceNode, this.settings);
             amplifier.reset();
         } else {
             sourceNode.connect(actx.destination);

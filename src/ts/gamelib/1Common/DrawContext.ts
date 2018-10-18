@@ -7,7 +7,7 @@ export class DrawContext {
     }
 
     zoom(scaleX:number, scaleY:number): void {
-        var ctx: CanvasRenderingContext2D = this.ctx;
+        let ctx: CanvasRenderingContext2D = this.ctx;
         ctx.scale(scaleX, scaleY);
     }
 
@@ -25,7 +25,7 @@ export class DrawContext {
     }
 
     fill(fillStyle: any = "#111"): void {
-        var ctx: CanvasRenderingContext2D = this.ctx;
+        let ctx: CanvasRenderingContext2D = this.ctx;
         ctx.save();
         ctx.fillStyle = fillStyle;
         ctx.fill();
@@ -33,7 +33,7 @@ export class DrawContext {
     }
 
     line(xFrom: number, yFrom: number, xTo: number, yTo: number): void {
-        var ctx: CanvasRenderingContext2D = this.ctx;
+        let ctx: CanvasRenderingContext2D = this.ctx;
         ctx.beginPath();
         ctx.moveTo(xFrom, yFrom);
         ctx.lineTo(xTo, yTo);
@@ -42,13 +42,13 @@ export class DrawContext {
     }
 
     drawP(x: number, y:number, points: Coordinate[]): void {
-        var ctx: CanvasRenderingContext2D = this.ctx;
-        var p:ICoordinate[] = points;
+        let ctx: CanvasRenderingContext2D = this.ctx;
+        let p:ICoordinate[] = points;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
             ctx.moveTo(points[0].x + x, points[0].y + y);
-            for (var i:number = 1, len:number = p.length; i < len; i ++) {
+            for (let i:number = 1, len:number = p.length; i < len; i ++) {
                 ctx.lineTo(p[i].x + x, p[i].y + y);
             }
             ctx.closePath();
@@ -70,7 +70,7 @@ export class DrawContext {
 
     creatGradient(x0: number, y0: number, x1:number, y1:number): CanvasGradient {
         return this.ctx.createLinearGradient(x0, y0, x1, y1);
-        // var grd = ctx.createLinearGradient(0, 0, 200, 200);
+        // let grd = ctx.createLinearGradient(0, 0, 200, 200);
         // grd.addColorStop(0, "black");
         // grd.addColorStop(0.1, "#5f3");
         // grd.addColorStop(1, "#f45");
@@ -115,11 +115,11 @@ export class DrawContext {
     }
 
     clear(): void {
-        var ctx: CanvasRenderingContext2D = this.ctx;
-        var l: number = ctx.canvas.clientLeft;
-        var t: number = ctx.canvas.clientTop;
-        var w: number = ctx.canvas.clientWidth;
-        var h: number = ctx.canvas.clientHeight;
+        let ctx: CanvasRenderingContext2D = this.ctx;
+        let l: number = ctx.canvas.clientLeft;
+        let t: number = ctx.canvas.clientTop;
+        let w: number = ctx.canvas.clientWidth;
+        let h: number = ctx.canvas.clientHeight;
         ctx.clearRect(l, t, w, h);
     }
 }

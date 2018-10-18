@@ -19,10 +19,10 @@ import { Vector } from "../../../gamelib/DataTypes/Vector";
 export function createShipObject(getStateConfig: () => IGameStateConfig,
     getControls: () => IControls,
     getShip: () => IShip): SingleGameObject {
-    var stateConfig: IGameStateConfig = getStateConfig();
-    var ship: IShip = getShip();
-    var controls: IControls = getControls();
-    var mover: IActor = new MoveConstVelocity(() => {
+    let stateConfig: IGameStateConfig = getStateConfig();
+    let ship: IShip = getShip();
+    let controls: IControls = getControls();
+    let mover: IActor = new MoveConstVelocity(() => {
         return {
             Vx: ship.Vx,
             Vy: ship.Vy,
@@ -32,7 +32,7 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
         ship.y += out.dy;
     });
     // adding ship rotator
-    var rotator: IActor = new PolyRotator(() => {
+    let rotator: IActor = new PolyRotator(() => {
         return {
             angle: ship.angle,
             shape: ship.shape,
@@ -41,7 +41,7 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
         ship.shape = out;
     });
 
-    var shipView: IView = new PolyView(() => {
+    let shipView: IView = new PolyView(() => {
         return {
             x: ship.x,
             y: ship.y,
@@ -49,8 +49,8 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
         };
     });
 
-    var shipObj: SingleGameObject = new SingleGameObject([mover, rotator], [shipView]);
-    var shipController: IActor = createShipController(() => {
+    let shipObj: SingleGameObject = new SingleGameObject([mover, rotator], [shipView]);
+    let shipController: IActor = createShipController(() => {
         return {
             left: controls.left,
             right: controls.right,
@@ -58,21 +58,21 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
             ship: ship,
         };
     });
-    var explosionController: IActor = createExplosionController(() => {
+    let explosionController: IActor = createExplosionController(() => {
         return {
             ship: ship,
         };
     });
     shipObj.actors.push(shipController, explosionController);
     if (stateConfig.screenWrap) {
-        var wrapx: IActor = createWrapActor(() => {
+        let wrapx: IActor = createWrapActor(() => {
             return {
                 value: ship.x,
                 lowLimit: 0,
                 upLimit: 512,
             };
         }, (a) => ship.x = a);
-        var wrapy: IActor = createWrapActor(() => {
+        let wrapy: IActor = createWrapActor(() => {
             return {
                 value: ship.y,
                 lowLimit: 0,
@@ -84,7 +84,7 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
 
     // add Gravity
     if (ship.gravityStrength !== 0) {
-        var getAcceleratorProps: () => IAcceleratorInputs = () => {
+        let getAcceleratorProps: () => IAcceleratorInputs = () => {
             return {
                 x: ship.x,
                 y: ship.y,
@@ -94,7 +94,7 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
                 mass: ship.mass
             };
         };
-        var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
+        let gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
             ship.Vx += out.dVx;
             ship.Vy += out.dVy;
         });
@@ -104,9 +104,9 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
 }
 
 export function createShipAccelerator(getShip: () => IShip): SingleGameObject {
-    var ship: IShip = getShip();
+    let ship: IShip = getShip();
 
-    var thrust: Accelerator = new Accelerator(() => {
+    let thrust: Accelerator = new Accelerator(() => {
         return {
             x: ship.x,
             y: ship.y,

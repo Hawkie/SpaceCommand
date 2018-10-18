@@ -12,7 +12,7 @@ export class LineView implements IView {
     constructor(private getIn: () => ILineView) {
     }
     display(drawContext: DrawContext): void {
-        var line: ILineView = this.getIn();
+        let line: ILineView = this.getIn();
         drawContext.line(line.xFrom, line.yFrom, line.xTo, line.yTo);
     }
 }

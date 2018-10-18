@@ -13,17 +13,17 @@ import { createBulletObject } from "./createBulletObject";
 export function createWeaponObject(getControls: () => IControls,
   getShip: () => IShip,
   getWeapon: () => IWeapon): MultiGameObject<SingleGameObject> {
-    var weapon: IWeapon = getWeapon();
+    let weapon: IWeapon = getWeapon();
     // todo: change this to weapon (not getWeapon)
     let bulletObjs: SingleGameObject[] = weapon.bullets.map((b) => createBulletObject(() => b));
-    var weaponObj: MultiGameObject<SingleGameObject> = new MultiGameObject([], [], () => bulletObjs);
-    var age5: AgePred<IParticle> = new AgePred(() => weapon.bulletLifetime, (p: IParticle) => p.born);
-    var remover: ParticleRemover = new ParticleRemover(() => {
+    let weaponObj: MultiGameObject<SingleGameObject> = new MultiGameObject([], [], () => bulletObjs);
+    let age5: AgePred<IParticle> = new AgePred(() => weapon.bulletLifetime, (p: IParticle) => p.born);
+    let remover: ParticleRemover = new ParticleRemover(() => {
         ParticleRemover.remove(() => weapon.bullets, weaponObj.getComponents, [age5]);
     });
     // add the generator to the field object
     weaponObj.actors.push(remover);
-    var weaponController: IActor = createWeaponController(() => {
+    let weaponController: IActor = createWeaponController(() => {
         return {
             fire: getControls().fire,
             ship: getShip(),
@@ -31,7 +31,7 @@ export function createWeaponObject(getControls: () => IControls,
         };
     }, (newParticle: IParticle) => {
         getShip().weapon1.bullets.push(newParticle);
-        var bulletObj: SingleGameObject = createBulletObject(() => newParticle);
+        let bulletObj: SingleGameObject = createBulletObject(() => newParticle);
         weaponObj.getComponents().push(bulletObj);
     });
     weaponObj.actors.push(weaponController);

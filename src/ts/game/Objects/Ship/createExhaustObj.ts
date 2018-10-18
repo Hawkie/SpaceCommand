@@ -7,9 +7,9 @@ import { Sound } from "ts/gamelib/Actors/Sound";
 import { Transforms } from "ts/gamelib/Physics/Transforms";
 import { IShip } from "./IShip";
 export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGameObject> {
-    var ship: IShip = getShip();
-    var exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField, () => {
-        var velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
+    let ship: IShip = getShip();
+    let exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField, () => {
+        let velocity: Coordinate = Transforms.VectorToCartesian(ship.thrust.angle + Transforms.random(-5, 5) + 180,
         ship.thrust.length * 5 + Transforms.random(-5, 5));
         return {
             on: ship.exhaust.exhaustParticleField.on,
@@ -29,7 +29,7 @@ export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGa
             vYHighSpread: 0,
         };
     });
-    var exhaustSound: IActor = new Sound(ship.exhaust.soundFilename, false, true, () => {
+    let exhaustSound: IActor = new Sound(ship.exhaust.soundFilename, false, true, () => {
         return {
             play: ship.exhaust.exhaustParticleField.on,
         };

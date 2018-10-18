@@ -16,7 +16,7 @@ export class MarkovChains {
     }
 
     addWordToTable(word : string): void {
-        var previousLetter:string = word.charAt(0);
+        let previousLetter:string = word.charAt(0);
         word.substr(1).split("").forEach(letter => {
             console.log(previousLetter + " : " + letter);
 

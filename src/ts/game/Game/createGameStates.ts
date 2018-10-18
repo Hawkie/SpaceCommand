@@ -9,13 +9,13 @@ import { createMenuState } from "../States/MenuState/MenuGameState";
 // import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
 
 export function createGameStates(assets: Assets, actx: AudioContext): IGameState[] {
-    var menuState: IGameState = createMenuState(assets, actx);
-    var asteroidState: IGameState = createGameState(assets, actx);
-    // var landingState = LandingState.create(assets, actx);
-    // var soundDesigner = SoundDesignerState.create();
-    var landExplorer: IGameState = createLandExplorerGameState(assets, actx);
-    // var duel = DuelState.createState(assets, actx);
-    // var states = [menuState, asteroidState, landingState, landExplorer, duel];
-    var states: IGameState[] = [menuState, asteroidState, landExplorer];
+    let menuState: IGameState = createMenuState(assets, actx);
+    let asteroidState: IGameState = createGameState(assets, actx);
+    // let landingState = LandingState.create(assets, actx);
+    // let soundDesigner = SoundDesignerState.create();
+    let landExplorer: IGameState = createLandExplorerGameState(assets, actx);
+    // let duel = DuelState.createState(assets, actx);
+    // let states = [menuState, asteroidState, landingState, landExplorer, duel];
+    let states: IGameState[] = [menuState, asteroidState, landExplorer];
     return states;
 }

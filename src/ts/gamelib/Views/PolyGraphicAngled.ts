@@ -13,10 +13,10 @@ export class PolyGraphicAngled implements IView {
         this.graphic = new Graphic(getInputs().graphic);
     }
     display(drawContext: DrawContext): void {
-        var inputs: IPolyGraphicAngledView = this.getInputs();
+        let inputs: IPolyGraphicAngledView = this.getInputs();
         if (this.graphic.loaded) {
-            var x: number = inputs.x + inputs.shape.offset.x;
-            var y: number = inputs.y + inputs.shape.offset.y;
+            let x: number = inputs.x + inputs.shape.offset.x;
+            let y: number = inputs.y + inputs.shape.offset.y;
             drawContext.drawP(x, y, inputs.shape.points);
             drawContext.save();
             drawContext.translate(inputs.x, inputs.y);

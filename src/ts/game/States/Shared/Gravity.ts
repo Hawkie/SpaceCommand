@@ -12,9 +12,9 @@ export interface IGravity {
 }
 // use Strategy pattern, pass in a set function of the target object
 export function addGravity(getModel: ()=>IGravity, setOut: (out: IAcceleratorOutputs) => void, obj: SingleGameObject): void {
-    var model: IGravity = getModel();
+    let model: IGravity = getModel();
     if (model.gravityStrength !== 0) {
-        var getAcceleratorProps: () => IAcceleratorInputs = () => {
+        let getAcceleratorProps: () => IAcceleratorInputs = () => {
             return {
                 x: model.x,
                 y: model.y,
@@ -24,7 +24,7 @@ export function addGravity(getModel: ()=>IGravity, setOut: (out: IAcceleratorOut
                 mass: model.mass
             };
         };
-        var gravity: Accelerator = new Accelerator(getAcceleratorProps, setOut);
+        let gravity: Accelerator = new Accelerator(getAcceleratorProps, setOut);
         obj.actors.push(gravity);
     }
 }

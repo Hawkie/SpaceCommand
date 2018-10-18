@@ -13,15 +13,15 @@ import { IParticle } from "./IParticle";
 
 // creates a particle field of game objects
 export function createParticleField(particleField: IParticleField, fieldInputs: () => IFieldInputs): MultiGameObject<SingleGameObject> {
-    var fieldArray: SingleGameObject[] = [];
+    let fieldArray: SingleGameObject[] = [];
     // todo: change class to remove null later
-    var field: MultiGameObject<SingleGameObject> = new MultiGameObject<SingleGameObject>([], [], () => fieldArray);
-    var generator: ParticleGenerator2 = new ParticleGenerator2(fieldInputs,
+    let field: MultiGameObject<SingleGameObject> = new MultiGameObject<SingleGameObject>([], [], () => fieldArray);
+    let generator: ParticleGenerator2 = new ParticleGenerator2(fieldInputs,
         particleField.particlesPerSecond,
         particleField.maxParticlesPerSecond,
         (now: number) => {
-            var source: IFieldInputs = fieldInputs();
-            var p: IParticle = {
+            let source: IFieldInputs = fieldInputs();
+            let p: IParticle = {
                 x: source.x + source.xOffset + Transforms.random(source.xLowSpread, source.xHighSpread),
                 y: source.y + source.yOffset + Transforms.random(source.yLowSpread, source.yHighSpread),
                 Vx: source.Vx + Transforms.random(source.vXLowSpread, source.vXHighSpread),
@@ -29,9 +29,9 @@ export function createParticleField(particleField: IParticleField, fieldInputs: 
                 born: now,
                 size: particleField.particleSize,
         };
-        var newParticle: SingleGameObject = createParticleObject(p);
+        let newParticle: SingleGameObject = createParticleObject(p);
         if (particleField.gravityStrength !== 0) {
-            var getAcceleratorProps: () => IAcceleratorInputs = () => {
+            let getAcceleratorProps: () => IAcceleratorInputs = () => {
                 return {
                     x: p.x,
                     y: p.y,
@@ -41,7 +41,7 @@ export function createParticleField(particleField: IParticleField, fieldInputs: 
                     mass: 1,
                 };
             };
-            var gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
+            let gravity: Accelerator = new Accelerator(getAcceleratorProps, (out: IAcceleratorOutputs) => {
                 p.Vx += out.dVx;
                 p.Vy += out.dVy;
             });
@@ -50,8 +50,8 @@ export function createParticleField(particleField: IParticleField, fieldInputs: 
         particleField.particles.push(p);
         field.getComponents().push(newParticle);
     });
-    var age1: AgePred<IParticle> = new AgePred(() => particleField.particleLifetime, (p: IParticle) => p.born);
-    var remover: ParticleRemover = new ParticleRemover(() => {
+    let age1: AgePred<IParticle> = new AgePred(() => particleField.particleLifetime, (p: IParticle) => p.born);
+    let remover: ParticleRemover = new ParticleRemover(() => {
         ParticleRemover.remove(() => particleField.particles, field.getComponents, [age1]);
     });
     // add the generator to the field object

@@ -13,7 +13,7 @@ export class SpriteView implements IView {
     constructor(private getInputs: ()=>ISpriteView) { }
 
     display(drawContext: DrawContext): void {
-        var inputs: ISpriteView = this.getInputs();
+        let inputs: ISpriteView = this.getInputs();
         if (inputs.sprite.loaded) {
             drawContext.drawSprite(inputs.sprite.img,
                 inputs.sprite.frame.x,

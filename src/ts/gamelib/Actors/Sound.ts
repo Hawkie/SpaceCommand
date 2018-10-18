@@ -17,11 +17,11 @@ export class Sound implements IActor {
     }
 
     update(timeModifier: number): void {
-        var inputs:ISoundInputs = this.getInputs();
+        let inputs:ISoundInputs = this.getInputs();
         if (this.multiPlay) {
             if (inputs.play) {
                 if (this.reset === true) {
-                    var newAudio: IAudioObject = new AudioObject(this.filename, this.loop);
+                    let newAudio: IAudioObject = new AudioObject(this.filename, this.loop);
                     newAudio.play();
                     this.reset = false;
                     this.whenPlayed();

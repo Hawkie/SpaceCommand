@@ -17,7 +17,7 @@ test("accelerateWithTwoForces", () => {
     const MASS: number = 10;
     const TIMEMODIFIER: number = 1000;
 
-    var result: IAcceleratorOutputs = accelerate(TIMEMODIFIER, FORCES, MASS);
+    let result: IAcceleratorOutputs = accelerate(TIMEMODIFIER, FORCES, MASS);
     expect(result.dVx).toBeCloseTo(10/MASS*TIMEMODIFIER);
     expect(result.dVy).toBeCloseTo(10/MASS*TIMEMODIFIER);
 });

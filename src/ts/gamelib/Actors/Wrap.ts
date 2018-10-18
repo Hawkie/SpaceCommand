@@ -13,6 +13,6 @@ export function Wrap(g:IWrap): number {
     }
 
 export function createWrapActor(g:()=>IWrap, f:(newV:number)=>void): IActor {
-    var a:IActor = new Actor2(g, Wrap, f);
+    let a:IActor = new Actor2(g, Wrap, f);
     return a;
 }

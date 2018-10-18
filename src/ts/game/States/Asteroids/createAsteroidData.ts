@@ -95,24 +95,24 @@ export interface IBall {
 
 
 export function createAsteroidData(): IAsteroidData {
-    var starField: IParticleField = createStarFieldData();
-    var ship: IShip = createShip(256, 240, 0);
-    var ball: IBall = createBallData(256, 280);
-    var coin: ICoin = createCoinData(new Coordinate(300, 400));
-    var asteroids: IAsteroid[] = AsteroidModels.createAsteroidsData(3);
-    var asteroidState: IAsteroids = {
+    let starField: IParticleField = createStarFieldData();
+    let ship: IShip = createShip(256, 240, 0);
+    let ball: IBall = createBallData(256, 280);
+    let coin: ICoin = createCoinData(new Coordinate(300, 400));
+    let asteroids: IAsteroid[] = AsteroidModels.createAsteroidsData(3);
+    let asteroidState: IAsteroids = {
         asteroids: asteroids,
         playBreakSound: false,
         breakSoundFilename: "res/sound/blast.wav",
     };
-    var graphicShip: IGraphicShip = createGraphicShipData(200, 100);
-    var stateConfig: IGameStateConfig = {
+    let graphicShip: IGraphicShip = createGraphicShipData(200, 100);
+    let stateConfig: IGameStateConfig = {
         screenWrap: true,
         gravity: false,
     };
 
     // things that change
-    var stateVariables: IAsteroidData = {
+    let stateVariables: IAsteroidData = {
         stateConfig: stateConfig,
         controls: {
             left: false,
@@ -146,7 +146,7 @@ export function createStarFieldData(): IParticleField {
 }
 
 export function createGraphicShipData(x: number, y:number): IGraphicShip {
-    var gShip: IGraphicShip = {
+    let gShip: IGraphicShip = {
         x: x,
         y: y,
         Vx: 0,
@@ -160,8 +160,8 @@ export function createGraphicShipData(x: number, y:number): IGraphicShip {
 }
 
 export function createCoinData(location: Coordinate): ICoin {
-    var s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-    var coin: ICoin = {
+    let s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
+    let coin: ICoin = {
         x: location.x,
         y: location.y,
         Vx: 0,
@@ -175,7 +175,7 @@ export function createCoinData(location: Coordinate): ICoin {
 }
 
 export function createBallData(x: number, y: number): IBall {
-    var ballModel: IBall = {
+    let ballModel: IBall = {
         x: x,
         y: y,
         Vx: 0,
@@ -199,9 +199,9 @@ export class AsteroidModels {
 
 
     public static createAsteroidsData(level: number): IAsteroid[] {
-        var asteroids: IAsteroid[] = [];
-        for (var i: number = 0; i < level; i++) {
-            var a: IAsteroid = AsteroidModels.createAsteroidData(3);
+        let asteroids: IAsteroid[] = [];
+        for (let i: number = 0; i < level; i++) {
+            let a: IAsteroid = AsteroidModels.createAsteroidData(3);
             asteroids.push(a);
         }
         return asteroids;
@@ -223,12 +223,12 @@ export class AsteroidModels {
     }
 
     public static createAsteroidDataAt(x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
-        var type:number = Transforms.random(0, 4);
-        var points: number[] = AsteroidModels.as[type];
-        var coords: ICoordinate[] = Transforms.ArrayToPoints(points);
-        var scaledShape: ICoordinate[] = Transforms.Scale(coords, size, size);
-        var shape: IShape = new Shape(scaledShape);
-        var a: IAsteroid = {
+        let type:number = Transforms.random(0, 4);
+        let points: number[] = AsteroidModels.as[type];
+        let coords: ICoordinate[] = Transforms.ArrayToPoints(points);
+        let scaledShape: ICoordinate[] = Transforms.Scale(coords, size, size);
+        let shape: IShape = new Shape(scaledShape);
+        let a: IAsteroid = {
             x: x,
             y: y,
             Vx: Vx + Transforms.random(-20, 20),

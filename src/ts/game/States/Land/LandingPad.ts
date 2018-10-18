@@ -7,8 +7,8 @@ export interface ILocated {
 
 export class LandingPadModel {
     constructor(location: Coordinate) {
-        var located:ICoordinate = location;
-        var shape: IShape = new Shape([
+        let located:ICoordinate = location;
+        let shape: IShape = new Shape([
             new Coordinate(-2, 2),
             new Coordinate(-10, 2),
             new Coordinate(-7, -10),

@@ -9,12 +9,12 @@ import { createBackgroundField } from "../../Objects/Particle/createBackgroundFi
 import { IMenuData } from "./createMenuData";
 
 export function createMenuStateObjects(getData: () => IMenuData): IGameObject {
-    var data: IMenuData = getData();
-    var sound: Sound = new Sound(data.musicFilename, false, true, () => { return { play: true }; });
-    var field1: IGameObject = createBackgroundField(() => data.starField1, 16);
-    var field2: IGameObject = createBackgroundField(() => data.starField2, 32);
-    var title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
-    var gameObject: IGameObject = new MultiGameObject<SingleGameObject>([sound], [title], () => [field1, field2]);
+    let data: IMenuData = getData();
+    let sound: Sound = new Sound(data.musicFilename, false, true, () => { return { play: true }; });
+    let field1: IGameObject = createBackgroundField(() => data.starField1, 16);
+    let field2: IGameObject = createBackgroundField(() => data.starField2, 32);
+    let title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
+    let gameObject: IGameObject = new MultiGameObject<SingleGameObject>([sound], [title], () => [field1, field2]);
     let x: number = 200;
     let y: number = 100;
 

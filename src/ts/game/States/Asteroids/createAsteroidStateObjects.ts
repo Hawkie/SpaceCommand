@@ -30,20 +30,20 @@ export interface IAsteroidStateObject {
 }
 
 export function createAsteroidStateObject(getData: () => IAsteroidData): IAsteroidStateObject {
-    var data: IAsteroidData = getData();
+    let data: IAsteroidData = getData();
 
-    var starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
-    var shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);
-    var weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>data.controls,
+    let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
+    let shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);
+    let weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>data.controls,
     ()=> data.ship, () => data.ship.weapon1);
-    var exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
-    var explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
-    var ballObj: SingleGameObject = createBallObject(() => data.ball);
-    var shipBallObj: SingleGameObject = createShipBallObject(() => data.ship, () => data.ball);
-    var coinObj: SingleGameObject = createCoinObject(() => data.coin);
-    var gShipObj: SingleGameObject = createGraphicShipObject(() => data.graphicShip);
-    var asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => data.asteroids.asteroids);
-    var breakSound: IActor = new Sound(data.asteroids.breakSoundFilename, true, false, () => {
+    let exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
+    let explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
+    let ballObj: SingleGameObject = createBallObject(() => data.ball);
+    let shipBallObj: SingleGameObject = createShipBallObject(() => data.ship, () => data.ball);
+    let coinObj: SingleGameObject = createCoinObject(() => data.coin);
+    let gShipObj: SingleGameObject = createGraphicShipObject(() => data.graphicShip);
+    let asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => data.asteroids.asteroids);
+    let breakSound: IActor = new Sound(data.asteroids.breakSoundFilename, true, false, () => {
         return {
             play: data.asteroids.playBreakSound,
         };
@@ -51,12 +51,12 @@ export function createAsteroidStateObject(getData: () => IAsteroidData): IAstero
         () => data.asteroids.playBreakSound = false);
     asteroidObjs.actors.push(breakSound);
 
-    var title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
-    var score: IView = new TextView(() => "Score:", new Coordinate(400, 20), "Arial", 18);
-    var scoreDisplay: IView = new ValueView(() => data.score, new Coordinate(460, 20), "Arial", 18);
-    var angleDisplay: IView = new ValueView(() => data.ship.angle, new Coordinate(460, 40), "Arial", 18);
+    let title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
+    let score: IView = new TextView(() => "Score:", new Coordinate(400, 20), "Arial", 18);
+    let scoreDisplay: IView = new ValueView(() => data.score, new Coordinate(460, 20), "Arial", 18);
+    let angleDisplay: IView = new ValueView(() => data.ship.angle, new Coordinate(460, 40), "Arial", 18);
 
-    var aObjs: IAsteroidStateObject = {
+    let aObjs: IAsteroidStateObject = {
         shipObj: shipObj,
         weaponObj: weaponObj,
         asteroidObjs: asteroidObjs,
@@ -69,8 +69,8 @@ export function createAsteroidStateObject(getData: () => IAsteroidData): IAstero
 
 export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
     MultiGameObject<SingleGameObject> {
-    var asteroidArray: SingleGameObject[] = [];
-    var asteroidObjs: MultiGameObject<SingleGameObject> =
+    let asteroidArray: SingleGameObject[] = [];
+    let asteroidObjs: MultiGameObject<SingleGameObject> =
         new MultiGameObject<SingleGameObject>([], [], () => asteroidArray);
     getAsteroids().forEach(a => {
         asteroidObjs.getComponents().push(createAsteroidObject(() => a));

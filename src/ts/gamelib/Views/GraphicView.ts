@@ -16,7 +16,7 @@ export class GraphicView implements IView {
      }
 
     display(drawContext: DrawContext): void {
-        var inputs: IGraphicViewInputs = this.getInputs();
+        let inputs: IGraphicViewInputs = this.getInputs();
         if (this.graphic.loaded) {
             drawContext.drawImage(this.graphic.img, inputs.x, inputs.y);
         }
@@ -35,7 +35,7 @@ export class GraphicAngledView implements IView {
      }
 
     display(drawContext: DrawContext): void {
-        var inputs: IGraphicAngledViewInputs = this.getInputs();
+        let inputs: IGraphicAngledViewInputs = this.getInputs();
         if (this.graphic.loaded) {
             drawContext.save();
             drawContext.translate(inputs.x, inputs.y);

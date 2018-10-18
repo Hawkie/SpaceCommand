@@ -18,15 +18,16 @@
 //     exitState: boolean = false;
 
 //     static create(): IGameState {
-//         var text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
-//         var objects: IGameObject[] = [text];
+//         let text: IGameObject = new TextObject("SpaceCommander", new Coordinate(10, 20), "Arial", 18);
+//         let objects: IGameObject[] = [text];
 
-//         var sfxModel = new SoundEffectsModel();
-//         var controls: ControlPanel<SoundEffectsModel> = new ControlPanel<SoundEffectsModel>(sfxModel, new Coordinate(10, 50));
+//         let sfxModel = new SoundEffectsModel();
+//         let controls: ControlPanel<SoundEffectsModel> = new ControlPanel<SoundEffectsModel>(sfxModel, new Coordinate(10, 50));
 
 //         return new SoundDesignerState("Sound Designer", objects, controls);
 //     }
 
+// tslint:disable-next-line:max-line-length
 //     constructor(public name: string, private objects: IGameObject[], private controls: ControlPanel<SoundEffectsModel>, private playedSound:boolean = true) {
 //         super(name);
 //         this.lastMoved = Date.now();
@@ -44,7 +45,7 @@
 
 //     sound(actx: AudioContext) {
 //         if (!this.playedSound) {
-//             var sound: FXObject = new FXObject(actx, this.controls.model.sfxData);
+//             let sound: FXObject = new FXObject(actx, this.controls.model.sfxData);
 //             sound.play();
 //             //sctx.sound.playWithData(this.controls.model.sfxData);
 //             this.playedSound = true;
@@ -54,7 +55,7 @@
 //     tests() { }
 
 //     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number) {
-//         var now: number = Date.now();
+//         let now: number = Date.now();
 //         if ((now - this.lastMoved) > 150) {
 //             this.lastMoved = now;
 //             if (keyStateProvider.isKeyDown(Keys.UpArrow)) { this.controls.model.onPreviousSelection(); }

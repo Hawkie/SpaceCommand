@@ -5,8 +5,8 @@ import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
 
 // creates a small graphic object in the shape of a ship
 export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): SingleGameObject {
-    var graphicShip: IGraphicShip = getGraphicShip();
-    var shipView: IView = new GraphicAngledView(() => {
+    let graphicShip: IGraphicShip = getGraphicShip();
+    let shipView: IView = new GraphicAngledView(() => {
         return {
             x: graphicShip.x,
             y: graphicShip.y,
@@ -14,6 +14,6 @@ export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): Sin
             graphic: graphicShip.graphic,
         };
     });
-    var obj: SingleGameObject = new SingleGameObject([], [shipView]);
+    let obj: SingleGameObject = new SingleGameObject([], [shipView]);
     return obj;
 }

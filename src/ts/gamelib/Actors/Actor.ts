@@ -11,7 +11,7 @@ export class Actor<T> implements IActor {
     }
 
     update(timeModifier: number): void {
-        var state: T = this.getInputs();
+        let state: T = this.getInputs();
         this.set(state, timeModifier);
     }
 }

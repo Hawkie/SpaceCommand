@@ -4,7 +4,7 @@ import { IShip, IWeapon } from "../../Ship/IShip";
 export interface IExplosionControlInputs { ship: IShip;}
 
 export function createExplosionController(get: () => IExplosionControlInputs): IActor {
-    var c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {
+    let c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {
         if (inputs.ship.crashed) {
             if (!inputs.ship.explosion.exploded) {
                 inputs.ship.thrust.length = 0;

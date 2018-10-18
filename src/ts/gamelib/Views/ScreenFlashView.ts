@@ -16,7 +16,7 @@ export class ScreenFlashView implements IView {
     constructor(private getInputs: ()=> IScreenFlashInputs) {}
 
     display(drawContext: DrawContext): void {
-        var inputs: IScreenFlashInputs = this.getInputs();
+        let inputs: IScreenFlashInputs = this.getInputs();
         if (inputs.on) {
             if (inputs.value === 1) {
                 drawContext.fillRect(inputs.x,

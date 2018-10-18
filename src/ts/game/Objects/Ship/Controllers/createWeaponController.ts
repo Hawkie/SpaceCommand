@@ -13,7 +13,7 @@ export interface IWeaponControlInputs {
 // creates a controller that accepts a fire control and uses ship and weapon
 // to create bullets as a particle field
 export function createWeaponController(get: () => IWeaponControlInputs, set: (newBullet: IParticle) => void): IActor {
-    var c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {
+    let c: IActor = new Actor(get, (inputs, lastTimeModifier: number) => {
         if (!inputs.ship.crashed) {
             if (inputs.fire) {
                 // put firerate check in here
@@ -22,8 +22,8 @@ export function createWeaponController(get: () => IWeaponControlInputs, set: (ne
                 if (inputs.weapon.lastFired === undefined
                     || elapsedTimeSec >= 1 / 2) {
                     inputs.weapon.lastFired = now;
-                    var cartesian: Coordinate = Transforms.VectorToCartesian(inputs.ship.angle, inputs.weapon.bulletVelocity);
-                    var particle: IParticle = {
+                    let cartesian: Coordinate = Transforms.VectorToCartesian(inputs.ship.angle, inputs.weapon.bulletVelocity);
+                    let particle: IParticle = {
                         x: inputs.ship.x,
                         y: inputs.ship.y,
                         Vx: cartesian.x,

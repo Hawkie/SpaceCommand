@@ -10,7 +10,7 @@ import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
 export class ControlPanel<TModel extends IControlPanelModel> extends SingleGameObject {
     constructor(private model: ()=>TModel, location: ICoordinate) {
         super([], []);
-        var view: ControlPanelView = new ControlPanelView(model, location, 200);
+        let view: ControlPanelView = new ControlPanelView(model, location, 200);
         this.views.push(view);
 
     }

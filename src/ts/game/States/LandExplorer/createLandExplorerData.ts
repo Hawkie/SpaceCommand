@@ -16,24 +16,24 @@ export interface ILandExplorerData {
 }
 
 export function createLandExplorerData(): ILandExplorerData {
-    var ship: IShip = createShip(256, 240, 10);
-    var surfaceGenerator: ISurfaceGeneration = {
+    let ship: IShip = createShip(256, 240, 10);
+    let surfaceGenerator: ISurfaceGeneration = {
         resolution: 5,
         upper: 5,
         lower: -5,
     };
-    var points: ICoordinate[] = initSurface(520, ()=>surfaceGenerator);
-    var surface: ISurface = {
+    let points: ICoordinate[] = initSurface(520, ()=>surfaceGenerator);
+    let surface: ISurface = {
         addedLeft: 0,
         points: points,
     };
 
-    var stateConfig: IGameStateConfig = {
+    let stateConfig: IGameStateConfig = {
         screenWrap: false,
         gravity: true,
     };
 
-    var starField: IParticleField = createStarFieldData();
+    let starField: IParticleField = createStarFieldData();
     return {
         title: "Space Commander",
         stateConfig: stateConfig,

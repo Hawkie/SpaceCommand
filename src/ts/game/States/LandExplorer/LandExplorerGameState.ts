@@ -9,9 +9,9 @@ import { ObjectCollisionDetector } from "../../../gamelib/Interactors/ObjectColl
 import { Shape } from "../../../gamelib/DataTypes/Shape";
 
 export function createLandExplorerGameState(assets: Assets, actx: AudioContext): LandExplorerGameState {
-    var dataModel: ILandExplorerData = createLandExplorerData();
-    var stateObjs: ILandExplorerStateObjects = createLandExplorerStateObjects(()=> dataModel);
-    var landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", assets, actx, dataModel, stateObjs);
+    let dataModel: ILandExplorerData = createLandExplorerData();
+    let stateObjs: ILandExplorerStateObjects = createLandExplorerStateObjects(()=> dataModel);
+    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", assets, actx, dataModel, stateObjs);
     return landExplorerState;
 }
 
@@ -42,16 +42,16 @@ export class LandExplorerGameState implements IGameState {
         // this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450, 50));
         // this.guiObjects.push(this.velocityText, this.wind, this.player.explosionController.screenFlash);
 
-        var shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(() => {
+        let shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(() => {
                 return {
                     location: {x: 0, y: 0},
                     shape: new Shape(this.state.surface.points),
                 };
             },
             this.state.ship, this.playerSurfaceCollision.bind(this));
-        // var shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model,
+        // let shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model,
         // this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
-        // var windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
+        // let windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
         this.interactors = [shipSurfaceDetector];
         // shipLandingPadDetector, windEffect];
     }
@@ -156,23 +156,23 @@ export class LandExplorerGameState implements IGameState {
     }
 
     // static createLandingPadObject(surface: SingleGameObject): void {
-    //     var placeIndex = Transforms.random(0, 50);
-    //     var xy = surface.model.shape.points[placeIndex];
-    //     var padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.physics.location.x,
+    //     let placeIndex = Transforms.random(0, 50);
+    //     let xy = surface.model.shape.points[placeIndex];
+    //     let padModel = new LandingPadModel(new Coordinate(xy.x + surface.model.physics.location.x,
     //         xy.y + surface.model.physics.location.y));
-    //     var padView: IView = new PolyView(() => { return {
+    //     let padView: IView = new PolyView(() => { return {
     //         x: padModel.physics.location.x,
     //         y: padModel.physics.location.y,
     //         shape: padModel.shape,
     //     };});
-    //     var obj = new SingleGameObject(padModel, [], [padView]);
+    //     let obj = new SingleGameObject(padModel, [], [padView]);
     //     return obj;
     // }
 
     // static createBallObject(surface: SingleGameObject) {
-    //     var placeIndex = Transforms.random(0, 50);
-    //     var xy = surface.model.shape.points[placeIndex];
-    //     var ballModel: IBallObject = {
+    //     let placeIndex = Transforms.random(0, 50);
+    //     let xy = surface.model.shape.points[placeIndex];
+    //     let ballModel: IBallObject = {
     //         x: xy.x + surface.model.physics.location.x,
     //         y: xy.y + surface.model.physics.location.y-8,
     //         vx: 0,
@@ -180,7 +180,7 @@ export class LandExplorerGameState implements IGameState {
     //         r: 8,
     //         mass: 1,
     //     };
-    //     var ballView: IView = new CircleView(() => {
+    //     let ballView: IView = new CircleView(() => {
     //         return {
     //             x: ballModel.x,
     //             y: ballModel.y,
@@ -188,7 +188,7 @@ export class LandExplorerGameState implements IGameState {
     //         };
     //     });
     //     // not needed at this stage
-    //     var mover: MoveConstVelocity = new MoveConstVelocity(
+    //     let mover: MoveConstVelocity = new MoveConstVelocity(
     //         ()=> {
     //             return {
     //                 vx: ballModel.Vx,
@@ -198,20 +198,20 @@ export class LandExplorerGameState implements IGameState {
     //             ballModel.x += mOut.dx;
     //             ballModel.y += mOut.dy;
     //         });
-    //     var obj = new SingleGameObject(ballModel, [mover], [ballView]);
+    //     let obj = new SingleGameObject(ballModel, [mover], [ballView]);
     //     return obj;
     // }
 
     // static createWindDirectionIndicator(location: Coordinate): SingleGameObject {
-    //     var model: WindModel = new WindModel(location);
-    //     var windGenerator: IActor = new WindGenerator(model.physics, model.shape);
-    //     var viewArrow: IView = new PolyView(() => { return {
+    //     let model: WindModel = new WindModel(location);
+    //     let windGenerator: IActor = new WindGenerator(model.physics, model.shape);
+    //     let viewArrow: IView = new PolyView(() => { return {
     //         x: model.physics.location.x,
     //         y: model.physics.location.y,
     //         shape: model.shape,
     //     };});
-    //     var viewText: IView = new ValueView(model.physics, "{0} mph", "monospace", 12);
-    //     var obj = new SingleGameObject(model, [windGenerator], [viewArrow, viewText]);
+    //     let viewText: IView = new ValueView(model.physics, "{0} mph", "monospace", 12);
+    //     let obj = new SingleGameObject(model, [windGenerator], [viewArrow, viewText]);
     //     return obj;
     // }
 }

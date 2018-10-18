@@ -18,14 +18,14 @@ export class Tester {
     }
 
     testVector(): void {
-        var c: Coordinate = Transforms.VectorToCartesian(45, 100);
+        let c: Coordinate = Transforms.VectorToCartesian(45, 100);
         console.log("Vector: " + c.x + "," + c.y);
     }
 
      testCollision(expected : boolean, x : number, y : number): void {
-        var c: Coordinate = new Coordinate(x,y);
-        var p: ICoordinate[] = [new Coordinate(0,10), new Coordinate(10,0), new Coordinate(0,0), new Coordinate(0,10)];
-        var t: boolean = Transforms.hasPoint(p, new Coordinate(0,0), c);
+        let c: Coordinate = new Coordinate(x,y);
+        let p: ICoordinate[] = [new Coordinate(0,10), new Coordinate(10,0), new Coordinate(0,0), new Coordinate(0,10)];
+        let t: boolean = Transforms.hasPoint(p, new Coordinate(0,0), c);
         console.log("Point(" + c.x + "," + c.y + ") " + t + " " + Tester.pass(expected, t));
     }
 

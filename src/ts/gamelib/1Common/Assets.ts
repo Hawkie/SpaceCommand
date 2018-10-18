@@ -18,14 +18,14 @@ export class Assets {
 
         // get a reference to this asset object so we can
         // refer to it in the `forEach` loop ahead.
-        var self = this;
+        let self = this;
 
         // find the number of files that need to be loaded.
         self.toLoad = sources.length;
         sources.forEach((source) => {
 
             // find the file extension of the asset.
-            var extension = source.split('.').pop();
+            let extension = source.split('.').pop();
 
             //#### Sounds
             //Load audio files that have file extensions that match
@@ -47,7 +47,7 @@ export class Assets {
         dataHandler: (data: BufferData<AudioBuffer>, whenLoaded: () => void) => void,
         whenLoaded: () => void) {
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
         //Use xhr to load the sound file.
         xhr.open("GET", source, true);
@@ -72,7 +72,7 @@ export class Assets {
     //#### loadHandler
     //The `loadHandler` will be called each time an asset finishes loading.
     private loadHandler(data: BufferData<AudioBuffer>, whenLoaded: () => void) {
-        var self = this;
+        let self = this;
         self.loaded += 1;
         console.log(data.source + self.loaded.toString());
 

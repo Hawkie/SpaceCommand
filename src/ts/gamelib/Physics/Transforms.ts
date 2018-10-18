@@ -19,18 +19,18 @@ export class Transforms {
 
     // rotate the set of coordiantes about the origin.
     static Rotate(points: Coordinate[], degrees: number): ICoordinate[] {
-        var radians: number = degrees / 180 * Math.PI;
+        let radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
-        var c:number = Math.cos(radians);
-        var s:number = Math.sin(radians);
+        let c:number = Math.cos(radians);
+        let s:number = Math.sin(radians);
 
-        var newCoordinates:ICoordinate[] = [];
+        let newCoordinates:ICoordinate[] = [];
         // iterate thru each vertex and change position
-        for (var i:number = 0; i < points.length; i++) {
-            var x: number = c * points[i].x - s * points[i].y;
-            var y: number = s * points[i].x + c * points[i].y;
-            var newCoordinate: ICoordinate = new Coordinate(x, y);
+        for (let i:number = 0; i < points.length; i++) {
+            let x: number = c * points[i].x - s * points[i].y;
+            let y: number = s * points[i].x + c * points[i].y;
+            let newCoordinate: ICoordinate = new Coordinate(x, y);
             newCoordinates.push(newCoordinate);
         }
         return newCoordinates;
@@ -41,9 +41,9 @@ export class Transforms {
     // for angle of 90 we think right on screen = positive x values
     // for angle of 270 we think left on screen = negative x values
     static VectorToCartesian(degrees: number, length: number): ICoordinate {
-        var radians: number = degrees / 180 * Math.PI;
-        var x: number = Math.sin(radians) * length; // sin 0 = 0
-        var y: number = Math.cos(radians) * -length; // cos 0 = 1
+        let radians: number = degrees / 180 * Math.PI;
+        let x: number = Math.sin(radians) * length; // sin 0 = 0
+        let y: number = Math.cos(radians) * -length; // cos 0 = 1
         return new Coordinate(x, y);
     }
 
@@ -52,18 +52,18 @@ export class Transforms {
     // angle are zero for vertical and increase clockwise (not anticlockwise as is common in maths)
     // http://math.stackexchange.com/questions/1201337/finding-the-angle-between-two-points
     static CartesianToVector(x: number, y: number): IVector {
-        var length: number = Math.sqrt(x * x + y * y);
-        var angle: number = Math.atan2(x, y) * 180 / Math.PI;
+        let length: number = Math.sqrt(x * x + y * y);
+        let angle: number = Math.atan2(x, y) * 180 / Math.PI;
         return new Vector(angle, length);
     }
 
     // scales a coordinate x and y from origin to new position.
     // warning mutable operation to be changed to non mutable!
     static Scale(points: ICoordinate[], scaleX: number, scaleY:number): ICoordinate[] {
-        var newCoordinates:ICoordinate[] = [];
+        let newCoordinates:ICoordinate[] = [];
         // iterate thru each vertex and change position
         points.forEach(p => {
-            var newCoordinate: ICoordinate = new Coordinate(p.x *= scaleX, p.y *= scaleY);
+            let newCoordinate: ICoordinate = new Coordinate(p.x *= scaleX, p.y *= scaleY);
             newCoordinates.push(newCoordinate);
         });
         return newCoordinates;
@@ -73,12 +73,12 @@ export class Transforms {
     // use shape with a starting position
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     static hasPoint(points: Coordinate[], startingLocation: Coordinate, testPoint: Coordinate): boolean {
-        var c: boolean = false;
-        for (var i: number = 0, j: number = points.length - 1; i < points.length; i += 1) {
-            var px1: number = points[i].x + startingLocation.x;
-            var px2: number = points[j].x + startingLocation.x;
-            var py1: number = points[i].y + startingLocation.y;
-            var py2: number = points[j].y + startingLocation.y;
+        let c: boolean = false;
+        for (let i: number = 0, j: number = points.length - 1; i < points.length; i += 1) {
+            let px1: number = points[i].x + startingLocation.x;
+            let px2: number = points[j].x + startingLocation.x;
+            let py1: number = points[i].y + startingLocation.y;
+            let py2: number = points[j].y + startingLocation.y;
             if ((py1 > testPoint.y !== py2 > testPoint.y) &&
                 (testPoint.x < (px2 - px1) * (testPoint.y - py1) / (py2 - py1) + px1)
             ) {

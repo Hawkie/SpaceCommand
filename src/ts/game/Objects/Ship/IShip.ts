@@ -59,16 +59,16 @@ export interface IExplosion {
 }
 
 export function createShip(x: number, y: number, gravityStrength: number): IShip {
-    var triangleShip: ICoordinate[] = [new Coordinate(0, -4),
+    let triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),
         new Coordinate(0, 1),
         new Coordinate(2, 2),
         new Coordinate(0, -4)];
-    var scaledShip: ICoordinate[] = Transforms.Scale(triangleShip, 2, 2);
+    let scaledShip: ICoordinate[] = Transforms.Scale(triangleShip, 2, 2);
 
-    // var breakable = new BreakableData(20, 20, 0, false, false);
-    // var shape = new Shape(triangleShip);
-    var ship: IShip = {
+    // let breakable = new BreakableData(20, 20, 0, false, false);
+    // let shape = new Shape(triangleShip);
+    let ship: IShip = {
         x: x,
         y: y,
         Vx: 0,
