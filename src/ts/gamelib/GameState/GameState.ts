@@ -11,6 +11,9 @@ export interface IGameState {
     returnState(): number;
 }
 
+// the game state makes use of five methods; Update, display, sound, tests and input.
+// these are called with objects and implement the visitor pattern by calling these methods in
+// the objects held in the state.
 export abstract class GameState implements IGameState {
 
     constructor(public name: string = "Base State") { }
