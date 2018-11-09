@@ -1,5 +1,4 @@
-﻿import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
+﻿import { Coordinate } from "../../gamelib/DataTypes/Coordinate";
 
 export interface IShape {
     points: Coordinate[];

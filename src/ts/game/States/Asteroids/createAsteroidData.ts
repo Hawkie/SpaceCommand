@@ -1,7 +1,7 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { IShape, Shape } from "ts/gamelib/DataTypes/Shape";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/DataTypes/Sprite";
+import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
+import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
 import { IParticle } from "../../Objects/Particle/IParticle";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
@@ -112,7 +112,7 @@ export function createAsteroidData(): IAsteroidData {
     };
 
     // things that change
-    let stateVariables: IAsteroidData = {
+    let asteroidData: IAsteroidData = {
         stateConfig: stateConfig,
         controls: {
             left: false,
@@ -130,7 +130,7 @@ export function createAsteroidData(): IAsteroidData {
         score: 0,
         title: "SpaceCommand",
     };
-    return stateVariables;
+    return asteroidData;
 }
 
 export function createStarFieldData(): IParticleField {

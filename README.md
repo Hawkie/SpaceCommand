@@ -1,5 +1,11 @@
 #  SpaceCommand
-The start of a two dimensional, strategic, highly playable, space adventure game involving asteroids, space combat, planetry landings.
+
+<p>The start of a two dimensional, strategic, highly playable, space adventure game involving asteroids, space combat, planetry landings.
+</p>
+<p>
+Written in Typescript, using visual Studio Code and using Requirejs to load exported Modules.
+</p>
+
 
 ![Menu](docs/SpaceCommandMenu.png)
 
@@ -10,7 +16,7 @@ Initial Starting point is Asteroids and Lander Game
 ![Lander](docs/SpaceCommandLander.png)
 
 
-To build:
+### To build:
 1) Download the Space Command files from github to your dev directory using git clone
 2) You will need npm (node package manager). To install goto nodejs download page.
 3) You will need the typescript compiler. Use npm to install typescript globally: npm install typescript -g
@@ -18,31 +24,17 @@ To build:
 5) Build the project by: npm run build. This runs tsc on the project using the tsconfig.json settings.
 6) You can run the jest tests using: npm run test
 
-To Run:
-Because the whole project compiles down to javascript, goto the directory and open the file index.html in chrome.
+### To Run locally:
+The whole project compiles to javascript. Goto the directory and open the file index.html in chrome.
 
----
-
-Controls
-Keys only - no mouse atm.
-
-In Menu mode:
-Up and Down arrows to select game
-Enter to select.
-
-In Game Mode:
-Left and Right Arrow keys to rotate ship.
-Up Arrow to thrust
-Space to fire
-Z and X to zoom in and out
-Esc to return to menu
-f5 to reload and reset game
---- 
-
+### Play online
+<p>
 The game is hosted on a free hosting provider at:  http://spacecommand.000webhostapp.com/
 If you do not hear the sound initially - press f5 to refresh.
+</p>
 
-To host on a server: 
+### To host on a server
+<p>
 It's harder than I thought to host locally. A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
 It does not currently work with node or parcel because of requirejs and amd module setup.
@@ -51,32 +43,45 @@ So to host, it is made easily possible with Visual Studio Code and the Live Serv
 1) Open Visual Studio Code.
 2) Download the Live Server extension in Visual Studio Code extensions
 3) Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
-
+</p>
 ---
 
-Player starts with a small ship, building a fleet, where each ship can be controlled directly or commanded with high level commands and upgrade.
+### Controls
+<p>Keys only - no mouse atm.</p>
 
-One player campaign against AI component in galaxy or multiplayer by server.
+#### In Menu mode:
+<li><b>Up/Down Arrow</b> to select menu item</li>
+<li><b>Enter</b> to select.</li>
 
+#### In Game Mode:
+<li><b>Left/Right Arrow</b> to rotate ship.</li>
+<li><b>Up Arrow</b> to thrust</li>
+<li><b>Space</b> to fire</li>
+<li><b>Z/X</b> to zoom in and out</li>
+<li><b>Esc</b> to return to menu</li>
+<li><b>F5</b> to reload and reset game</li>
+
+----
+
+### Game concept
+<p>Player starts with a small ship. Gaining money and resources by completing missions. Can then start to build a fleet, where each ship can be controlled directly or commanded with higher level commands. Each ship can be customised and upgraded. One player campaign against AI component in galaxy or multiplayer vs others by server. </p>
+
+<p>
 Game moves between different states: space, planet landing, planet surface.
+</p>
 
-Ships:
+### Ships:
 Each has own characteristic, weapons (lasers, phasers, bullets, missiles), defense (shields, tractor beams)
 
-Planets:
-Build mines, factories, make weapons, ships, defenses.
-
+### Planets:
+<p>Build mines, factories, make weapons, ships, defenses.
 Eventually to involve trade, inter solar system exploration, mining.
+</p>
 
-Written in Typescript, using visual Studio Code and using Requirejs to load exported Modules.
 
-Dependencies:
-npm install requirejs
+### Todo
 
-Todo
-
-Unit tests
-gravity
+More Unit tests around the physics using jest
 sound
 weapons
 defence
