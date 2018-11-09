@@ -4,7 +4,8 @@ import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { IParticle } from "ts/game/Objects/Particle/IParticle";
-import { Sound } from "../../../gamelib/Actors/Sound";
+import { Sound } from "ts/gamelib/Actors/Sound";
+import { CircleView } from "../../../gamelib/Views/CircleView";
 
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {
     let particle: IParticle = getParticle();
@@ -12,12 +13,11 @@ export function createBulletObject(getParticle: () => IParticle): SingleGameObje
         particle.x += out.dx;
         particle.y += out.dy;
     });
-    let view: IView = new RectangleView(() => {
+    let view: IView = new CircleView(() => {
         return {
             x: particle.x,
             y: particle.y,
-            width: particle.size,
-            height: particle.size,
+            r: particle.size,
         };
     });
     let particleObj: SingleGameObject = new SingleGameObject([mover], [view]);

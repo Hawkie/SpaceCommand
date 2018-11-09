@@ -15,3 +15,7 @@ export class CircleView implements IView {
         drawContext.drawCircle(circle.x, circle.y, circle.r);
     }
 }
+
+export function DisplayCircle(drawContext: DrawContext, x: number, y: number, r: number): void {
+    drawContext.drawCircle(x, y, r);
+}

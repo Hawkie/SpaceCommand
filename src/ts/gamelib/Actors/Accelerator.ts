@@ -7,9 +7,14 @@ export interface IAcceleratorInputs {
     readonly forces: Vector[];
     readonly mass: number;
 }
+
 export interface IAcceleratorOutputs {
     dVx: number;
     dVy: number;
+}
+
+export interface IAccelerator {
+    accelerate: (timeModifier: number, forces: IVector[], mass: number) => IAcceleratorOutputs;
 }
 
 // the Accelerator actor must be used to convert forces (and mass) to acceleration

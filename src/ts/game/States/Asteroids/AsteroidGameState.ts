@@ -48,11 +48,15 @@ export class AsteroidGameState implements IGameState {
             this.bulletHitAsteroid.bind(this));
         let asteroidPlayerDetector:IInteractor = new Multi2ShapeCollisionDetector(()=>
             this.dataModel.asteroids.asteroids.map((a)=> { return {
-                location: {x: a.x, y: a.y},
+                location: {
+                    x: a.x,
+                    y: a.y},
                 shape: a.shape,
             };}),
             ()=> { return {
-                location: {x: this.dataModel.ship.x, y: this.dataModel.ship.y },
+                location: {
+                    x: this.dataModel.ship.x,
+                    y: this.dataModel.ship.y },
                 shape: this.dataModel.ship.shape,
             };},
             this.asteroidPlayerHit.bind(this));

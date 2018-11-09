@@ -112,7 +112,7 @@ export function createAsteroidData(): IAsteroidData {
     };
 
     // things that change
-    let stateVariables: IAsteroidData = {
+    let asteroidData: IAsteroidData = {
         stateConfig: stateConfig,
         controls: {
             left: false,
@@ -130,7 +130,7 @@ export function createAsteroidData(): IAsteroidData {
         score: 0,
         title: "SpaceCommand",
     };
-    return stateVariables;
+    return asteroidData;
 }
 
 export function createStarFieldData(): IParticleField {
