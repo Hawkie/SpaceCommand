@@ -1,17 +1,9 @@
-// const path = require('path');
-
-// module.exports = {
-//   entry: 'main.js',
-//   output: {
-//     path: path.resolve(__dirname, 'dist'),
-//     filename: 'bundle.js'
-//   }
-// };
-
 const path = require('path');
 
 module.exports = {
     entry: path.join(__dirname, '/src/ts/main.ts'),
+    mode: "development",
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {

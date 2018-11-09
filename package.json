@@ -9,9 +9,10 @@
     "url": "https://github.com/Hawkie/SpaceCommand"
   },
   "scripts": {
+    "hello": "echo 'Hello'",
     "jest-w": "jest --watch",
     "test": "jest",
-    "build": "tsc"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "SpaceCommandTeam",
