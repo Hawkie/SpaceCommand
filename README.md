@@ -17,12 +17,12 @@ Initial Starting point is Asteroids and Lander Game
 
 
 ### To build:
-1) Download the Space Command files from github to your dev directory using git clone
-2) You will need npm (node package manager). To install goto nodejs download page.
-3) You will need the typescript compiler. Use npm to install typescript globally: npm install typescript -g
-4) You need to download the js dependencies into the node_modules directory using: npm install. 
-5) Build the project by: npm run build. This runs webpack on the project using the tsconfig.json and webpack.config.js settings.
-6) You can run the jest tests using: npm run test or npx jest
+1. Download the Space Command files from github to your dev directory using git clone
+2. You will need npm (node package manager). To install goto nodejs download page.
+3. You will need the typescript compiler. Use npm to install typescript globally: npm install typescript -g
+4. You need to download the js dependencies into the node_modules directory using: npm install. 
+5. Build the project by: npm run build. This runs webpack on the project using the tsconfig.json and webpack.config.js settings.
+6. You can run the jest tests using: npm run test or npx jest
 
 ### To Run locally:
 The whole project compiles to javascript. Goto the directory and open the file index.html in chrome.
@@ -40,10 +40,12 @@ https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
 Will add node start and used http-server soon.
 (will try hosting the canvas element inside a react component soon)
 To host, it is made easily possible with Visual Studio Code and the Live Server extension. 
-1) Open Visual Studio Code.
-2) Download the Live Server extension in Visual Studio Code extensions
-3) Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
 </p>
+
+1. Open Visual Studio Code.
+2. Download the Live Server extension in Visual Studio Code extensions
+3. Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
+
 ---
 
 ### Controls
