@@ -3,7 +3,7 @@
 <p>The start of a two dimensional, strategic, highly playable, space adventure game involving asteroids, space combat, planetry landings.
 </p>
 <p>
-Written in Typescript, using visual Studio Code and using Requirejs to load exported Modules.
+Written in Typescript, using visual Studio Code and using webpack to transpile to bundle.js.
 </p>
 
 
@@ -21,8 +21,8 @@ Initial Starting point is Asteroids and Lander Game
 2) You will need npm (node package manager). To install goto nodejs download page.
 3) You will need the typescript compiler. Use npm to install typescript globally: npm install typescript -g
 4) You need to download the js dependencies into the node_modules directory using: npm install. 
-5) Build the project by: npm run build. This runs tsc on the project using the tsconfig.json settings.
-6) You can run the jest tests using: npm run test
+5) Build the project by: npm run build. This runs webpack on the project using the tsconfig.json and webpack.config.js settings.
+6) You can run the jest tests using: npm run test or npx jest
 
 ### To Run locally:
 The whole project compiles to javascript. Goto the directory and open the file index.html in chrome.
@@ -35,11 +35,11 @@ If you do not hear the sound initially - press f5 to refresh.
 
 ### To host on a server
 <p>
-It's harder than I thought to host locally. A good article explaining the issues is here:
+A good article explaining the issues is here:
 https://medium.freecodecamp.org/how-to-set-up-a-typescript-project-67b427114884
-It does not currently work with node or parcel because of requirejs and amd module setup.
-(will fix this soon by hosting the canvas element inside a react component)
-So to host, it is made easily possible with Visual Studio Code and the Live Server extension. 
+Will add node start and used http-server soon.
+(will try hosting the canvas element inside a react component soon)
+To host, it is made easily possible with Visual Studio Code and the Live Server extension. 
 1) Open Visual Studio Code.
 2) Download the Live Server extension in Visual Studio Code extensions
 3) Click "Go Live" icon to start up a web service connected to your source code via a web socket. It will open up a browser window. (use Chrome and navigate to the localhost service and portnumber)
