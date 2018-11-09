@@ -1,5 +1,5 @@
-import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IView } from "ts/gamelib/Views/View";
+import { DrawContext } from "../1Common/DrawContext";
+import { IView } from "../Views/View";
 
 export interface IRectangleView {
     x: number;

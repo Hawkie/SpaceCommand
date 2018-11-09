@@ -1,6 +1,6 @@
-﻿import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { ISprite } from "ts/gamelib/DataTypes/Sprite";
-import { IView } from "ts/gamelib/Views/View";
+﻿import { DrawContext } from "../../../gamelib/1Common/DrawContext";
+import { ISprite } from "../../../gamelib/DataTypes/Sprite";
+import { IView } from "../../../gamelib/Views/View";
 
 export interface ISpriteView {
     x: number;

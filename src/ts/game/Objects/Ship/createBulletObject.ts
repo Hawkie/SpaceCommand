@@ -1,10 +1,10 @@
-import { IView } from "ts/gamelib/Views/View";
-import { RectangleView } from "ts/gamelib/Views/RectangleView";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
+import { IView } from "../../../gamelib/Views/View";
+import { RectangleView } from "../../../gamelib/Views/RectangleView";
+import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
 import { IParticle } from "ts/game/Objects/Particle/IParticle";
-import { Sound } from "ts/gamelib/Actors/Sound";
+import { Sound } from "../../../gamelib/Actors/Sound";
 
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {
     let particle: IParticle = getParticle();

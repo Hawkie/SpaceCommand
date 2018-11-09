@@ -1,17 +1,16 @@
-﻿import { DrawContext} from "ts/gamelib/1Common/DrawContext";
-import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
-import { IGameState } from "ts/gamelib/GameState/GameState";
-import { IInteractor, Interactor } from "ts/gamelib/Interactors/Interactor";
-import { Assets } from "ts/gamelib/1Common/Assets";
+﻿import { DrawContext} from "../../../gamelib/1Common/DrawContext";
+import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
+import { IGameState } from "../../../gamelib/GameState/GameState";
+import { IInteractor, Interactor } from "../../../gamelib/Interactors/Interactor";
 import { createLandExplorerData, ILandExplorerData } from "./createLandExplorerData";
 import { ILandExplorerStateObjects, createLandExplorerStateObjects } from "./createLandExplorerStateObjects";
 import { ObjectCollisionDetector } from "../../../gamelib/Interactors/ObjectCollisionDetector";
 import { Shape } from "../../../gamelib/DataTypes/Shape";
 
-export function createLandExplorerGameState(assets: Assets, actx: AudioContext): LandExplorerGameState {
+export function createLandExplorerGameState(): LandExplorerGameState {
     let dataModel: ILandExplorerData = createLandExplorerData();
     let stateObjs: ILandExplorerStateObjects = createLandExplorerStateObjects(()=> dataModel);
-    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", assets, actx, dataModel, stateObjs);
+    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", dataModel, stateObjs);
     return landExplorerState;
 }
 
@@ -23,8 +22,6 @@ export class LandExplorerGameState implements IGameState {
     exitState: boolean = false;
 
     constructor(public name: string,
-        private assets: Assets,
-        private actx: AudioContext,
         private state: ILandExplorerData,
         private stateObj: ILandExplorerStateObjects) {
         this.viewScale = 1;

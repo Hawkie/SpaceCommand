@@ -1,6 +1,6 @@
-import { IActor, Actor } from "ts/gamelib/Actors/Actor";
-import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
+import { IActor, Actor } from "../../../../gamelib/Actors/Actor";
+import { Coordinate } from "../../../../gamelib/DataTypes/Coordinate";
+import { Transforms } from "../../../../gamelib/Physics/Transforms";
 import { IParticle } from "ts/game/Objects/Particle/IParticle";
 import { IShip, IWeapon } from "../../Ship/IShip";
 

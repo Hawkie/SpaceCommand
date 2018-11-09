@@ -1,26 +1,25 @@
-import { DrawContext} from "ts/gamelib/1Common/DrawContext";
-import { Assets } from "ts/gamelib/1Common/Assets";
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IGameState } from "ts/gamelib/GameState/GameState";
-import { IInteractor } from "ts/gamelib/Interactors/Interactor";
-import { Multi2FieldCollisionDetector } from "ts/gamelib/Interactors/CollisionDetector";
-import { Multi2ShapeCollisionDetector } from "ts/gamelib/Interactors/Multi2ShapeCollisionDetector";
-import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
+import { DrawContext} from "../../../gamelib/1Common/DrawContext";
+import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { IGameState } from "../../../gamelib/GameState/GameState";
+import { IInteractor } from "../../../gamelib/Interactors/Interactor";
+import { Multi2FieldCollisionDetector } from "../../../gamelib/Interactors/CollisionDetector";
+import { Multi2ShapeCollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
+import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { AsteroidModels, IBall, IAsteroid,
     IGraphicShip, ICoin, IAsteroidData, createAsteroidData } from "./createAsteroidData";
 import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
-import { createAsteroidObject } from "ts/game/Objects/Asteroids/createAsteroidObject";
+import { createAsteroidObject } from "../../../../../src/ts/game/Objects/Asteroids/createAsteroidObject";
 import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 
-export function createGameState(assets: Assets, actx: AudioContext): AsteroidGameState {
+export function createGameState(): AsteroidGameState {
     let spriteField: IGameObject = createSpriteField();
     let state: IAsteroidData = createAsteroidData();
     let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
     // get state objects and add asteroid objects
-    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", assets, actx, state, stateObj, [spriteField]);
+    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", state, stateObj, [spriteField]);
     return asteroidState;
 }
 
@@ -31,8 +30,6 @@ export class AsteroidGameState implements IGameState {
     exitState: boolean = false;
 
     constructor(public name: string,
-        private assets: Assets,
-        private actx: AudioContext,
         private dataModel: IAsteroidData,
         private stateObj: IAsteroidStateObject,
         private sceneObjects: IGameObject[]

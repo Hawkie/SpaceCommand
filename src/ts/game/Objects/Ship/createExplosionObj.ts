@@ -1,12 +1,12 @@
-import { IView } from "ts/gamelib/Views/View";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { createParticleField } from "ts/game/Objects/Particle/createParticleField";
-import { Sound } from "ts/gamelib/Actors/Sound";
+import { IView } from "../../../gamelib/Views/View";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { createParticleField } from "../Particle/createParticleField";
+import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "../../../gamelib/Views/ScreenFlashView";
-import { Flasher } from "ts/gamelib/Actors/Switches";
-import { Timer } from "ts/gamelib/Actors/Timers";
+import { Flasher } from "../../../gamelib/Actors/Switches";
+import { Timer } from "../../../gamelib/Actors/Timers";
 import { IShip } from "./IShip";
 
 // creates a two particle fields to represent the ship exploding.

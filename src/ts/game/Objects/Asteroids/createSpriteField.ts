@@ -1,15 +1,15 @@
-import { IView } from "ts/gamelib/Views/View";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { IParticleGenInputs, AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
-import { ParticleRemover } from "ts/gamelib/Actors/ParticleRemover";
-import { ParticleGenerator } from "ts/gamelib/Actors/ParticleGenerator";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteAngledView";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
-import { Spinner } from "ts/gamelib/Actors/Spinner";
-import { HorizontalSpriteSheet } from "ts/gamelib/DataTypes/Sprite";
+import { IView } from "../../../gamelib/Views/View";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { IParticleGenInputs, AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
+import { ParticleRemover } from "../../../gamelib/Actors/ParticleRemover";
+import { ParticleGenerator } from "../../../gamelib/Actors/ParticleGenerator";
+import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
+import { SpriteAngledView } from "../../../gamelib/Views/Sprites/SpriteAngledView";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { SpriteAnimator } from "../../../gamelib/Actors/SpriteAnimator";
+import { Spinner } from "../../../gamelib/Actors/Spinner";
+import { HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
 import { ISpinningParticle } from "../Particle/ISpinningParticle";
 // source
 // generator Function

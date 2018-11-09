@@ -1,10 +1,10 @@
 import { ICoin } from "../../States/Asteroids/createAsteroidData";
-import { IView } from "ts/gamelib/Views/View";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { SpriteAnimator } from "ts/gamelib/Actors/SpriteAnimator";
-import { Spinner } from "ts/gamelib/Actors/Spinner";
-import { SpriteAngledView } from "ts/gamelib/Views/Sprites/SpriteAngledView";
+import { IView } from "../../../gamelib/Views/View";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { SpriteAnimator } from "../../../gamelib/Actors/SpriteAnimator";
+import { Spinner } from "../../../gamelib/Actors/Spinner";
+import { SpriteAngledView } from "../../../gamelib/Views/Sprites/SpriteAngledView";
 
 // creates a spinning coin
 export function createCoinObject(getCoin: () => ICoin): SingleGameObject {

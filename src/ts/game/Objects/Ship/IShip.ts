@@ -1,11 +1,11 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { IShape, Shape } from "ts/gamelib/DataTypes/Shape";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { ISprite, HorizontalSpriteSheet } from "ts/gamelib/DataTypes/Sprite";
-import { IGraphic, Graphic } from "ts/gamelib/DataTypes/Graphic";
+import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
+import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
+import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
+import { IGraphic, Graphic } from "../../../gamelib/DataTypes/Graphic";
 import { IParticle } from "ts/game/Objects/Particle/IParticle";
-import { IVector, Vector } from "ts/gamelib/DataTypes/Vector";
+import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
 import { IParticleField } from "../../States/Asteroids/createAsteroidData";
 
 export interface IShip {

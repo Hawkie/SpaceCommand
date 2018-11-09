@@ -1,11 +1,11 @@
 import { IControls } from "../../States/Asteroids/createAsteroidData";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { createWeaponController } from "ts/game/Objects/Ship/Controllers/createWeaponController";
-import { IParticle } from "ts/game/Objects/Particle/IParticle";
-import { AgePred } from "ts/gamelib/Actors/ParticleFieldUpdater";
-import { ParticleRemover } from "ts/gamelib/Actors/ParticleRemover";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { createWeaponController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createWeaponController";
+import { IParticle } from "../../../../../src/ts/game/Objects/Particle/IParticle";
+import { AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
+import { ParticleRemover } from "../../../gamelib/Actors/ParticleRemover";
 import { IShip, IWeapon } from "./IShip";
 import { createBulletObject } from "./createBulletObject";
 

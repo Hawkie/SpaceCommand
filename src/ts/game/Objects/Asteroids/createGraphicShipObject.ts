@@ -1,7 +1,7 @@
 import { IGraphicShip } from "../../States/Asteroids/createAsteroidData";
-import { IView } from "ts/gamelib/Views/View";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { GraphicAngledView } from "ts/gamelib/Views/GraphicView";
+import { IView } from "../../../gamelib/Views/View";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { GraphicAngledView } from "../../../gamelib/Views/GraphicView";
 
 // creates a small graphic object in the shape of a ship
 export function createGraphicShipObject(getGraphicShip: () => IGraphicShip): SingleGameObject {

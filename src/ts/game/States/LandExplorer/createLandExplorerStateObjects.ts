@@ -1,6 +1,6 @@
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { createShipObject, createShipAccelerator } from "../../Objects/Ship/ShipObjects";
 import { createExplosionObj } from "../../Objects/Ship/createExplosionObj";
 import { createExhaustObj } from "../../Objects/Ship/createExhaustObj";

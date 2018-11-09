@@ -1,4 +1,4 @@
-﻿import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
+﻿import { Coordinate } from "src/ts/gamelib/DataTypes/Coordinate";
 
 export enum Direction {
     left,

@@ -1,6 +1,6 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { IShape, Shape } from "ts/gamelib/DataTypes/Shape";
-import { IWind, Direction, Wind } from "ts/gamelib/DataTypes/Wind";
+import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
+import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
+import { IWind, Direction, Wind } from "../../../gamelib/DataTypes/Wind";
 
 
 export class WindModel {

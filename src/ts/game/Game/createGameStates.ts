@@ -1,5 +1,4 @@
-import { Assets } from "ts/gamelib/1Common/Assets";
-import { IGameState } from "ts/gamelib/GameState/GameState";
+import { IGameState } from "../../gamelib/GameState/GameState";
 import { createGameState } from "../States/Asteroids/AsteroidGameState";
 import { createLandExplorerGameState } from "../States/LandExplorer/LandExplorerGameState";
 import { createMenuState } from "../States/MenuState/MenuGameState";
@@ -8,12 +7,12 @@ import { createMenuState } from "../States/MenuState/MenuGameState";
 // import { LandExplorerState } from "ts/States/LandExplorer/LandExplorerState";
 // import { DuelState } from "ts/States/TwoPlayerDuel/DuelState";
 
-export function createGameStates(assets: Assets, actx: AudioContext): IGameState[] {
-    let menuState: IGameState = createMenuState(assets, actx);
-    let asteroidState: IGameState = createGameState(assets, actx);
+export function createGameStates(): IGameState[] {
+    let menuState: IGameState = createMenuState();
+    let asteroidState: IGameState = createGameState();
     // let landingState = LandingState.create(assets, actx);
     // let soundDesigner = SoundDesignerState.create();
-    let landExplorer: IGameState = createLandExplorerGameState(assets, actx);
+    let landExplorer: IGameState = createLandExplorerGameState();
     // let duel = DuelState.createState(assets, actx);
     // let states = [menuState, asteroidState, landingState, landExplorer, duel];
     let states: IGameState[] = [menuState, asteroidState, landExplorer];

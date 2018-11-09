@@ -1,10 +1,10 @@
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { createParticleField } from "ts/game/Objects/Particle/createParticleField";
-import { Sound } from "ts/gamelib/Actors/Sound";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
+import { createParticleField } from "../../../../../src/ts/game/Objects/Particle/createParticleField";
+import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IShip } from "./IShip";
 export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGameObject> {
     let ship: IShip = getShip();

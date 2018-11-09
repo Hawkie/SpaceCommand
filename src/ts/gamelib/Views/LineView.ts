@@ -1,5 +1,5 @@
-import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IView } from "ts/gamelib/Views/View";
+import { DrawContext } from "../../../ts/gamelib/1Common/DrawContext";
+import { IView } from "../../../ts/gamelib/Views/View";
 
 export interface ILineView {
     xFrom: number;

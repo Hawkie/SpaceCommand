@@ -1,4 +1,4 @@
-﻿import { IActor } from "ts/gamelib/Actors/Actor";
+﻿import { IActor } from "src/ts/gamelib/Actors/Actor";
 import { ISlider } from "./Slider";
 
 export interface IControlPanelModel extends IActor {

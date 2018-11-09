@@ -1,6 +1,6 @@
-﻿import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IGraphic, Graphic } from "ts/gamelib/DataTypes/Graphic";
-import { IView } from "ts/gamelib/Views/View";
+﻿import { DrawContext } from "../../../ts/gamelib/1Common/DrawContext";
+import { IGraphic, Graphic } from "../../../ts/gamelib/DataTypes/Graphic";
+import { IView } from "../../../ts/gamelib/Views/View";
 
 export interface IGraphicViewInputs {
     x: number;

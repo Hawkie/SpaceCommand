@@ -1,6 +1,6 @@
-import { Canvas } from "ts/gamelib/1Common/Canvas";
-import { IGameState } from "ts/gamelib/GameState/GameState";
-import { KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
+import { Canvas } from "../../../../src/ts/gamelib/1Common/Canvas";
+import { IGameState } from "../../../../src/ts/gamelib/GameState/GameState";
+import { KeyStateProvider } from "../../../../src/ts/gamelib/1Common/KeyStateProvider";
 
 export class EventLoop {
 
@@ -8,7 +8,6 @@ export class EventLoop {
     constructor(private document: Document,
         private window: Window,
         private canvas: Canvas,
-        private audioContext: AudioContext,
         private states: IGameState[]) {
         this.keyStateProvider = new KeyStateProvider(this.document);
         this.currentState = states[0];
@@ -31,7 +30,6 @@ export class EventLoop {
     processOneFrame(delta: number): void {
         let gs : IGameState = this.currentState;
         gs.display(this.canvas.context());
-        gs.sound(this.audioContext);
         gs.tests(delta);
         gs.update(delta);
         gs.input(this.keyStateProvider, delta);

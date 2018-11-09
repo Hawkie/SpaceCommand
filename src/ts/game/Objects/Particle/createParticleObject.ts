@@ -1,8 +1,8 @@
-import { IView } from "ts/gamelib/Views/View";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { RectangleView } from "ts/gamelib/Views/RectangleView";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
+import { IView } from "../../../gamelib/Views/View";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
+import { RectangleView } from "../../../gamelib/Views/RectangleView";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IParticle } from "./IParticle";
 
 // creates a constantly moving particle with rectangle shape

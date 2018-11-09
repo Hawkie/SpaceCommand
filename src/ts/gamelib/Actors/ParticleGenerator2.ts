@@ -1,4 +1,4 @@
-import { IActor } from "ts/gamelib/Actors/Actor";
+import { IActor } from "src/ts/gamelib/Actors/Actor";
 import { IParticleGenInputs2 } from "./ParticleFieldUpdater";
 // could use <T> instead of IGameObject
 

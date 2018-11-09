@@ -1,6 +1,6 @@
 import { DrawContext } from "../1Common/DrawContext";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { IView } from "ts/gamelib/Views/View";
+import { IActor } from "src/ts/gamelib/Actors/Actor";
+import { IView } from "src/ts/gamelib/Views/View";
 import { IGameObject } from "./IGameObject";
 
 // an actor that keeps the model array in sync with the components

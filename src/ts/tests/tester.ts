@@ -1,4 +1,4 @@
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { Coordinate, ICoordinate } from "src/ts/gamelib/DataTypes/Coordinate";
 import { Transforms } from "../gamelib/Physics/Transforms";
 
 

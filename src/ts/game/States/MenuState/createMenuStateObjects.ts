@@ -1,10 +1,10 @@
-import { Coordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { MultiGameObject } from "ts/gamelib/GameObjects/MultiGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { TextView } from "ts/gamelib/Views/TextView";
-import { IView } from "ts/gamelib/Views/View";
-import { Sound } from "ts/gamelib/Actors/Sound";
+import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { TextView } from "../../../gamelib/Views/TextView";
+import { IView } from "../../../gamelib/Views/View";
+import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
 import { IMenuData } from "./createMenuData";
 

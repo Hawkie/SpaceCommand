@@ -1,6 +1,6 @@
-﻿import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
-import { IActor } from "ts/gamelib/Actors/Actor";
+﻿import { Coordinate, ICoordinate } from "../../../ts/gamelib/DataTypes/Coordinate";
+import { Transforms } from "../../../../src/ts/gamelib/Physics/Transforms";
+import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
 
 export interface ISurfaceGeneration {
     resolution: number;

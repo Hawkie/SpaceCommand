@@ -1,10 +1,9 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "amd",
+        "module": "es6",
         "sourceMap": true,
-        "outFile": "main.js",
-        "outDir": "./lib",
+        "outDir": "./dist/",
         "esModuleInterop": true 
     },
     "exclude":[

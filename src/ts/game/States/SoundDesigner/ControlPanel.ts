@@ -1,9 +1,9 @@
 ﻿import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 
-import { ControlPanelView } from "ts/gamelib/Views/ControlPanelView";
+import { ControlPanelView } from "../../../gamelib/Views/ControlPanelView";
 import { IControlPanelModel, ControlPanelModel } from "ts/Models/Controls/ControlPanelModel";
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
+import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 
 
 

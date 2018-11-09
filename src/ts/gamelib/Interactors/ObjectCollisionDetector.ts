@@ -1,6 +1,6 @@
-import { IInteractor } from "ts/gamelib/Interactors/Interactor";
-import { ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "ts/gamelib/Physics/Transforms";
+import { IInteractor } from "../Interactors/Interactor";
+import { ICoordinate } from "../DataTypes/Coordinate";
+import { Transforms } from "../Physics/Transforms";
 import { IShapedLocation } from "./CollisionDetector";
 
 export class ObjectCollisionDetector implements IInteractor {

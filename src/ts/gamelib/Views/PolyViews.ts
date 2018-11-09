@@ -1,6 +1,6 @@
-﻿import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IShape } from "ts/gamelib/DataTypes/Shape";
-import { IView } from "ts/gamelib/Views/View";
+﻿import { DrawContext } from "../../../ts/gamelib/1Common/DrawContext";
+import { IShape } from "../../../ts/gamelib/DataTypes/Shape";
+import { IView } from "../../../ts/gamelib/Views/View";
 
 export interface IPolyView {
     x: number;

@@ -1,9 +1,9 @@
-// import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-// import { IShape, Shape } from "ts/gamelib/DataTypes/Shape";
-// import { IActor } from "ts/gamelib/Actors/Actor";
+// import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
+// import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
+// import { IActor } from "../../../gamelib/Actors/Actor";
 // import { LandingPadModel } from "ts/States/Land/LandingPad";
 // // import { ShapedModel } from "ts/Models/DynamicModels";
-// import { Transforms } from "ts/gamelib/Physics/Transforms";
+// import { Transforms } from "../../../gamelib/Physics/Transforms";
 // import { SurfaceGenerator } from "ts/States/LandExplorer/SurfaceGenerator";
 
 // export class PlanetSurfaceModel {

@@ -1,4 +1,4 @@
-import { IActor, Actor } from "ts/gamelib/Actors/Actor";
+import { IActor, Actor } from "../../../../gamelib/Actors/Actor";
 import { IShip, IWeapon } from "../../Ship/IShip";
 
 export interface IShipControlInputs {

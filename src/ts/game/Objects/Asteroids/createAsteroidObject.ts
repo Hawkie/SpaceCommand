@@ -1,13 +1,13 @@
 import { IAsteroid } from "../../States/Asteroids/createAsteroidData";
-import { IView } from "ts/gamelib/Views/View";
-import { PolyGraphicAngled } from "ts/gamelib/Views/PolyGraphicAngled";
-import { MoveConstVelocity, IMoveOut } from "ts/gamelib/Actors/Movers";
-import { SingleGameObject } from "ts/gamelib/GameObjects/SingleGameObject";
-import { IActor } from "ts/gamelib/Actors/Actor";
-import { PolyRotator } from "ts/gamelib/Actors/Rotators";
-import { Spinner } from "ts/gamelib/Actors/Spinner";
-import { IShape } from "ts/gamelib/DataTypes/Shape";
-import { createWrapActor } from "ts/gamelib/Actors/Wrap";
+import { IView } from "../../../gamelib/Views/View";
+import { PolyGraphicAngled } from "../../../gamelib/Views/PolyGraphicAngled";
+import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
+import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
+import { IActor } from "../../../gamelib/Actors/Actor";
+import { PolyRotator } from "../../../gamelib/Actors/Rotators";
+import { Spinner } from "../../../gamelib/Actors/Spinner";
+import { IShape } from "../../../gamelib/DataTypes/Shape";
+import { createWrapActor } from "../../../gamelib/Actors/Wrap";
 
 // creates a graphical view asteroid with and spin, velocity
 export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameObject {

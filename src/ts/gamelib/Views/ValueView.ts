@@ -1,6 +1,6 @@
-﻿import { IView } from "ts/gamelib/Views/View";
-import { Coordinate, ICoordinate } from "ts/gamelib/DataTypes/Coordinate";
-import { DrawContext } from "ts/gamelib/1Common/DrawContext";
+﻿import { IView } from "src/ts/gamelib/Views/View";
+import { ICoordinate } from "src/ts/gamelib/DataTypes/Coordinate";
+import { DrawContext } from "src/ts/gamelib/1Common/DrawContext";
 
 export class ValueView implements IView {
     constructor(public getModel: ()=> number,

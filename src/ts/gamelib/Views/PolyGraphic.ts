@@ -1,6 +1,6 @@
-import { DrawContext } from "ts/gamelib/1Common/DrawContext";
-import { IView } from "ts/gamelib/Views/View";
-import { IGraphic, Graphic } from "ts/gamelib/DataTypes/Graphic";
+import { DrawContext } from "../../../ts/gamelib/1Common/DrawContext";
+import { IView } from "../../../ts/gamelib/Views/View";
+import { IGraphic, Graphic } from "../../../ts/gamelib/DataTypes/Graphic";
 import { IPolyView } from "./PolyViews";
 
 export interface IPolyGraphicView extends IPolyView {

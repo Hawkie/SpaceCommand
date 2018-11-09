@@ -11,6 +11,5 @@ api/**/Debug
 /bin
 *.user
 ~*
-/main.js.map
-/main.js
+/dist
 /res/img/smoke_1_40_128.png

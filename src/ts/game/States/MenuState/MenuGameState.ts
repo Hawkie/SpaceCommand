@@ -1,19 +1,18 @@
-﻿import { DrawContext} from "ts/gamelib/1Common/DrawContext";
-import { Assets } from "ts/gamelib/1Common/Assets";
+﻿import { DrawContext} from "../../../gamelib/1Common/DrawContext";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { IGameState } from "ts/gamelib/GameState/GameState";
-import { Keys, KeyStateProvider } from "ts/gamelib/1Common/KeyStateProvider";
+import { IGameState } from "../../../gamelib/GameState/GameState";
+import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { createMenuData, IMenuData } from "./createMenuData";
 import { createMenuStateObjects } from "./createMenuStateObjects";
 
 // when creating a game state - create the data and then bind to the objects
-export function createMenuState(assets: Assets, actx:AudioContext): MenuState {
+export function createMenuState(): MenuState {
     // let field1 = new AsteroidFields('img/star.png', 512, 200, 32, 1);
     let menuData: IMenuData = createMenuData();
     let gameObject: IGameObject = createMenuStateObjects(()=>menuData);
         // let items: MenuItem[] = [new MenuItem("Asteroids", 1), new MenuItem("Landing", 2),
     // new MenuItem("Land Explorer", 3), new MenuItem("Two Player Duel", 4), new MenuItem("Sound Designer", 5)];
-    return new MenuState("Menu", assets, ()=>menuData, ()=>gameObject);
+    return new MenuState("Menu", ()=>menuData, ()=>gameObject);
 }
 
 
@@ -27,7 +26,6 @@ export class MenuState implements IGameState {
     private assetsLoaded: boolean = false;
 
     constructor(public name: string,
-        private assets: Assets,
         private menuDataCallback: ()=>IMenuData,
         private objectCallback: ()=>IGameObject) {
     }

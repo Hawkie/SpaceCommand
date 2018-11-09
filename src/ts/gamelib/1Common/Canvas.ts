@@ -1,5 +1,5 @@
 
-import { DrawContext } from "ts/gamelib/1Common/DrawContext";
+import { DrawContext } from "../../../../src/ts/gamelib/1Common/DrawContext";
 
 export class Canvas {
     canvas : any;
