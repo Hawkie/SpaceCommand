@@ -1,4 +1,4 @@
-import { IActor } from "src/ts/gamelib/Actors/Actor";
+import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
 import { IPred } from "./ParticleFieldUpdater";
 export class ParticleRemover implements IActor {
     constructor(private removeFunction: () => void) { }

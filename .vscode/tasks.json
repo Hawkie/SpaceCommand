@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Webpack build",
+            "type": "shell",
+            "command": "npm",
+            "args": ["run", "build"],
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            }  
+        },
+        {
+            "label": "TypeScript compile",
+            "type": "shell",
+            "command": "tsc",
+            "args": ["-p", "tsconfig.json"],
+            //"args": ["--strict", "${file}],
+            "problemMatcher":"$tsc",
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            }  
+        }
+    ]
+}

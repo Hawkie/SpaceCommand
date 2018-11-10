@@ -1,4 +1,4 @@
-import { IActor } from "src/ts/gamelib/Actors/Actor";
+import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
 import { IParticleGenInputs } from "./ParticleFieldUpdater";
 // could use <T> instead of IGameObject
 // the Particle Generator creates particles

@@ -1,4 +1,4 @@
-﻿import { IActor } from "src/ts/gamelib/Actors/Actor";
+﻿import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
 
 
 export interface ISwitch {

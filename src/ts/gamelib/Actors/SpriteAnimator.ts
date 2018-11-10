@@ -1,5 +1,5 @@
-﻿import { IActor } from "src/ts/gamelib/Actors/Actor";
-import { ISprite } from "src/ts/gamelib/DataTypes/Sprite";
+﻿import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
+import { ISprite } from "../../../../src/ts/gamelib/DataTypes/Sprite";
 
 export interface ISpriteAnimator {
 }

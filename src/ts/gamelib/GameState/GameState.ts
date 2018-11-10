@@ -1,5 +1,5 @@
-import { DrawContext} from "src/ts/gamelib/1Common/DrawContext";
-import { Keys, KeyStateProvider } from "src/ts/gamelib/1Common/KeyStateProvider";
+import { DrawContext} from "../../../../src/ts/gamelib/1Common/DrawContext";
+import { Keys, KeyStateProvider } from "../../../../src/ts/gamelib/1Common/KeyStateProvider";
 
 export interface IGameState {
     name: string;

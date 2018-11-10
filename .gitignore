@@ -1,10 +1,11 @@
-ts/**/*.js
-ts/**/*.js.map
+src/ts/**/*.js
+src/ts/**/*.js.map
 api/**/*.dll
 api/**/*.pdb
 api/**/Debug
 .cache
-.vscode
+.vscode/settings.json
+.vscode/launch.json
 /.vs
 /node_modules
 /obj
@@ -12,4 +13,4 @@ api/**/Debug
 *.user
 ~*
 /dist
-/res/img/smoke_1_40_128.png
+/distjs
