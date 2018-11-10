@@ -1,8 +1,8 @@
 src/ts/**/*.js
 src/ts/**/*.js.map
-api/**/*.dll
-api/**/*.pdb
-api/**/Debug
+src/cs/api/**/*.dll
+src/cs/api/**/*.pdb
+src/cs/api/**/Debug
 .cache
 .vscode/settings.json
 .vscode/launch.json
