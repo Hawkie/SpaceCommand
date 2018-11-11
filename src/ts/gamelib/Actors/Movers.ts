@@ -29,6 +29,7 @@ export class MoveConstVelocity implements IActor {
 
 }
 
+// function that takes velocity and time, returning change in position
 export function move(timeModifier: number, Vx: number, Vy: number): IMoveOut {
     return {
         dx: Vx * timeModifier,
@@ -46,6 +47,7 @@ export function MoveReducer<T extends IMoveable>(v: IMoveOut, moveable: T): T {
     return newMoveable;
 }
 
+// function that takes velocity and time and a moveable object. Returns a copy of the moved object.
 export function Move<T extends IMoveable>(timeModifier: number, Vx: number, Vy: number, moveable: T): T {
     // reducer with action to new object
     const v: IMoveOut = move(timeModifier, Vx, Vy);

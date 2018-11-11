@@ -1,8 +1,9 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     entry: path.join(__dirname, '/src/ts/main.ts'),
-    mode: "development",
+    mode: "production",
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -20,4 +21,11 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
+    plugins: [ new CopyWebpackPlugin([
+        { from: 'src/html/index.html' },
+        { from: 'dist/bundle.js', to: 'js/' },
+        { from: 'res', to: 'res/' },
+        { from: 'src/css', to: 'css/' }
+      ])],
 };
+
