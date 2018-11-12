@@ -22,12 +22,12 @@ export function createWeaponController(get: () => IWeaponControlInputs, set: (ne
                 if (inputs.weapon.lastFired === undefined
                     || elapsedTimeSec >= 1 / 2) {
                     inputs.weapon.lastFired = now;
-                    let cartesian: Coordinate = Transforms.VectorToCartesian(inputs.ship.angle, inputs.weapon.bulletVelocity);
+                    let velocity: Coordinate = Transforms.VectorToCartesian(inputs.ship.angle, inputs.weapon.bulletVelocity);
                     let particle: IParticle = {
                         x: inputs.ship.x,
                         y: inputs.ship.y,
-                        Vx: cartesian.x,
-                        Vy: cartesian.y,
+                        Vx: velocity.x,
+                        Vy: velocity.y,
                         born: now,
                         size: 2,
                     };

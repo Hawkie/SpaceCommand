@@ -1,5 +1,5 @@
 import { IActor } from "./Actor";
-import { AudioObject, IAudioObject } from "../../../../src/ts/Sound/SoundObject";
+import { AudioObject, IAudioObject } from "../Sound/SoundObject";
 
 export interface ISoundInputs {
     play: boolean;
