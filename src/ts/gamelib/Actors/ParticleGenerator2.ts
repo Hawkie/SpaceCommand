@@ -1,6 +1,12 @@
 import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
-import { IParticleGenInputs2 } from "./ParticleFieldUpdater";
+import { IMenuState } from "../../game/States/MenuState/createMenuData";
+import { IParticle } from "../../game/Objects/Particle/IParticle";
+import { IParticleField } from "../../game/States/Asteroids/createAsteroidData";
 // could use <T> instead of IGameObject
+
+export interface IParticleGenInputs2 {
+    on: boolean;
+}
 
 // create new particles with a set of generator inputs function, and a generator function passed in
 // at intervals specified by perSec. Only allow maxGen particles to be creating in any one call
@@ -8,7 +14,8 @@ import { IParticleGenInputs2 } from "./ParticleFieldUpdater";
 export class ParticleGenerator2 implements IActor {
     constructor(private getIn: () => IParticleGenInputs2,
     private perSec: number,
-    private maxGen: number, private createParticle: (now: number) => void) { }
+    private maxGen: number,
+    private createParticle: (now: number) => void) { }
     // state variables
     private lastCheck: number = 0;
     update(lastTimeModifier: number): void {
@@ -36,3 +43,15 @@ export class ParticleGenerator2 implements IActor {
         }
     }
 }
+
+// pure function. Read only inputs are on, perSec, maxGen. State that changes is lastCheck.
+export function GenerateParticles(timeModifier: number, toAdd: number,
+    createParticle: (now: number)=>IParticle): IParticle[] {
+    let now: number = Date.now();
+    let generatedParticles: IParticle[] = [];
+    for (let i: number = 0; i < toAdd; i++) {
+        generatedParticles.push(createParticle(now));
+    }
+    return generatedParticles;
+}
+

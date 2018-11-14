@@ -1,12 +1,7 @@
 import { ElapsedTimeLimit } from "./Timers";
 
-export interface IParticleGenInputs {
-    on: boolean;
-}
 
-export interface IParticleGenInputs2 {
-    on: boolean;
-}
+
 
 export interface IPred<TElement> {
     Test(element: TElement): boolean;

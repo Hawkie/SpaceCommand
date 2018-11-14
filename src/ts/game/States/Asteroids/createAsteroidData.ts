@@ -35,8 +35,10 @@ export interface IControls {
 
 export interface IParticleField {
     particles: IParticle[];
+    accumulatedModifier: number;
     particlesPerSecond: number;
     maxParticlesPerSecond: number;
+    toAdd: number;
     particleLifetime: number;
     particleSize: number;
     on: boolean;
@@ -136,8 +138,10 @@ export function createAsteroidData(): IAsteroidData {
 export function createStarFieldData(): IParticleField {
     return {
         particles: [],
+        accumulatedModifier: 0,
         particlesPerSecond: 1,
         maxParticlesPerSecond: 1,
+        toAdd: 0,
         particleLifetime: undefined,
         particleSize: 1,
         on: true,

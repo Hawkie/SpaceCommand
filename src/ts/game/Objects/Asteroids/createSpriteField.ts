@@ -1,8 +1,8 @@
 import { IView } from "../../../gamelib/Views/View";
 import { IActor } from "../../../gamelib/Actors/Actor";
-import { IParticleGenInputs, AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
+import { AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
 import { ParticleRemover } from "../../../gamelib/Actors/ParticleRemover";
-import { ParticleGenerator } from "../../../gamelib/Actors/ParticleGenerator";
+import { ParticleGenerator, IParticleGenInputs } from "../../../gamelib/Actors/ParticleGenerator";
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SpriteAngledView } from "../../../gamelib/Views/Sprites/SpriteAngledView";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";

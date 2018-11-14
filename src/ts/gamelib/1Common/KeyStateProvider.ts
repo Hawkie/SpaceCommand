@@ -7,6 +7,11 @@ export class KeyStateProvider {
 
     private _keysDown: SparseArray<number> = new SparseArray<number>();
 
+    // get a copy
+    getKeys(): number[] {
+        return this._keysDown.map(x => x);
+    }
+
     addKeyEvents(): void {
         const kd:any = (e: KeyboardEvent) => {
             this._keysDown.add(e.keyCode);

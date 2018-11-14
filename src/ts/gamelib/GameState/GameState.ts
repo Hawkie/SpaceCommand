@@ -4,6 +4,7 @@ import { Keys, KeyStateProvider } from "../../../../src/ts/gamelib/1Common/KeySt
 export interface IGameState {
     name: string;
     update(lastDrawModifier : number): void;
+    sound(timeModifier: number): void;
     display(drawingContext: DrawContext): void;
     input(keyStateProvider: KeyStateProvider, lastDrawModifier: number): void;
     tests(lastTestModifier: number): void;
@@ -21,15 +22,19 @@ export abstract class GameState implements IGameState {
         //
      }
 
+    sound(timeModifier: number): void {
+         //
+     }
+
     display(drawContext: DrawContext): void {
         //
     }
 
-    tests(lastTestModifier: number): void {
+    tests(timeModifier: number): void {
         //
      }
 
-    input(keyStateProvider: KeyStateProvider, lastDrawModifier: number): void {
+    input(keyStateProvider: KeyStateProvider, timeModifier: number): void {
         //
      }
 

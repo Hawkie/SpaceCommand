@@ -20,3 +20,14 @@ export class ParticleRemover implements IActor {
         }
     }
 }
+
+export function remove<M>(modelParticles: M[], pred: (m: M)=> boolean): number[] {
+    let toRemove: number[] = [];
+    for (let i: number = modelParticles.length - 1; i >= 0; i--) {
+        let element: M = modelParticles[i];
+        if (pred(element)) {
+            toRemove.push(i);
+        }
+    }
+    return toRemove;
+}

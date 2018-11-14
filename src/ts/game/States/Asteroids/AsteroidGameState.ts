@@ -90,11 +90,11 @@ export class AsteroidGameState implements IGameState {
         drawingContext.restore();
     }
 
-    sound(actx: AudioContext): void {
+    sound(timeModifier: number): void {
         //
     }
 
-    input(keys: KeyStateProvider, lastDrawModifier: number): void {
+    input(keys: KeyStateProvider, timeModifier: number): void {
         if (keys.isKeyDown(Keys.UpArrow)) {
             this.dataModel.controls.up = true;
         } else {

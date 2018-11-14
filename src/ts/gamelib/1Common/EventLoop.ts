@@ -29,6 +29,7 @@ export class EventLoop {
 
     processOneFrame(delta: number): void {
         let gs : IGameState = this.currentState;
+        gs.sound(delta);
         gs.display(this.canvas.context());
         gs.tests(delta);
         gs.update(delta);

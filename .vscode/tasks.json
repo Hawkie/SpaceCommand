@@ -19,11 +19,7 @@
             "command": "tsc",
             "args": ["-p", "tsconfig.json"],
             //"args": ["--strict", "${file}],
-            "problemMatcher":"$tsc",
-            "group": {
-                "kind": "build",
-                "isDefault": true,
-            }  
+            "problemMatcher":"$tsc"
         }
     ]
 }

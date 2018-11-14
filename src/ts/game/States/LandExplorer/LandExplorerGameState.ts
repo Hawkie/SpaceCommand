@@ -112,7 +112,7 @@ export class LandExplorerGameState implements IGameState {
         drawingContext.restore();
     }
 
-    sound(actx: AudioContext): void {
+    sound(timeModifier: number): void {
         //
     }
 

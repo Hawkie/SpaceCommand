@@ -6,11 +6,11 @@ import { TextView } from "../../../gamelib/Views/TextView";
 import { IView } from "../../../gamelib/Views/View";
 import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
-import { IMenuData } from "./createMenuData";
+import { IMenuState } from "./createMenuData";
 
-export function createMenuStateObjects(getData: () => IMenuData): IGameObject {
-    let data: IMenuData = getData();
-    let sound: Sound = new Sound(data.musicFilename, false, true, () => { return { play: true }; });
+export function createMenuStateObjects(getData: () => IMenuState): IGameObject {
+    let data: IMenuState = getData();
+    let sound: Sound = new Sound(data.sound.musicFilename, false, true, () => { return { play: true }; });
     let field1: IGameObject = createBackgroundField(() => data.starField1, 16);
     let field2: IGameObject = createBackgroundField(() => data.starField2, 32);
     let title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
@@ -19,9 +19,9 @@ export function createMenuStateObjects(getData: () => IMenuData): IGameObject {
     let y: number = 100;
 
     // todo: crude for loop
-    for (let i: number = 0; i < data.menuItems.length; i++) {
-        data.originalItems.push(data.menuItems[i]);
-        gameObject.views.push(new TextView(() => data.menuItems[i], new Coordinate(x, y), data.font, data.fontSize));
+    for (let i: number = 0; i < data.menu.menuItems.length; i++) {
+        data.menu.originalItems.push(data.menu.menuItems[i]);
+        gameObject.views.push(new TextView(() => data.menu.menuItems[i], new Coordinate(x, y), data.font, data.fontSize));
         y += 50;
     }
     return gameObject;

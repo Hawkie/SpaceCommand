@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     entry: path.join(__dirname, '/src/ts/main.ts'),
-    mode: "production",
+    mode: "development",
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -23,7 +23,6 @@ module.exports = {
     },
     plugins: [ new CopyWebpackPlugin([
         { from: 'src/html/index.html' },
-        { from: 'dist/bundle.js', to: 'js/' },
         { from: 'res', to: 'res/' },
         { from: 'src/css', to: 'css/' }
       ])],

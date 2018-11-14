@@ -95,6 +95,8 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         },
         exhaust: {
             exhaustParticleField: {
+                accumulatedModifier: 0,
+                toAdd: 0,
                 particles: [],
                 particleSize: 1,
                 particlesPerSecond: 20,
@@ -106,6 +108,8 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
             soundFilename: "res/sound/thrust.wav"},
         explosion: {
             explosionParticleField: {
+                accumulatedModifier: 0,
+                toAdd: 0,
                 particles: [],
                 particleSize: 3,
                 particlesPerSecond: 100,

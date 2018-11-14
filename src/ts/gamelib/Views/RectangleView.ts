@@ -19,3 +19,14 @@ export class RectangleView implements IView {
             rectangle.height);
     }
 }
+
+export function DisplayRectangle(drawContext: DrawContext,
+    x: number,
+    y: number,
+    width: number,
+    height: number): void {
+        drawContext.fillRect(x,
+            y,
+            width,
+            height);
+}
