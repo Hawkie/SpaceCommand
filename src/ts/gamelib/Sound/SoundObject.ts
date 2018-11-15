@@ -1,25 +1,56 @@
 ﻿export interface IAudioObject {
-    ready: boolean;
+    playOnce(): void;
     play(): void;
     pause(): void;
 }
 
 export class AudioObject implements IAudioObject {
     private audioElement: HTMLAudioElement;
-    private r: boolean = false;
-    get ready(): boolean { return this.r; }
+    private _ready: boolean = false;
+    private _playing: boolean = false;
+    private get ready(): boolean { return this._ready; }
+    private get playing(): boolean { return this._playing; }
 
     constructor(private source: string,
         private loop: boolean = false) {
         this.audioElement = new Audio(this.source);
-        this.audioElement.oncanplay = (ev: Event) => {this.r = true;};
+        this.audioElement.oncanplay = this.canplay.bind(this);
+        this.audioElement.onloadeddata = this.loaded.bind(this);
+        this.audioElement.onplaying = this.played.bind(this);
         this.audioElement.loop = this.loop;
     }
 
-    play(): void {
-        if (this.ready) {
-            this.audioElement.play();
+    private canplay(ev: Event): void {
+        console.log("canplay: " + this.source);
+        this._ready = true;
+    }
+
+    private loaded(ev:Event): void {
+        console.log("loaded: " + this.source);
+    }
+
+    private played(ev:Event): void {
+        console.log("playing: " + this.source);
+        this._playing = true;
+    }
+
+    playOnce(): void {
+        if (this.ready && !this.playing) {
+            let p: Promise<void> = this.audioElement.play();
+            if (p !== undefined) {
+                p.then(r => {
+                    this._playing = true;
+                    console.log("played: " + this.source);
+                });
+                p.catch(e => {
+                    console.log("play failed: " + this.source);
+                });
+           }
         }
+    }
+
+    play(): void {
+        this.playOnce();
     }
 
     pause(): void {

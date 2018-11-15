@@ -7,7 +7,6 @@ import { fieldToView, reduceField } from "./FieldComponent";
 import { reduceMenu, menuItemsToView } from "./MenuComponent";
 import { titleToView } from "./TitleComponent";
 import { reduceKeys, IMenuControl } from "./KeysComponent";
-import { reduceSound, stateToAudio } from "./SoundComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IParticle } from "../../Objects/Particle/IParticle";
 
@@ -38,7 +37,7 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
     switch (action.type) {
         case "UPDATE": {
             return Object.assign({}, state, {
-                starField1: reduceField(timeModifier, state.starField1, 2, (now: number) => {
+                starField1: reduceField(timeModifier, state.starField1, true, 2, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,
@@ -48,7 +47,7 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
                         size: 1,
                     };
                 }),
-                starField2: reduceField(timeModifier, state.starField2, 3, (now: number) => {
+                starField2: reduceField(timeModifier, state.starField2, true, 3, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,
@@ -65,11 +64,6 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
             return Object.assign({}, state, {
                 control: controls,
                 menu: reduceMenu(timeModifier, state.menu, controls)
-            });
-        }
-        case "SOUND": {
-            return Object.assign({}, state, {
-                sound: reduceSound(timeModifier, state.sound, action.soundPlaying)
             });
         }
         default: return Object.assign({}, state);
@@ -96,9 +90,7 @@ export class MenuState implements IGameState {
 
     sound(timeModifier: number): void {
         const menuState: IMenuState = this.menuState;
-        let playing: boolean = stateToAudio(this.menuMusic, menuState.sound.playing);
-        // change state!!
-        this.menuState = reduceState(timeModifier, menuState, {type: "SOUND", keys: null, soundPlaying: playing});
+        this.menuMusic.playOnce();
     }
 
     input(keys: KeyStateProvider, timeModifier: number): void {

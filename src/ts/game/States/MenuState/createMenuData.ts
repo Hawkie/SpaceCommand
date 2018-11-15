@@ -1,7 +1,6 @@
 import { IParticleField } from "../Asteroids/createAsteroidData";
 import { IMenu } from "./MenuComponent";
 import { IMenuControl } from "./KeysComponent";
-import { IMenuSound } from "./SoundComponent";
 
 export interface IMenuState {
     sound: IMenuSound;
@@ -14,11 +13,14 @@ export interface IMenuState {
     control: IMenuControl;
 
 }
+
+export interface IMenuSound {
+    musicFilename: string;
+}
 export function createMenuData(): IMenuState {
     return {
         sound: {
             musicFilename: "res/sound/TimePortal.mp3",
-            playing: false,
         },
         title: "Menu",
         font: "Arial",
