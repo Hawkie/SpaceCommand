@@ -40,7 +40,7 @@ export function move(timeModifier: number, Vx: number, Vy: number): IMoveOut {
 
 
 // reducer generates new object with new x and y values to go back into state
-export function Move<TState extends IMoveable>(timeModifier: number, moveable: TState, Vx: number, Vy: number): TState {
+export function MoveWithVelocity<TState extends IMoveable>(timeModifier: number, moveable: TState, Vx: number, Vy: number): TState {
     return Object.assign({}, moveable, {
         x: moveable.x + (Vx * timeModifier),
         y: moveable.y + (Vy * timeModifier),

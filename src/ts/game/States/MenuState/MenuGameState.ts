@@ -13,9 +13,9 @@ import { IParticle } from "../../Objects/Particle/IParticle";
 
 
 // when creating a game state - create the data and then bind to the objects
-export function createMenuState2(): MenuState2 {
+export function createMenuState(): MenuState {
 
-    return new MenuState2("Menu", createMenuData());
+    return new MenuState("Menu", createMenuData());
 }
 
 // map whole state to view/ctx functions
@@ -38,7 +38,7 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
     switch (action.type) {
         case "UPDATE": {
             return Object.assign({}, state, {
-                starField1: reduceField(timeModifier, state.starField1, (now: number) => {
+                starField1: reduceField(timeModifier, state.starField1, 2, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,
@@ -48,7 +48,7 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
                         size: 1,
                     };
                 }),
-                starField2: reduceField(timeModifier, state.starField2, (now: number) => {
+                starField2: reduceField(timeModifier, state.starField2, 3, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,
@@ -77,7 +77,7 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
 }
 
 
-export class MenuState2 implements IGameState {
+export class MenuState implements IGameState {
     private menuMusic: IAudioObject;
     constructor(public name: string,
         private menuState: IMenuState) {

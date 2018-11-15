@@ -1,4 +1,4 @@
-import { move, IMoveOut, IMoveable, Move } from "./Movers";
+import { IMoveable, MoveWithVelocity } from "./Movers";
 
 
 test("mover", () => {
@@ -10,7 +10,7 @@ test("mover", () => {
     const Vy: number = 10;
     const TIMEMODIFIER: number = 100;
 
-    let result: IMoveable = Move(TIMEMODIFIER, m, Vx, Vy);
+    let result: IMoveable = MoveWithVelocity(TIMEMODIFIER, m, Vx, Vy);
     expect(result.x).toBeCloseTo(510);
     expect(result.y).toBeCloseTo(1020);
 });
