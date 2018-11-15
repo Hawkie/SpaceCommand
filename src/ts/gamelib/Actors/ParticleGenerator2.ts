@@ -44,11 +44,40 @@ export class ParticleGenerator2 implements IActor {
     }
 }
 
+export interface IGenerationState {
+    accumulatedModifier: number;
+    toAdd: number;
+}
+
+export interface IGenerationInputs {
+    particlesPerSecond: number;
+    on: boolean;
+}
+
+
+export function GenerationCheck<TState extends IGenerationState>(timeModifier: number,
+        inputState: TState,
+        particlesPerSecond: number): TState {
+    let accumulatedTime: number = inputState.accumulatedModifier + timeModifier;
+    let a: number = particlesPerSecond * accumulatedTime;
+    let toAdd: number = Math.floor(a);
+    if (particlesPerSecond !== 0) {
+        // reset - but could make this better.
+        let remainder: number = (a - toAdd)/particlesPerSecond;
+        accumulatedTime = remainder;
+    }
+    return Object.assign({}, inputState, {
+        accumulatedModifier: accumulatedTime,
+        toAdd: toAdd,
+    });
+}
+
 // pure function. Read only inputs are on, perSec, maxGen. State that changes is lastCheck.
-export function GenerateParticles(timeModifier: number, toAdd: number,
-    createParticle: (now: number)=>IParticle): IParticle[] {
+export function CreateParticles<T>(timeModifier: number,
+        toAdd: number,
+        createParticle: (now: number)=>T): T[] {
     let now: number = Date.now();
-    let generatedParticles: IParticle[] = [];
+    let generatedParticles: T[] = [];
     for (let i: number = 0; i < toAdd; i++) {
         generatedParticles.push(createParticle(now));
     }

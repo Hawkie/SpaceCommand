@@ -1,14 +1,15 @@
 import { DrawContext} from "../../../gamelib/1Common/DrawContext";
 import { IGameState } from "../../../gamelib/GameState/GameState";
-import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
-import { createMenuData, IMenuState, IMenu, IMenuControl, IMenuSound } from "./createMenuData";
-import { IParticle } from "../../Objects/Particle/IParticle";
-import { DisplayRectangle } from "../../../gamelib/Views/RectangleView";
-import { DrawText } from "../../../gamelib/Views/TextView";
-import { IParticleField } from "../Asteroids/createAsteroidData";
-import { GenerateParticles } from "../../../gamelib/Actors/ParticleGenerator2";
-import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
+import { createMenuData, IMenuState } from "./createMenuData";
 import { IAudioObject, AudioObject } from "../../../gamelib/Sound/SoundObject";
+import { fieldToView, reduceField } from "./FieldComponent";
+import { reduceMenu, menuItemsToView } from "./MenuComponent";
+import { titleToView } from "./TitleComponent";
+import { reduceKeys, IMenuControl } from "./KeysComponent";
+import { reduceSound, stateToAudio } from "./SoundComponent";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { IParticle } from "../../Objects/Particle/IParticle";
 
 
 // when creating a game state - create the data and then bind to the objects
@@ -23,40 +24,7 @@ export function stateToView(ctx: DrawContext, state: IMenuState): void {
     fieldToView(ctx, state.starField1.particles);
     fieldToView(ctx, state.starField2.particles);
     titleToView(ctx, state.title);
-    menuItemsToView(ctx, 200, 100, state.menu.menuItems, state.font, state.fontSize);
-}
-
-// map field data (particles[]) to particle view
-export function fieldToView(ctx: DrawContext, particles: IParticle[]): void {
-    particles.forEach(p => particleToView(ctx, p));
-}
-
-// map title to text view
-export function titleToView(ctx: DrawContext, title: string): void {
-    DrawText(ctx, 10, 20, title, "Arial", 18);
-}
-
-// takes particle data and maps to rectangle data.
-export function particleToView(ctx: DrawContext, p: IParticle): void {
-    DisplayRectangle(ctx, p.x, p.y, p.size, p.size);
-}
-
-export function menuItemsToView(ctx: DrawContext, x: number, y: number, menuItems: string[], font: string, fontSize: number): void {
-    // todo: crude for loop
-    for (let i: number = 0; i < menuItems.length; i++) {
-        DrawText(ctx, x, y, menuItems[i], font, fontSize);
-        y += 50;
-    }
-}
-
-export function stateToAudio(audio: IAudioObject, playing: boolean): boolean {
-    if (audio.ready) {
-        if (!playing) {
-            audio.play();
-        }
-        return true;
-    }
-    return false;
+    menuItemsToView(ctx, 200, 100, state.menu);
 }
 
 export interface IStateAction {
@@ -70,12 +38,26 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
     switch (action.type) {
         case "UPDATE": {
             return Object.assign({}, state, {
-                starField1: MoveParticleField(timeModifier,
-                    AddToParticleField(timeModifier,
-                        GenerationCheck(timeModifier, state.starField1))),
-                starField2: MoveParticleField(timeModifier,
-                    AddToParticleField(timeModifier,
-                        GenerationCheck(timeModifier, state.starField2))),
+                starField1: reduceField(timeModifier, state.starField1, (now: number) => {
+                    return {
+                        x: Transforms.random(0, 512),
+                        y: 0,
+                        Vx: 0,
+                        Vy: Transforms.random(10, 30),
+                        born: now,
+                        size: 1,
+                    };
+                }),
+                starField2: reduceField(timeModifier, state.starField2, (now: number) => {
+                    return {
+                        x: Transforms.random(0, 512),
+                        y: 0,
+                        Vx: 0,
+                        Vy: Transforms.random(30, 50),
+                        born: now,
+                        size: 2,
+                    };
+                })
             });
         }
         case "INPUT": {
@@ -95,145 +77,6 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
 }
 
 
-// export function reducerParticleField2<A>(particleField: IParticleField, action: A): IParticleField {
-// }
-
-// move
-
-// pure function
-export function MoveParticleField(timeModifier: number, particleField: IParticleField): IParticleField {
-    let newParticles: IParticle[] = MoveParticles(timeModifier, particleField.particles);
-    return Object.assign({}, particleField, {
-        particles: newParticles
-    });
-}
-
-// pure function
-export function MoveParticles(timeModifier: number, particles: IParticle[]): IParticle[] {
-    return particles.map((p)=> MoveParticle(timeModifier, p));
-}
-
-// pure function
-export function MoveParticle(timeModifier: number, particle: IParticle): IParticle {
-    return Object.assign({}, particle, {
-        x: particle.x + (particle.Vx * timeModifier),
-        y: particle.y + (particle.Vy * timeModifier),
-    });
-}
-
-
-// add
-export function AddToParticleField(timeModifier: number, starField: IParticleField): IParticleField {
-    return Object.assign({}, starField, {
-        particles: AddParticles(starField.particles,
-            GenerateNewParticles(timeModifier, starField))
-    });
-}
-
-export function GenerationCheck(timeModifier: number, starField: IParticleField): IParticleField {
-    let accumulatedTime: number = starField.accumulatedModifier;
-    let toAdd: number = 0;
-    if (starField.on) {
-        accumulatedTime += timeModifier;
-        let a: number = starField.particlesPerSecond * accumulatedTime;
-        toAdd = Math.floor(a);
-        if (toAdd > 0) {
-            // reset - but could make this better.
-            let remainder: number = (a - toAdd)/starField.particlesPerSecond;
-            accumulatedTime = remainder;
-        }
-    }
-    return Object.assign({}, starField, {
-        accumulatedModifier: accumulatedTime,
-        toAdd: toAdd,
-    });
-}
-
-// generate actions are pure functions
-export function GenerateNewParticles(timeModifier: number, inputField: IParticleField): IParticle[] {
-    // find the integer number of particles to add. conservatively round down
-    let newParticles: IParticle[] = GenerateParticles(timeModifier, inputField.toAdd,
-        (now: number) => {
-            let p: IParticle = {
-                x: Transforms.random(0, 512),
-                y: 0,
-                Vx: 0,
-                Vy: Transforms.random(10, 50),
-                born: now,
-                size: inputField.particleSize,
-        };
-        return p;
-    });
-    return newParticles;
-}
-
-// pure functions - create new
-export function AddParticles(particles: IParticle[], toAdd: IParticle[]): IParticle[] {
-    return particles.concat(toAdd);
-}
-
-// pure functions - create new
-export function reducerRemoveParticles(particles: IParticle[], toRemove: number[]): IParticle[] {
-    return particles;
-}
-
-export function reduceKeys(timeModifier: number, keys: number[]): IMenuControl {
-    let controls: IMenuControl = {
-        up: false,
-        down: false,
-        enter: false,
-    };
-    if (keys.indexOf(Keys.UpArrow) > -1) {
-        controls.up = true;
-    }
-    if (keys.indexOf(Keys.DownArrow) > -1) {
-        controls.down = true;
-    }
-    if (keys.indexOf(Keys.Enter) > -1) {
-        controls.enter = true;
-    }
-    return controls;
-}
-
-
-// pure fucntion that takes a menu action and updates the selected text. returns new menu
-export function reduceMenu(timeModifier: number, menu: IMenu, controls: IMenuControl): IMenu {
-    let now: number = Date.now();
-    let focus: number = menu.itemFocus;
-    if ((now - menu.lastMoved) > 150) {
-        if (controls.up) {
-            focus = Math.max(menu.itemFocus - 1, 0);
-        }
-        if (controls.down) {
-            focus = Math.min(menu.itemFocus + 1, menu.menuItems.length - 1);
-        }
-        let menuItems: string[] = [];
-        for (let i: number = 0; i < menu.originalItems.length; i++) {
-            if (i === focus) {
-                menuItems.push("<" + menu.originalItems[i] + ">");
-            } else {
-                menuItems.push(" " + menu.originalItems[i] + " ");
-            }
-        }
-        // change state of menu focus
-        return Object.assign({}, menu, {
-            itemFocus: focus,
-            selected: controls.enter,
-            menuItems: menuItems,
-            lastMoved: now,
-        });
-    }
-    // return copy of menmu
-    return Object.assign({}, menu);
-}
-
-// pure function that returns new sound
-export function reduceSound(timeModifier: number, sound: IMenuSound, playing: boolean): IMenuSound {
-    return Object.assign({}, sound, {
-        playing: playing,
-    });
-}
-
 export class MenuState2 implements IGameState {
     private menuMusic: IAudioObject;
     constructor(public name: string,
@@ -248,7 +91,6 @@ export class MenuState2 implements IGameState {
     }
 
     display(ctx: DrawContext): void {
-
         stateToView(ctx, this.menuState);
     }
 

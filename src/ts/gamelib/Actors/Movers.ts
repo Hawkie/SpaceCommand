@@ -37,20 +37,12 @@ export function move(timeModifier: number, Vx: number, Vy: number): IMoveOut {
     };
 }
 
-// reducer generates new object with new x and y values to go back into state
-export function MoveReducer<T extends IMoveable>(moveable: T, v: IMoveOut): T {
-    const newMoveable:T = Object.assign({},
-        moveable, {
-            x: moveable.x + v.dx,
-            y: moveable.y + v.dy
-        });
-    return newMoveable;
-}
 
-// function that takes velocity and time and a moveable object. Returns a copy of the moved object.
-export function Move<T extends IMoveable>(timeModifier: number, Vx: number, Vy: number, moveable: T): T {
-    // reducer with action to new object
-    const v: IMoveOut = move(timeModifier, Vx, Vy);
-    const o: T = MoveReducer<T>(moveable, v);
-    return o;
+
+// reducer generates new object with new x and y values to go back into state
+export function Move<TState extends IMoveable>(timeModifier: number, moveable: TState, Vx: number, Vy: number): TState {
+    return Object.assign({}, moveable, {
+        x: moveable.x + (Vx * timeModifier),
+        y: moveable.y + (Vy * timeModifier),
+    });
 }

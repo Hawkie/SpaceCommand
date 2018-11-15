@@ -1,7 +1,6 @@
 import { IGameState } from "../../gamelib/GameState/GameState";
 import { createGameState } from "../States/Asteroids/AsteroidGameState";
 import { createLandExplorerGameState } from "../States/LandExplorer/LandExplorerGameState";
-import { createMenuState } from "../States/MenuState/MenuGameState";
 import { createMenuState2 } from "../States/MenuState/MenuGameState2";
 // import { LandingState } from "ts/States/Land/LandingState";
 // import { SoundDesignerState } from "ts/States/SoundDesigner/SoundDesignerState";

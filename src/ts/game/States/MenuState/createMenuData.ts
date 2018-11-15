@@ -1,24 +1,7 @@
 import { IParticleField } from "../Asteroids/createAsteroidData";
-import { IAudioObject, AudioObject } from "../../../gamelib/Sound/SoundObject";
-
-export interface IMenu {
-    lastMoved: number;
-    selected: boolean;
-    itemFocus: number;
-    menuItems: string[];
-    originalItems: string[];
-}
-
-export interface IMenuControl {
-    up: boolean;
-    down: boolean;
-    enter: boolean;
-}
-
-export interface IMenuSound {
-    musicFilename: string;
-    playing: boolean;
-}
+import { IMenu } from "./MenuComponent";
+import { IMenuControl } from "./KeysComponent";
+import { IMenuSound } from "./SoundComponent";
 
 export interface IMenuState {
     sound: IMenuSound;
@@ -66,8 +49,9 @@ export function createMenuData(): IMenuState {
             lastMoved: 0,
             selected: false,
             itemFocus: 0,
+            font: "Arial",
+            fontSize: 16,
             menuItems: ["Asteroids", "Lander"],
-            originalItems: ["Asteroids", "Lander"],
         },
         control: {
             up: false,
