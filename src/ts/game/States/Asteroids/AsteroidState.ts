@@ -16,7 +16,7 @@ import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
 import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
 import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid } from "../../Components/AsteroidComponent";
-import { IBall, CreateBall } from "../../Components/BallComponent";
+import { IBall, CreateBall, UpdateBall } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 
 export interface IAsteroidsState {
@@ -233,6 +233,7 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
                 size: 1,
             };
         }),
+        // ball: UpdateBall(timeModifier, state.ball),
         asteroids: UpdateAsteroids(timeModifier, state.asteroids)
         });
 }

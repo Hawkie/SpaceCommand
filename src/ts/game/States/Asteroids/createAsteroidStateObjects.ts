@@ -14,11 +14,10 @@ import { createExhaustObj } from "../../../../../src/ts/game/Objects/Ship/create
 import { createWeaponObject } from "../../../../../src/ts/game/Objects/Ship/createWeaponObject";
 import { createCoinObject } from "../../Objects/Asteroids/createCoinObject";
 import { createGraphicShipObject } from "../../Objects/Asteroids/createGraphicShipObject";
-import { createAsteroidObject } from "../../Objects/Asteroids/createAsteroidObject";
-import { createBallObject } from "../../Objects/Asteroids/createBallObject";
 import { createShipBallObject } from "../../Objects/Asteroids/createShipBallObject";
 import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
 import { IAsteroid } from "../../Components/AsteroidComponent";
+import { createBallObject } from "../../Objects/Asteroids/createBallObject";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
@@ -32,7 +31,7 @@ export interface IAsteroidStateObject {
 export function createAsteroidStateObject(getData: () => IAsteroidsState): IAsteroidStateObject {
     let data: IAsteroidsState = getData();
 
-    let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
+    // let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
     let shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);
     let weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>data.controls,
     ()=> data.ship, () => data.ship.weapon1);
@@ -61,7 +60,7 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
         weaponObj: weaponObj,
         // asteroidObjs: asteroidObjs,
         views: [title, score, scoreDisplay, angleDisplay],
-        sceneObjs: [starFieldObj, shipObj, weaponObj, exhaustObj, explosionObj, shipBallObj,
+        sceneObjs: [shipObj, weaponObj, exhaustObj, explosionObj, shipBallObj,
             coinObj, ballObj, gShipObj],
     };
     return aObjs;

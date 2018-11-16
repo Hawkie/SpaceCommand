@@ -11,7 +11,6 @@ import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject"
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
     SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState } from "./AsteroidState";
 import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
-import { createAsteroidObject } from "../../../../../src/ts/game/Objects/Asteroids/createAsteroidObject";
 import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 import { IAsteroid, CreateAsteroid } from "../../Components/AsteroidComponent";
 import { IAsteroidStateStatic, CreateAsteroidGameStatic } from "./AsteroidGameStatic";
