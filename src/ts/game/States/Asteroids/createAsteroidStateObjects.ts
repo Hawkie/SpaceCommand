@@ -1,4 +1,4 @@
-import { IAsteroid, AsteroidModels, IAsteroidsState } from "./AsteroidState";
+import { IAsteroidsState } from "./AsteroidState";
 import { IView } from "../../../gamelib/Views/View";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
@@ -18,12 +18,13 @@ import { createAsteroidObject } from "../../Objects/Asteroids/createAsteroidObje
 import { createBallObject } from "../../Objects/Asteroids/createBallObject";
 import { createShipBallObject } from "../../Objects/Asteroids/createShipBallObject";
 import { createBackgroundField } from "../../Objects/Particle/createBackgroundField";
+import { IAsteroid } from "../../Components/AsteroidComponent";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
     shipObj: SingleGameObject;
     weaponObj: MultiGameObject<SingleGameObject>;
-    asteroidObjs: MultiGameObject<SingleGameObject>;
+    // asteroidObjs: MultiGameObject<SingleGameObject>;
     views: IView[];
     sceneObjs: IGameObject[];
 }
@@ -41,7 +42,7 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
     let shipBallObj: SingleGameObject = createShipBallObject(() => data.ship, () => data.ball);
     let coinObj: SingleGameObject = createCoinObject(() => data.coin);
     let gShipObj: SingleGameObject = createGraphicShipObject(() => data.graphicShip);
-    let asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => data.asteroids.asteroids);
+    // let asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => data.asteroids.asteroids);
     // let breakSound: IActor = new Sound(data.asteroids.breakSoundFilename, true, false, () => {
     //     return {
     //         play: data.asteroids.playBreakSound,
@@ -58,7 +59,7 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
     let aObjs: IAsteroidStateObject = {
         shipObj: shipObj,
         weaponObj: weaponObj,
-        asteroidObjs: asteroidObjs,
+        // asteroidObjs: asteroidObjs,
         views: [title, score, scoreDisplay, angleDisplay],
         sceneObjs: [starFieldObj, shipObj, weaponObj, exhaustObj, explosionObj, shipBallObj,
             coinObj, ballObj, gShipObj],
@@ -66,15 +67,15 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
     return aObjs;
 }
 
-export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
-    MultiGameObject<SingleGameObject> {
-    let asteroidArray: SingleGameObject[] = [];
-    let asteroidObjs: MultiGameObject<SingleGameObject> =
-        new MultiGameObject<SingleGameObject>([], [], () => asteroidArray);
-    getAsteroids().forEach(a => {
-        asteroidObjs.getComponents().push(createAsteroidObject(() => a));
-    });
-    return asteroidObjs;
-}
+// export function createAsteroidObjs(getAsteroids: () => IAsteroid[]):
+//  a   MultiGameObject<SingleGameObject> {
+//     let asteroidArray: SingleGameObject[] = [];
+//     let asteroidObjs: MultiGameObject<SingleGameObject> =
+//         new MultiGameObject<SingleGameObject>([], [], () => asteroidArray);
+//     getAsteroids().forEach(a => {
+//         asteroidObjs.getComponents().push(createAsteroidObject(() => a));
+//     });
+//     return asteroidObjs;
+// }
 
 

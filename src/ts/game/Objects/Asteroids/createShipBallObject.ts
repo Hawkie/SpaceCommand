@@ -1,8 +1,8 @@
-import { IBall } from "../../States/Asteroids/AsteroidState";
 import { LineView } from "../../../gamelib/Views/LineView";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { CompositeAccelerator, IRodOutputs } from "../../../gamelib/Actors/CompositeAccelerator";
 import { IShip } from "../Ship/IShip";
+import { IBall } from "../../Components/BallComponent";
 
 // create a ship and ball attached by a line with a composite accelerator to
 // handle the physics between the two objects

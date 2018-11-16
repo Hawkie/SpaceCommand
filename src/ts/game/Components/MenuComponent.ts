@@ -41,7 +41,7 @@ export function UpdateMenu(timeModifier: number, menu: IMenu, controls: IMenuCon
     let now: number = Date.now();
     let focus: number = menu.itemFocus;
     let moved: boolean = false;
-    if (timeModifier > 150) {
+    if (now-menu.lastMoved > 150) {
         if (controls.up) {
             focus = Math.max(menu.itemFocus - 1, 0);
             moved = true;

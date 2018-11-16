@@ -1,6 +1,4 @@
-import { IAsteroid } from "../../States/Asteroids/AsteroidState";
-import { IView } from "../../../gamelib/Views/View";
-import { PolyGraphicAngledView } from "../../../gamelib/Views/PolyGraphicAngled";
+
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
@@ -8,6 +6,7 @@ import { PolyRotator } from "../../../gamelib/Actors/Rotators";
 import { Spinner } from "../../../gamelib/Actors/Spinner";
 import { IShape } from "../../../gamelib/DataTypes/Shape";
 import { createWrapActor } from "../../../gamelib/Actors/Wrap";
+import { IAsteroid } from "../../Components/AsteroidComponent";
 
 // creates a graphical view asteroid with and spin, velocity
 export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameObject {
@@ -46,15 +45,15 @@ export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameOb
             upLimit: 480,
         };
     }, (a) => asteroid.y = a);
-    let view: IView = new PolyGraphicAngledView(() => {
-        return {
-            x: asteroid.x,
-            y: asteroid.y,
-            shape: asteroid.shape,
-            graphic: asteroid.graphic,
-            angle: asteroid.angle,
-        };
-    });
-    let asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], [view]);
+    // let view: IView = new PolyGraphicAngledView(() => {
+    //     return {
+    //         x: asteroid.x,
+    //         y: asteroid.y,
+    //         shape: asteroid.shape,
+    //         graphic: asteroid.graphic,
+    //         angle: asteroid.angle,
+    //     };
+    // });
+    let asteroidObject: SingleGameObject = new SingleGameObject([mover, spinner, rotator, wrapx, wrapy], []);
     return asteroidObject;
 }

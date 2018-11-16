@@ -1,7 +1,6 @@
 import { IActor } from "../../../../src/ts/gamelib/Actors/Actor";
 import { IMenuState } from "../../game/States/MenuState/MenuState";
 import { IParticle } from "../../game/Objects/Particle/IParticle";
-import { IParticleField } from "../../game/States/Asteroids/AsteroidState";
 // could use <T> instead of IGameObject
 
 export interface IParticleGenInputs2 {

@@ -1,7 +1,7 @@
-import { IParticleField } from "../../States/Asteroids/AsteroidState";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { createParticleField } from "./createParticleField";
+import { IParticleField } from "../../Components/FieldComponent";
 // todo add the edge predicate to background
 //     let edge1:PredGreaterThan<IParticle> = new PredGreaterThan(()=>700, (p: IParticle)=> p.y);
 export function createBackgroundField(getField: () => IParticleField, speed: number): MultiGameObject<SingleGameObject> {

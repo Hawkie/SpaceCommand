@@ -1,8 +1,7 @@
-import { IParticleField } from "../Asteroids/AsteroidState";
 import { IMenu, UpdateMenu, SoundMenu, DisplayMenu } from "../../Components/MenuComponent";
 import { IMenuControls, UpdateMenuControls } from "./MenuControlsComponent";
 import { Game } from "../../Game/Game";
-import { UpdateField, DisplayField } from "../../Components/FieldComponent";
+import { UpdateField, DisplayField, IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
@@ -22,28 +21,8 @@ export function CreateMenuState(): IMenuState {
         title: "Menu",
         font: "Arial",
         fontSize: 18,
-        starField1: {
-            particles: [],
-            accumulatedModifier: 0,
-            toAdd: 0,
-            particlesPerSecond: 2,
-            maxParticlesPerSecond: 2,
-            particleLifetime: 40,
-            particleSize: 1,
-            on: true,
-            gravityStrength: 0,
-        },
-        starField2: {
-            particles: [],
-            accumulatedModifier: 0,
-            toAdd: 0,
-            particlesPerSecond: 2,
-            maxParticlesPerSecond: 2,
-            particleLifetime: 20,
-            particleSize: 2,
-            on: true,
-            gravityStrength: 0,
-        },
+        starField1: CreateField(true, 2, 2, 1),
+        starField2: CreateField(true, 2, 2, 2),
         menu: {
             lastMoved: 0,
             selected: false,
