@@ -1,13 +1,13 @@
 import { Keys } from "../../../gamelib/1Common/KeyStateProvider";
 
-export interface IMenuControl {
+export interface IMenuControls {
     up: boolean;
     down: boolean;
     enter: boolean;
 }
 
-export function reduceKeys(timeModifier: number, keys: number[]): IMenuControl {
-    let controls: IMenuControl = {
+export function UpdateMenuControls(timeModifier: number, keys: number[]): IMenuControls {
+    let controls: IMenuControls = {
         up: false,
         down: false,
         enter: false,

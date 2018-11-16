@@ -5,8 +5,20 @@ import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprit
 import { IParticle } from "../../Objects/Particle/IParticle";
 import { createShip, IShip } from "../../Objects/Ship/IShip";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
+import { DrawContext } from "../../../gamelib/1Common/DrawContext";
+import { DisplayTitle } from "../../Components/TitleComponent";
+import { DisplayField } from "../../Components/FieldComponent";
+import { DrawText } from "../../../gamelib/Views/TextView";
+import { DrawNumber } from "../../../gamelib/Views/ValueView";
+import { DrawPoly } from "../../../gamelib/Views/PolyViews";
+import { DrawPolyGraphicAngled } from "../../../gamelib/Views/PolyGraphicAngled";
+import { Game } from "../../Game/Game";
+import { DrawCircle } from "../../../gamelib/Views/CircleView";
+import { DrawLine } from "../../../gamelib/Views/LineView";
+import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
+import { DisplayAsteroid } from "../../Components/AsteroidComponent";
 
-export interface IAsteroidData {
+export interface IAsteroidsState {
     stateConfig: IGameStateConfig;
     controls: IControls;
     starField: IParticleField;
@@ -18,12 +30,6 @@ export interface IAsteroidData {
     graphicShip: IGraphicShip;
     score: number;
     title: string;
-}
-
-export interface ISyncedArray<T> {
-    items: T[];
-    newItems: T[];
-    oldItems: number[];
 }
 
 export interface IControls {
@@ -61,7 +67,6 @@ export interface IAsteroid {
 export interface IAsteroids {
     asteroids: IAsteroid[];
     playBreakSound: boolean;
-    breakSoundFilename: string;
 }
 
 export interface IGraphicShip {
@@ -96,7 +101,7 @@ export interface IBall {
 }
 
 
-export function createAsteroidData(): IAsteroidData {
+export function CreateAsteroidsState(): IAsteroidsState {
     let starField: IParticleField = createStarFieldData();
     let ship: IShip = createShip(256, 240, 0);
     let ball: IBall = createBallData(256, 280);
@@ -105,7 +110,6 @@ export function createAsteroidData(): IAsteroidData {
     let asteroidState: IAsteroids = {
         asteroids: asteroids,
         playBreakSound: false,
-        breakSoundFilename: "res/sound/blast.wav",
     };
     let graphicShip: IGraphicShip = createGraphicShipData(200, 100);
     let stateConfig: IGameStateConfig = {
@@ -114,7 +118,7 @@ export function createAsteroidData(): IAsteroidData {
     };
 
     // things that change
-    let asteroidData: IAsteroidData = {
+    let asteroidData: IAsteroidsState = {
         stateConfig: stateConfig,
         controls: {
             left: false,
@@ -246,4 +250,67 @@ export class AsteroidModels {
         };
         return a;
     }
+}
+
+export function DisplayAsteroidsState(ctx: DrawContext, state: IAsteroidsState): void {
+    DisplayTitle(ctx, state.title);
+    DisplayGUI(ctx, state.score, state.ship.angle);
+    DisplayShip(ctx, state.ship);
+    DisplayAttachedBall(ctx, state.ship, state.ball);
+    DisplayAsteroids(ctx, state.asteroids);
+    DisplayField(ctx, state.starField.particles);
+    DisplayCoin(ctx, state.coin);
+}
+
+
+export function DisplayGUI(ctx: DrawContext, score: number, angle: number): void {
+    DrawText(ctx, 400, 20, "Score:", "Arial", 18);
+    DrawNumber(ctx, 460, 20, score, "Arial", 18);
+    DrawText(ctx, 400, 20, "Score:", "Arial", 18);
+    DrawNumber(ctx, 460, 40, angle, "Arial", 18);
+}
+
+export function DisplayShip(ctx: DrawContext, ship: IShip): void {
+    DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
+    DisplayField(ctx, ship.exhaust.exhaustParticleField.particles);
+    DisplayField(ctx, ship.explosion.explosionParticleField.particles);
+    DisplayField(ctx, ship.weapon1.bullets);
+}
+
+
+export function DisplayAsteroids(ctx: DrawContext, asteroids: IAsteroids): void {
+    asteroids.asteroids.forEach((a)=> DisplayAsteroid(ctx, a));
+}
+
+export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall): void {
+    DrawCircle(ctx, ball.x, ball.y, ball.r);
+    DrawLine(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ball.x, ball.y);
+}
+
+// move graphic part of sprite to assetsg
+export function DisplayCoin(ctx: DrawContext, coin: ICoin): void {
+    DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game.assets.coinSprite);
+}
+
+export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
+    if (state.ship.crashed) {
+        Game.assets.explosion.playOnce();
+    }
+    if (state.ship.exhaust.exhaustParticleField.on) {
+        Game.assets.thrust.play();
+    } else {
+        Game.assets.thrust.pause();
+    }
+    if (state.asteroids.playBreakSound) {
+        Game.assets.blast.replay();
+    }
+    if (state.controls.fire) {
+        Game.assets.gun.replay();
+    }
+    // turn off any sounds that were triggered
+    return Object.assign({}, state, {
+        asteroids: Object.assign({}, state.asteroids, {
+            playBreakSound: false
+        })
+    });
 }

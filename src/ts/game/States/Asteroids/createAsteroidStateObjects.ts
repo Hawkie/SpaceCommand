@@ -1,4 +1,4 @@
-import { IAsteroid, AsteroidModels, IAsteroidData } from "./createAsteroidData";
+import { IAsteroid, AsteroidModels, IAsteroidsState } from "./AsteroidState";
 import { IView } from "../../../gamelib/Views/View";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
@@ -28,8 +28,8 @@ export interface IAsteroidStateObject {
     sceneObjs: IGameObject[];
 }
 
-export function createAsteroidStateObject(getData: () => IAsteroidData): IAsteroidStateObject {
-    let data: IAsteroidData = getData();
+export function createAsteroidStateObject(getData: () => IAsteroidsState): IAsteroidStateObject {
+    let data: IAsteroidsState = getData();
 
     let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
     let shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);

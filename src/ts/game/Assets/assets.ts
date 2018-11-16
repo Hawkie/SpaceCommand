@@ -3,6 +3,7 @@ import { IAudioObject, AudioObject } from "../../gamelib/Sound/AudioObject";
 
 export class AsteroidAssets {
 
+
     // graphics
     public terrain: IGraphic = new Graphic("res/img/terrain.png");
     public coinSprite: IGraphic = new Graphic("res/img/spinningCoin.png");
@@ -14,4 +15,6 @@ export class AsteroidAssets {
     public thrust: IAudioObject = new AudioObject("res/sound/thrust.wav");
     public gun: IAudioObject = new AudioObject("res/sound/raygun-01.mp3");
     public explosion: IAudioObject = new AudioObject("res/sound/explosion.wav");
+
+    public gMap:Map<string, IGraphic> = new Map<string,IGraphic>();
 }

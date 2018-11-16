@@ -8,100 +8,22 @@ import { Multi2ShapeCollisionDetector } from "../../../gamelib/Interactors/Multi
 import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
-import { AsteroidModels, IBall, IAsteroid,
-    IGraphicShip, ICoin, IAsteroidData, createAsteroidData, IAsteroids } from "./createAsteroidData";
+import { AsteroidModels, IAsteroid, IAsteroidsState,
+    CreateAsteroidsState, DisplayAsteroidsState, SoundAsteroidsState } from "./AsteroidState";
 import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
 import { createAsteroidObject } from "../../../../../src/ts/game/Objects/Asteroids/createAsteroidObject";
 import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
-import { IShip } from "../../Objects/Ship/IShip";
-import { DrawPoly } from "../../../gamelib/Views/PolyViews";
-import { DrawPolyGraphicAngled } from "../../../gamelib/Views/PolyGraphicAngled";
-import { Game } from "../../Game/Game";
-import { fieldToView } from "../../Components/FieldComponent";
-import { titleToView } from "../../Components/TitleComponent";
-import { DrawCircle } from "../../../gamelib/Views/CircleView";
-import { DrawLine } from "../../../gamelib/Views/LineView";
-import { DrawText } from "../../../gamelib/Views/TextView";
-import { DrawNumber } from "../../../gamelib/Views/ValueView";
-import { SpriteAngledView, DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
+
 
 export function createGameState(): AsteroidGameState {
     let spriteField: IGameObject = createSpriteField();
-    let state: IAsteroidData = createAsteroidData();
+    let state: IAsteroidsState = CreateAsteroidsState();
     let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
     // get state objects and add asteroid objects
     let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", state, stateObj, [spriteField]);
     return asteroidState;
 }
 
-export function stateToView(ctx: DrawContext, state: IAsteroidData): void {
-    titleToView(ctx, state.title);
-    guiToView(ctx, state.score, state.ship.angle);
-    shipToView(ctx, state.ship);
-    attachedBallToView(ctx, state.ship, state.ball);
-    asteroidsToView(ctx, state.asteroids);
-    fieldToView(ctx, state.starField.particles);
-    coinToView(ctx, state.coin);
-}
-
-export function guiToView(ctx: DrawContext, score: number, angle: number): void {
-    DrawText(ctx, 400, 20, "Score:", "Arial", 18);
-    DrawNumber(ctx, 460, 20, score, "Arial", 18);
-    DrawText(ctx, 400, 20, "Score:", "Arial", 18);
-    DrawNumber(ctx, 460, 40, angle, "Arial", 18);
-}
-
-export function shipToView(ctx: DrawContext, ship: IShip): void {
-    DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
-    fieldToView(ctx, ship.exhaust.exhaustParticleField.particles);
-    fieldToView(ctx, ship.explosion.explosionParticleField.particles);
-    fieldToView(ctx, ship.weapon1.bullets);
-}
-
-
-export function asteroidsToView(ctx: DrawContext, asteroids: IAsteroids): void {
-    asteroids.asteroids.forEach((a)=> asteroidToView(ctx, a));
-}
-export function asteroidToView(ctx: DrawContext, asteroid: IAsteroid): void {
-    DrawPolyGraphicAngled(ctx, asteroid.x + asteroid.shape.offset.x,
-        asteroid.y + asteroid.shape.offset.y,
-        asteroid.shape,
-        asteroid.angle,
-        Game.assets.terrain);
-}
-
-export function attachedBallToView(ctx: DrawContext, ship: IShip, ball: IBall): void {
-    DrawCircle(ctx, ball.x, ball.y, ball.r);
-    DrawLine(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ball.x, ball.y);
-}
-
-// move graphic part of sprite to assetsg
-export function coinToView(ctx: DrawContext, coin: ICoin): void {
-    DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game.assets.coinSprite);
-}
-
-export function stateToSound(state: IAsteroidData): IAsteroidData {
-    if (state.ship.crashed) {
-        Game.assets.explosion.playOnce();
-    }
-    if (state.ship.exhaust.exhaustParticleField.on) {
-        Game.assets.thrust.play();
-    } else {
-        Game.assets.thrust.pause();
-    }
-    if (state.asteroids.playBreakSound) {
-        Game.assets.blast.replay();
-    }
-    if (state.controls.fire) {
-        Game.assets.gun.replay();
-    }
-    // turn off any sounds that were triggered
-    return Object.assign({}, state, {
-        asteroids: Object.assign({}, state.asteroids, {
-            playBreakSound: false
-        })
-    });
-}
 
 export class AsteroidGameState implements IGameState {
     interactors: IInteractor[] = [];
@@ -110,7 +32,7 @@ export class AsteroidGameState implements IGameState {
     exitState: boolean = false;
 
     constructor(public name: string,
-        private dataModel: IAsteroidData,
+        private dataModel: IAsteroidsState,
         private stateObj: IAsteroidStateObject,
         private sceneObjects: IGameObject[]
         ) {
@@ -163,7 +85,7 @@ export class AsteroidGameState implements IGameState {
         // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
         // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
         ctx.zoom(this.zoom, this.zoom);
-        stateToView(ctx, this.dataModel);
+        DisplayAsteroidsState(ctx, this.dataModel);
         // this.sceneObjects.forEach(o => o.display(ctx));
         // this.stateObj.sceneObjs.forEach(x=>x.display(ctx));
         // this.stateObj.asteroidObjs.display(ctx);
@@ -172,8 +94,8 @@ export class AsteroidGameState implements IGameState {
     }
 
     sound(timeModifier: number): void {
-        const state: IAsteroidData = this.dataModel;
-        this.dataModel = stateToSound(state);
+        const state: IAsteroidsState = this.dataModel;
+        this.dataModel = SoundAsteroidsState(state);
     }
 
     input(keys: KeyStateProvider, timeModifier: number): void {

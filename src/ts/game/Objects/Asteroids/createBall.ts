@@ -1,6 +1,6 @@
 import { CircleView, DrawCircle } from "../../../gamelib/Views/CircleView";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
-import { IBall, createBallData } from "../../States/Asteroids/createAsteroidData";
+import { IBall, createBallData } from "../../States/Asteroids/AsteroidState";
 import { IView } from "../../../gamelib/Views/View";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { MoveConstVelocity, move, IMoveIn, IMoveOut } from "../../../gamelib/Actors/Movers";

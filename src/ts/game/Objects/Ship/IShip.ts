@@ -3,7 +3,7 @@ import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IParticle } from "../../../game/Objects/Particle/IParticle";
 import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
-import { IParticleField } from "../../States/Asteroids/createAsteroidData";
+import { IParticleField } from "../../States/Asteroids/AsteroidState";
 
 export interface IShip {
     x: number;

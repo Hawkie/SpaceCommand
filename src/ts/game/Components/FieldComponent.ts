@@ -1,7 +1,7 @@
 import { CreateParticles, GenerationCheck, IGenerationState } from "../../gamelib/Actors/ParticleGenerator2";
 import { Transforms } from "../../gamelib/Physics/Transforms";
 import { IParticle } from "../Objects/Particle/IParticle";
-import { IParticleField } from "../States/Asteroids/createAsteroidData";
+import { IParticleField } from "../States/Asteroids/AsteroidState";
 import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
@@ -20,11 +20,11 @@ export interface IMovesWithVelocity extends IMoveable {
 }
 
 // map field data (particles[]) to particle view
-export function fieldToView(ctx: DrawContext, particles: IParticle[]): void {
+export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
     particles.forEach(p =>  DisplayRectangle(ctx, p.x, p.y, p.size, p.size));
 }
 
-export function reduceField<P extends IMovesWithVelocity, F extends IGenerationField<P>>(timeModifier: number,
+export function UpdateField<P extends IMovesWithVelocity, F extends IGenerationField<P>>(timeModifier: number,
         field: F,
         on: boolean,
         particlesPerSecond: number,

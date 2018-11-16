@@ -1,4 +1,4 @@
-import { IControls } from "../../States/Asteroids/createAsteroidData";
+import { IControls } from "../../States/Asteroids/AsteroidState";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";

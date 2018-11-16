@@ -1,4 +1,4 @@
-import { IParticleField } from "../../States/Asteroids/createAsteroidData";
+import { IParticleField } from "../../States/Asteroids/AsteroidState";
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { createParticleField } from "./createParticleField";
