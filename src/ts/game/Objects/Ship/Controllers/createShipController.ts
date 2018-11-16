@@ -1,5 +1,5 @@
 import { IActor, Actor } from "../../../../gamelib/Actors/Actor";
-import { IShip, IWeapon } from "../../Ship/IShip";
+import { IShip, IWeapon } from "../ShipComponent";
 
 export interface IShipControlInputs {
     left: boolean;
@@ -10,7 +10,7 @@ export interface IShipControlInputs {
 
 // create controller that accepts left, right and up controlls and applies them to the ship object
 // uses ship control inputs as the source of the ship configuration
-export function createShipController(getInputs: () => IShipControlInputs): IActor {
+function createShipController(getInputs: () => IShipControlInputs): IActor {
     let c: IActor = new Actor(getInputs, (inputs, lastTimeModifier: number) => {
         if (!inputs.ship.crashed) {
             if (inputs.left) {

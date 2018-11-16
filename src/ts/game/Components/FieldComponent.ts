@@ -1,9 +1,16 @@
 import { CreateParticles, GenerationCheck, IGenerationState } from "../../gamelib/Actors/ParticleGenerator2";
-import { Transforms } from "../../gamelib/Physics/Transforms";
-import { IParticle } from "../Objects/Particle/IParticle";
 import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
+
+export interface IParticle {
+    x: number;
+    y: number;
+    Vx: number;
+    Vy: number;
+    born: number;
+    size: number;
+}
 
 export interface IParticleField {
     particles: IParticle[];

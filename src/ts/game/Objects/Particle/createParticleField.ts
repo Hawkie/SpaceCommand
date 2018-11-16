@@ -8,8 +8,7 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { Vector } from "../../../gamelib/DataTypes/Vector";
 import { createParticleObject } from "./createParticleObject";
 import { IFieldInputs } from "./IFieldInputs";
-import { IParticle } from "./IParticle";
-import { IParticleField } from "../../Components/FieldComponent";
+import { IParticleField, IParticle } from "../../Components/FieldComponent";
 
 // creates a particle field of game objects
 export function createParticleField(particleField: IParticleField, fieldInputs: () => IFieldInputs): MultiGameObject<SingleGameObject> {

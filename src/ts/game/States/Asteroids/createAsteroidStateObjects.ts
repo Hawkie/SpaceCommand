@@ -21,7 +21,7 @@ import { createBallObject } from "../../Objects/Asteroids/createBallObject";
 
 // list all objects that don't manage themselves separately
 export interface IAsteroidStateObject {
-    shipObj: SingleGameObject;
+    // shipObj: SingleGameObject;
     weaponObj: MultiGameObject<SingleGameObject>;
     // asteroidObjs: MultiGameObject<SingleGameObject>;
     views: IView[];
@@ -32,11 +32,11 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
     let data: IAsteroidsState = getData();
 
     // let starFieldObj: MultiGameObject<SingleGameObject> = createBackgroundField(() => data.starField, 32);
-    let shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);
+    // let shipObj: SingleGameObject = createShipObject(() => data.stateConfig, ()=> data.controls, () => data.ship);
     let weaponObj: MultiGameObject<SingleGameObject> = createWeaponObject(()=>data.controls,
     ()=> data.ship, () => data.ship.weapon1);
-    let exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
-    let explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
+    // let exhaustObj: MultiGameObject<SingleGameObject> = createExhaustObj(() => data.ship);
+    // let explosionObj: MultiGameObject<SingleGameObject> = createExplosionObj(() => data.ship);
     let ballObj: SingleGameObject = createBallObject(() => data.ball);
     let shipBallObj: SingleGameObject = createShipBallObject(() => data.ship, () => data.ball);
     let coinObj: SingleGameObject = createCoinObject(() => data.coin);
@@ -56,11 +56,11 @@ export function createAsteroidStateObject(getData: () => IAsteroidsState): IAste
     let angleDisplay: IView = new ValueView(() => data.ship.angle, new Coordinate(460, 40), "Arial", 18);
 
     let aObjs: IAsteroidStateObject = {
-        shipObj: shipObj,
+        // shipObj: shipObj,
         weaponObj: weaponObj,
         // asteroidObjs: asteroidObjs,
         views: [title, score, scoreDisplay, angleDisplay],
-        sceneObjs: [shipObj, weaponObj, exhaustObj, explosionObj, shipBallObj,
+        sceneObjs: [weaponObj, shipBallObj,
             coinObj, ballObj, gShipObj],
     };
     return aObjs;

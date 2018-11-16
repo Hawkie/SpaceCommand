@@ -7,7 +7,7 @@ import { createParticleField } from "../Particle/createParticleField";
 import { ScreenFlashView } from "../../../gamelib/Views/ScreenFlashView";
 import { Flasher } from "../../../gamelib/Actors/Switches";
 import { Timer } from "../../../gamelib/Actors/Timers";
-import { IShip } from "./IShip";
+import { IShip } from "./ShipComponent";
 
 // creates a two particle fields to represent the ship exploding.
 // turns on when the ship crashes.

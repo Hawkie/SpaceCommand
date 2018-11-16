@@ -3,8 +3,8 @@ import { IActor } from "../../../gamelib/Actors/Actor";
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { RectangleView, DisplayRectangle } from "../../../gamelib/Views/RectangleView";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
-import { IParticle } from "./IParticle";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
+import { IParticle } from "../../Components/FieldComponent";
 
 // creates a constantly moving particle with rectangle shape
 export function createParticleObject(p: IParticle): SingleGameObject {

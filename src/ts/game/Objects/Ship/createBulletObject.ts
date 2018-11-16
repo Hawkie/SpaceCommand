@@ -3,9 +3,10 @@ import { RectangleView } from "../../../gamelib/Views/RectangleView";
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
-import { IParticle } from "../../../game/Objects/Particle/IParticle";
+
 // import { Sound } from "../../../gamelib/Actors/Sound";
 import { CircleView } from "../../../gamelib/Views/CircleView";
+import { IParticle } from "../../Components/FieldComponent";
 
 export function createBulletObject(getParticle: () => IParticle): SingleGameObject {
     let particle: IParticle = getParticle();

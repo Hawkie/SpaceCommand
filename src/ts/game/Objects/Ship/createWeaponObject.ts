@@ -1,16 +1,17 @@
-import { IControls } from "../../States/Asteroids/AsteroidState";
+
 import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { createWeaponController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createWeaponController";
-import { IParticle } from "../../../../../src/ts/game/Objects/Particle/IParticle";
 import { AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
 import { ParticleRemover } from "../../../gamelib/Actors/ParticleRemover";
-import { IShip, IWeapon } from "./IShip";
+import { IShip, IWeapon } from "./ShipComponent";
 import { createBulletObject } from "./createBulletObject";
+import { IParticle } from "../../Components/FieldComponent";
+import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
 
 // creates a weapon object
-export function createWeaponObject(getControls: () => IControls,
+export function createWeaponObject(getControls: () => IAsteroidsControls,
   getShip: () => IShip,
   getWeapon: () => IWeapon): MultiGameObject<SingleGameObject> {
     let weapon: IWeapon = getWeapon();

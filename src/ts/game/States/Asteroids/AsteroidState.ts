@@ -2,8 +2,7 @@ import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
-import { IParticle } from "../../Objects/Particle/IParticle";
-import { createShip, IShip } from "../../Objects/Ship/IShip";
+import { createShip, IShip, DisplayShip, UpdateShip } from "../../Objects/Ship/ShipComponent";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
@@ -15,13 +14,15 @@ import { Game } from "../../Game/Game";
 import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
 import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
-import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid } from "../../Components/AsteroidComponent";
+import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid, CreateAsteroidData } from "../../Components/AsteroidComponent";
 import { IBall, CreateBall, UpdateBall } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
+import { IAsteroidsControls, InputAsteroidControls } from "./AsteroidsControlsComponent";
+import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 
 export interface IAsteroidsState {
     stateConfig: IGameStateConfig;
-    controls: IControls;
+    controls: IAsteroidsControls;
     starField: IParticleField;
     ship: IShip;
     ball: IBall;
@@ -33,12 +34,7 @@ export interface IAsteroidsState {
     title: string;
 }
 
-export interface IControls {
-    left: boolean;
-    right: boolean;
-    up: boolean;
-    fire: boolean;
-}
+
 
 export interface IAsteroids {
     asteroids: IAsteroid[];
@@ -70,40 +66,26 @@ export interface ICoin {
 export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
     let asteroids: IAsteroid[] = [];
     for (let i: number = 0; i < level; i++) {
-        let a: IAsteroid = createAsteroidData(asteroidStateStatic, 3);
+        let a: IAsteroid = CreateAsteroidData(asteroidStateStatic, 3);
         asteroids.push(a);
     }
     return asteroids;
 }
 
-function createAsteroidData(asteroidStateStatic: IAsteroidStateStatic, size: number): IAsteroid {
-    let xy: number = Transforms.random(0, 3);
-    let x: number = Transforms.random(0,512), y: number = Transforms.random(0, 480);
-    if (xy === 0) {
-        x = Transforms.random(0, 100);
-    } else if (xy === 1) {
-        x = Transforms.random(412, 512);
-    } else if (xy === 2) {
-        y = Transforms.random(0, 100);
-    } else if (xy === 3) {
-        y = Transforms.random(380, 480);
-    }
-    return CreateAsteroid(asteroidStateStatic.shapes, x,y, 0, 0, size);
-}
+
 
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
-    let ship: IShip = createShip(256, 240, 0);
     let coin: ICoin = createCoinData(new Coordinate(300, 400));
     let asteroids: IAsteroid[] = createAsteroidsData(asteroidStateStatic, 3);
     let asteroidState: IAsteroids = {
         asteroids: asteroids,
         playBreakSound: false,
     };
-    let graphicShip: IGraphicShip = createGraphicShipData(200, 100);
     let stateConfig: IGameStateConfig = {
         screenWrap: true,
         gravity: false,
     };
+
 
     // things that change
     let asteroidData: IAsteroidsState = {
@@ -113,14 +95,17 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
             right: false,
             up: false,
             fire: false,
+            zoomIn: false,
+            zoomOut: false,
+            exit: false,
         },
         starField: CreateField(true, 1, 1, 1),
-        ship: ship,
+        ship: createShip(256, 240, 0),
         ball: CreateBall(256, 280),
         coin: coin,
         level: 3,
         asteroids: asteroidState,
-        graphicShip: graphicShip,
+        graphicShip: createGraphicShipData(200, 100),
         score: 0,
         title: "SpaceCommand",
     };
@@ -175,14 +160,6 @@ export function DisplayGUI(ctx: DrawContext, score: number, angle: number): void
     DrawNumber(ctx, 460, 40, angle, "Arial", 18);
 }
 
-export function DisplayShip(ctx: DrawContext, ship: IShip): void {
-    DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
-    DisplayField(ctx, ship.exhaust.exhaustParticleField.particles);
-    DisplayField(ctx, ship.explosion.explosionParticleField.particles);
-    DisplayField(ctx, ship.weapon1.bullets);
-}
-
-
 export function DisplayAsteroids(ctx: DrawContext, asteroids: IAsteroids): void {
     asteroids.asteroids.forEach((a)=> DisplayAsteroid(ctx, a, Game.assets.terrain));
 }
@@ -209,7 +186,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     if (state.asteroids.playBreakSound) {
         Game.assets.blast.replay();
     }
-    if (state.controls.fire) {
+    if (state.ship.weapon1.fired) {
         Game.assets.gun.replay();
     }
     // turn off any sounds that were triggered
@@ -221,7 +198,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 }
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
-    // turn off any sounds that were triggered
+
     return Object.assign({}, state, {
         starField: UpdateField(timeModifier, state.starField, true, 2, (now: number) => {
             return {
@@ -234,12 +211,19 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
             };
         }),
         // ball: UpdateBall(timeModifier, state.ball),
-        asteroids: UpdateAsteroids(timeModifier, state.asteroids)
+        asteroids: UpdateAsteroids(timeModifier, state.asteroids),
+        ship: UpdateShip(timeModifier, state.ship, state.controls)
         });
 }
 
 export function UpdateAsteroids(timeModifier: number, asteroids: IAsteroids): IAsteroids {
     return Object.assign({}, asteroids, {
         asteroids: asteroids.asteroids.map(a => UpdateAsteroid(timeModifier, a))
+    });
+}
+
+export function InputAsteroidsState(state: IAsteroidsState, keys: KeyStateProvider): IAsteroidsState {
+    return Object.assign({}, state, {
+        controls: InputAsteroidControls(keys.getKeys())
     });
 }

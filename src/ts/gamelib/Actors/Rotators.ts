@@ -28,7 +28,13 @@ export class PolyRotator implements IActor {
     }
 }
 
-export function RotatePoly<T extends IShape>(timeModifier: number, shape: T, angle: number, angularVelocity: number): T {
+export function RotateShape<T extends IPolyRotator>(timeModifier: number, hasShape: T, angularVelocity: number): T {
+    return Object.assign({}, hasShape, {
+        shape: RotatePoly(timeModifier, hasShape.shape, angularVelocity)
+    });
+}
+
+export function RotatePoly<T extends IShape>(timeModifier: number, shape: T, angularVelocity: number): T {
     let rotateAngle: number = angularVelocity * timeModifier;
     // rotate the difference
     let newPoints: ICoordinate[] = Transforms.Rotate(shape.points, rotateAngle);

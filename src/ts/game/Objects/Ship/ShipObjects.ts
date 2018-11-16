@@ -1,4 +1,3 @@
-import { IControls } from "../../States/Asteroids/AsteroidState";
 import { IView } from "../../../gamelib/Views/View";
 import { PolyView } from "../../../gamelib/Views/PolyViews";
 import { LineView } from "../../../gamelib/Views/LineView";
@@ -8,20 +7,21 @@ import { IActor } from "../../../gamelib/Actors/Actor";
 import { PolyRotator } from "../../../gamelib/Actors/Rotators";
 import { IShape } from "../../../gamelib/DataTypes/Shape";
 import { createExplosionController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createExplosionController";
-import { createShipController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createShipController";
+// import { createShipController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createShipController";
 import { createWrapActor } from "../../../gamelib/Actors/Wrap";
-import { IShip } from "./IShip";
+import { IShip } from "./ShipComponent";
 import { addGravity } from "../../States/Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { Vector } from "../../../gamelib/DataTypes/Vector";
+import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
 
 export function createShipObject(getStateConfig: () => IGameStateConfig,
-    getControls: () => IControls,
+    getControls: () => IAsteroidsControls,
     getShip: () => IShip): SingleGameObject {
     let stateConfig: IGameStateConfig = getStateConfig();
     let ship: IShip = getShip();
-    let controls: IControls = getControls();
+
     let mover: IActor = new MoveConstVelocity(() => {
         return {
             Vx: ship.Vx,
@@ -41,29 +41,29 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
         ship.shape = out;
     });
 
-    let shipView: IView = new PolyView(() => {
-        return {
-            x: ship.x,
-            y: ship.y,
-            shape: ship.shape,
-        };
-    });
+    // let shipView: IView = new PolyView(() => {
+    //     return {
+    //         x: ship.x,
+    //         y: ship.y,
+    //         shape: ship.shape,
+    //     };
+    // });
 
-    let shipObj: SingleGameObject = new SingleGameObject([mover, rotator], [shipView]);
-    let shipController: IActor = createShipController(() => {
-        return {
-            left: controls.left,
-            right: controls.right,
-            up: controls.up,
-            ship: ship,
-        };
-    });
+    let shipObj: SingleGameObject = new SingleGameObject([mover, rotator], []);
+    // let shipController: IActor = createShipController(() => {
+    //     return {
+    //         left: controls.left,
+    //         right: controls.right,
+    //         up: controls.up,
+    //         ship: ship,
+    //     };
+    // });
     let explosionController: IActor = createExplosionController(() => {
         return {
             ship: ship,
         };
     });
-    shipObj.actors.push(shipController, explosionController);
+    shipObj.actors.push(explosionController);
     if (stateConfig.screenWrap) {
         let wrapx: IActor = createWrapActor(() => {
             return {

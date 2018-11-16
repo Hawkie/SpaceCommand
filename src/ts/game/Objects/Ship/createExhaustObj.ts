@@ -5,7 +5,7 @@ import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { createParticleField } from "../../../../../src/ts/game/Objects/Particle/createParticleField";
 // import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { IShip } from "./IShip";
+import { IShip } from "./ShipComponent";
 export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGameObject> {
     let ship: IShip = getShip();
     let exhaustObj: MultiGameObject<SingleGameObject> = createParticleField(ship.exhaust.exhaustParticleField, () => {

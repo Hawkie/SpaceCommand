@@ -9,7 +9,7 @@ import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvide
 import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
-    SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState } from "./AsteroidState";
+    SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState, InputAsteroidsState } from "./AsteroidState";
 import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
 import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 import { IAsteroid, CreateAsteroid } from "../../Components/AsteroidComponent";
@@ -84,6 +84,15 @@ export class AsteroidGameState implements IGameState {
         ctx.save();
         let x: number  = this.dataModel.ship.x;
         let y: number = this.dataModel.ship.y;
+        if (this.dataModel.controls.zoomIn) {
+            this.viewScale = 0.01;
+        } else if (this.dataModel.controls.zoomOut && this.zoom > 1) {
+            this.viewScale = -0.01;
+        } else {
+            this.viewScale = 0;
+        }
+        this.zoom *= 1 + this.viewScale;
+
         ctx.translate(x * (1 - this.zoom), y * (1 - this.zoom));
         // move origin to location of ship - location of ship factored by zoom
         // if zoom = 1 no change
@@ -104,37 +113,8 @@ export class AsteroidGameState implements IGameState {
     }
 
     input(keys: KeyStateProvider, timeModifier: number): void {
-        if (keys.isKeyDown(Keys.UpArrow)) {
-            this.dataModel.controls.up = true;
-        } else {
-            this.dataModel.controls.up = false;
-        }
-        if (keys.isKeyDown(Keys.LeftArrow)) {
-            this.dataModel.controls.left = true;
-        } else {
-            this.dataModel.controls.left = false;
-        }
-        if (keys.isKeyDown(Keys.RightArrow)) {
-            this.dataModel.controls.right = true;
-        } else {
-            this.dataModel.controls.right = false;
-        }
-        if (keys.isKeyDown(Keys.SpaceBar)) {
-            this.dataModel.controls.fire = true;
-        } else {
-            this.dataModel.controls.fire = false;
-        }
-        if (keys.isKeyDown(Keys.Z)) {
-            this.viewScale = 0.01;
-        } else if (keys.isKeyDown(Keys.X) && this.zoom > 1) {
-            this.viewScale = -0.01;
-        } else {
-            this.viewScale = 0;
-        }
-        this.zoom *= 1 + this.viewScale;
-        if (keys.isKeyDown(Keys.Esc)) {
-            this.exitState = true;
-        }
+        const state: IAsteroidsState = this.dataModel;
+        this.dataModel = InputAsteroidsState(state, keys);
     }
 
     bulletHitAsteroid(i1: number, i2: number): void {
@@ -189,8 +169,7 @@ export class AsteroidGameState implements IGameState {
 
     returnState(): number {
         let s: number = undefined;
-        if (this.exitState) {
-            this.exitState = false;
+        if (this.dataModel.controls.exit) {
             s = 0;
         }
         return s;

@@ -1,14 +1,14 @@
-import { IShip, createShip } from "../../Objects/Ship/IShip";
-import { IControls } from "../Asteroids/AsteroidState";
+import { IShip, createShip } from "../../Objects/Ship/ShipComponent";
 import { ISurfaceGeneration, ISurface, initSurface } from "../../Actors/SurfaceGenerator";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
+import { IAsteroidsControls } from "../Asteroids/AsteroidsControlsComponent";
 
 export interface ILandExplorerData {
     title: string;
     stateConfig: IGameStateConfig;
-    controls: IControls;
+    controls: IAsteroidsControls;
     ship: IShip;
     starField: IParticleField;
     surfaceGenerator: ISurfaceGeneration;
@@ -42,6 +42,9 @@ export function createLandExplorerData(): ILandExplorerData {
             right: false,
             up: false,
             fire: false,
+            zoomIn: false,
+            zoomOut: false,
+            exit: false,
         },
         ship: ship,
         starField: CreateField(true, 1, 1),
