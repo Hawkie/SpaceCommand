@@ -51,6 +51,7 @@ export function createMenuData(): IMenuState {
             lastMoved: 0,
             selected: false,
             itemFocus: 0,
+            moved: false,
             font: "Arial",
             fontSize: 16,
             menuItems: ["Asteroids", "Lander"],

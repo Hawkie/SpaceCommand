@@ -2,13 +2,14 @@ import { DrawContext} from "../../../gamelib/1Common/DrawContext";
 import { IGameState } from "../../../gamelib/GameState/GameState";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { createMenuData, IMenuState } from "./createMenuData";
-import { IAudioObject, AudioObject } from "../../../gamelib/Sound/SoundObject";
-import { fieldToView, reduceField } from "./FieldComponent";
-import { reduceMenu, menuItemsToView } from "./MenuComponent";
-import { titleToView } from "./TitleComponent";
+import { IAudioObject, AudioObject } from "../../../gamelib/Sound/AudioObject";
+import { fieldToView, reduceField } from "../../Components/FieldComponent";
+import { reduceMenu, menuToView, menuToSound } from "./MenuComponent";
+import { titleToView } from "../../Components/TitleComponent";
 import { reduceKeys, IMenuControl } from "./KeysComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { IParticle } from "../../Objects/Particle/IParticle";
+import { Game } from "../../Game/Game";
+import { stateToSound } from "../Asteroids/AsteroidGameState";
 
 
 // when creating a game state - create the data and then bind to the objects
@@ -23,13 +24,12 @@ export function stateToView(ctx: DrawContext, state: IMenuState): void {
     fieldToView(ctx, state.starField1.particles);
     fieldToView(ctx, state.starField2.particles);
     titleToView(ctx, state.title);
-    menuItemsToView(ctx, 200, 100, state.menu);
+    menuToView(ctx, 200, 100, state.menu);
 }
 
 export interface IStateAction {
     type: string;
     keys: number[];
-    soundPlaying: boolean;
 }
 
 // pure function
@@ -66,22 +66,26 @@ export function reduceState(timeModifier: number, state: IMenuState, action: ISt
                 menu: reduceMenu(timeModifier, state.menu, controls)
             });
         }
+        case "SOUND": {
+            return Object.assign({}, state, {
+                menu: menuToSound(state.menu)
+            });
+        }
         default: return Object.assign({}, state);
     }
 }
 
 
 export class MenuState implements IGameState {
-    private menuMusic: IAudioObject;
+
     constructor(public name: string,
         private menuState: IMenuState) {
-            this.menuMusic = new AudioObject(menuState.sound.musicFilename, true);
     }
 
     update(timeModifier: number): void {
         const menuState: IMenuState = this.menuState;
         // change state!!
-        this.menuState = reduceState(timeModifier, menuState, {type:"UPDATE", keys: null, soundPlaying: null});
+        this.menuState = reduceState(timeModifier, menuState, {type:"UPDATE", keys: null});
     }
 
     display(ctx: DrawContext): void {
@@ -90,13 +94,13 @@ export class MenuState implements IGameState {
 
     sound(timeModifier: number): void {
         const menuState: IMenuState = this.menuState;
-        this.menuMusic.playOnce();
+        this.menuState = reduceState(timeModifier, menuState, {type:"SOUND", keys: null});
     }
 
     input(keys: KeyStateProvider, timeModifier: number): void {
         const menuData: IMenuState = this.menuState;
         // change state!!
-        this.menuState = reduceState(timeModifier, menuData, {type:"INPUT", keys: keys.getKeys(), soundPlaying: null});
+        this.menuState = reduceState(timeModifier, menuData, {type:"INPUT", keys: keys.getKeys()});
     }
 
     tests(lastTestModifier: number): void {

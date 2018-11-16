@@ -3,7 +3,7 @@ import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject"
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { createParticleField } from "../../../../../src/ts/game/Objects/Particle/createParticleField";
-import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
+// import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IShip } from "./IShip";
 export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGameObject> {
@@ -29,11 +29,11 @@ export function createExhaustObj(getShip: () => IShip): MultiGameObject<SingleGa
             vYHighSpread: 0,
         };
     });
-    let exhaustSound: IActor = new Sound(ship.exhaust.soundFilename, false, true, () => {
-        return {
-            play: ship.exhaust.exhaustParticleField.on,
-        };
-    });
-    exhaustObj.actors.push(exhaustSound);
+    // let exhaustSound: IActor = new Sound(ship.exhaust.soundFilename, false, true, () => {
+    //     return {
+    //         play: ship.exhaust.exhaustParticleField.on,
+    //     };
+    // });
+    // exhaustObj.actors.push(exhaustSound);
     return exhaustObj;
 }

@@ -1,6 +1,8 @@
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { IView } from "../../../gamelib/Views/View";
-import { ISpriteView } from "./SpriteView";
+import { ISpriteView, DrawSprite } from "./SpriteView";
+import { ISprite } from "../../DataTypes/Sprite";
+import { IGraphic } from "../../DataTypes/Graphic";
 
 
 export interface ISpriteAngled extends ISpriteView {
@@ -30,3 +32,18 @@ export class SpriteAngledView implements IView {
         }
     }
 }
+
+export function DrawSpriteAngled(ctx: DrawContext, x: number, y: number, angle: number, sprite: ISprite, spriteImg: IGraphic): void {
+    if (sprite.loaded) {
+        let xOffset: number = x + (sprite.frame.width * sprite.scaleX / 2);
+        let yOffset: number = y + (sprite.frame.height * sprite.scaleY / 2);
+        ctx.save();
+        ctx.translate(xOffset, yOffset);
+        ctx.rotate(angle);
+        ctx.translate(-xOffset, -yOffset);
+        // tODO: use single drawsprite function
+        DrawSprite(ctx, x, y, sprite, spriteImg);
+        ctx.restore();
+    }
+}
+

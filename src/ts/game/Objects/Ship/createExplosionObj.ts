@@ -3,7 +3,7 @@ import { MultiGameObject } from "../../../gamelib/GameObjects/MultiGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { createParticleField } from "../Particle/createParticleField";
-import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
+// import { Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { ScreenFlashView } from "../../../gamelib/Views/ScreenFlashView";
 import { Flasher } from "../../../gamelib/Actors/Switches";
 import { Timer } from "../../../gamelib/Actors/Timers";
@@ -32,12 +32,12 @@ export function createExplosionObj(getShip: () => IShip): MultiGameObject<Single
             vYHighSpread: 10,
         };
     });
-    let explosionSound: IActor = new Sound(ship.explosion.soundFilename, true, false, () => {
-        return {
-            play: ship.explosion.explosionParticleField.on,
-        };
-    });
-    explosionObj.actors.push(explosionSound);
+    // let explosionSound: IActor = new Sound(ship.explosion.soundFilename, true, false, () => {
+    //     return {
+    //         play: ship.explosion.explosionParticleField.on,
+    //     };
+    // });
+    // explosionObj.actors.push(explosionSound);
     let flashView: IView = new ScreenFlashView(() => {
         return {
             x: 0,

@@ -1,6 +1,7 @@
 ﻿export interface IAudioObject {
     playOnce(): void;
     play(): void;
+    replay(): void;
     pause(): void;
 }
 
@@ -34,23 +35,28 @@ export class AudioObject implements IAudioObject {
         this._playing = true;
     }
 
+    // call this multiple times and it will only play audio once when ready. (may repeat if loop is true)
     playOnce(): void {
-        if (this.ready && !this.playing) {
-            let p: Promise<void> = this.audioElement.play();
-            if (p !== undefined) {
-                p.then(r => {
-                    this._playing = true;
-                    console.log("played: " + this.source);
-                });
-                p.catch(e => {
-                    console.log("play failed: " + this.source);
-                });
-           }
+        if (this.ready) {
+            if (!this.playing) {
+                this._play();
+            }
         }
     }
 
+    // each time this is called it will play audio from beginning
     play(): void {
-        this.playOnce();
+        if (this.ready) {
+            this._play();
+        }
+    }
+
+    replay(): void {
+        if (this.ready) {
+            this.audioElement.pause();
+            this.audioElement.currentTime = 0;
+            this._play();
+        }
     }
 
     pause(): void {
@@ -59,5 +65,16 @@ export class AudioObject implements IAudioObject {
         }
     }
 
-
+    private _play(): void {
+        let p: Promise<void> = this.audioElement.play();
+        if (p !== undefined) {
+            p.then(r => {
+                this._playing = true;
+                console.log("played: " + this.source);
+            });
+            p.catch(e => {
+                console.log("play failed: " + this.source);
+            });
+       }
+    }
 }

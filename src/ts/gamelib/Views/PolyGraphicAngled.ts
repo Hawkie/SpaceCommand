@@ -2,12 +2,13 @@ import { DrawContext } from "../1Common/DrawContext";
 import { IView } from "../Views/View";
 import { IGraphic, Graphic } from "../DataTypes/Graphic";
 import { IPolyGraphicView } from "./PolyGraphic";
+import { IShape } from "../DataTypes/Shape";
 
 export interface IPolyGraphicAngledView extends IPolyGraphicView {
     angle: number;
 }
 
-export class PolyGraphicAngled implements IView {
+export class PolyGraphicAngledView implements IView {
     private graphic: IGraphic;
     constructor(private getInputs: () => IPolyGraphicAngledView) {
         this.graphic = new Graphic(getInputs().graphic);
@@ -25,5 +26,17 @@ export class PolyGraphicAngled implements IView {
             drawContext.fill(fillStyle);
             drawContext.restore();
         }
+    }
+}
+
+export function DrawPolyGraphicAngled(ctx: DrawContext, x:number, y: number, shape: IShape, angle: number, graphic: IGraphic): void {
+    if (graphic.loaded) {
+        ctx.drawP(x, y, shape.points);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        let fillStyle: CanvasPattern = ctx.createPattern(graphic.img);
+        ctx.fill(fillStyle);
+        ctx.restore();
     }
 }

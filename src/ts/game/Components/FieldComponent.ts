@@ -1,10 +1,10 @@
-import { CreateParticles, GenerationCheck, IGenerationState } from "../../../gamelib/Actors/ParticleGenerator2";
-import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { IParticle } from "../../Objects/Particle/IParticle";
-import { IParticleField } from "../Asteroids/createAsteroidData";
-import { MoveWithVelocity, IMoveable } from "../../../gamelib/Actors/Movers";
-import { DrawContext } from "../../../gamelib/1Common/DrawContext";
-import { DisplayRectangle } from "../../../gamelib/Views/RectangleView";
+import { CreateParticles, GenerationCheck, IGenerationState } from "../../gamelib/Actors/ParticleGenerator2";
+import { Transforms } from "../../gamelib/Physics/Transforms";
+import { IParticle } from "../Objects/Particle/IParticle";
+import { IParticleField } from "../States/Asteroids/createAsteroidData";
+import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
+import { DrawContext } from "../../gamelib/1Common/DrawContext";
+import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
 
 export interface IField<T> {
     particles: T[];

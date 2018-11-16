@@ -7,7 +7,7 @@ import { IActor } from "../../../gamelib/Actors/Actor";
 import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { ValueView } from "../../../gamelib/Views/ValueView";
 import { TextView } from "../../../gamelib/Views/TextView";
-import { ISoundInputs, Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
+// import { ISoundInputs, Sound } from "../../../../../src/ts/gamelib/Actors/Sound";
 import { createShipObject } from "../../../../../src/ts/game/Objects/Ship/ShipObjects";
 import { createExplosionObj } from "../../../../../src/ts/game/Objects/Ship/createExplosionObj";
 import { createExhaustObj } from "../../../../../src/ts/game/Objects/Ship/createExhaustObj";
@@ -42,13 +42,13 @@ export function createAsteroidStateObject(getData: () => IAsteroidData): IAstero
     let coinObj: SingleGameObject = createCoinObject(() => data.coin);
     let gShipObj: SingleGameObject = createGraphicShipObject(() => data.graphicShip);
     let asteroidObjs: MultiGameObject<SingleGameObject> = createAsteroidObjs(() => data.asteroids.asteroids);
-    let breakSound: IActor = new Sound(data.asteroids.breakSoundFilename, true, false, () => {
-        return {
-            play: data.asteroids.playBreakSound,
-        };
-    },
-        () => data.asteroids.playBreakSound = false);
-    asteroidObjs.actors.push(breakSound);
+    // let breakSound: IActor = new Sound(data.asteroids.breakSoundFilename, true, false, () => {
+    //     return {
+    //         play: data.asteroids.playBreakSound,
+    //     };
+    // },
+    //     () => data.asteroids.playBreakSound = false);
+    // asteroidObjs.actors.push(breakSound);
 
     let title: IView = new TextView(() => data.title, new Coordinate(10, 20), "Arial", 18);
     let score: IView = new TextView(() => "Score:", new Coordinate(400, 20), "Arial", 18);

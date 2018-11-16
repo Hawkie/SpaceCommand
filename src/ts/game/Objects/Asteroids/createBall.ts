@@ -1,4 +1,4 @@
-import { CircleView, DisplayCircle } from "../../../gamelib/Views/CircleView";
+import { CircleView, DrawCircle } from "../../../gamelib/Views/CircleView";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IBall, createBallData } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "../../../gamelib/Views/View";
@@ -21,7 +21,7 @@ export function BallData(x: number, y: number): IBall {
 }
 
 export function BallViewFn(ballData: ()=> IBall): IViewFn {
-    let ballView: IViewFn = (ctx: DrawContext) => DisplayCircle(ctx,
+    let ballView: IViewFn = (ctx: DrawContext) => DrawCircle(ctx,
             ballData().x,
             ballData().y,
             ballData().r);

@@ -18,3 +18,7 @@ export class ValueView implements IView {
             this.font);
     }
 }
+
+export function DrawNumber(ctx: DrawContext, x: number, y: number, n: number, font: string, fontSize: number): void {
+    ctx.drawText(x, y, n.toString(), fontSize, font);
+}

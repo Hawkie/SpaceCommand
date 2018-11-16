@@ -1,6 +1,6 @@
 import { IAsteroid } from "../../States/Asteroids/createAsteroidData";
 import { IView } from "../../../gamelib/Views/View";
-import { PolyGraphicAngled } from "../../../gamelib/Views/PolyGraphicAngled";
+import { PolyGraphicAngledView } from "../../../gamelib/Views/PolyGraphicAngled";
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";
@@ -46,7 +46,7 @@ export function createAsteroidObject(getAsteroid: () => IAsteroid): SingleGameOb
             upLimit: 480,
         };
     }, (a) => asteroid.y = a);
-    let view: IView = new PolyGraphicAngled(() => {
+    let view: IView = new PolyGraphicAngledView(() => {
         return {
             x: asteroid.x,
             y: asteroid.y,
