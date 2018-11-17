@@ -1,8 +1,9 @@
 import { IActor, Actor } from "../../../../gamelib/Actors/Actor";
 import { Coordinate } from "../../../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../../gamelib/Physics/Transforms";
-import { IShip, IWeapon } from "../ShipComponent";
+import { IShip } from "../ShipComponent";
 import { IParticle } from "../../../Components/FieldComponent";
+import { IWeapon } from "../WeaponComponent";
 
 export interface IWeaponControlInputs {
     fire: boolean;

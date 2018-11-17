@@ -7,7 +7,9 @@ import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
-import { RotatePoly, RotateShape } from "../../../gamelib/Actors/Rotators";
+import { RotateShape } from "../../../gamelib/Actors/Rotators";
+import { AccelerateWithVelocity } from "../../../gamelib/Actors/Accelerator";
+import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon } from "./WeaponComponent";
 
 
 export interface IShip {
@@ -35,14 +37,6 @@ export interface IShip {
     weapon1: IWeapon;
     exhaust: IExhaust;
     explosion: IExplosion;
-}
-
-export interface IWeapon {
-    bullets: IParticle[];
-    lastFired: number;
-    fired: boolean;
-    bulletVelocity: number;
-    bulletLifetime: number;
 }
 
 export interface IExhaust {
@@ -93,13 +87,7 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         maxForwardForce: 16,
         maxRotationalSpeed: 64,
         crashed: false,
-        weapon1: {
-            bullets: [],
-            lastFired: undefined,
-            fired: false,
-            bulletLifetime: 5,
-            bulletVelocity: 128,
-        },
+        weapon1: CreateWeapon(2, 128),
         exhaust: {
             exhaustParticleField: {
                 accumulatedModifier: 0,
@@ -141,7 +129,7 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
     DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
     DisplayField(ctx, ship.exhaust.exhaustParticleField.particles);
     DisplayField(ctx, ship.explosion.explosionParticleField.particles);
-    DisplayField(ctx, ship.weapon1.bullets);
+    DisplayWeapon(ctx, ship.weapon1);
 }
 
 export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
@@ -163,7 +151,7 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
         }
         if (controls.fire) {
             if (ship.weapon1.lastFired === undefined
-                || ((Date.now() - ship.weapon1.lastFired) / 1000) > 0.5) {
+                || ((Date.now() - ship.weapon1.lastFired) / 1000) > (1/ship.weapon1.bulletsPerSecond)) {
                 reloaded = true;
             }
         }
@@ -175,7 +163,8 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
         exhaust: UpdateExhaust(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
         weapon1: UpdateWeapon(timeModifier, ship.weapon1, reloaded, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
     });
-    let movedShip: IShip = MoveWithVelocity(timeModifier, controlledShip, controlledShip.Vx, controlledShip.Vy);
+    let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
+    let movedShip: IShip = MoveWithVelocity(timeModifier, thrustShip, thrustShip.Vx, thrustShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
     return rotatedShip;
 }
@@ -200,36 +189,5 @@ export function UpdateExhaust(timeModifier: number,
                     size: 1,
             };
         })
-    });
-}
-
-export function UpdateWeapon(timeModifier: number, weapon: IWeapon,
-        reloaded: boolean,
-        x: number, y: number, angle: number, bulletVelocity: number): IWeapon {
-    let w: IWeapon = weapon;
-    let fired: boolean = false;
-    if (reloaded) {
-        fired = true;
-        let velocity: Coordinate = Transforms.VectorToCartesian(angle, bulletVelocity);
-        let now: number = Date.now();
-        let bullet: IParticle = {
-            x: x,
-            y: y,
-            Vx: velocity.x,
-            Vy: velocity.y,
-            born: now,
-            size: 2,
-        };
-        // add bullets
-        w = Object.assign({}, weapon, {
-            bullets: weapon.bullets.concat(bullet),
-            lastFired: now,
-            fired: fired,
-        });
-    }
-    // move bullets and set fired
-    return Object.assign({}, w, {
-        bullets: w.bullets.map((b)=> MoveWithVelocity(timeModifier, b, b.Vx, b.Vy)),
-        fired: fired
     });
 }

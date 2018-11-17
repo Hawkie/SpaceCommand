@@ -5,10 +5,11 @@ import { IActor } from "../../../gamelib/Actors/Actor";
 import { createWeaponController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createWeaponController";
 import { AgePred } from "../../../gamelib/Actors/ParticleFieldUpdater";
 import { ParticleRemover } from "../../../gamelib/Actors/ParticleRemover";
-import { IShip, IWeapon } from "./ShipComponent";
+import { IShip } from "./ShipComponent";
 import { createBulletObject } from "./createBulletObject";
 import { IParticle } from "../../Components/FieldComponent";
 import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
+import { IWeapon } from "./WeaponComponent";
 
 // creates a weapon object
 export function createWeaponObject(getControls: () => IAsteroidsControls,

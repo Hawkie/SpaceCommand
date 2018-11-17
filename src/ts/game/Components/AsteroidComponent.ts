@@ -33,10 +33,10 @@ export function CreateAsteroid(shapes: IAsteroidShape[], x: number, y: number, V
     let a: IAsteroid = {
         x: x,
         y: y,
-        Vx: Vx + Transforms.random(-20, 20),
-        Vy: Vy + Transforms.random(-20, 20),
+        Vx: Vx + Transforms.random(-40, 40),
+        Vy: Vy + Transforms.random(-40, 40),
         angle: Transforms.random(0, 359),
-        spin:Transforms.random(-10, 10),
+        spin:Transforms.random(-100, 100),
         size: size,
         type: type,
         shape: shape,
