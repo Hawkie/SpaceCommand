@@ -30,7 +30,7 @@ export function CreateMenuState(): IMenuState {
             moved: false,
             font: "Arial",
             fontSize: 16,
-            menuItems: ["Asteroids", "Lander"],
+            menuItems: ["Asteroids"], // , "Lander"],
         },
         control: {
             up: false,

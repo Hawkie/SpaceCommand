@@ -5,12 +5,12 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 
 export interface IWeapon {
-    bullets: IParticle[];
-    lastFired: number;
-    fired: boolean;
-    bulletVelocity: number;
-    bulletLifetime: number;
-    bulletsPerSecond: number;
+    readonly bullets: IParticle[];
+    readonly lastFired: number;
+    readonly fired: boolean;
+    readonly bulletVelocity: number;
+    readonly bulletLifetime: number;
+    readonly bulletsPerSecond: number;
 }
 
 export function CreateWeapon(bulletsPerSecond: number, bulletVelocity: number): IWeapon {

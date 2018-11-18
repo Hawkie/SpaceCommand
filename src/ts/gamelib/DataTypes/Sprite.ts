@@ -1,40 +1,31 @@
 import { IGraphic, Graphic } from "../../../../src/ts/gamelib/DataTypes/Graphic";
 
 export class SpriteFrame {
-    constructor(public x: number,
-        public y: number,
-        public width: number,
-        public height: number) { }
+    constructor(public readonly x: number,
+        public readonly y: number,
+        public readonly width: number,
+        public readonly height: number) { }
 }
 
-export interface ISprite extends IGraphic {
-    frames: SpriteFrame[];
-    index: number;
-    scaleX: number;
-    scaleY: number;
-
-    frame: SpriteFrame;
+export interface ISprite {
+    readonly frames: SpriteFrame[]; // config
+    readonly index: number;
+    readonly scaleX: number;
+    readonly scaleY: number;
 }
 
 
-export class Sprite extends Graphic implements ISprite {
+export class Sprite implements ISprite {
 
-    constructor(src: string,
-        public frames: SpriteFrame[],
-        public index:number = 0,
-        public scaleX: number = 1,
-        public scaleY: number = 1) {
-        super(src);
-    }
-
-    get frame(): SpriteFrame {
-        return this.frames[this.index];
+    constructor(public readonly frames: SpriteFrame[],
+        public readonly index:number = 0,
+        public readonly scaleX: number = 1,
+        public readonly scaleY: number = 1) {
     }
 }
 
 export class HorizontalSpriteSheet extends Sprite {
-    constructor(src: string,
-        width: number,
+    constructor(width: number,
         height: number,
         totalFrames: number,
         index:number = 0,
@@ -45,6 +36,6 @@ export class HorizontalSpriteSheet extends Sprite {
             let w: number = i * width;
             frames.push(new SpriteFrame(w, 0, width, height));
         }
-        super(src, frames, index, scaleX, scaleY);
+        super(frames, index, scaleX, scaleY);
     }
 }

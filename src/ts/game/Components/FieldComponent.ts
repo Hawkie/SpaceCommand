@@ -4,12 +4,12 @@ import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
 
 export interface IParticle {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    born: number;
-    size: number;
+    readonly x: number;
+    readonly y: number;
+    readonly Vx: number;
+    readonly Vy: number;
+    readonly born: number;
+    readonly size: number;
 }
 
 export interface IParticleField {

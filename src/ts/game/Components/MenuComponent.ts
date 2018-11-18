@@ -4,14 +4,15 @@ import { IMenuControls } from "../States/MenuState/MenuControlsComponent";
 import { Game } from "../Game/Game";
 import { IAudioObject } from "../../gamelib/Sound/AudioObject";
 
+// immutable data object
 export interface IMenu {
-    lastMoved: number;
-    selected: boolean;
-    itemFocus: number;
-    moved: boolean;
-    font: string;
-    fontSize: number;
-    menuItems: string[];
+    readonly lastMoved: number;
+    readonly selected: boolean;
+    readonly itemFocus: number;
+    readonly moved: boolean;
+    readonly font: string;
+    readonly fontSize: number;
+    readonly menuItems: string[];
 }
 
 

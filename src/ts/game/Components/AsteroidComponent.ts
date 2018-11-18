@@ -10,16 +10,16 @@ import { RotatePoly, RotateShape } from "../../gamelib/Actors/Rotators";
 import { Wrap } from "../../gamelib/Actors/Wrap";
 
 export interface IAsteroid {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy :number;
-    angle:number;
-    spin:number;
-    size:number;
-    type:number;
-    shape: IShape;
-    graphic: string;
+    readonly x: number;
+    readonly y: number;
+    readonly Vx: number;
+    readonly Vy :number;
+    readonly angle:number;
+    readonly spin:number;
+    readonly size:number;
+    readonly type:number;
+    readonly shape: IShape;
+    readonly graphic: string;
 }
 
     // 5 different asteroid shapes
@@ -30,7 +30,7 @@ export function CreateAsteroid(shapes: IAsteroidShape[], x: number, y: number, V
     let coords: ICoordinate[] = Transforms.ArrayToPoints(points);
     let scaledShape: ICoordinate[] = Transforms.Scale(coords, size, size);
     let shape: IShape = new Shape(scaledShape);
-    let a: IAsteroid = {
+    return {
         x: x,
         y: y,
         Vx: Vx + Transforms.random(-40, 40),
@@ -42,7 +42,6 @@ export function CreateAsteroid(shapes: IAsteroidShape[], x: number, y: number, V
         shape: shape,
         graphic: "res/img/terrain.png",
     };
-    return a;
 }
 
 export function CreateAsteroidData(asteroidStateStatic: IAsteroidStateStatic, size: number): IAsteroid {

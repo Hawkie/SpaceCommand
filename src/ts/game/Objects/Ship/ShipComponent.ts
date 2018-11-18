@@ -10,6 +10,7 @@ import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { AccelerateWithVelocity } from "../../../gamelib/Actors/Accelerator";
 import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon } from "./WeaponComponent";
+import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 
 
 export interface IShip {
@@ -21,6 +22,9 @@ export interface IShip {
     angle: number;
     spin: number;
     mass: number;
+    xTo: number;
+    yTo: number;
+    angularForce: number;
     shape: IShape;
     gravityStrength: number;
     hitPoints: number;
@@ -74,6 +78,9 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         angle: 0,
         spin: 0,
         mass: 1,
+        xTo: 256, // change how initialised
+        yTo: 280, // change how initialised
+        angularForce: 0,
         shape: {points: scaledShip, offset: {x:0, y:0}},
         gravityStrength: gravityStrength,
         hitPoints: 100,
@@ -163,8 +170,9 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
         exhaust: UpdateExhaust(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
         weapon1: UpdateWeapon(timeModifier, ship.weapon1, reloaded, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
     });
-    let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
-    let movedShip: IShip = MoveWithVelocity(timeModifier, thrustShip, thrustShip.Vx, thrustShip.Vy);
+    // let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
+    let ballShip: IShip = UpdateConnection(timeModifier, controlledShip, ship.mass, [controlledShip.thrust], 2);
+    let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
     return rotatedShip;
 }

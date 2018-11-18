@@ -10,20 +10,20 @@ import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
     SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState, InputAsteroidsState } from "./AsteroidState";
-import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
-import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
+// import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
+// import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 import { IAsteroid, CreateAsteroid } from "../../Components/AsteroidComponent";
 import { IAsteroidStateStatic, CreateAsteroidGameStatic } from "./AsteroidGameStatic";
 
 
 
 export function createGameState(): AsteroidGameState {
-    let spriteField: IGameObject = createSpriteField();
+    // let spriteField: IGameObject = createSpriteField();
     let asteroidStateStatic: IAsteroidStateStatic = CreateAsteroidGameStatic();
     let state: IAsteroidsState = CreateAsteroidsState(asteroidStateStatic);
-    let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
+    // let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
     // get state objects and add asteroid objects
-    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", asteroidStateStatic, state, stateObj, [spriteField]);
+    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", asteroidStateStatic, state);
     return asteroidState;
 }
 
@@ -37,8 +37,8 @@ export class AsteroidGameState implements IGameState {
     constructor(public name: string,
         private asteroidStateStatic: IAsteroidStateStatic,
         private dataModel: IAsteroidsState,
-        private stateObj: IAsteroidStateObject,
-        private sceneObjects: IGameObject[]
+        // private stateObj: IAsteroidStateObject,
+        // private sceneObjects: IGameObject[]
         ) {
         this.viewScale = 1;
         this.zoom = 1;
@@ -71,8 +71,8 @@ export class AsteroidGameState implements IGameState {
 
 
     update(timeModifier: number): void {
-        this.sceneObjects.forEach(o => o.update(timeModifier));
-        this.stateObj.sceneObjs.forEach(x=>x.update(timeModifier));
+        // this.sceneObjects.forEach(o => o.update(timeModifier));
+        // this.stateObj.sceneObjs.forEach(x=>x.update(timeModifier));
         // this.stateObj.asteroidObjs.update(timeModifier);
         this.dataModel = UpdateAsteroidsState(timeModifier, this.dataModel);
     }
@@ -122,7 +122,7 @@ export class AsteroidGameState implements IGameState {
         let a:IAsteroid = this.dataModel.asteroids.asteroids[i1];
         // remove bullet
         this.dataModel.ship.weapon1.bullets.splice(i2, 1);
-        this.stateObj.weaponObj.getComponents().splice(i2, 1);
+        // this.stateObj.weaponObj.getComponents().splice(i2, 1);
 
         // remove asteroid
         this.dataModel.asteroids.playBreakSound = true;

@@ -15,10 +15,11 @@ import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
 import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
 import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid, CreateAsteroidData } from "../../Components/AsteroidComponent";
-import { IBall, CreateBall, UpdateBall } from "../../Components/BallComponent";
+import { IBall, CreateBall, UpdateBall, UpdateBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 import { IAsteroidsControls, InputAsteroidControls } from "./AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
+import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
 
 export interface IAsteroidsState {
     stateConfig: IGameStateConfig;
@@ -33,8 +34,6 @@ export interface IAsteroidsState {
     score: number;
     title: string;
 }
-
-
 
 export interface IAsteroids {
     asteroids: IAsteroid[];
@@ -52,17 +51,6 @@ export interface IGraphicShip {
     graphic: string;
 }
 
-export interface ICoin {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    angle: number;
-    spin: number;
-    mass: number;
-    sprite: ISprite;
-}
-
 export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
     let asteroids: IAsteroid[] = [];
     for (let i: number = 0; i < level; i++) {
@@ -75,7 +63,6 @@ export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, l
 
 
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
-    let coin: ICoin = createCoinData(new Coordinate(300, 400));
     let asteroids: IAsteroid[] = createAsteroidsData(asteroidStateStatic, 3);
     let asteroidState: IAsteroids = {
         asteroids: asteroids,
@@ -102,7 +89,7 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
         starField: CreateField(true, 1, 1, 1),
         ship: createShip(256, 240, 0),
         ball: CreateBall(256, 280),
-        coin: coin,
+        coin: CreateCoin(300, 400),
         level: 3,
         asteroids: asteroidState,
         graphicShip: createGraphicShipData(200, 100),
@@ -126,20 +113,7 @@ export function createGraphicShipData(x: number, y:number): IGraphicShip {
     return gShip;
 }
 
-export function createCoinData(location: Coordinate): ICoin {
-    let s: ISprite = new HorizontalSpriteSheet("res/img/spinningCoin.png", 46, 42, 10, 0, 0.5, 0.5);
-    let coin: ICoin = {
-        x: location.x,
-        y: location.y,
-        Vx: 0,
-        Vy: 0,
-        angle: 45,
-        spin: 4,
-        mass: 1,
-        sprite: s,
-    };
-    return coin;
-}
+
 
 
 export function DisplayAsteroidsState(ctx: DrawContext, state: IAsteroidsState): void {
@@ -169,11 +143,6 @@ export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall):
     DrawLine(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ball.x, ball.y);
 }
 
-// move graphic part of sprite to assetsg
-export function DisplayCoin(ctx: DrawContext, coin: ICoin): void {
-    DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game.assets.coinSprite);
-}
-
 export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     if (state.ship.crashed) {
         Game.assets.explosion.playOnce();
@@ -199,6 +168,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
 
+    let ship: IShip = UpdateShip(timeModifier, state.ship, state.controls);
     return Object.assign({}, state, {
         starField: UpdateField(timeModifier, state.starField, true, 2, (now: number) => {
             return {
@@ -212,7 +182,9 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
         }),
         // ball: UpdateBall(timeModifier, state.ball),
         asteroids: UpdateAsteroids(timeModifier, state.asteroids),
-        ship: UpdateShip(timeModifier, state.ship, state.controls)
+        ship: ship,
+        ball: UpdateBallWithPos(timeModifier, state.ball, ship.xTo, ship.yTo),
+        coin: UpdateCoin(timeModifier, state.coin),
         });
 }
 
