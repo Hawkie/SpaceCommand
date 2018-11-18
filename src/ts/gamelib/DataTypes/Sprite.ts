@@ -1,4 +1,4 @@
-import { IGraphic, Graphic } from "../../../../src/ts/gamelib/DataTypes/Graphic";
+import { IGraphic, Graphic } from "../Elements/Graphic";
 
 export class SpriteFrame {
     constructor(public readonly x: number,

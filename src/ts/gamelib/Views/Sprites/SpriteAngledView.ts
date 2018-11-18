@@ -2,7 +2,7 @@ import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { IView } from "../../../gamelib/Views/View";
 import { ISpriteView, DrawSprite } from "./SpriteView";
 import { ISprite } from "../../DataTypes/Sprite";
-import { IGraphic } from "../../DataTypes/Graphic";
+import { IGraphic } from "../../Elements/Graphic";
 
 
 export interface ISpriteAngled extends ISpriteView {

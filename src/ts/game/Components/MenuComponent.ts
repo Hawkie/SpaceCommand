@@ -2,7 +2,7 @@ import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DrawText } from "../../gamelib/Views/TextView";
 import { IMenuControls } from "../States/MenuState/MenuControlsComponent";
 import { Game } from "../Game/Game";
-import { IAudioObject } from "../../gamelib/Sound/AudioObject";
+import { IAudioObject } from "../../gamelib/Elements/AudioObject";
 
 // immutable data object
 export interface IMenu {

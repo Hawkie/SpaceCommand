@@ -1,5 +1,5 @@
-import { IGraphic, Graphic } from "../../gamelib/DataTypes/Graphic";
-import { IAudioObject, AudioObject } from "../../gamelib/Sound/AudioObject";
+import { IGraphic, Graphic } from "../../gamelib/Elements/Graphic";
+import { IAudioObject, AudioObject } from "../../gamelib/Elements/AudioObject";
 
 export class AsteroidAssets {
 

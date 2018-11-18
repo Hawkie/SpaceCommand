@@ -1,7 +1,7 @@
 ﻿import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { ISprite, SpriteFrame } from "../../../gamelib/DataTypes/Sprite";
 import { IView } from "../../../gamelib/Views/View";
-import { IGraphic } from "../../DataTypes/Graphic";
+import { IGraphic } from "../../Elements/Graphic";
 
 export interface ISpriteView {
     x: number;

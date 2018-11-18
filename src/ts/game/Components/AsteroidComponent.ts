@@ -1,6 +1,6 @@
 import { DrawPolyGraphicAngled } from "../../gamelib/Views/PolyGraphicAngled";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { IGraphic } from "../../gamelib/DataTypes/Graphic";
+import { IGraphic } from "../../gamelib/Elements/Graphic";
 import { MoveWithVelocity } from "../../gamelib/Actors/Movers";
 import { IShape, Shape } from "../../gamelib/DataTypes/Shape";
 import { ICoordinate } from "../../gamelib/DataTypes/Coordinate";

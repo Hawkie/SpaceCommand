@@ -1,6 +1,6 @@
 import { DrawContext } from "../1Common/DrawContext";
 import { IView } from "../Views/View";
-import { IGraphic, Graphic } from "../DataTypes/Graphic";
+import { IGraphic, Graphic } from "../Elements/Graphic";
 import { IPolyGraphicView } from "./PolyGraphic";
 import { IShape } from "../DataTypes/Shape";
 
