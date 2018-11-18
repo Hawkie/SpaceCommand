@@ -1,4 +1,4 @@
-import { IShip, createShip } from "../../Objects/Ship/ShipComponent";
+import { IShip, createShip } from "../../Components/Ship/ShipComponent";
 import { ISurfaceGeneration, ISurface, initSurface } from "../../Actors/SurfaceGenerator";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";

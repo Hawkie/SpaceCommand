@@ -1,4 +1,4 @@
-import { IParticle, DisplayField } from "../../Components/FieldComponent";
+import { IParticle, DisplayField } from "../FieldComponent";
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../gamelib/Physics/Transforms";

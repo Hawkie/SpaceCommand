@@ -50,6 +50,5 @@ export function UpdateCoin(timeModifier: number, coin: ICoin): ICoin {
         animator: a,
         sprite: UpdateSprite(timeModifier, coin.sprite, coin.animationSequence[a.animationCounter])
     });
-    // spriteAnimator(coin.sprite, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0.1]);
     // spinner()
 }

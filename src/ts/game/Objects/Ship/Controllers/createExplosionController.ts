@@ -1,5 +1,5 @@
 import { IActor, Actor } from "../../../../gamelib/Actors/Actor";
-import { IShip } from "../ShipComponent";
+import { IShip } from "../../../Components/Ship/ShipComponent";
 
 export interface IExplosionControlInputs { ship: IShip;}
 

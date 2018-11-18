@@ -2,7 +2,7 @@ import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
-import { IParticleField, IParticle, DisplayField, UpdateField } from "../../Components/FieldComponent";
+import { IParticleField, IParticle, DisplayField, UpdateField } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
@@ -11,6 +11,7 @@ import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { AccelerateWithVelocity } from "../../../gamelib/Actors/Accelerator";
 import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon } from "./WeaponComponent";
 import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
+import { Wrap } from "../../../gamelib/Actors/Wrap";
 
 
 export interface IShip {
@@ -174,7 +175,11 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
     let ballShip: IShip = UpdateConnection(timeModifier, controlledShip, ship.mass, [controlledShip.thrust], 2);
     let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
-    return rotatedShip;
+    let wrapped: IShip = Object.assign({}, rotatedShip, {
+        x: Wrap(rotatedShip.x, 0, 512),
+        y: Wrap(rotatedShip.y, 0, 480)
+    });
+    return wrapped;
 }
 
 

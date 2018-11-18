@@ -8,8 +8,7 @@ import { PolyRotator } from "../../../gamelib/Actors/Rotators";
 import { IShape } from "../../../gamelib/DataTypes/Shape";
 import { createExplosionController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createExplosionController";
 // import { createShipController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createShipController";
-import { createWrapActor } from "../../../gamelib/Actors/Wrap";
-import { IShip } from "./ShipComponent";
+import { IShip } from "../../Components/Ship/ShipComponent";
 import { addGravity } from "../../States/Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
@@ -64,23 +63,6 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
         };
     });
     shipObj.actors.push(explosionController);
-    if (stateConfig.screenWrap) {
-        let wrapx: IActor = createWrapActor(() => {
-            return {
-                value: ship.x,
-                lowLimit: 0,
-                upLimit: 512,
-            };
-        }, (a) => ship.x = a);
-        let wrapy: IActor = createWrapActor(() => {
-            return {
-                value: ship.y,
-                lowLimit: 0,
-                upLimit: 480,
-            };
-        }, (a) => ship.y = a);
-        shipObj.actors.push(wrapx, wrapy);
-    }
 
     // add Gravity
     if (ship.gravityStrength !== 0) {

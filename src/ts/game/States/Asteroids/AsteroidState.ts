@@ -2,7 +2,7 @@ import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
-import { createShip, IShip, DisplayShip, UpdateShip } from "../../Objects/Ship/ShipComponent";
+import { createShip, IShip, DisplayShip, UpdateShip } from "../../Components/Ship/ShipComponent";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
