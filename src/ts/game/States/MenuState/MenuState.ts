@@ -5,7 +5,7 @@ import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
-import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IMenuState {
     title: string;
@@ -60,7 +60,7 @@ export function UpdateMenuState(timeModifier: number, state: IMenuState, action:
     switch (action.type) {
         case "UPDATE": {
             return Object.assign({}, state, {
-                starField1: UpdateField(timeModifier, state.starField1, true, 2, (now: number) => {
+                starField1: FieldGenMove(timeModifier, state.starField1, true, 2, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,
@@ -70,7 +70,7 @@ export function UpdateMenuState(timeModifier: number, state: IMenuState, action:
                         size: 1,
                     };
                 }),
-                starField2: UpdateField(timeModifier, state.starField2, true, 3, (now: number) => {
+                starField2: FieldGenMove(timeModifier, state.starField2, true, 3, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
                         y: 0,

@@ -1,7 +1,7 @@
-import { IParticleField } from "../FieldComponent";
+import { IParticleField, FieldGenRemMove } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IExplosion {
     readonly explosionParticleField: IParticleField;
@@ -24,7 +24,6 @@ export function CreateExplosion(): IExplosion {
             particlesPerSecond: 100,
             maxParticlesPerSecond: 50,
             particleLifetime: 5,
-            on: false,
             gravityStrength: 0,
         },
         explosionDuration: 5,
@@ -42,38 +41,32 @@ export function DisplayExplosion(ctx: DrawContext, explosion: IExplosion): void 
 }
 
 export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
-    crashed: boolean,
-    x: number, y: number, Vx: number, Vy: number): IExplosion {
+        crashed: boolean,
+        x: number, y: number, Vx: number, Vy: number): IExplosion {
+    let on: boolean = false;
+    let accumulatedTime: number = 0;
+    let e: IExplosion = explosion;
     if (crashed) {
-        let accumulatedTime: number = explosion.explosionTime + timeModifier;
+        accumulatedTime = explosion.explosionTime + timeModifier;
         if (accumulatedTime < explosion.explosionDuration) {
-            // inputs.ship.thrust.length = 0;
-            return Object.assign({}, explosion, {
-                explosionTime: accumulatedTime,
-                explosionParticleField: UpdateField(timeModifier, explosion.explosionParticleField, true, 50,
-                    (now: number) => {
-                        return {
-                            x: x + Transforms.random(-2, 2),
-                            y: y + Transforms.random(-2, 2),
-                            Vx: Vx + Transforms.random(-10, 10),
-                            Vy: Vy + Transforms.random(-10, 10),
-                            born: now,
-                            size: 3,
-                    };})
-                });
-            } else {
-            return Object.assign({}, explosion, {
-                explosionParticleField: UpdateFieldOn(timeModifier, explosion.explosionParticleField, false),
-            });
+            on = true;
         }
     }
-    return explosion;
-}
-
-export function UpdateFieldOn(timeModifier: number, field: IParticleField, on: boolean): IParticleField {
-    return Object.assign({}, field, {
-        particles: [],
-        on: on,
+    return Object.assign({}, e, {
+        explosionTime: accumulatedTime,
+        explosionParticleField: FieldGenRemMove(timeModifier,
+            e.explosionParticleField, on, 50, 5,
+            (now: number) => {
+                return {
+                    x: x + Transforms.random(-2, 2),
+                    y: y + Transforms.random(-2, 2),
+                    Vx: Vx + Transforms.random(-10, 10),
+                    Vy: Vy + Transforms.random(-10, 10),
+                    born: now,
+                    size: 3,
+            };
+        })
     });
 }
+
 

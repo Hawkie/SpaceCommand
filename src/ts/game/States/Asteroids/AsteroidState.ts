@@ -20,7 +20,7 @@ import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
-import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IAsteroidsState {
     stateConfig: IGameStateConfig;
@@ -148,7 +148,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     if (state.ship.crashed) {
         Game.assets.explosion.playOnce();
     }
-    if (state.ship.exhaust.exhaustParticleField.on) {
+    if (state.ship.exhaust.thrustOn) {
         Game.assets.thrust.play();
     } else {
         Game.assets.thrust.pause();
@@ -171,7 +171,7 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
 
     let ship: IShip = UpdateShip(timeModifier, state.ship, state.controls);
     return Object.assign({}, state, {
-        starField: UpdateField(timeModifier, state.starField, true, 2, (now: number) => {
+        starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
             return {
                 x: Transforms.random(0, 512),
                 y: 0,

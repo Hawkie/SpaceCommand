@@ -1,16 +1,18 @@
-import { IParticleField } from "../FieldComponent";
+import { IParticleField, FieldGenRemMove } from "../FieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
-import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IExhaust {
+    thrustOn: boolean;
     exhaustParticleField: IParticleField;
     soundFilename: string;
 }
 
 export function CreateExhaust(): IExhaust {
     return {
+        thrustOn: false,
         exhaustParticleField: {
             accumulatedModifier: 0,
             toAdd: 0,
@@ -19,7 +21,6 @@ export function CreateExhaust(): IExhaust {
             particlesPerSecond: 20,
             maxParticlesPerSecond: 50,
             particleLifetime: 1,
-            on: false, // state
             gravityStrength: 0,
         },
         soundFilename: "res/sound/thrust.wav"
@@ -39,7 +40,10 @@ export function UpdateExhaust(timeModifier: number,
     let velocity: ICoordinate = Transforms.VectorToCartesian(angle + Transforms.random(-5, 5) + 180,
     length * 5 + Transforms.random(-5, 5));
     return Object.assign({}, exhaust, {
-        exhaustParticleField: UpdateField(timeModifier, exhaust.exhaustParticleField, on, 20, (now: number) => {
+        thrustOn: on,
+        exhaustParticleField: FieldGenRemMove(timeModifier,
+            exhaust.exhaustParticleField, on, 20, 2,
+            (now: number) => {
                 return {
                     x: x + Transforms.random(-2, 2),
                     y: y + Transforms.random(-2, 2),

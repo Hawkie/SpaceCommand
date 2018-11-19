@@ -1,14 +1,24 @@
-import { IMoveable } from "./Movers";
 import { IField } from "../Components/ParticleFieldComponent";
-
-// could use <T> instead of IGameObject
 
 export interface IGenerationState {
     accumulatedModifier: number;
     toAdd: number;
 }
 
-export function GenerationCheck<TState extends IGenerationState>(timeModifier: number,
+export function FieldGenerate<P, F extends IField<P>>(timeModifier: number,
+        field: F,
+        on: boolean,
+        particlesPerSecond: number,
+        func: (now: number) => P): F {
+    let f: F = field;
+    if (on) {
+        f = GenerationCheck(timeModifier, f, particlesPerSecond);
+        f = CreateAndAddParticles(timeModifier, f, f.toAdd, func);
+    }
+    return f;
+}
+
+function GenerationCheck<TState extends IGenerationState>(timeModifier: number,
         inputState: TState,
         particlesPerSecond: number): TState {
     let accumulatedTime: number = inputState.accumulatedModifier + timeModifier;
@@ -26,7 +36,7 @@ export function GenerationCheck<TState extends IGenerationState>(timeModifier: n
 }
 
 // add
-export function CreateAndAddParticles<P, F extends IField<P>>(timeModifier: number,
+function CreateAndAddParticles<P, F extends IField<P>>(timeModifier: number,
         starField: F,
         toAdd: number,
         func: (now: number)=> P): F {
@@ -37,7 +47,7 @@ export function CreateAndAddParticles<P, F extends IField<P>>(timeModifier: numb
 }
 
 // pure function. Read only inputs are on, perSec, maxGen. State that changes is lastCheck.
-export function CreateParticles<P>(timeModifier: number,
+function CreateParticles<P>(timeModifier: number,
         toAdd: number,
         createParticle: (now: number)=>P): P[] {
     let now: number = Date.now();

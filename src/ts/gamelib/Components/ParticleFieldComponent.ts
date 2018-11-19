@@ -1,7 +1,7 @@
-import { CreateAndAddParticles, GenerationCheck } from "../../gamelib/Actors/ParticleGenerator";
-import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
+import { FieldGenerate } from "../Actors/FieldGenerator";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
+import { FieldMoveParticlesWithVelocity, IMovesWithVelocity } from "../Actors/FieldMover";
 
 export interface IParticle {
     readonly x: number;
@@ -16,7 +16,6 @@ export interface IField<T> {
     readonly particles: T[];
     readonly accumulatedModifier: number;
     readonly toAdd: number;
-    readonly on: boolean;
 }
 
 export function CreateField<P>(on: boolean): IField<P> {
@@ -24,7 +23,6 @@ export function CreateField<P>(on: boolean): IField<P> {
         particles: [],
         accumulatedModifier: 0,
         toAdd: 0,
-        on: on,
     };
 }
 
@@ -33,25 +31,20 @@ export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
     particles.forEach(p =>  DisplayRectangle(ctx, p.x, p.y, p.size, p.size));
 }
 
-export function UpdateField<P extends IParticle, F extends IField<P>>(timeModifier: number,
+export function FieldGenMove<P extends IMovesWithVelocity, F extends IField<P>>(timeModifier: number,
         field: F,
         on: boolean,
         particlesPerSecond: number,
         func: (now: number) => P): F {
     let f: F = field;
     if (on) {
-        f = GenerationCheck(timeModifier, f, particlesPerSecond);
-        f = CreateAndAddParticles(timeModifier, f, f.toAdd, func);
+        f = FieldGenerate(timeModifier, f, on, particlesPerSecond, func);
     }
-    return UpdateParticles(timeModifier, f);
+    return FieldMoveParticlesWithVelocity(timeModifier, f);
 }
 
 
-// pure function
-export function UpdateParticles<TParticle extends IParticle, TField extends IField<TParticle>>(
-        timeModifier: number,
-        particleField: TField): TField {
-    return Object.assign({}, particleField, {
-        particles: particleField.particles.map((p)=> MoveWithVelocity(timeModifier, p, p.Vx, p.Vy))
-    });
-}
+
+
+
+
