@@ -1,7 +1,5 @@
-import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
-import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
+
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
 import { CreateShip, IShip, DisplayShip, UpdateShip } from "../../Components/Ship/ShipComponent";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
@@ -13,7 +11,6 @@ import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { Game } from "../../Game/Game";
 import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
-import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledView";
 import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid, CreateAsteroidData } from "../../Components/AsteroidComponent";
 import { IBall, CreateBall, UpdateBall, UpdateBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
@@ -21,6 +18,7 @@ import { IAsteroidsControls, InputAsteroidControls } from "./Components/Asteroid
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
+import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 
 export interface IAsteroidsState {
     stateConfig: IGameStateConfig;
@@ -41,17 +39,6 @@ export interface IAsteroids {
     playBreakSound: boolean;
 }
 
-export interface IGraphicShip {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    angle: number;
-    spin: number;
-    mass: number;
-    graphic: string;
-}
-
 export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
     let asteroids: IAsteroid[] = [];
     for (let i: number = 0; i < level; i++) {
@@ -60,8 +47,6 @@ export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, l
     }
     return asteroids;
 }
-
-
 
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
     let asteroids: IAsteroid[] = createAsteroidsData(asteroidStateStatic, 3);
@@ -73,7 +58,6 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
         screenWrap: true,
         gravity: false,
     };
-
 
     // things that change
     let asteroidData: IAsteroidsState = {
@@ -93,29 +77,12 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
         coin: CreateCoin(300, 400),
         level: 3,
         asteroids: asteroidState,
-        graphicShip: createGraphicShipData(200, 100),
+        graphicShip: CreateGraphicShip(200, 100),
         score: 0,
         title: "SpaceCommand",
     };
     return asteroidData;
 }
-
-export function createGraphicShipData(x: number, y:number): IGraphicShip {
-    let gShip: IGraphicShip = {
-        x: x,
-        y: y,
-        Vx: 0,
-        Vy: 0,
-        angle: 10,
-        spin: 0,
-        mass: 1,
-        graphic: "res/img/ship.png",
-    };
-    return gShip;
-}
-
-
-
 
 export function DisplayAsteroidsState(ctx: DrawContext, state: IAsteroidsState): void {
     DisplayTitle(ctx, state.title);
@@ -125,6 +92,7 @@ export function DisplayAsteroidsState(ctx: DrawContext, state: IAsteroidsState):
     DisplayAsteroids(ctx, state.asteroids);
     DisplayField(ctx, state.starField.particles);
     DisplayCoin(ctx, state.coin);
+    DisplayGraphicShip(ctx, state.graphicShip);
 }
 
 

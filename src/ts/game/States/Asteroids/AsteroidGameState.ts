@@ -6,8 +6,6 @@ import { IInteractor } from "../../../gamelib/Interactors/Interactor";
 import { Multi2FieldCollisionDetector } from "../../../gamelib/Interactors/CollisionDetector";
 import { Multi2ShapeCollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
-import { IGameObject } from "../../../gamelib/GameObjects/IGameObject";
-import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
     SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState, InputAsteroidsState } from "./AsteroidState";
 // import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";

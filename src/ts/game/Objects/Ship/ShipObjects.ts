@@ -1,6 +1,5 @@
 import { IView } from "../../../gamelib/Views/View";
 import { PolyView } from "../../../gamelib/Views/PolyViews";
-import { LineView } from "../../../gamelib/Views/LineView";
 import { MoveConstVelocity, IMoveOut } from "../../../gamelib/Actors/Movers";
 import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject";
 import { IActor } from "../../../gamelib/Actors/Actor";

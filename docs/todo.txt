@@ -3,7 +3,6 @@
 ** add previous state
 ** explosion
 *** flash
-*** age
 *** timers
 ** graphic ship
 ** remove all game objects
@@ -32,6 +31,7 @@ Done - Jasmine - unit tests. done
 Done - surface extender -  
 done - initialise sound problem - with asset
 done - remove sound that doen't seem to work on a phone safari browser?
+done - explosion age particles
 
 
 

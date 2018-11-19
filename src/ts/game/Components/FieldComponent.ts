@@ -7,12 +7,9 @@ import { FieldMoveParticlesWithVelocity } from "../../gamelib/Actors/FieldMover"
 import { FieldRemoveParticle } from "../../gamelib/Actors/FieldParticleRemover";
 
 
-export interface IParticleField {
-    readonly particles: IParticle[];
-    readonly accumulatedModifier: number;
+export interface IParticleField extends IField<IParticle> {
     readonly particlesPerSecond: number;
     readonly maxParticlesPerSecond: number;
-    readonly toAdd: number;
     readonly particleLifetime: number;
     readonly particleSize: number;
     readonly gravityStrength: number;

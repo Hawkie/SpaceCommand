@@ -17,11 +17,11 @@ export function CreateExhaust(): IExhaust {
             accumulatedModifier: 0,
             toAdd: 0,
             particles: [],
-            particleSize: 1,
-            particlesPerSecond: 20,
-            maxParticlesPerSecond: 50,
-            particleLifetime: 1,
-            gravityStrength: 0,
+            particleSize: 1, // config
+            particlesPerSecond: 20, // config
+            maxParticlesPerSecond: 50, // config
+            particleLifetime: 1, // config
+            gravityStrength: 0, // config
         },
         soundFilename: "res/sound/thrust.wav"
     };

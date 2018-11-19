@@ -52,5 +52,4 @@ export function UpdateCoin(timeModifier: number, coin: ICoin): ICoin {
         sprite: UpdateSprite(timeModifier, coin.sprite, coin.animationSequence[a.animationCounter]),
         angle: coin.angle + timeModifier * coin.spin,
     });
-    // spinner()
 }

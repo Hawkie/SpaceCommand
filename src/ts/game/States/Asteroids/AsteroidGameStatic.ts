@@ -1,8 +1,8 @@
 export interface IAsteroidStateStatic {
-    shapes: IAsteroidShape[];
+    shapes: IAsteroidPoints[];
 }
 
-export interface IAsteroidShape {
+export interface IAsteroidPoints {
     points: number[];
 }
 

@@ -20,11 +20,11 @@ export function CreateExplosion(): IExplosion {
             accumulatedModifier: 0,
             toAdd: 0,
             particles: [],
-            particleSize: 3,
-            particlesPerSecond: 100,
-            maxParticlesPerSecond: 50,
-            particleLifetime: 5,
-            gravityStrength: 0,
+            particleSize: 3, // config
+            particlesPerSecond: 50, // config
+            maxParticlesPerSecond: 50, // config
+            particleLifetime: 5, // config
+            gravityStrength: 0, // config
         },
         explosionDuration: 5,
         explosionTime: 0,

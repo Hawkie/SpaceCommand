@@ -55,7 +55,7 @@ export function UpdateWeapon(timeModifier: number, weapon: IWeapon,
     }
 
     const now:number = Date.now();
-    let bullets: IParticle[] = FilterParticles(w.bullets, now, 3);
+    let bullets: IParticle[] = FilterParticles(w.bullets, now, w.bulletLifetime);
     bullets = bullets.map((b)=> MoveWithVelocity(timeModifier, b, b.Vx, b.Vy));
 
     // move bullets and set fired

@@ -5,7 +5,7 @@ import { MoveWithVelocity } from "../../gamelib/Actors/Movers";
 import { IShape, Shape } from "../../gamelib/DataTypes/Shape";
 import { ICoordinate } from "../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../gamelib/Physics/Transforms";
-import { IAsteroidShape, IAsteroidStateStatic } from "../States/Asteroids/AsteroidGameStatic";
+import { IAsteroidPoints, IAsteroidStateStatic } from "../States/Asteroids/AsteroidGameStatic";
 import { RotatePoly, RotateShape } from "../../gamelib/Actors/Rotators";
 import { Wrap } from "../../gamelib/Actors/Wrap";
 
@@ -24,7 +24,7 @@ export interface IAsteroid {
 
     // 5 different asteroid shapes
 
-export function CreateAsteroid(shapes: IAsteroidShape[], x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
+export function CreateAsteroid(shapes: IAsteroidPoints[], x: number, y: number, Vx: number, Vy:number, size: number): IAsteroid {
     let type:number = Transforms.random(0, 4);
     let points: number[] = shapes[type].points;
     let coords: ICoordinate[] = Transforms.ArrayToPoints(points);
