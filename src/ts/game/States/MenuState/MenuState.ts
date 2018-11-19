@@ -8,13 +8,13 @@ import { DisplayTitle } from "../../Components/TitleComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IMenuState {
-    title: string;
-    font: string;
-    fontSize: number;
-    starField1: IParticleField;
-    starField2: IParticleField;
-    menu: IMenu;
-    control: IMenuControls;
+    readonly title: string;
+    readonly font: string;
+    readonly fontSize: number;
+    readonly starField1: IParticleField;
+    readonly starField2: IParticleField;
+    readonly menu: IMenu;
+    readonly control: IMenuControls;
 }
 
 export function CreateMenuState(): IMenuState {

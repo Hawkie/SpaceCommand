@@ -17,33 +17,33 @@ import { Game } from "../../Game/Game";
 
 
 export interface IShip {
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
     Vx: number;
     Vy: number;
-    thrust: IVector;
-    angle: number;
-    spin: number;
-    mass: number;
-    xTo: number;
-    yTo: number;
-    angularForce: number;
-    shape: IShape;
-    gravityStrength: number;
-    hitPoints: number;
-    damage: number;
-    armour: number;
-    disabled: boolean;
-    broken: boolean;
-    fuel: number;
-    energy: number;
-    colour: string;
-    maxForwardForce: number;
-    maxRotationalSpeed: number;
+    readonly thrust: IVector;
+    readonly angle: number;
+    readonly spin: number;
+    readonly mass: number;
+    readonly xTo: number;
+    readonly yTo: number;
+    readonly angularForce: number;
+    readonly shape: IShape;
+    readonly gravityStrength: number;
+    readonly hitPoints: number;
+    readonly damage: number;
+    readonly armour: number;
+    readonly disabled: boolean;
+    readonly broken: boolean;
+    readonly fuel: number;
+    readonly energy: number;
+    readonly colour: string;
+    readonly maxForwardForce: number;
+    readonly maxRotationalSpeed: number;
     crashed: boolean;
-    weapon1: IWeapon;
-    exhaust: IExhaust;
-    explosion: IExplosion;
+    readonly weapon1: IWeapon;
+    readonly exhaust: IExhaust;
+    readonly explosion: IExplosion;
 }
 
 

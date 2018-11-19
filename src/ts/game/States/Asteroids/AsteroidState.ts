@@ -21,25 +21,24 @@ import { DisplayField, FieldGenMove } from "../../../gamelib/Components/Particle
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 
 export interface IAsteroidsState {
-    stateConfig: IGameStateConfig;
-    controls: IAsteroidsControls;
-    starField: IParticleField;
-    ship: IShip;
-    ball: IBall;
-    coin: ICoin;
-    level: number;
-    asteroids: IAsteroids;
-    graphicShip: IGraphicShip;
-    score: number;
-    title: string;
+    readonly controls: IAsteroidsControls;
+    readonly starField: IParticleField;
+    readonly ship: IShip;
+    readonly ball: IBall;
+    readonly coin: ICoin;
+    readonly level: number;
+    readonly asteroids: IAsteroids;
+    readonly graphicShip: IGraphicShip;
+    readonly score: number;
+    readonly title: string;
 }
 
 export interface IAsteroids {
-    asteroids: IAsteroid[];
-    playBreakSound: boolean;
+    readonly asteroids: ReadonlyArray<IAsteroid>;
+    readonly playBreakSound: boolean;
 }
 
-export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
+export function CreateAsteroids(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
     let asteroids: IAsteroid[] = [];
     for (let i: number = 0; i < level; i++) {
         let a: IAsteroid = CreateAsteroidData(asteroidStateStatic, 3);
@@ -49,19 +48,13 @@ export function createAsteroidsData(asteroidStateStatic: IAsteroidStateStatic, l
 }
 
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
-    let asteroids: IAsteroid[] = createAsteroidsData(asteroidStateStatic, 3);
     let asteroidState: IAsteroids = {
-        asteroids: asteroids,
+        asteroids: CreateAsteroids(asteroidStateStatic, 3),
         playBreakSound: false,
-    };
-    let stateConfig: IGameStateConfig = {
-        screenWrap: true,
-        gravity: false,
     };
 
     // things that change
     let asteroidData: IAsteroidsState = {
-        stateConfig: stateConfig,
         controls: {
             left: false,
             right: false,
@@ -136,7 +129,6 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 }
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
-
     let ship: IShip = UpdateShip(timeModifier, state.ship, state.controls);
     return Object.assign({}, state, {
         starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
@@ -159,6 +151,17 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
 export function UpdateAsteroids(timeModifier: number, asteroids: IAsteroids): IAsteroids {
     return Object.assign({}, asteroids, {
         asteroids: asteroids.asteroids.map(a => UpdateAsteroid(timeModifier, a))
+    });
+}
+
+export function UpdateAsteroidsStateHit(state: IAsteroidsState,
+    newAsteroids: ReadonlyArray<IAsteroid>,
+    score:number,
+    level: number): IAsteroidsState {
+    return Object.assign({}, state, {
+        asteroids: { asteroids: newAsteroids, playBreakSound: true },
+        score: score,
+        level: level,
     });
 }
 

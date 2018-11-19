@@ -1,5 +1,4 @@
 import { DrawContext} from "../../../gamelib/1Common/DrawContext";
-import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IGameState } from "../../../gamelib/GameState/GameState";
 import { IInteractor } from "../../../gamelib/Interactors/Interactor";
@@ -7,7 +6,7 @@ import { Multi2FieldCollisionDetector } from "../../../gamelib/Interactors/Colli
 import { Multi2ShapeCollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
-    SoundAsteroidsState, createAsteroidsData, UpdateAsteroidsState, InputAsteroidsState } from "./AsteroidState";
+    SoundAsteroidsState, CreateAsteroids, UpdateAsteroidsState, InputAsteroidsState, UpdateAsteroidsStateHit } from "./AsteroidState";
 // import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
 // import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
 import { IAsteroid, CreateAsteroid } from "../../Components/AsteroidComponent";
@@ -32,11 +31,9 @@ export class AsteroidGameState implements IGameState {
     zoom: number;
     exitState: boolean = false;
 
-    constructor(public name: string,
-        private asteroidStateStatic: IAsteroidStateStatic,
+    constructor(public readonly name: string,
+        private readonly asteroidStateStatic: IAsteroidStateStatic,
         private dataModel: IAsteroidsState,
-        // private stateObj: IAsteroidStateObject,
-        // private sceneObjects: IGameObject[]
         ) {
         this.viewScale = 1;
         this.zoom = 1;
@@ -69,16 +66,12 @@ export class AsteroidGameState implements IGameState {
 
 
     update(timeModifier: number): void {
-        // this.sceneObjects.forEach(o => o.update(timeModifier));
-        // this.stateObj.sceneObjs.forEach(x=>x.update(timeModifier));
-        // this.stateObj.asteroidObjs.update(timeModifier);
         this.dataModel = UpdateAsteroidsState(timeModifier, this.dataModel);
     }
 
     // order is important. Like layers on top of each other.
     display(ctx: DrawContext): void {
         ctx.clear();
-        // this.angle.model.value = this.player.chassisObj.model.physics.angle;
         ctx.save();
         let x: number  = this.dataModel.ship.x;
         let y: number = this.dataModel.ship.y;
@@ -98,10 +91,6 @@ export class AsteroidGameState implements IGameState {
         // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
         ctx.zoom(this.zoom, this.zoom);
         DisplayAsteroidsState(ctx, this.dataModel);
-        // this.sceneObjects.forEach(o => o.display(ctx));
-        // this.stateObj.sceneObjs.forEach(x=>x.display(ctx));
-        // this.stateObj.asteroidObjs.display(ctx);
-        // this.stateObj.views.forEach(x=>x.display(ctx));
         ctx.restore();
     }
 
@@ -120,36 +109,29 @@ export class AsteroidGameState implements IGameState {
         let a:IAsteroid = this.dataModel.asteroids.asteroids[i1];
         // remove bullet
         this.dataModel.ship.weapon1.bullets.splice(i2, 1);
-        // this.stateObj.weaponObj.getComponents().splice(i2, 1);
-
         // remove asteroid
-        this.dataModel.asteroids.playBreakSound = true;
-        this.dataModel.asteroids.asteroids.splice(i1, 1);
-        // this.stateObj.asteroidObjs.getComponents().splice(i1, 1);
+        let score: number = this.dataModel.score;
+        let level: number = this.dataModel.level;
+        let newAsteroids: IAsteroid[] = this.dataModel.asteroids.asteroids.map(a => a);
+        newAsteroids.splice(i1, 1);
+
         // add two smaller asteroids
-        // arrayAmender<IAsteroid>(;
         if (a.size > 1) {
             for (let n:number = 0; n < 2; n++) {
                 let newAsteroid:IAsteroid = CreateAsteroid(this.asteroidStateStatic.shapes,a.x, a.y, a.Vx, a.Vy, a.size - 1);
-                this.dataModel.asteroids.asteroids.push(newAsteroid);
-                // let asteroidObj: SingleGameObject = createAsteroidObject(()=>newAsteroid);
-                // this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
+                newAsteroids.push(newAsteroid);
             }
         }
-        this.dataModel.score += 10;
+        score += 10;
 
         // if all asteroids cleared, create more at next level
         if (this.dataModel.asteroids.asteroids.length === 0) {
-            this.dataModel.score += 50;
-            this.dataModel.level += 1;
-            // how do we ensure new asteroid objects bound to the new models in the state
-            this.dataModel.asteroids.asteroids = createAsteroidsData(this.asteroidStateStatic, this.dataModel.level);
-            for (let n:number = 0; n < this.dataModel.asteroids.asteroids.length; n++) {
-                let a:IAsteroid = this.dataModel.asteroids.asteroids[n];
-                // let asteroidObj: SingleGameObject = createAsteroidObject(()=>a);
-                // this.stateObj.asteroidObjs.getComponents().push(asteroidObj);
-            }
+            score += 50;
+            level += 1;
+            newAsteroids = CreateAsteroids(this.asteroidStateStatic, this.dataModel.level);
         }
+
+        this.dataModel = UpdateAsteroidsStateHit(this.dataModel, newAsteroids, score, level);
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {

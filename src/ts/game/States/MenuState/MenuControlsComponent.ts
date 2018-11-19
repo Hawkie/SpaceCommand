@@ -1,25 +1,27 @@
 import { Keys } from "../../../gamelib/1Common/KeyStateProvider";
 
 export interface IMenuControls {
-    up: boolean;
-    down: boolean;
-    enter: boolean;
+    readonly up: boolean;
+    readonly down: boolean;
+    readonly enter: boolean;
 }
 
 export function UpdateMenuControls(timeModifier: number, keys: number[]): IMenuControls {
-    let controls: IMenuControls = {
-        up: false,
-        down: false,
-        enter: false,
-    };
+    let up: boolean = false;
+    let down: boolean = false;
+    let enter: boolean = false;
     if (keys.indexOf(Keys.UpArrow) > -1) {
-        controls.up = true;
+        up = true;
     }
     if (keys.indexOf(Keys.DownArrow) > -1) {
-        controls.down = true;
+        down = true;
     }
     if (keys.indexOf(Keys.Enter) > -1) {
-        controls.enter = true;
+        enter = true;
     }
-    return controls;
+    return {
+        up: up,
+        down: down,
+        enter: enter,
+    };
 }

@@ -13,7 +13,7 @@ export interface IParticle {
 }
 
 export interface IField<T> {
-    readonly particles: T[];
+    readonly particles: ReadonlyArray<T>;
     readonly accumulatedModifier: number;
     readonly toAdd: number;
 }
@@ -27,7 +27,7 @@ export function CreateField<P>(on: boolean): IField<P> {
 }
 
 // map field data (particles[]) to particle view
-export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
+export function DisplayField(ctx: DrawContext, particles: ReadonlyArray<IParticle>): void {
     particles.forEach(p =>  DrawRectangle(ctx, p.x, p.y, p.size, p.size));
 }
 

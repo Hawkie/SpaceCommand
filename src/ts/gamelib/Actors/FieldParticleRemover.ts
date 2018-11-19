@@ -11,6 +11,6 @@ export function FieldRemoveParticle<P extends IBorn, F extends IField<P>>(timeMo
     });
 }
 
-export function FilterParticles<P extends IBorn>(particles: P[], now: number, durationSec: number): P[] {
+export function FilterParticles<P extends IBorn>(particles: ReadonlyArray<P>, now: number, durationSec: number): P[] {
     return particles.filter(p => { return (now - p.born)/1000 < durationSec;});
 }
