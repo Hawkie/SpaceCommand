@@ -91,7 +91,7 @@ export function CreateShip(x: number, y: number, gravityStrength: number): IShip
 export function DisplayShip(ctx: DrawContext, ship: IShip): void {
     DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
     DisplayExhaust(ctx, ship.exhaust);
-    DisplayExplosion(ctx, ship.explosion);
+    DisplayExplosion(ctx, ship.explosion, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y);
     DisplayWeapon(ctx, ship.weapon1);
 }
 

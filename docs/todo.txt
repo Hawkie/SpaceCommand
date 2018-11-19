@@ -1,17 +1,22 @@
+* add game static (height, width)
+
 * Change structure to functional components (remove game objects)
 ** differentiate state/props
 ** add previous state
 ** explosion
 *** flash
 *** timers
-** graphic ship
+
 ** remove all game objects
+
 * Reinstate other states
 ** Land Explorer
 ** Duel
+
 * Add space explorer state
 ** add background star/planet map
 ** add planet orbits / time
+
 * Create randomising planet - Search for life
 * generalize gravity for ship
 * improve asteroid-ship collision detections (shape-shape)
@@ -32,6 +37,7 @@ Done - surface extender -
 done - initialise sound problem - with asset
 done - remove sound that doen't seem to work on a phone safari browser?
 done - explosion age particles
+done - graphic ship
 
 
 

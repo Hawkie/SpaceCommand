@@ -1,6 +1,6 @@
 import { FieldGenerate } from "../Actors/FieldGenerator";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
+import { DrawRectangle } from "../../gamelib/Views/RectangleView";
 import { FieldMoveParticlesWithVelocity, IMovesWithVelocity } from "../Actors/FieldMover";
 
 export interface IParticle {
@@ -28,7 +28,7 @@ export function CreateField<P>(on: boolean): IField<P> {
 
 // map field data (particles[]) to particle view
 export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
-    particles.forEach(p =>  DisplayRectangle(ctx, p.x, p.y, p.size, p.size));
+    particles.forEach(p =>  DrawRectangle(ctx, p.x, p.y, p.size, p.size));
 }
 
 export function FieldGenMove<P extends IMovesWithVelocity, F extends IField<P>>(timeModifier: number,

@@ -1,4 +1,4 @@
-import { AddCounter, AddElapsedTime, IAnimator, UpdateAnimator, UpdateSprite } from "../../gamelib/Actors/SpriteAnimator";
+import { IAnimator, UpdateAnimator, UpdateSprite } from "../../gamelib/Actors/SpriteAnimator";
 import { ISprite, HorizontalSpriteSheet } from "../../gamelib/DataTypes/Sprite";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { Game } from "../Game/Game";

@@ -20,7 +20,7 @@ export class RectangleView implements IView {
     }
 }
 
-export function DisplayRectangle(drawContext: DrawContext,
+export function DrawRectangle(drawContext: DrawContext,
     x: number,
     y: number,
     width: number,

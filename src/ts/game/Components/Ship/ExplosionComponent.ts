@@ -1,7 +1,9 @@
 import { IParticleField, FieldGenRemMove } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DisplayField } from "../../../gamelib/Components/ParticleFieldComponent";
+import { DrawFlash } from "../../../gamelib/Views/ScreenFlashView";
+import { IncreaseCounter, Toggle, AddElapsedTime } from "../../../gamelib/Actors/Helpers/Counter";
 
 export interface IExplosion {
     readonly explosionParticleField: IParticleField;
@@ -10,8 +12,9 @@ export interface IExplosion {
     readonly soundFilename: string;
     readonly flash: {
         readonly flashScreenValue: number;
-        readonly flashRepeat: number;
     };
+    readonly flashCounter: number;
+    readonly flashRepeat: number;
 }
 
 export function CreateExplosion(): IExplosion {
@@ -31,31 +34,40 @@ export function CreateExplosion(): IExplosion {
         soundFilename: "res/sound/explosion.wav",
         flash: {
             flashScreenValue: 0,
-            flashRepeat: 10,
         },
+        flashCounter: 0,
+        flashRepeat: 10,
     };
 }
 
-export function DisplayExplosion(ctx: DrawContext, explosion: IExplosion): void {
+export function DisplayExplosion(ctx: DrawContext, explosion: IExplosion, x: number, y: number): void {
     DisplayField(ctx, explosion.explosionParticleField.particles);
+    DrawFlash(ctx, 0, 0, 480, 512, explosion.flash.flashScreenValue);
 }
 
 export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
         crashed: boolean,
         x: number, y: number, Vx: number, Vy: number): IExplosion {
-    let on: boolean = false;
+    let generate: boolean = false;
     let accumulatedTime: number = 0;
+    let flash: boolean = false;
+    let counter: number = 0;
     let e: IExplosion = explosion;
     if (crashed) {
-        accumulatedTime = explosion.explosionTime + timeModifier;
+        accumulatedTime = AddElapsedTime(timeModifier, explosion.explosionTime);
         if (accumulatedTime < explosion.explosionDuration) {
-            on = true;
+            generate = true;
+        }
+        counter = IncreaseCounter(e.flashCounter);
+        if (counter <= e.flashRepeat) {
+            flash = true;
         }
     }
-    return Object.assign({}, e, {
+    e = Object.assign({}, e, {
         explosionTime: accumulatedTime,
+        flashCounter: counter,
         explosionParticleField: FieldGenRemMove(timeModifier,
-            e.explosionParticleField, on, 50, 5,
+            e.explosionParticleField, generate, 50, 5,
             (now: number) => {
                 return {
                     x: x + Transforms.random(-2, 2),
@@ -67,6 +79,14 @@ export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
             };
         })
     });
+    if (flash) {
+        e = Object.assign({}, e, {
+            flash: Object.assign({}, e.flash, {
+                flashScreenValue: Toggle(e.flash.flashScreenValue)
+            })
+        });
+    }
+    return e;
 }
 
 

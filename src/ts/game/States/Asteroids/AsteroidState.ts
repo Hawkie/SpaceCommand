@@ -149,7 +149,6 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
                 size: 1,
             };
         }),
-        // ball: UpdateBall(timeModifier, state.ball),
         asteroids: UpdateAsteroids(timeModifier, state.asteroids),
         ship: ship,
         ball: UpdateBallWithPos(timeModifier, state.ball, ship.xTo, ship.yTo),

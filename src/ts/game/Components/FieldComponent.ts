@@ -1,6 +1,6 @@
 import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
+import { DrawRectangle } from "../../gamelib/Views/RectangleView";
 import { IField, IParticle } from "../../gamelib/Components/ParticleFieldComponent";
 import { FieldGenerate } from "../../gamelib/Actors/FieldGenerator";
 import { FieldMoveParticlesWithVelocity } from "../../gamelib/Actors/FieldMover";
