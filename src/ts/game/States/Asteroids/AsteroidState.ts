@@ -1,24 +1,23 @@
 
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { CreateShip, IShip, DisplayShip, UpdateShip } from "../../Components/Ship/ShipComponent";
-import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
+import { CreateShip, IShip, DisplayShip, UpdateShip, UpdateShipCrashed } from "../../Components/Ship/ShipComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { DrawText } from "../../../gamelib/Views/TextView";
 import { DrawNumber } from "../../../gamelib/Views/ValueView";
-import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { Game } from "../../Game/Game";
 import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
-import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid, CreateAsteroidData } from "../../Components/AsteroidComponent";
-import { IBall, CreateBall, UpdateBall, UpdateBallWithPos } from "../../Components/BallComponent";
+import { IAsteroid, UpdateAsteroid } from "../../Components/Asteroids/AsteroidComponent";
+import { IBall, CreateBall, UpdateBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
+import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -33,24 +32,10 @@ export interface IAsteroidsState {
     readonly title: string;
 }
 
-export interface IAsteroids {
-    readonly asteroids: ReadonlyArray<IAsteroid>;
-    readonly playBreakSound: boolean;
-}
-
-export function CreateAsteroids(asteroidStateStatic: IAsteroidStateStatic, level: number): IAsteroid[] {
-    let asteroids: IAsteroid[] = [];
-    for (let i: number = 0; i < level; i++) {
-        let a: IAsteroid = CreateAsteroidData(asteroidStateStatic, 3);
-        asteroids.push(a);
-    }
-    return asteroids;
-}
-
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
     let asteroidState: IAsteroids = {
         asteroids: CreateAsteroids(asteroidStateStatic, 3),
-        playBreakSound: false,
+        asteroidHit: false,
     };
 
     // things that change
@@ -96,10 +81,6 @@ export function DisplayGUI(ctx: DrawContext, score: number, angle: number): void
     DrawNumber(ctx, 460, 40, angle, "Arial", 18);
 }
 
-export function DisplayAsteroids(ctx: DrawContext, asteroids: IAsteroids): void {
-    asteroids.asteroids.forEach((a)=> DisplayAsteroid(ctx, a, Game.assets.terrain));
-}
-
 export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall): void {
     DrawCircle(ctx, ball.x, ball.y, ball.r);
     DrawLine(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ball.x, ball.y);
@@ -114,7 +95,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     } else {
         Game.assets.thrust.pause();
     }
-    if (state.asteroids.playBreakSound) {
+    if (state.asteroids.asteroidHit) {
         Game.assets.blast.replay();
     }
     if (state.ship.weapon1.fired) {
@@ -123,7 +104,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     // turn off any sounds that were triggered
     return Object.assign({}, state, {
         asteroids: Object.assign({}, state.asteroids, {
-            playBreakSound: false
+            asteroidHit: false
         })
     });
 }
@@ -148,20 +129,20 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
         });
 }
 
-export function UpdateAsteroids(timeModifier: number, asteroids: IAsteroids): IAsteroids {
-    return Object.assign({}, asteroids, {
-        asteroids: asteroids.asteroids.map(a => UpdateAsteroid(timeModifier, a))
-    });
-}
-
 export function UpdateAsteroidsStateHit(state: IAsteroidsState,
     newAsteroids: ReadonlyArray<IAsteroid>,
     score:number,
     level: number): IAsteroidsState {
     return Object.assign({}, state, {
-        asteroids: { asteroids: newAsteroids, playBreakSound: true },
+        asteroids: { asteroids: newAsteroids, asteroidHit: true },
         score: score,
         level: level,
+    });
+}
+
+export function UpdateAsteroidsStatePlayerHit(state: IAsteroidsState, Vx: number, Vy: number): IAsteroidsState {
+    return Object.assign({}, state, {
+        ship: UpdateShipCrashed(state.ship, Vx, Vy)
     });
 }
 

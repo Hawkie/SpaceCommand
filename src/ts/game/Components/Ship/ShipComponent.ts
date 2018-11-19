@@ -19,8 +19,8 @@ import { Game } from "../../Game/Game";
 export interface IShip {
     readonly x: number;
     readonly y: number;
-    Vx: number;
-    Vy: number;
+    readonly Vx: number;
+    readonly Vy: number;
     readonly thrust: IVector;
     readonly angle: number;
     readonly spin: number;
@@ -40,7 +40,7 @@ export interface IShip {
     readonly colour: string;
     readonly maxForwardForce: number;
     readonly maxRotationalSpeed: number;
-    crashed: boolean;
+    readonly crashed: boolean;
     readonly weapon1: IWeapon;
     readonly exhaust: IExhaust;
     readonly explosion: IExplosion;
@@ -136,6 +136,14 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
         y: Wrap(rotatedShip.y, 0, Game.assets.height)
     });
     return wrappedShip;
+}
+
+export function UpdateShipCrashed(ship: IShip, Vx: number, Vy: number): IShip {
+    return Object.assign({}, ship, {
+        crashed: true,
+        Vx: Vx,
+        Vy: Vy,
+    });
 }
 
 

@@ -6,11 +6,13 @@ import { Multi2FieldCollisionDetector } from "../../../gamelib/Interactors/Colli
 import { Multi2ShapeCollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { IAsteroidsState, CreateAsteroidsState, DisplayAsteroidsState,
-    SoundAsteroidsState, CreateAsteroids, UpdateAsteroidsState, InputAsteroidsState, UpdateAsteroidsStateHit } from "./AsteroidState";
+    SoundAsteroidsState, InputAsteroidsState,
+    UpdateAsteroidsState, UpdateAsteroidsStateHit, UpdateAsteroidsStatePlayerHit } from "./AsteroidState";
 // import { IAsteroidStateObject, createAsteroidStateObject } from "./createAsteroidStateObjects";
 // import { createSpriteField } from "../../Objects/Asteroids/createSpriteField";
-import { IAsteroid, CreateAsteroid } from "../../Components/AsteroidComponent";
+import { IAsteroid, CreateAsteroid } from "../../Components/Asteroids/AsteroidComponent";
 import { IAsteroidStateStatic, CreateAsteroidGameStatic } from "./AsteroidGameStatic";
+import { CreateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 
 
 
@@ -136,11 +138,9 @@ export class AsteroidGameState implements IGameState {
 
     asteroidPlayerHit(i1: number, i2: number): void {
         let a: IAsteroid = this.dataModel.asteroids.asteroids[i1];
-        let xImpact: number = a.Vx;
-        let yImpact: number = a.Vy;
-        this.dataModel.ship.Vx = xImpact + Transforms.random(-2, 2);
-        this.dataModel.ship.Vy = yImpact + Transforms.random(-2, 2);
-        this.dataModel.ship.crashed = true;
+        const Vx: number = a.Vx + Transforms.random(-2, 2);
+        const Vy: number = a.Vy + Transforms.random(-2, 2);
+        this.dataModel = UpdateAsteroidsStatePlayerHit(this.dataModel, Vx, Vy);
     }
 
     tests(lastTestModifier: number): void {
