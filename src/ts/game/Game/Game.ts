@@ -15,7 +15,7 @@ export class Game {
     run(window: Window, document: Document): void {
         console.log("Game Run()");
 
-        let canvas: Canvas = new Canvas(512, 480, document);
+        let canvas: Canvas = new Canvas(Game.assets.width, Game.assets.height, document);
         // let audioContext: AudioContext = new AudioContext();
         let states: IGameState[] = createGameStates();
         let gameloop: EventLoop = new EventLoop(document, window, canvas, states);

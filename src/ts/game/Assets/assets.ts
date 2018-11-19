@@ -17,4 +17,7 @@ export class AsteroidAssets {
     public explosion: IAudioObject = new AudioObject("res/sound/explosion.wav");
 
     public gMap:Map<string, IGraphic> = new Map<string,IGraphic>();
+
+    public readonly width:number = 512;
+    public readonly height:number = 480;
 }

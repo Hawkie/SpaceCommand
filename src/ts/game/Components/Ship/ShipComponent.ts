@@ -13,6 +13,7 @@ import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { IExhaust, UpdateExhaust, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
+import { Game } from "../../Game/Game";
 
 
 export interface IShip {
@@ -131,8 +132,8 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
     let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
     let wrappedShip: IShip = Object.assign({}, rotatedShip, {
-        x: Wrap(rotatedShip.x, 0, 512),
-        y: Wrap(rotatedShip.y, 0, 480)
+        x: Wrap(rotatedShip.x, 0, Game.assets.width),
+        y: Wrap(rotatedShip.y, 0, Game.assets.height)
     });
     return wrappedShip;
 }
