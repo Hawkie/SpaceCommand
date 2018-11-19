@@ -4,6 +4,7 @@ import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { Game } from "../Game/Game";
 import { DrawSpriteAngled } from "../../gamelib/Views/Sprites/SpriteAngledView";
 import { ITimer } from "../../gamelib/Actors/Timers";
+import { UpdateAngle, spin } from "../../gamelib/Actors/Spinner";
 
 
 export interface ICoin {
@@ -27,7 +28,7 @@ export function CreateCoin(x: number, y: number): ICoin {
         Vx: 0,
         Vy: 0,
         angle: 45,
-        spin: 4,
+        spin: 45,
         sprite: s,
         animator: {
             elapsedTime: 0,
@@ -48,7 +49,8 @@ export function UpdateCoin(timeModifier: number, coin: ICoin): ICoin {
     let a:IAnimator = UpdateAnimator(timeModifier, coin.animator, coin.animationDuration, coin.animationSequence);
     return Object.assign({}, coin, {
         animator: a,
-        sprite: UpdateSprite(timeModifier, coin.sprite, coin.animationSequence[a.animationCounter])
+        sprite: UpdateSprite(timeModifier, coin.sprite, coin.animationSequence[a.animationCounter]),
+        angle: coin.angle + timeModifier * coin.spin,
     });
     // spinner()
 }

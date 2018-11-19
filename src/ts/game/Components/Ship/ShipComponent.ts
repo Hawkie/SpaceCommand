@@ -5,13 +5,15 @@ import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
 import { IParticleField, IParticle, DisplayField, UpdateField } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
-import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
+import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsControlsComponent";
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { RotateShape } from "../../../gamelib/Actors/Rotators";
-import { AccelerateWithVelocity } from "../../../gamelib/Actors/Accelerator";
+import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
 import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon } from "./WeaponComponent";
 import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
+import { IExhaust, UpdateExhaust, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
+import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
 
 
 export interface IShip {
@@ -44,23 +46,8 @@ export interface IShip {
     explosion: IExplosion;
 }
 
-export interface IExhaust {
-    exhaustParticleField: IParticleField;
-    soundFilename: string;
-}
 
-export interface IExplosion {
-    explosionParticleField: IParticleField;
-    explosionLifetime: number;
-    exploded: boolean;
-    soundFilename: string;
-    flash: {
-        flashScreenValue: number;
-        flashRepeat: number;
-    };
-}
-
-export function createShip(x: number, y: number, gravityStrength: number): IShip {
+export function CreateShip(x: number, y: number, gravityStrength: number): IShip {
     let triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),
         new Coordinate(0, 1),
@@ -96,47 +83,16 @@ export function createShip(x: number, y: number, gravityStrength: number): IShip
         maxRotationalSpeed: 64,
         crashed: false,
         weapon1: CreateWeapon(2, 128),
-        exhaust: {
-            exhaustParticleField: {
-                accumulatedModifier: 0,
-                toAdd: 0,
-                particles: [],
-                particleSize: 1,
-                particlesPerSecond: 20,
-                maxParticlesPerSecond: 50,
-                particleLifetime: 1,
-                on: false,
-                gravityStrength: gravityStrength,
-            },
-            soundFilename: "res/sound/thrust.wav"},
-        explosion: {
-            explosionParticleField: {
-                accumulatedModifier: 0,
-                toAdd: 0,
-                particles: [],
-                particleSize: 3,
-                particlesPerSecond: 100,
-                maxParticlesPerSecond: 50,
-                particleLifetime: 5,
-                on: false,
-                gravityStrength: gravityStrength,
-            },
-            explosionLifetime: 1,
-            exploded: false,
-            soundFilename: "res/sound/explosion.wav",
-            flash: {
-                flashScreenValue: 0,
-                flashRepeat: 10,
-            },
-        },
+        exhaust: CreateExhaust(),
+        explosion: CreateExplosion(),
     };
     return ship;
 }
 
 export function DisplayShip(ctx: DrawContext, ship: IShip): void {
     DrawPoly(ctx, ship.x + ship.shape.offset.x, ship.y + ship.shape.offset.y, ship.shape);
-    DisplayField(ctx, ship.exhaust.exhaustParticleField.particles);
-    DisplayField(ctx, ship.explosion.explosionParticleField.particles);
+    DisplayExhaust(ctx, ship.exhaust);
+    DisplayExplosion(ctx, ship.explosion);
     DisplayWeapon(ctx, ship.weapon1);
 }
 
@@ -147,10 +103,8 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
     if (!ship.crashed) {
         if (controls.left) {
             spin = -ship.maxRotationalSpeed;
-            // keep thrust vector in line with ship angle
         } else if (controls.right) {
             spin = ship.maxRotationalSpeed;
-            // keep thrust vector in line with ship angle
         }
         if (controls.up) {
             thrust = ship.maxForwardForce;
@@ -159,6 +113,7 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
         }
         if (controls.fire) {
             if (ship.weapon1.lastFired === undefined
+                // todo move this to weapon
                 || ((Date.now() - ship.weapon1.lastFired) / 1000) > (1/ship.weapon1.bulletsPerSecond)) {
                 reloaded = true;
             }
@@ -167,40 +122,21 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
     let newAngle: number = ship.angle + spin * timeModifier;
     let controlledShip: IShip = Object.assign({}, ship, {
         angle: newAngle,
+        // update thrust angle
         thrust: { angle: newAngle, length: thrust },
         exhaust: UpdateExhaust(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
         weapon1: UpdateWeapon(timeModifier, ship.weapon1, reloaded, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
+        explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
     });
     // let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
     let ballShip: IShip = UpdateConnection(timeModifier, controlledShip, ship.mass, [controlledShip.thrust], 2);
     let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
-    let wrapped: IShip = Object.assign({}, rotatedShip, {
+    let wrappedShip: IShip = Object.assign({}, rotatedShip, {
         x: Wrap(rotatedShip.x, 0, 512),
         y: Wrap(rotatedShip.y, 0, 480)
     });
-    return wrapped;
+    return wrappedShip;
 }
 
 
-export function UpdateExhaust(timeModifier: number,
-        exhaust: IExhaust,
-        on: boolean,
-        x: number, y: number, Vx: number, Vy: number,
-        angle: number,
-        length: number): IExhaust {
-    let velocity: Coordinate = Transforms.VectorToCartesian(angle + Transforms.random(-5, 5) + 180,
-        length * 5 + Transforms.random(-5, 5));
-    return Object.assign({}, exhaust, {
-        exhaustParticleField: UpdateField(timeModifier, exhaust.exhaustParticleField, on, 20, (now: number) => {
-                return {
-                    x: x + Transforms.random(-2, 2),
-                    y: y + Transforms.random(-2, 2),
-                    Vx: Vx + velocity.x,
-                    Vy: Vy + velocity.y,
-                    born: now,
-                    size: 1,
-            };
-        })
-    });
-}

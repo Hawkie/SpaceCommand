@@ -1,4 +1,4 @@
-import { Keys } from "../../../gamelib/1Common/KeyStateProvider";
+import { Keys } from "../../../../gamelib/1Common/KeyStateProvider";
 
 export interface IAsteroidsControls {
     left: boolean;

@@ -1,25 +1,43 @@
 
-Integrate Karma and Jasmine for browser testing
-Change models/actors so they are more versitile and work with react 
-add redux, reduce and react
-remove sound that doen't seem to work on a phone safari browser?
 
-fixes:
 
-initialise sound problem - with asset
-the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
+* Change structure to functional components (remove game objects)
+** differentiate state/props
+** add previous state
+** explosion
+** graphic ship
+** remove all game objects
+* Reinstate other states
+** Land Explorer
+** Duel
+* Add space explorer state
+** add background star/planet map
+** add planet orbits / time
+* Create randomising planet - Search for life
+* generalize gravity for ship
+* improve asteroid-ship collision detections (shape-shape)
+* the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
+* put all helper functions in one place - 
+* help on a menu item
+* how to initialise the states in gamelib
+* improve menu to gamelib
 
-put all helper static classes in one place - functions
-help on a menu item
+Optional Extras
+* Integrate Karma and Jasmine for browser testing
+* add redux, reduce and react
 
-how to initialise the states in gamelib
-improve menu to gamelib
+Completed
 
-Land Explorer
-fix gravity for ship
-remove wrap
-add collision
-surface extender
+Done - Jasmine - unit tests. done
+Done - surface extender -  
+done - initialise sound problem - with asset
+done - remove sound that doen't seem to work on a phone safari browser?
+
+
+
+
+
+
 
 
 

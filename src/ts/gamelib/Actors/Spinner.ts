@@ -21,3 +21,13 @@ export function spin(timeModifier: number, spin: number): ISpinnerOutputs {
         dAngle: spin * timeModifier
     };
 }
+
+export interface ISpinnable {
+    angle: number;
+}
+
+export function UpdateAngle(timeModifier: number, spinnable: ISpinnable, spin: number): ISpinnable {
+    return Object.assign({}, spinnable, {
+        angle: spinnable.angle + (spin * timeModifier)
+    });
+}

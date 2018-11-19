@@ -6,14 +6,14 @@ import { SingleGameObject } from "../../../gamelib/GameObjects/SingleGameObject"
 import { IActor } from "../../../gamelib/Actors/Actor";
 import { PolyRotator } from "../../../gamelib/Actors/Rotators";
 import { IShape } from "../../../gamelib/DataTypes/Shape";
-import { createExplosionController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createExplosionController";
+// import { createExplosionController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createExplosionController";
 // import { createShipController } from "../../../../../src/ts/game/Objects/Ship/Controllers/createShipController";
 import { IShip } from "../../Components/Ship/ShipComponent";
 import { addGravity } from "../../States/Shared/Gravity";
 import Accelerator, { IAcceleratorOutputs, IAcceleratorInputs } from "../../../gamelib/Actors/Accelerator";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { Vector } from "../../../gamelib/DataTypes/Vector";
-import { IAsteroidsControls } from "../../States/Asteroids/AsteroidsControlsComponent";
+import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsControlsComponent";
 
 export function createShipObject(getStateConfig: () => IGameStateConfig,
     getControls: () => IAsteroidsControls,
@@ -57,12 +57,12 @@ export function createShipObject(getStateConfig: () => IGameStateConfig,
     //         ship: ship,
     //     };
     // });
-    let explosionController: IActor = createExplosionController(() => {
-        return {
-            ship: ship,
-        };
-    });
-    shipObj.actors.push(explosionController);
+    // let explosionController: IActor = createExplosionController(() => {
+    //     return {
+    //         ship: ship,
+    //     };
+    // });
+    // shipObj.actors.push(explosionController);
 
     // add Gravity
     if (ship.gravityStrength !== 0) {

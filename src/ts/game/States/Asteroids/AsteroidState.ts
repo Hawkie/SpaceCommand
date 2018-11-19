@@ -2,7 +2,7 @@ import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { ISprite, HorizontalSpriteSheet } from "../../../gamelib/DataTypes/Sprite";
-import { createShip, IShip, DisplayShip, UpdateShip } from "../../Components/Ship/ShipComponent";
+import { CreateShip, IShip, DisplayShip, UpdateShip } from "../../Components/Ship/ShipComponent";
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
@@ -17,7 +17,7 @@ import { DrawSpriteAngled } from "../../../gamelib/Views/Sprites/SpriteAngledVie
 import { DisplayAsteroid, IAsteroid, CreateAsteroid, UpdateAsteroid, CreateAsteroidData } from "../../Components/AsteroidComponent";
 import { IBall, CreateBall, UpdateBall, UpdateBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
-import { IAsteroidsControls, InputAsteroidControls } from "./AsteroidsControlsComponent";
+import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
 
@@ -87,7 +87,7 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
             exit: false,
         },
         starField: CreateField(true, 1, 1, 1),
-        ship: createShip(256, 240, 0),
+        ship: CreateShip(256, 240, 0),
         ball: CreateBall(256, 280),
         coin: CreateCoin(300, 400),
         level: 3,

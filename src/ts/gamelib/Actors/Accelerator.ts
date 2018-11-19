@@ -55,7 +55,7 @@ export interface ISpeedable {
 }
 
 // reducer generates new object with new x and y values to go back into state
-export function AccelerateWithVelocity<TState extends ISpeedable>(timeModifier: number,
+export function AccelerateWithForces<TState extends ISpeedable>(timeModifier: number,
         speedable: TState,
         forces: IVector[],
         mass: number): TState {

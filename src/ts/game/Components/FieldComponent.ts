@@ -13,15 +13,15 @@ export interface IParticle {
 }
 
 export interface IParticleField {
-    particles: IParticle[];
-    accumulatedModifier: number;
-    particlesPerSecond: number;
-    maxParticlesPerSecond: number;
-    toAdd: number;
-    particleLifetime: number;
-    particleSize: number;
-    on: boolean;
-    gravityStrength: number;
+    readonly particles: IParticle[];
+    readonly accumulatedModifier: number;
+    readonly particlesPerSecond: number;
+    readonly maxParticlesPerSecond: number;
+    readonly toAdd: number;
+    readonly particleLifetime: number;
+    readonly particleSize: number;
+    readonly on: boolean;
+    readonly gravityStrength: number;
 }
 
 export interface IField<T> {
