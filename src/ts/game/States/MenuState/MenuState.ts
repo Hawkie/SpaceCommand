@@ -1,10 +1,11 @@
 import { IMenu, UpdateMenu, SoundMenu, DisplayMenu } from "../../Components/MenuComponent";
 import { IMenuControls, UpdateMenuControls } from "./MenuControlsComponent";
 import { Game } from "../../Game/Game";
-import { UpdateField, DisplayField, IParticleField, CreateField } from "../../Components/FieldComponent";
+import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
+import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IMenuState {
     title: string;

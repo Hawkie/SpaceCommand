@@ -1,7 +1,8 @@
-import { IParticleField, UpdateField, DisplayField } from "../FieldComponent";
+import { IParticleField } from "../FieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
+import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IExhaust {
     exhaustParticleField: IParticleField;

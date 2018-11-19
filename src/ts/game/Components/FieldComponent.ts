@@ -1,16 +1,9 @@
-import { CreateParticles, GenerationCheck, IGenerationState } from "../../gamelib/Actors/ParticleGenerator2";
+import { CreateAndAddParticles, GenerationCheck } from "../../gamelib/Actors/ParticleGenerator";
 import { MoveWithVelocity, IMoveable } from "../../gamelib/Actors/Movers";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { DisplayRectangle } from "../../gamelib/Views/RectangleView";
+import { IField, IParticle } from "../../gamelib/Components/ParticleFieldComponent";
 
-export interface IParticle {
-    readonly x: number;
-    readonly y: number;
-    readonly Vx: number;
-    readonly Vy: number;
-    readonly born: number;
-    readonly size: number;
-}
 
 export interface IParticleField {
     readonly particles: IParticle[];
@@ -22,14 +15,6 @@ export interface IParticleField {
     readonly particleSize: number;
     readonly on: boolean;
     readonly gravityStrength: number;
-}
-
-export interface IField<T> {
-    particles: T[];
-}
-
-export interface IGenerationField<T> extends IGenerationState {
-    particles: T[];
 }
 
 export interface IMovesWithVelocity extends IMoveable {
@@ -57,46 +42,33 @@ export function CreateField(on: boolean,
 }
 
 // map field data (particles[]) to particle view
-export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
-    particles.forEach(p =>  DisplayRectangle(ctx, p.x, p.y, p.size, p.size));
-}
+// export function DisplayField(ctx: DrawContext, particles: IParticle[]): void {
+//     particles.forEach(p =>  DisplayRectangle(ctx, p.x, p.y, p.size, p.size));
+// }
 
-export function UpdateField<P extends IMovesWithVelocity, F extends IGenerationField<P>>(timeModifier: number,
-        field: F,
-        on: boolean,
-        particlesPerSecond: number,
-        func: (now: number) => P): F {
-    let f: F = field;
-    if (on) {
-        f = GenerationCheck(timeModifier, f, particlesPerSecond);
-        f = CreateAndAddParticles(timeModifier, f, f.toAdd, func);
-    }
-    return UpdateParticles(timeModifier, f);
-}
+// export function UpdateField<P extends IMovesWithVelocity, F extends IField<P>>(timeModifier: number,
+//         field: F,
+//         on: boolean,
+//         particlesPerSecond: number,
+//         func: (now: number) => P): F {
+//     let f: F = field;
+//     if (on) {
+//         f = GenerationCheck(timeModifier, f, particlesPerSecond);
+//         f = CreateAndAddParticles(timeModifier, f, f.toAdd, func);
+//     }
+//     return UpdateParticles(timeModifier, f);
+// }
 
 
 // pure function
-function UpdateParticles<TParticle extends IMovesWithVelocity, TField extends IField<TParticle>>(
-        timeModifier: number,
-        particleField: TField): TField {
-    return Object.assign({}, particleField, {
-        particles: particleField.particles.map((p)=> MoveWithVelocity(timeModifier, p, p.Vx, p.Vy))
-    });
-}
+// export function UpdateParticles<TParticle extends IMovesWithVelocity, TField extends IField<TParticle>>(
+//         timeModifier: number,
+//         particleField: TField): TField {
+//     return Object.assign({}, particleField, {
+//         particles: particleField.particles.map((p)=> MoveWithVelocity(timeModifier, p, p.Vx, p.Vy))
+//     });
+// }
 
-// add
-function CreateAndAddParticles<P extends IMovesWithVelocity, F extends IField<P>>(timeModifier: number,
-        starField: F,
-        toAdd: number,
-        func: (now: number)=> P): F {
-    return Object.assign({}, starField, {
-        particles: starField.particles.concat(
-            CreateParticles(timeModifier, toAdd, func))
-    });
-}
 
-// pure functions - create new
-function reducerRemoveParticles(particles: IParticle[], toRemove: number[]): IParticle[] {
-    return particles;
-}
+
 

@@ -1,6 +1,7 @@
-import { IParticleField, DisplayField, UpdateField } from "../FieldComponent";
+import { IParticleField } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IExplosion {
     readonly explosionParticleField: IParticleField;

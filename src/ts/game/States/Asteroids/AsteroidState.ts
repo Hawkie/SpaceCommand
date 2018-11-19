@@ -6,7 +6,7 @@ import { CreateShip, IShip, DisplayShip, UpdateShip } from "../../Components/Shi
 import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
-import { DisplayField, IParticleField, UpdateField, CreateField } from "../../Components/FieldComponent";
+import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { DrawText } from "../../../gamelib/Views/TextView";
 import { DrawNumber } from "../../../gamelib/Views/ValueView";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
@@ -20,6 +20,7 @@ import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
+import { DisplayField, UpdateField } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IAsteroidsState {
     stateConfig: IGameStateConfig;

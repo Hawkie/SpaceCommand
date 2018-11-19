@@ -1,4 +1,4 @@
-import { IParticle } from "../../Components/FieldComponent";
+import { IParticle } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface ISpinningParticle extends IParticle {
     spin: number;

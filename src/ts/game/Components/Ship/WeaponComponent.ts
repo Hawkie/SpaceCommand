@@ -1,8 +1,8 @@
-import { IParticle, DisplayField } from "../FieldComponent";
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { Coordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
+import { IParticle, DisplayField } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IWeapon {
     readonly bullets: IParticle[];

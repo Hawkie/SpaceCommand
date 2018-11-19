@@ -2,7 +2,6 @@ import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
-import { IParticleField, IParticle, DisplayField, UpdateField } from "../FieldComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsControlsComponent";
@@ -98,18 +97,17 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
 
 export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
     let spin: number = 0;
-    let thrust: number = ship.thrust.length;
+    let thrust: number = 0;
     let reloaded: boolean = false;
     if (!ship.crashed) {
         if (controls.left) {
             spin = -ship.maxRotationalSpeed;
-        } else if (controls.right) {
+        }
+        if (controls.right) {
             spin = ship.maxRotationalSpeed;
         }
         if (controls.up) {
             thrust = ship.maxForwardForce;
-        } else {
-            thrust = 0;
         }
         if (controls.fire) {
             if (ship.weapon1.lastFired === undefined

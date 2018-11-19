@@ -1,10 +1,10 @@
-
-
-
 * Change structure to functional components (remove game objects)
 ** differentiate state/props
 ** add previous state
 ** explosion
+*** flash
+*** age
+*** timers
 ** graphic ship
 ** remove all game objects
 * Reinstate other states
