@@ -106,16 +106,16 @@ export class AsteroidGameState implements IGameState {
         this.dataModel = InputAsteroidsState(state, keys);
     }
 
-    bulletHitAsteroid(i1: number, i2: number): void {
+    bulletHitAsteroid(asteroidIndex: number, bulletIndex: number): void {
         // effect on asteroid
-        let a:IAsteroid = this.dataModel.asteroids.asteroids[i1];
+        let a:IAsteroid = this.dataModel.asteroids.asteroids[asteroidIndex];
         // remove bullet
-        this.dataModel.ship.weapon1.bullets.splice(i2, 1);
+        // this.dataModel.ship.weapon1.bullets.splice(i2, 1);
         // remove asteroid
         let score: number = this.dataModel.score;
         let level: number = this.dataModel.level;
         let newAsteroids: IAsteroid[] = this.dataModel.asteroids.asteroids.map(a => a);
-        newAsteroids.splice(i1, 1);
+        newAsteroids.splice(asteroidIndex, 1);
 
         // add two smaller asteroids
         if (a.size > 1) {
@@ -133,7 +133,7 @@ export class AsteroidGameState implements IGameState {
             newAsteroids = CreateAsteroids(this.asteroidStateStatic, this.dataModel.level);
         }
 
-        this.dataModel = UpdateAsteroidsStateHit(this.dataModel, newAsteroids, score, level);
+        this.dataModel = UpdateAsteroidsStateHit(this.dataModel, newAsteroids, score, level, bulletIndex);
     }
 
     asteroidPlayerHit(i1: number, i2: number): void {

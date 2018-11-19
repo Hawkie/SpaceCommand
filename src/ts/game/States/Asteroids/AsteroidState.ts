@@ -1,6 +1,6 @@
 
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { CreateShip, IShip, DisplayShip, UpdateShip, UpdateShipCrashed } from "../../Components/Ship/ShipComponent";
+import { CreateShip, IShip, DisplayShip, UpdateShip, UpdateShipCrashed, ShipRemoveBullet } from "../../Components/Ship/ShipComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
@@ -18,6 +18,7 @@ import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/Coi
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
+import { RemoveBullet } from "../../Components/Ship/WeaponComponent";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -132,11 +133,13 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
 export function UpdateAsteroidsStateHit(state: IAsteroidsState,
     newAsteroids: ReadonlyArray<IAsteroid>,
     score:number,
-    level: number): IAsteroidsState {
+    level: number,
+    bulletIndex:number): IAsteroidsState {
     return Object.assign({}, state, {
         asteroids: { asteroids: newAsteroids, asteroidHit: true },
         score: score,
         level: level,
+        ship: ShipRemoveBullet(state.ship, bulletIndex),
     });
 }
 

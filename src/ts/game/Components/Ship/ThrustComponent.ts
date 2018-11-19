@@ -5,9 +5,9 @@ import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 
 export interface IExhaust {
-    thrustOn: boolean;
-    exhaustParticleField: IParticleField;
-    soundFilename: string;
+    readonly thrustOn: boolean;
+    readonly exhaustParticleField: IParticleField;
+    readonly soundFilename: string;
 }
 
 export function CreateExhaust(): IExhaust {

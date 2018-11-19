@@ -8,7 +8,7 @@ import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsC
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
-import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon } from "./WeaponComponent";
+import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { IExhaust, UpdateExhaust, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
@@ -145,5 +145,12 @@ export function UpdateShipCrashed(ship: IShip, Vx: number, Vy: number): IShip {
         Vy: Vy,
     });
 }
+
+export function ShipRemoveBullet(ship: IShip, bulletIndex: number,): IShip {
+    return Object.assign({}, ship, {
+        weapon1: RemoveBullet(ship.weapon1, bulletIndex),
+    });
+}
+
 
 

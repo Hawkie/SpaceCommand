@@ -6,7 +6,7 @@ import { IParticle, DisplayField } from "../../../gamelib/Components/ParticleFie
 import { FilterParticles } from "../../../gamelib/Actors/FieldParticleRemover";
 
 export interface IWeapon {
-    readonly bullets: IParticle[];
+    readonly bullets: ReadonlyArray<IParticle>;
     readonly lastFired: number;
     readonly fired: boolean;
     readonly bulletVelocity: number;
@@ -27,6 +27,14 @@ export function CreateWeapon(bulletsPerSecond: number, bulletVelocity: number): 
 
 export function DisplayWeapon(ctx: DrawContext, weapon: IWeapon): void {
     DisplayField(ctx, weapon.bullets);
+}
+
+export function RemoveBullet(weapon: IWeapon, bulletIndex: number): IWeapon {
+    let b: IParticle[] = weapon.bullets.map(b => b);
+    b.splice(bulletIndex, 1);
+    return Object.assign({}, weapon, {
+        bullets: b
+    });
 }
 
 export function UpdateWeapon(timeModifier: number, weapon: IWeapon,
