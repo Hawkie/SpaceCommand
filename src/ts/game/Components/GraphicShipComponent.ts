@@ -3,14 +3,14 @@ import { Game } from "../Game/Game";
 import { DrawGraphicAngled } from "../../gamelib/Views/GraphicView";
 
 export interface IGraphicShip {
-    x: number;
-    y: number;
-    Vx: number;
-    Vy: number;
-    angle: number;
-    spin: number;
-    mass: number;
-    graphic: string;
+    readonly x: number;
+    readonly y: number;
+    readonly Vx: number;
+    readonly Vy: number;
+    readonly angle: number;
+    readonly spin: number;
+    readonly mass: number;
+    readonly graphic: string;
 }
 
 export function CreateGraphicShip(x: number, y:number): IGraphicShip {

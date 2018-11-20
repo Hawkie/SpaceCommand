@@ -1,6 +1,7 @@
 
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { CreateShip, IShip, DisplayShip, UpdateShip, UpdateShipCrashed, ShipRemoveBullet } from "../../Components/Ship/ShipComponent";
+import { CreateShip, IShip, DisplayShip, ShipCopyToUpdated,
+    ShipCopyToCrashedShip, ShipCopyToRemovedBullet } from "../../Components/Ship/ShipComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
@@ -10,11 +11,11 @@ import { Game } from "../../Game/Game";
 import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
 import { IAsteroid, UpdateAsteroid } from "../../Components/Asteroids/AsteroidComponent";
-import { IBall, CreateBall, UpdateBallWithPos } from "../../Components/BallComponent";
+import { IBall, CreateBall, CopyBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
 import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
-import { ICoin, CreateCoin, DisplayCoin, UpdateCoin } from "../../Components/CoinComponent";
+import { ICoin, CreateCoin, DisplayCoin, CopyCoinWithUpdate } from "../../Components/CoinComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
@@ -32,6 +33,11 @@ export interface IAsteroidsState {
     readonly score: number;
     readonly title: string;
 }
+
+// demo to show mutate possible
+// function mutate(state: {score: number}): void {
+//     state.score = 50000;
+// }
 
 export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
     let asteroidState: IAsteroids = {
@@ -102,17 +108,16 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     if (state.ship.weapon1.fired) {
         Game.assets.gun.replay();
     }
-    // turn off any sounds that were triggered
-    return Object.assign({}, state, {
-        asteroids: Object.assign({}, state.asteroids, {
-            asteroidHit: false
-        })
-    });
+    // turn off any sound triggers - need to think about this
+    return {...state,
+        asteroids: {...state.asteroids,
+            asteroidHit: false }
+    };
 }
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
-    let ship: IShip = UpdateShip(timeModifier, state.ship, state.controls);
-    return Object.assign({}, state, {
+    let ship: IShip = ShipCopyToUpdated(timeModifier, state.ship, state.controls);
+    return {...state,
         starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
             return {
                 x: Transforms.random(0, 512),
@@ -125,9 +130,9 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
         }),
         asteroids: UpdateAsteroids(timeModifier, state.asteroids),
         ship: ship,
-        ball: UpdateBallWithPos(timeModifier, state.ball, ship.xTo, ship.yTo),
-        coin: UpdateCoin(timeModifier, state.coin),
-        });
+        ball: CopyBallWithPos(timeModifier, state.ball, ship.xTo, ship.yTo),
+        coin: CopyCoinWithUpdate(timeModifier, state.coin),
+    };
 }
 
 export function UpdateAsteroidsStateHit(state: IAsteroidsState,
@@ -135,22 +140,22 @@ export function UpdateAsteroidsStateHit(state: IAsteroidsState,
     score:number,
     level: number,
     bulletIndex:number): IAsteroidsState {
-    return Object.assign({}, state, {
+    return {...state,
         asteroids: { asteroids: newAsteroids, asteroidHit: true },
         score: score,
         level: level,
-        ship: ShipRemoveBullet(state.ship, bulletIndex),
-    });
+        ship: ShipCopyToRemovedBullet(state.ship, bulletIndex),
+    };
 }
 
 export function UpdateAsteroidsStatePlayerHit(state: IAsteroidsState, Vx: number, Vy: number): IAsteroidsState {
-    return Object.assign({}, state, {
-        ship: UpdateShipCrashed(state.ship, Vx, Vy)
-    });
+    return {...state,
+        ship: ShipCopyToCrashedShip(state.ship, Vx, Vy)
+    };
 }
 
 export function InputAsteroidsState(state: IAsteroidsState, keys: KeyStateProvider): IAsteroidsState {
-    return Object.assign({}, state, {
+    return {...state,
         controls: InputAsteroidControls(keys.getKeys())
-    });
+    };
 }

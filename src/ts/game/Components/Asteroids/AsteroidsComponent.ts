@@ -22,7 +22,7 @@ export function DisplayAsteroids(ctx: DrawContext, asteroids: IAsteroids): void 
 }
 
 export function UpdateAsteroids(timeModifier: number, asteroids: IAsteroids): IAsteroids {
-    return Object.assign({}, asteroids, {
+    return {...asteroids,
         asteroids: asteroids.asteroids.map(a => UpdateAsteroid(timeModifier, a))
-    });
+    };
 }

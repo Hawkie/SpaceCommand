@@ -8,10 +8,10 @@ import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsC
 import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
 import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
-import { IWeapon, UpdateWeapon, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
+import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
-import { IExhaust, UpdateExhaust, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
+import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
 import { Game } from "../../Game/Game";
 
@@ -82,7 +82,7 @@ export function CreateShip(x: number, y: number, gravityStrength: number): IShip
         maxForwardForce: 16,
         maxRotationalSpeed: 64,
         crashed: false,
-        weapon1: CreateWeapon(2, 128),
+        weapon1: CreateWeapon(0.5, 128),
         exhaust: CreateExhaust(),
         explosion: CreateExplosion(),
     };
@@ -96,10 +96,10 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
     DisplayWeapon(ctx, ship.weapon1);
 }
 
-export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
+export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
     let spin: number = 0;
     let thrust: number = 0;
-    let reloaded: boolean = false;
+    let fireWeapon1: boolean = false;
     if (!ship.crashed) {
         if (controls.left) {
             spin = -ship.maxRotationalSpeed;
@@ -111,45 +111,41 @@ export function UpdateShip(timeModifier: number, ship: IShip, controls: IAsteroi
             thrust = ship.maxForwardForce;
         }
         if (controls.fire) {
-            if (ship.weapon1.lastFired === undefined
-                // todo move this to weapon
-                || ((Date.now() - ship.weapon1.lastFired) / 1000) > (1/ship.weapon1.bulletsPerSecond)) {
-                reloaded = true;
-            }
+            fireWeapon1 = true;
         }
     }
     let newAngle: number = ship.angle + spin * timeModifier;
-    let controlledShip: IShip = Object.assign({}, ship, {
+    let controlledShip: IShip = {...ship,
         angle: newAngle,
         // update thrust angle
         thrust: { angle: newAngle, length: thrust },
-        exhaust: UpdateExhaust(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
-        weapon1: UpdateWeapon(timeModifier, ship.weapon1, reloaded, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
+        exhaust: ExhaustCopyToUpdated(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
+        weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, fireWeapon1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
         explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
-    });
+    };
     // let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
     let ballShip: IShip = UpdateConnection(timeModifier, controlledShip, ship.mass, [controlledShip.thrust], 2);
     let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
     let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
-    let wrappedShip: IShip = Object.assign({}, rotatedShip, {
+    let wrappedShip: IShip = {...rotatedShip,
         x: Wrap(rotatedShip.x, 0, Game.assets.width),
         y: Wrap(rotatedShip.y, 0, Game.assets.height)
-    });
+    };
     return wrappedShip;
 }
 
-export function UpdateShipCrashed(ship: IShip, Vx: number, Vy: number): IShip {
-    return Object.assign({}, ship, {
+export function ShipCopyToCrashedShip(ship: IShip, Vx: number, Vy: number): IShip {
+    return {...ship,
         crashed: true,
         Vx: Vx,
         Vy: Vy,
-    });
+    };
 }
 
-export function ShipRemoveBullet(ship: IShip, bulletIndex: number,): IShip {
-    return Object.assign({}, ship, {
+export function ShipCopyToRemovedBullet(ship: IShip, bulletIndex: number,): IShip {
+    return {...ship,
         weapon1: RemoveBullet(ship.weapon1, bulletIndex),
-    });
+    };
 }
 
 

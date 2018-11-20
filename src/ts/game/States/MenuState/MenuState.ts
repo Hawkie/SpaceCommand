@@ -59,7 +59,7 @@ export interface IStateAction {
 export function UpdateMenuState(timeModifier: number, state: IMenuState, action: IStateAction): IMenuState {
     switch (action.type) {
         case "UPDATE": {
-            return Object.assign({}, state, {
+            return {...state,
                 starField1: FieldGenMove(timeModifier, state.starField1, true, 2, (now: number) => {
                     return {
                         x: Transforms.random(0, 512),
@@ -80,20 +80,20 @@ export function UpdateMenuState(timeModifier: number, state: IMenuState, action:
                         size: 2,
                     };
                 })
-            });
+            };
         }
         case "INPUT": {
             let controls: IMenuControls = UpdateMenuControls(timeModifier, action.keys);
-            return Object.assign({}, state, {
+            return {...state,
                 control: controls,
                 menu: UpdateMenu(timeModifier, state.menu, controls)
-            });
+            };
         }
         case "SOUND": {
-            return Object.assign({}, state, {
+            return {...state,
                 menu: SoundMenu(state.menu, Game.assets.timePortal, Game.assets.blast)
-            });
+            };
         }
-        default: return Object.assign({}, state);
+        default: return state;
     }
 }

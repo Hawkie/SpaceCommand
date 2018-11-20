@@ -32,9 +32,9 @@ export function SoundMenu(menuState: IMenu, music: IAudioObject, change: IAudioO
     if (menuState.moved) {
         change.replay();
     }
-    return Object.assign({}, menuState, {
+    return {...menuState,
         moved: false
-    });
+    };
 }
 
 // pure function that takes a menu action and updates the selected text. returns new menu
@@ -52,13 +52,13 @@ export function UpdateMenu(timeModifier: number, menu: IMenu, controls: IMenuCon
             moved = true;
         }
         // change state of menu focus
-        return Object.assign({}, menu, {
+        return {...menu,
             itemFocus: focus,
             selected: controls.enter,
             lastMoved: now,
             moved: moved,
-        });
+        };
     }
-    // return copy of menmu
-    return Object.assign({}, menu);
+    // return menu unchanged
+    return menu;
 }

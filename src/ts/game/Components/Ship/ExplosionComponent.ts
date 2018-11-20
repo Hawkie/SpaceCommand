@@ -64,7 +64,7 @@ export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
             flash = true;
         }
     }
-    e = Object.assign({}, e, {
+    e = {...e,
         explosionTime: accumulatedTime,
         flashCounter: counter,
         explosionParticleField: FieldGenRemMove(timeModifier,
@@ -79,13 +79,13 @@ export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
                     size: 3,
             };
         })
-    });
+    };
     if (flash) {
-        e = Object.assign({}, e, {
-            flash: Object.assign({}, e.flash, {
+        e = {...e,
+            flash: {...e.flash,
                 flashScreenValue: Toggle(e.flash.flashScreenValue)
-            })
-        });
+            }
+        };
     }
     return e;
 }

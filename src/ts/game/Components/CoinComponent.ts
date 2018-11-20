@@ -3,8 +3,6 @@ import { ISprite, HorizontalSpriteSheet } from "../../gamelib/DataTypes/Sprite";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
 import { Game } from "../Game/Game";
 import { DrawSpriteAngled } from "../../gamelib/Views/Sprites/SpriteAngledView";
-import { ITimer } from "../../gamelib/Actors/Timers";
-import { UpdateAngle, spin } from "../../gamelib/Actors/Spinner";
 
 
 export interface ICoin {
@@ -16,7 +14,7 @@ export interface ICoin {
     readonly spin: number;
     readonly sprite: ISprite; // state
     readonly animator: IAnimator; // state
-    readonly animationSequence: number[]; // config
+    readonly animationSequence: ReadonlyArray<number>; // config
     readonly animationDuration: number; // config
 }
 
@@ -45,11 +43,23 @@ export function DisplayCoin(ctx: DrawContext, coin: ICoin): void {
     DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game.assets.coinSprite);
 }
 
-export function UpdateCoin(timeModifier: number, coin: ICoin): ICoin {
+export function CopyCoinWithUpdate(timeModifier: number, coin: ICoin): ICoin {
     let a:IAnimator = UpdateAnimator(timeModifier, coin.animator, coin.animationDuration, coin.animationSequence);
-    return Object.assign({}, coin, {
+    return {...coin,
         animator: a,
         sprite: UpdateSprite(timeModifier, coin.sprite, coin.animationSequence[a.animationCounter]),
-        angle: coin.angle + timeModifier * coin.spin,
-    });
+        angle: coin.angle + timeModifier * coin.spin };
+}
+
+export class CoinComponent {
+    readonly x: number;
+    readonly y: number;
+    readonly Vx: number;
+    readonly Vy: number;
+    readonly angle: number;
+    readonly spin: number;
+    readonly sprite: ISprite; // state
+    readonly animator: IAnimator; // state
+    readonly animationSequence: number[]; // config
+    readonly animationDuration: number; // config
 }

@@ -1,8 +1,6 @@
-import { CircleView, DrawCircle } from "../../gamelib/Views/CircleView";
-import { SingleGameObject } from "../../gamelib/GameObjects/SingleGameObject";
-import { IView } from "../../gamelib/Views/View";
+import { DrawCircle } from "../../gamelib/Views/CircleView";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { MoveConstVelocity, move, IMoveIn, IMoveOut, MoveWithVelocity } from "../../gamelib/Actors/Movers";
+import { MoveWithVelocity } from "../../gamelib/Actors/Movers";
 
 export interface IBall {
     readonly x: number;
@@ -36,10 +34,9 @@ export function UpdateBall(timeModifier: number, ball: IBall): IBall {
     return MoveWithVelocity(timeModifier, ball, ball.Vx, ball.Vy);
 }
 
-export function UpdateBallWithPos(timeModifier: number, ball: IBall, xTo: number, yTo: number): IBall {
-    return Object.assign({}, ball, {
+export function CopyBallWithPos(timeModifier: number, ball: IBall, xTo: number, yTo: number): IBall {
+    return { ...ball,
         x: xTo,
-        y: yTo,
-    });
+        y: yTo};
 }
 

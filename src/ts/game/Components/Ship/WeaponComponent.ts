@@ -11,17 +11,17 @@ export interface IWeapon {
     readonly fired: boolean;
     readonly bulletVelocity: number;
     readonly bulletLifetime: number;
-    readonly bulletsPerSecond: number;
+    readonly reloadTimeSec: number;
 }
 
-export function CreateWeapon(bulletsPerSecond: number, bulletVelocity: number): IWeapon {
+export function CreateWeapon(reloadTimeSec: number, bulletVelocity: number): IWeapon {
     return {
         bullets: [],
         lastFired: undefined,
         fired: false,
         bulletLifetime: 5,
         bulletVelocity: bulletVelocity,
-        bulletsPerSecond: bulletsPerSecond,
+        reloadTimeSec: reloadTimeSec,
     };
 }
 
@@ -32,20 +32,32 @@ export function DisplayWeapon(ctx: DrawContext, weapon: IWeapon): void {
 export function RemoveBullet(weapon: IWeapon, bulletIndex: number): IWeapon {
     let b: IParticle[] = weapon.bullets.map(b => b);
     b.splice(bulletIndex, 1);
-    return Object.assign({}, weapon, {
+    return {...weapon,
         bullets: b
-    });
+    };
 }
 
-export function UpdateWeapon(timeModifier: number, weapon: IWeapon,
-        reloaded: boolean,
+export function WeaponCopyToUpdated(timeModifier: number, weapon: IWeapon,
+        fireWeaponIntent: boolean,
         x: number, y: number, angle: number, bulletVelocity: number): IWeapon {
-    let w: IWeapon = weapon;
+    // local varibales
+    let reloaded: boolean = false;
     let fired: boolean = false;
+    // read object properties
+    let bullets: IParticle[] = weapon.bullets.map(b => b);
+    let lastFired: number = weapon.lastFired;
+    const now:number = Date.now();
+    if (fireWeaponIntent) {
+        if (lastFired === undefined
+            // todo move this to weapon
+            || ((now - lastFired) / 1000) > weapon.reloadTimeSec) {
+            reloaded = true;
+            lastFired = now;
+        }
+    }
     if (reloaded) {
         fired = true;
         let velocity: Coordinate = Transforms.VectorToCartesian(angle, bulletVelocity);
-        let now: number = Date.now();
         let bullet: IParticle = {
             x: x,
             y: y,
@@ -55,20 +67,17 @@ export function UpdateWeapon(timeModifier: number, weapon: IWeapon,
             size: 2,
         };
         // add bullets
-        w = Object.assign({}, weapon, {
-            bullets: weapon.bullets.concat(bullet),
-            lastFired: now,
-            fired: fired,
-        });
+        bullets.push(bullet);
     }
 
-    const now:number = Date.now();
-    let bullets: IParticle[] = FilterParticles(w.bullets, now, w.bulletLifetime);
+    // remove old bullets
+    bullets = FilterParticles(bullets, now, weapon.bulletLifetime);
     bullets = bullets.map((b)=> MoveWithVelocity(timeModifier, b, b.Vx, b.Vy));
 
     // move bullets and set fired
-    return Object.assign({}, w, {
+    return {...weapon,
         bullets: bullets,
-        fired: fired
-    });
+        fired: fired,
+        lastFired: lastFired,
+    };
 }

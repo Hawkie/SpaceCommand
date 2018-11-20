@@ -72,9 +72,9 @@ export function DisplayAsteroid(ctx: DrawContext, asteroid: IAsteroid, graphic: 
 export function UpdateAsteroid(timeModifier: number, asteroid: IAsteroid): IAsteroid {
     let moved: IAsteroid = MoveWithVelocity(timeModifier, asteroid, asteroid.Vx, asteroid.Vy);
     let spun: IAsteroid = RotateShape(timeModifier, moved, moved.spin);
-    let wrapped: IAsteroid = Object.assign({}, spun, {
+    let wrapped: IAsteroid = {...spun,
         x: Wrap(spun.x, 0, Game.assets.width),
         y: Wrap(spun.y, 0, Game.assets.height)
-    });
+    };
     return wrapped;
 }
