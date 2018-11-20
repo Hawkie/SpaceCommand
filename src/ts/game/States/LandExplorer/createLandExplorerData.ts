@@ -1,13 +1,11 @@
 import { IShip, CreateShip } from "../../Components/Ship/ShipComponent";
 import { ISurfaceGeneration, ISurface, initSurface } from "../../Actors/SurfaceGenerator";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
-import { IGameStateConfig } from "../../../gamelib/GameState/IGameStateConfig";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { IAsteroidsControls } from "../Asteroids/Components/AsteroidsControlsComponent";
 
 export interface ILandExplorerData {
     title: string;
-    stateConfig: IGameStateConfig;
     controls: IAsteroidsControls;
     ship: IShip;
     starField: IParticleField;
@@ -29,14 +27,8 @@ export function createLandExplorerData(): ILandExplorerData {
         points: points,
     };
 
-    let stateConfig: IGameStateConfig = {
-        screenWrap: false,
-        gravity: true,
-    };
-
     return {
         title: "Space Commander",
-        stateConfig: stateConfig,
         controls: {
             left: false,
             right: false,

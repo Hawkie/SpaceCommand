@@ -1,27 +1,15 @@
 import { DrawContext } from "../../../ts/gamelib/1Common/DrawContext";
-import { IView } from "../../../ts/gamelib/Views/View";
 import { IGraphic, Graphic } from "../Elements/Graphic";
-import { IPolyView } from "./PolyViews";
+import { IShape } from "../DataTypes/Shape";
 
-export interface IPolyGraphicView extends IPolyView {
-    graphic: string;
-}
-
-export class PolyGraphic implements IView {
-    private graphic: IGraphic;
-    constructor(private getInputs: () => IPolyGraphicView) {
-        this.graphic = new Graphic(getInputs().graphic);
-    }
-    display(drawContext: DrawContext): void {
-        let inputs: IPolyGraphicView = this.getInputs();
-        if (this.graphic.loaded) {
-            let x: number = inputs.x + inputs.shape.offset.x;
-            let y: number = inputs.y + inputs.shape.offset.y;
-            drawContext.drawP(x, y, inputs.shape.points);
-            drawContext.save();
-            let fillStyle: CanvasPattern = drawContext.createPattern(this.graphic.img);
-            drawContext.fill(fillStyle);
-            drawContext.restore();
-        }
+export function DrawPolyGraphic(ctx: DrawContext, x: number, y: number, shape: IShape, graphic: IGraphic): void {
+    if (graphic.loaded) {
+        let xo: number = x + shape.offset.x;
+        let yo: number = y + shape.offset.y;
+        ctx.drawP(xo, yo, shape.points);
+        ctx.save();
+        let fillStyle: CanvasPattern = ctx.createPattern(graphic.img);
+        ctx.fill(fillStyle);
+        ctx.restore();
     }
 }
