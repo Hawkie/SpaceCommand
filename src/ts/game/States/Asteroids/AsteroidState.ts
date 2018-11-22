@@ -13,7 +13,7 @@ import { DrawLine } from "../../../gamelib/Views/LineView";
 import { IAsteroid, UpdateAsteroid } from "../../Components/Asteroids/AsteroidComponent";
 import { IBall, CreateBall, CopyBallWithPos } from "../../Components/BallComponent";
 import { IAsteroidStateStatic } from "./AsteroidGameStatic";
-import { IAsteroidsControls, InputAsteroidControls } from "./Components/AsteroidsControlsComponent";
+import { IAsteroidsControls, InputAsteroidControls } from "../../Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { ICoin, CreateCoin, DisplayCoin, CopyCoinWithUpdate } from "../../Components/CoinComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
@@ -39,7 +39,8 @@ export interface IAsteroidsState {
 //     state.score = 50000;
 // }
 
-export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic): IAsteroidsState {
+export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic, ship: IShip,
+    starfield: IParticleField): IAsteroidsState {
     let asteroidState: IAsteroids = {
         asteroids: CreateAsteroids(asteroidStateStatic, 3),
         asteroidHit: false,
@@ -56,8 +57,8 @@ export function CreateAsteroidsState(asteroidStateStatic: IAsteroidStateStatic):
             zoomOut: false,
             exit: false,
         },
-        starField: CreateField(true, 1, 1, 1),
-        ship: CreateShip(256, 240, 0),
+        starField: starfield,
+        ship: ship,
         ball: CreateBall(256, 280),
         coin: CreateCoin(300, 400),
         level: 3,

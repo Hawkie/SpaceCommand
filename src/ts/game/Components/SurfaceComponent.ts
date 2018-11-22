@@ -1,5 +1,9 @@
-﻿import { Coordinate, ICoordinate } from "../../../ts/gamelib/DataTypes/Coordinate";
-import { Transforms } from "../../../../src/ts/gamelib/Physics/Transforms";
+﻿import { Coordinate, ICoordinate } from "../../gamelib/DataTypes/Coordinate";
+import { Transforms } from "../../gamelib/Physics/Transforms";
+import { DrawContext } from "../../gamelib/1Common/DrawContext";
+import { DrawPolyGraphic } from "../../gamelib/Views/PolyGraphic";
+import { Game } from "../Game/Game";
+import { IShape } from "../../gamelib/DataTypes/Shape";
 
 export interface ISurfaceGeneration {
     resolution: number;
@@ -10,20 +14,40 @@ export interface ISurfaceGeneration {
 export interface ISurface {
     addedLeft: number;
     points: ICoordinate[];
+    surfaceGenerator: ISurfaceGeneration;
+}
+
+export function DisplaySurface(ctx: DrawContext, surface: ISurface): void {
+    //     let surface: ISurface = getSurface();
+//     let surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
+    const shape: IShape = { offset: { x: 0, y: 0 }, points: surface.points};
+    DrawPolyGraphic(ctx, 0, 0, shape, Game.assets.terrain);
+//         return {
+//             x: 0,
+//             y: 0,
+//             shape: {
+//                 offset: { x: 0, y: 0 },
+//                 points: surface.points,
+//             },
+//             graphic: texture,
+//         };
+//     });
+//     let obj: SingleGameObject = new SingleGameObject([surfaceExtender], [surfaceView]);
+//     return obj;
+// }
 }
 
 export function generatePoint(x: number, yBase: number, lower: number, upper: number): ICoordinate {
     return new Coordinate(x, yBase + Transforms.random(lower, upper));
 }
 
-export function initSurface(width: number, getInputs:() => ISurfaceGeneration): ICoordinate[] {
-    let inputs: ISurfaceGeneration = getInputs();
-    let endIndex: number = width / inputs.resolution;
+export function initSurface(width: number, generator: ISurfaceGeneration): ICoordinate[] {
+    let endIndex: number = width / generator.resolution;
     let points: ICoordinate[] = [];
     // changing state
     points[0] = new Coordinate(0, 400);
     for (let i: number = 1; i < endIndex; i++) {
-        let point: ICoordinate = generatePoint(i*inputs.resolution, points[i-1].y, inputs.lower, inputs.upper);
+        let point: ICoordinate = generatePoint(i*generator.resolution, points[i-1].y, generator.lower, generator.upper);
         points.push(point);
     }
     let first: Coordinate = points[0];

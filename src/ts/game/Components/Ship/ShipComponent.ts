@@ -4,16 +4,13 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
-import { IAsteroidsControls } from "../../States/Asteroids/Components/AsteroidsControlsComponent";
-import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
-import { RotateShape } from "../../../gamelib/Actors/Rotators";
-import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
+import { IAsteroidsControls } from "../AsteroidsControlsComponent";
 import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
-import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
-import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
-import { Game } from "../../Game/Game";
+import { ShipCopyToMoved } from "./MovementComponent";
+import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
+import { AccelerateWithForces, ISpeedable } from "../../../gamelib/Actors/Accelerator";
 
 
 export interface IShip {
@@ -25,6 +22,8 @@ export interface IShip {
     readonly angle: number;
     readonly spin: number;
     readonly mass: number;
+    readonly attached: boolean;
+    readonly wrapped: boolean;
     readonly xTo: number;
     readonly yTo: number;
     readonly angularForce: number;
@@ -47,7 +46,7 @@ export interface IShip {
 }
 
 
-export function CreateShip(x: number, y: number, gravityStrength: number): IShip {
+export function CreateShip(x: number, y: number, gravityStrength: number, ball: boolean, wrap: boolean): IShip {
     let triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),
         new Coordinate(0, 1),
@@ -66,6 +65,8 @@ export function CreateShip(x: number, y: number, gravityStrength: number): IShip
         angle: 0,
         spin: 0,
         mass: 1,
+        attached: ball,
+        wrapped: wrap,
         xTo: 256, // change how initialised
         yTo: 280, // change how initialised
         angularForce: 0,
@@ -117,21 +118,14 @@ export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: I
     let newAngle: number = ship.angle + spin * timeModifier;
     let controlledShip: IShip = {...ship,
         angle: newAngle,
+        spin: spin,
         // update thrust angle
         thrust: { angle: newAngle, length: thrust },
         exhaust: ExhaustCopyToUpdated(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
         weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, fireWeapon1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
         explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
     };
-    // let thrustShip: IShip = AccelerateWithVelocity(timeModifier, controlledShip, [controlledShip.thrust], 10);
-    let ballShip: IShip = UpdateConnection(timeModifier, controlledShip, ship.mass, [controlledShip.thrust], 2);
-    let movedShip: IShip = MoveWithVelocity(timeModifier, ballShip, ballShip.Vx, ballShip.Vy);
-    let rotatedShip: IShip = RotateShape(timeModifier, movedShip, spin);
-    let wrappedShip: IShip = {...rotatedShip,
-        x: Wrap(rotatedShip.x, 0, Game.assets.width),
-        y: Wrap(rotatedShip.y, 0, Game.assets.height)
-    };
-    return wrappedShip;
+    return ShipCopyToMoved(controlledShip, timeModifier);
 }
 
 export function ShipCopyToCrashedShip(ship: IShip, Vx: number, Vy: number): IShip {
