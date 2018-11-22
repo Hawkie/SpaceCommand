@@ -8,7 +8,6 @@ import { IAsteroidsControls } from "../AsteroidsControlsComponent";
 import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
-import { ShipCopyToMoved } from "./MovementComponent";
 
 
 export interface IShip {
@@ -21,7 +20,6 @@ export interface IShip {
     readonly spin: number;
     readonly mass: number;
     readonly attached: boolean;
-    readonly wrapped: boolean;
     readonly xTo: number;
     readonly yTo: number;
     readonly angularForce: number;
@@ -41,10 +39,15 @@ export interface IShip {
     readonly weapon1: IWeapon;
     readonly exhaust: IExhaust;
     readonly explosion: IExplosion;
+    readonly move: (ship: IShip, timeModifier: number) => IShip;
 }
 
 
-export function CreateShip(x: number, y: number, gravityStrength: number, ball: boolean, wrap: boolean): IShip {
+export function CreateShip(x: number, y: number,
+    gravityStrength: number,
+    ball: boolean,
+    wrap: boolean,
+    move:(ship: IShip, timeModifier: number) => IShip): IShip {
     let triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),
         new Coordinate(0, 1),
@@ -64,7 +67,6 @@ export function CreateShip(x: number, y: number, gravityStrength: number, ball: 
         spin: 0,
         mass: 1,
         attached: ball,
-        wrapped: wrap,
         xTo: 256, // change how initialised
         yTo: 280, // change how initialised
         angularForce: 0,
@@ -84,6 +86,7 @@ export function CreateShip(x: number, y: number, gravityStrength: number, ball: 
         weapon1: CreateWeapon(0.5, 128),
         exhaust: CreateExhaust(),
         explosion: CreateExplosion(),
+        move: move,
     };
     return ship;
 }
@@ -96,25 +99,26 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
 }
 
 export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
+    let newShip: IShip = ship;
     let spin: number = 0;
     let thrust: number = 0;
     let fireWeapon1: boolean = false;
     if (!ship.crashed) {
         if (controls.left) {
-            spin = -ship.maxRotationalSpeed;
+            spin = -newShip.maxRotationalSpeed;
         }
         if (controls.right) {
-            spin = ship.maxRotationalSpeed;
+            spin = newShip.maxRotationalSpeed;
         }
         if (controls.up) {
-            thrust = ship.maxForwardForce;
+            thrust = newShip.maxForwardForce;
         }
         if (controls.fire) {
             fireWeapon1 = true;
         }
     }
-    let newAngle: number = ship.angle + spin * timeModifier;
-    let controlledShip: IShip = {...ship,
+    let newAngle: number = newShip.angle + spin * timeModifier;
+    newShip = {...newShip,
         angle: newAngle,
         spin: spin,
         // update thrust angle
@@ -123,7 +127,8 @@ export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: I
         weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, fireWeapon1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
         explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
     };
-    return ShipCopyToMoved(controlledShip, timeModifier);
+    newShip = newShip.move(newShip, timeModifier);
+    return newShip;
 }
 
 export function ShipCopyToCrashedShip(ship: IShip, Vx: number, Vy: number): IShip {

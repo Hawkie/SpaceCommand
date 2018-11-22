@@ -20,6 +20,7 @@ import { DisplayField, FieldGenMove } from "../../../gamelib/Components/Particle
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { RemoveBullet } from "../../Components/Ship/WeaponComponent";
+import { Wrap } from "../../../gamelib/Actors/Wrap";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -118,6 +119,11 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
     let ship: IShip = ShipCopyToUpdated(timeModifier, state.ship, state.controls);
+    // wrap in this game state only
+    ship = {...ship,
+        x: Wrap(ship.x, 0, Game.assets.width),
+        y: Wrap(ship.y, 0, Game.assets.height)
+    };
     return {...state,
         starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
             return {

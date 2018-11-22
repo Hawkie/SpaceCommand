@@ -13,6 +13,8 @@ import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Game } from "../../Game/Game";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
+import { MoveShip } from "../../Components/Ship/MovementComponent";
 
 export function createLandExplorerGameState(): LandExplorerGameState {
     let surfaceGenerator: ISurfaceGeneration = {
@@ -20,7 +22,8 @@ export function createLandExplorerGameState(): LandExplorerGameState {
         upper: 5,
         lower: -5,
     };
-    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false, false);
+    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false, false,
+        MoveShip);
     let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
     let surface: ISurface = {
         addedLeft: 0,
@@ -55,13 +58,6 @@ export class LandExplorerGameState implements IGameState {
         // this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450, 50));
         // this.guiObjects.push(this.velocityText, this.wind, this.player.explosionController.screenFlash);
 
-        // let shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(() => {
-        //         return {
-        //             location: { x: 0, y: 0 },
-        //             shape: new Shape(this.state.surface.points),
-        //         };
-        //     },
-        //     this.state.ship, this.playerSurfaceCollision.bind(this));
         // let shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model,
         // this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
         // let windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
@@ -85,8 +81,8 @@ export class LandExplorerGameState implements IGameState {
 
         // objects not affected by movement. e.g GUI
         DisplayTitle(ctx, this.state.title);
-        // this.stateObj.views.forEach(x=>x.display(drawingContext));
-        // scene objects
+
+        // move screen to ship location, and draw to screen everything relative from there.
         ctx.save();
         let x: number = this.state.ship.x;
         let y: number = this.state.ship.y;
@@ -104,8 +100,6 @@ export class LandExplorerGameState implements IGameState {
         ctx.zoom(this.zoom, this.zoom);
         DisplayShip(ctx, this.state.ship);
         DisplayLandExplorer(ctx, this.state);
-        // this.stateObj.sceneObjs.forEach(x=>x.display(drawingContext));
-        // this.stateObj.backgroundObjs.forEach(x=>x.display(drawingContext));
         ctx.restore();
     }
 
