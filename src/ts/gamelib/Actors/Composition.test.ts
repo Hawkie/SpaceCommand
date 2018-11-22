@@ -19,7 +19,7 @@ interface IAnimal<T> {
 
 interface IDogBehaviour<T> {
     woofFactor: number;
-    bark: (x: T, action: number) => T;
+    bark: (woofFactor: T, action: number) => T;
 }
 
 interface ICatBehaviour<T> {
