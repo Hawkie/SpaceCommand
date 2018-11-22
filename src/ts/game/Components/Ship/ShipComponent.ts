@@ -46,7 +46,6 @@ export interface IShip {
 export function CreateShip(x: number, y: number,
     gravityStrength: number,
     ball: boolean,
-    wrap: boolean,
     move:(ship: IShip, timeModifier: number) => IShip): IShip {
     let triangleShip: ICoordinate[] = [new Coordinate(0, -4),
         new Coordinate(-2, 2),

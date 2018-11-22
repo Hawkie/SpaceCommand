@@ -13,7 +13,6 @@ import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Game } from "../../Game/Game";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { AccelerateWithForces } from "../../../gamelib/Actors/Accelerator";
 import { MoveShip } from "../../Components/Ship/MovementComponent";
 
 export function createLandExplorerGameState(): LandExplorerGameState {
@@ -22,7 +21,7 @@ export function createLandExplorerGameState(): LandExplorerGameState {
         upper: 5,
         lower: -5,
     };
-    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false, false,
+    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false,
         MoveShip);
     let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
     let surface: ISurface = {

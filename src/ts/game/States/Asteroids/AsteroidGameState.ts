@@ -13,7 +13,6 @@ import { IAsteroidStateStatic, CreateAsteroidGameStatic } from "./AsteroidGameSt
 import { CreateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { CreateShip, IShip } from "../../Components/Ship/ShipComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
-import { UpdateConnection } from "../../../gamelib/Actors/CompositeAccelerator";
 import { MoveAttachedShip } from "../../Components/Ship/MovementComponent";
 
 
@@ -21,7 +20,7 @@ import { MoveAttachedShip } from "../../Components/Ship/MovementComponent";
 export function createGameState(): AsteroidGameState {
     // let spriteField: IGameObject = createSpriteField();
     let asteroidStateStatic: IAsteroidStateStatic = CreateAsteroidGameStatic();
-    let ship: IShip = CreateShip(256, 240, 0, true, true, MoveAttachedShip);
+    let ship: IShip = CreateShip(256, 240, 0, true, MoveAttachedShip);
     let starfield: IParticleField = CreateField(true, 1, 1, 1);
     let state: IAsteroidsState = CreateAsteroidsState(asteroidStateStatic, ship, starfield);
     // let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);

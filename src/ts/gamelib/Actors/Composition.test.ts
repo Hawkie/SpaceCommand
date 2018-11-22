@@ -1,3 +1,6 @@
+
+// this file shows some interesting test cases of object composition
+
 // tslint:disable-next-line:interface-name
 interface Date {
     ConvertToDateFromTS(msg: string): number;
@@ -8,59 +11,61 @@ Date.prototype.ConvertToDateFromTS = function(msg: string): number {
 };
 
 
-// example of object composition (not inheritance)
-interface Ia<T> {
+// example of object composition (no inheritance)
+interface IAnimal<T> {
     name: string;
     a: T;
 }
 
-interface Ib<T1, T> extends Ia<T1> {
-    b: T1;
-    bark: (x: T, y: T) => T;
+interface IDogBehaviour<T> {
+    woofFactor: number;
+    bark: (x: T, action: number) => T;
 }
 
-interface Ic<T1, T> extends Ia<T1> {
-    b: T1;
-    bark: () => T;
+interface ICatBehaviour<T> {
+    cuteFactor: number;
+    meow: (action: number) => T;
 }
 
-function myFunction<T extends number>(x: T, y: T): T { return x + y as T;}
+// composition of Animal and Dog Behaviour
+interface IDog<T> extends IAnimal<T>, IDogBehaviour<T> {}
 
-function myFunction2(): number { return this.a + this.b; }
+// composition of Animal and Cat behaviour
+interface ICat<T> extends IAnimal<T>, ICatBehaviour<T> {}
 
-var myA: Ia<number> = { name: "Ship", a: 3 };
+// a dog function. Example of function not using the this keyword
+function bark<T extends number>(woofFactor: T, action: number): T { return woofFactor + action as T;}
 
-// compose myB to be myA and bark and b
-var myB:Ib<number, number> = {...myA,
-    bark: myFunction,
-    b: 4,
-    // cannot add prop c: 5,
-};
+// one example using this
+function meow(this: ICat<number>, action: number): number { return this.cuteFactor + action; }
 
-var myC:Ib<number, number> = Object.assign({}, myA, {
-    bark: myFunction,
-    b: 14,
-    c: 5,
-    });
+// create a base animal
+var myA: IAnimal<number> = { name: "Fluffy", a: 3 };
 
-var myD:Ic<number, number> = Object.assign({}, myA, {
-    bark: myFunction2,
-    b: 14,
-    c: 5,
-    });
+// create a cat by merging Animal (myA) and some cat behaviour using spread operator
+var myC:ICat<number> = {...myA,
+        meow: meow,
+        cuteFactor: 14,
+        // cannot add random properties with spread operatorn
+    };
 
-test("compositionTest", () => {
+// create a dog by merging Animal (myA) and some bark behaviour using Object assign
+var myD:IDog<number> = Object.assign({}, myA, {
+    bark: bark,
+    woofFactor: 10,
+    c: 5, // can add random properties with Object.assign
+});
+
+
+test("Animal compositionTest", () => {
     expect(myA.a).toBe(3);
 });
-
-test("compositionTest", () => {
-    expect(myB.bark(myB.a, myB.b)).toBe(7);
+test("Cat compositionTest", () => {
+    const ACTION: number = 4;
+    expect(myC.meow(ACTION)).toBe(18);
 });
 
-test("compositionTest", () => {
-    expect(myC.bark(myC.a, myC.b)).toBe(17);
-});
-
-test("compositionTest", () => {
-    expect(myD.bark()).toBe(17);
+test("Dog compositionTest", () => {
+    const ACTION: number = 4;
+    expect(myD.bark(myD.woofFactor, ACTION)).toBe(14);
 });
