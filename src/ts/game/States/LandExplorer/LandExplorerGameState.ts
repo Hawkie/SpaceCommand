@@ -107,7 +107,7 @@ export class LandExplorerGameState implements IGameState {
     }
 
     tests(lastTestModifier: number): void {
-        if (Transforms.hasPoint(this.state.surface.points,
+        if (Transforms.hasPoint(this.state.surface.points.map(p => p),
             { x: 0, y: 0 },
             this.state.ship)) {
                 this.state = StateCopyToPlayerHit(this.state, 0, 0);

@@ -1,8 +1,8 @@
 import { Coordinate } from "../../../../src/ts/gamelib/DataTypes/Coordinate";
 
 export interface IShape {
-    points: Coordinate[];
-    offset: Coordinate;
+    readonly points: ReadonlyArray<Coordinate>;
+    readonly offset: Coordinate;
 }
 
 export class Shape implements IShape {

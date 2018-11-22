@@ -23,8 +23,6 @@ export function createGameState(): AsteroidGameState {
     let ship: IShip = CreateShip(256, 240, 0, true, MoveAttachedShip);
     let starfield: IParticleField = CreateField(true, 1, 1, 1);
     let state: IAsteroidsState = CreateAsteroidsState(asteroidStateStatic, ship, starfield);
-    // let stateObj: IAsteroidStateObject = createAsteroidStateObject(() => state);
-    // get state objects and add asteroid objects
     let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", asteroidStateStatic, state);
     return asteroidState;
 }

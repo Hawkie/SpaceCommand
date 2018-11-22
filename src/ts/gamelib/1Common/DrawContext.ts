@@ -41,15 +41,14 @@ export class DrawContext {
         ctx.stroke();
     }
 
-    drawP(x: number, y:number, points: Coordinate[]): void {
+    drawP(x: number, y:number, points: ReadonlyArray<Coordinate>): void {
         let ctx: CanvasRenderingContext2D = this.ctx;
-        let p:ICoordinate[] = points;
         // iterate thru all points and draw with stroke style
         if (points.length > 0) {
             ctx.beginPath();
             ctx.moveTo(points[0].x + x, points[0].y + y);
-            for (let i:number = 1, len:number = p.length; i < len; i ++) {
-                ctx.lineTo(p[i].x + x, p[i].y + y);
+            for (let i:number = 1, len:number = points.length; i < len; i ++) {
+                ctx.lineTo(points[i].x + x, points[i].y + y);
             }
             ctx.closePath();
             ctx.stroke();

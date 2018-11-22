@@ -18,7 +18,7 @@ export class Transforms {
     }
 
     // rotate the set of coordiantes about the origin.
-    static Rotate(points: Coordinate[], degrees: number): ICoordinate[] {
+    static Rotate(points: ReadonlyArray<Coordinate>, degrees: number): ICoordinate[] {
         let radians: number = degrees / 180 * Math.PI;
         // simplifying computition of 2x2 matrix
         // for more information see slides in part 1
@@ -72,7 +72,7 @@ export class Transforms {
     // accurate collision detection algorithm
     // use shape with a starting position
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    static hasPoint(points: Coordinate[], offset: Coordinate, testPoint: Coordinate): boolean {
+    static hasPoint(points: ReadonlyArray<Coordinate>, offset: Coordinate, testPoint: Coordinate): boolean {
         let c: boolean = false;
         for (let i: number = 0, j: number = points.length - 1; i < points.length; i += 1) {
             let px1: number = points[i].x + offset.x;

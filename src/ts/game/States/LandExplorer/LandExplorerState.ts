@@ -1,7 +1,7 @@
 import { IShip, CreateShip, ShipCopyToCrashedShip, DisplayShip, ShipCopyToUpdated } from "../../Components/Ship/ShipComponent";
-import { ISurfaceGeneration, ISurface, initSurface, DisplaySurface } from "../../Components/SurfaceComponent";
+import { ISurfaceGeneration, ISurface, initSurface, DisplaySurface, addSurface } from "../../Components/SurfaceComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
-import { IAsteroidsControls, InputAsteroidControls } from "../../Components/AsteroidsControlsComponent";
+import { IAsteroidsControls, InputAsteroidControls, CreateControls } from "../../Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { Game } from "../../Game/Game";
@@ -16,18 +16,9 @@ export interface ILandExplorerState {
 }
 
 export function CreateLandExplorer(ship: IShip, starfield: IParticleField, surface: ISurface): ILandExplorerState {
-
     return {
         title: "Space Commander",
-        controls: {
-            left: false,
-            right: false,
-            up: false,
-            fire: false,
-            zoomIn: false,
-            zoomOut: false,
-            exit: false,
-        },
+        controls: CreateControls(),
         ship: ship,
         starField: starfield,
         surface: surface,
@@ -57,7 +48,8 @@ export function Sound(state: ILandExplorerState): ILandExplorerState {
 
 export function StateCopyToUpdate(state: ILandExplorerState, timeModifier: number): ILandExplorerState {
     return {...state,
-        ship: ShipCopyToUpdated(timeModifier, state.ship, state.controls)
+        ship: ShipCopyToUpdated(timeModifier, state.ship, state.controls),
+        surface: addSurface(state.surface, state.ship.x, Game.assets.width, state.surface.surfaceGenerator)
     };
 }
 

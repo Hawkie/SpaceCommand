@@ -10,6 +10,18 @@ export interface IAsteroidsControls {
     readonly exit: boolean;
 }
 
+export function CreateControls(): IAsteroidsControls {
+    return {
+            left: false,
+            right: false,
+            up: false,
+            fire: false,
+            zoomIn: false,
+            zoomOut: false,
+            exit: false,
+    };
+}
+
 export function InputAsteroidControls(keys:number[]): IAsteroidsControls {
     let up: boolean = false;
     let left: boolean = false;
