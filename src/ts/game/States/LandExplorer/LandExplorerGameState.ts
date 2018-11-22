@@ -12,6 +12,7 @@ import { initSurface, ISurface, ISurfaceGeneration } from "../../Components/Surf
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { Game } from "../../Game/Game";
 import { DisplayTitle } from "../../Components/TitleComponent";
+import { Transforms } from "../../../gamelib/Physics/Transforms";
 
 export function createLandExplorerGameState(): LandExplorerGameState {
     let surfaceGenerator: ISurfaceGeneration = {
@@ -48,24 +49,23 @@ export class LandExplorerGameState implements IGameState {
         // this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
         // this.ballObject = LandExplorerState.createBallObject(this.surface);
         // this.sceneObjects.push(this.surface, this.landingPad, this.ballObject,
-        // this.player.chassisObj, this.player.thrustController, this.player.weaponController, this.player.explosionController.field);
 
         // gui Objects
         // this.velocityText = new TextObject("", new Coordinate(325, 50), "monospace", 12);
         // this.wind = LandExplorerState.createWindDirectionIndicator(new Coordinate(450, 50));
         // this.guiObjects.push(this.velocityText, this.wind, this.player.explosionController.screenFlash);
 
-        let shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(() => {
-                return {
-                    location: {x: 0, y: 0},
-                    shape: new Shape(this.state.surface.points),
-                };
-            },
-            this.state.ship, this.playerSurfaceCollision.bind(this));
+        // let shipSurfaceDetector: IInteractor = new ObjectCollisionDetector(() => {
+        //         return {
+        //             location: { x: 0, y: 0 },
+        //             shape: new Shape(this.state.surface.points),
+        //         };
+        //     },
+        //     this.state.ship, this.playerSurfaceCollision.bind(this));
         // let shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model,
         // this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
         // let windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
-        this.interactors = [shipSurfaceDetector];
+        // this.interactors = [shipSurfaceDetector];
         // shipLandingPadDetector, windEffect];
     }
 
@@ -85,7 +85,6 @@ export class LandExplorerGameState implements IGameState {
 
         // objects not affected by movement. e.g GUI
         DisplayTitle(ctx, this.state.title);
-        DisplayShip(ctx, this.state.ship);
         // this.stateObj.views.forEach(x=>x.display(drawingContext));
         // scene objects
         ctx.save();
@@ -93,7 +92,7 @@ export class LandExplorerGameState implements IGameState {
         let y: number = this.state.ship.y;
         if (this.state.controls.zoomIn) {
             this.viewScale = 0.01;
-        } else if (this.state.controls.zoomOut && this.zoom > 1) {
+        } else if (this.state.controls.zoomOut) {
             this.viewScale = -0.01;
         } else {
             this.viewScale = 0;
@@ -103,6 +102,7 @@ export class LandExplorerGameState implements IGameState {
         ctx.translate(Game.assets.width/2 - x + x * (1 - this.zoom),
             Game.assets.height/2 - y + y * (1 - this.zoom));
         ctx.zoom(this.zoom, this.zoom);
+        DisplayShip(ctx, this.state.ship);
         DisplayLandExplorer(ctx, this.state);
         // this.stateObj.sceneObjs.forEach(x=>x.display(drawingContext));
         // this.stateObj.backgroundObjs.forEach(x=>x.display(drawingContext));
@@ -114,7 +114,11 @@ export class LandExplorerGameState implements IGameState {
     }
 
     tests(lastTestModifier: number): void {
-        this.interactors.forEach(interactor => interactor.test(lastTestModifier));
+        if (Transforms.hasPoint(this.state.surface.points,
+            { x: 0, y: 0 },
+            this.state.ship)) {
+                this.state = StateCopyToPlayerHit(this.state, 0, 0);
+        }
     }
 
     // windEffectCallback(lastTestModifier: number, wind: WindModel, controller: SpaceShipController) {
@@ -133,10 +137,6 @@ export class LandExplorerGameState implements IGameState {
     //         this.player.chassisObj.model.physics.velX = 0;
     //     }
     // }
-
-    playerSurfaceCollision(): void {
-         this.state = StateCopyToPlayerHit(this.state, 0, 0);
-     }
 
     returnState(): number {
         let s: number = undefined;

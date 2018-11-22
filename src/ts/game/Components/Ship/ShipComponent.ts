@@ -9,8 +9,6 @@ import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
 import { ShipCopyToMoved } from "./MovementComponent";
-import { MoveWithVelocity } from "../../../gamelib/Actors/Movers";
-import { AccelerateWithForces, ISpeedable } from "../../../gamelib/Actors/Accelerator";
 
 
 export interface IShip {

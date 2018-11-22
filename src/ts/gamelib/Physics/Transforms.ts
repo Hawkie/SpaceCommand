@@ -72,13 +72,13 @@ export class Transforms {
     // accurate collision detection algorithm
     // use shape with a starting position
     // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    static hasPoint(points: Coordinate[], startingLocation: Coordinate, testPoint: Coordinate): boolean {
+    static hasPoint(points: Coordinate[], offset: Coordinate, testPoint: Coordinate): boolean {
         let c: boolean = false;
         for (let i: number = 0, j: number = points.length - 1; i < points.length; i += 1) {
-            let px1: number = points[i].x + startingLocation.x;
-            let px2: number = points[j].x + startingLocation.x;
-            let py1: number = points[i].y + startingLocation.y;
-            let py2: number = points[j].y + startingLocation.y;
+            let px1: number = points[i].x + offset.x;
+            let px2: number = points[j].x + offset.x;
+            let py1: number = points[i].y + offset.y;
+            let py2: number = points[j].y + offset.y;
             if ((py1 > testPoint.y !== py2 > testPoint.y) &&
                 (testPoint.x < (px2 - px1) * (testPoint.y - py1) / (py2 - py1) + px1)
             ) {
