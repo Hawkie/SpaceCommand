@@ -174,7 +174,7 @@ function ShipSubComponents(ship: IShip, timeModifier: number): IShip {
     };
 }
 
-export function ShipCopyToCrashedShip(ship: IShip, Vx: number, Vy: number): IShip {
+export function CrashShip(ship: IShip, Vx: number, Vy: number): IShip {
     return {...ship,
         crashed: true,
         Vx: Vx,

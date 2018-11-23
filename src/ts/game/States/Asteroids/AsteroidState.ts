@@ -1,7 +1,7 @@
 
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { CreateShip, IShip, DisplayShip, ShipCopyToUpdated,
-    ShipCopyToCrashedShip, ShipCopyToRemovedBullet, ShipSounds } from "../../Components/Ship/ShipComponent";
+    CrashShip, ShipCopyToRemovedBullet, ShipSounds } from "../../Components/Ship/ShipComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
@@ -147,7 +147,7 @@ export function UpdateAsteroidsStateHit(state: IAsteroidsState,
 
 export function UpdateAsteroidsStatePlayerHit(state: IAsteroidsState, Vx: number, Vy: number): IAsteroidsState {
     return {...state,
-        ship: ShipCopyToCrashedShip(state.ship, Vx, Vy)
+        ship: CrashShip(state.ship, Vx, Vy)
     };
 }
 

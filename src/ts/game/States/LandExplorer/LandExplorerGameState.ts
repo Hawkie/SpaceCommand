@@ -1,11 +1,7 @@
 ﻿import { DrawContext} from "../../../gamelib/1Common/DrawContext";
 import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
-import { IGameState } from "../../../gamelib/GameState/GameState";
-import { IInteractor, Interactor } from "../../../gamelib/Interactors/Interactor";
 import { CreateLandExplorer, ILandExplorerState, StateCopyToControls,
-    StateCopyToPlayerHit, StateCopyToUpdate, DisplayLandExplorer, Sound } from "./LandExplorerState";
-import { ObjectCollisionDetector } from "../../../gamelib/Interactors/ObjectCollisionDetector";
-import { Shape } from "../../../gamelib/DataTypes/Shape";
+    StateCopyToUpdate, DisplayLandExplorer, LandExplorerSounds, TestPlayerHit } from "./LandExplorerState";
 import { CreateShip, IShip, DisplayShip } from "../../Components/Ship/ShipComponent";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { initSurface, ISurface, ISurfaceGeneration } from "../../Components/SurfaceComponent";
@@ -15,13 +11,39 @@ import { DisplayTitle } from "../../Components/TitleComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { MoveShip } from "../../Components/Ship/MovementComponent";
 import { CreateView, IView, DisplayView, Zoom } from "../../Components/ViewPortComponent";
+import { IGameState } from "../../../gamelib/GameState/GameState";
 
-export interface ILandExplorerGameState extends IGameState {
+export interface ILandExplorerGameState {
+    name: string;
     state: ILandExplorerState;
     view: IView;
 }
 
-export function createLandExplorerGameState(): ILandExplorerGameState {
+export function CreateGameStateLandExplorer(): ILandExplorerGameState {
+    let surfaceGenerator: ISurfaceGeneration = {
+        resolution: 5,
+        upper: 5,
+        lower: -5,
+    };
+    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false,
+        MoveShip);
+    let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
+    let surface: ISurface = {
+        addedLeft: 0,
+        points: points,
+        surfaceGenerator: surfaceGenerator,
+    };
+    let starfield: IParticleField = CreateField(true, 1, 1);
+    let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
+    let view: IView = CreateView(true);
+    return {
+        name: "LanderExplorer",
+        state: state,
+        view: view,
+    };
+}
+
+export function createLandExplorerGameState(): LandExplorerGameState {
     let surfaceGenerator: ISurfaceGeneration = {
         resolution: 5,
         upper: 5,
@@ -42,8 +64,7 @@ export function createLandExplorerGameState(): ILandExplorerGameState {
     return landExplorerState;
 }
 
-export class LandExplorerGameState implements ILandExplorerGameState {
-    interactors: IInteractor[];
+export class LandExplorerGameState implements ILandExplorerGameState, IGameState {
 
     constructor(public name: string,
         public state: ILandExplorerState,
@@ -63,7 +84,6 @@ export class LandExplorerGameState implements ILandExplorerGameState {
         // let shipLandingPadDetector: IInteractor = new ObjectCollisionDetector(this.landingPad.model,
         // this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
         // let windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
-        // this.interactors = [shipSurfaceDetector];
         // shipLandingPadDetector, windEffect];
     }
 
@@ -85,38 +105,14 @@ export class LandExplorerGameState implements ILandExplorerGameState {
         // objects not affected by movement. e.g GUI
         DisplayTitle(ctx, this.state.title);
         DisplayView(ctx, this.view, this.state.ship.x, this.state.ship.y, this.state, {displayState: DisplayLandExplorer});
-
-              // move screen to ship location, and draw to screen everything relative from there.
-        // ctx.save();
-        // let x: number = this.state.ship.x;
-        // let y: number = this.state.ship.y;
-        // if (this.state.controls.zoomIn) {
-        //     this.viewScale = 0.01;
-        // } else if (this.state.controls.zoomOut) {
-        //     this.viewScale = -0.01;
-        // } else {
-        //     this.viewScale = 0;
-        // }
-        // this.zoom *= 1 + this.viewScale;
-        // // drawing origin moves to centre - ship location (when location > centre, origin moves left)
-        // ctx.translate(Game.assets.width/2 - x + x * (1 - this.zoom),
-        // tslint:disable-next-line:comment-format
-        //     Game.assets.height/2 - y + y * (1 - this.zoom));
-        // ctx.zoom(this.zoom, this.zoom);
-        // displayLandExplorer(ctx, this.state);
-        // ctx.restore();
     }
 
     sound(timeModifier: number): void {
-        this.state = Sound(this.state);
+        this.state = LandExplorerSounds(this.state);
     }
 
     tests(lastTestModifier: number): void {
-        if (Transforms.hasPoint(this.state.surface.points.map(p => p),
-            { x: 0, y: 0 },
-            this.state.ship)) {
-                this.state = StateCopyToPlayerHit(this.state, 0, 0);
-        }
+        this.state = TestPlayerHit(this.state);
     }
 
     // windEffectCallback(lastTestModifier: number, wind: WindModel, controller: SpaceShipController) {
@@ -137,11 +133,10 @@ export class LandExplorerGameState implements ILandExplorerGameState {
     // }
 
     returnState(): number {
-        let s: number = undefined;
         if (this.state.controls.exit) {
-            s = 0;
+            return 0; // menu state is id = 0
         }
-        return s;
+        return undefined;
     }
 
     // static createLandingPadObject(surface: SingleGameObject): void {
@@ -203,4 +198,28 @@ export class LandExplorerGameState implements ILandExplorerGameState {
     //     let obj = new SingleGameObject(model, [windGenerator], [viewArrow, viewText]);
     //     return obj;
     // }
+}
+
+export function Update(state: ILandExplorerGameState, timeModifier: number): ILandExplorerGameState {
+    let newState: ILandExplorerState = state.state;
+    newState = StateCopyToUpdate(state.state, timeModifier);
+    newState = LandExplorerSounds(state.state);
+    newState = TestPlayerHit(state.state);
+    return {...state,
+        state: newState,
+        view: Zoom(this.view, this.state.controls.zoomIn, this.state.controls.zoomOut)
+    };
+}
+
+export function Input(state: ILandExplorerGameState, keys: KeyStateProvider): ILandExplorerGameState {
+    return {...state,
+        state: StateCopyToControls(state.state, keys)
+    };
+}
+
+export function Display(ctx: DrawContext, state: ILandExplorerGameState): void {
+    ctx.clear();
+    // objects not affected by movement. e.g GUI
+    DisplayTitle(ctx, state.state.title);
+    DisplayView(ctx, state.view, state.state.ship.x, state.state.ship.y, state.state, {displayState: DisplayLandExplorer});
 }

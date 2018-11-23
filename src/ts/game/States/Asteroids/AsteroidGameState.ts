@@ -78,26 +78,6 @@ export class AsteroidGameState implements IAsteroidsGameState {
     display(ctx: DrawContext): void {
         ctx.clear();
         DisplayView(ctx, this.view, this.state.ship.x, this.state.ship.y,  this.state, { displayState: DisplayAsteroidsState });
-        // ctx.save();
-        // let x: number  = this.state.ship.x;
-        // let y: number = this.state.ship.y;
-        // if (this.state.controls.zoomIn) {
-        //     this.viewScale = 0.01;
-        // } else if (this.state.controls.zoomOut && this.zoom > 1) {
-        //     this.viewScale = -0.01;
-        // } else {
-        //     this.viewScale = 0;
-        // }
-        // this.zoom *= 1 + this.viewScale;
-
-        // ctx.translate(x * (1 - this.zoom), y * (1 - this.zoom));
-        // // move origin to location of ship - location of ship factored by zoom
-        // // if zoom = 1 no change
-        // // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
-        // // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
-        // ctx.zoom(this.zoom, this.zoom);
-        // displayAsteroidsState(ctx, this.state);
-        // ctx.restore();
     }
 
     sound(timeModifier: number): void {
