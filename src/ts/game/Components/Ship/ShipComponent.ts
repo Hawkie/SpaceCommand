@@ -4,7 +4,7 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { IAsteroidsControls } from "../AsteroidsControlsComponent";
-import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
+import { IWeapon, PullTrigger, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
 import { Game } from "../../Game/Game";
@@ -168,7 +168,8 @@ function ShipSubComponents(ship: IShip, timeModifier: number): IShip {
     return {...ship,
         exhaust: ExhaustCopyToUpdated(timeModifier, ship.exhaust,
             ship.forwardThrust>0, ship.x, ship.y, ship.Vx, ship.Vy, ship.angle, ship.forwardThrust),
-        weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, ship.trigger1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
+        weapon1: PullTrigger(timeModifier, ship.weapon1,
+            ship.trigger1, ship.x, ship.y, ship.Vx, ship.Vy, ship.angle, ship.weapon1.bulletVelocity),
         explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
     };
 }

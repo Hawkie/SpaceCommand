@@ -37,9 +37,9 @@ export function RemoveBullet(weapon: IWeapon, bulletIndex: number): IWeapon {
     };
 }
 
-export function WeaponCopyToUpdated(timeModifier: number, weapon: IWeapon,
+export function PullTrigger(timeModifier: number, weapon: IWeapon,
         fireWeaponIntent: boolean,
-        x: number, y: number, angle: number, bulletVelocity: number): IWeapon {
+        x: number, y: number, Vx: number, Vy:number, angle: number, bulletVelocity: number): IWeapon {
     // local varibales
     let reloaded: boolean = false;
     let fired: boolean = false;
@@ -61,8 +61,8 @@ export function WeaponCopyToUpdated(timeModifier: number, weapon: IWeapon,
         let bullet: IParticle = {
             x: x,
             y: y,
-            Vx: velocity.x,
-            Vy: velocity.y,
+            Vx: Vx + velocity.x,
+            Vy: Vy + velocity.y,
             born: now,
             size: 2,
         };

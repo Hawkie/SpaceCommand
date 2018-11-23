@@ -59,12 +59,11 @@ export function addSurface(surface: ISurface,
     if (toAddLeft < 0) {
         // remove first element (bottom point)
         newPoints.shift();
+        var first: Coordinate = newPoints[0];
         for (let l: number = 0; toAddLeft < l; l--) {
-            // toDO change to let
-            var first: Coordinate = surface.points[0];
-            newPoints.unshift(
-                new Coordinate(first.x - inputs.resolution,
-                    first.y + Transforms.random(inputs.lower, inputs.upper)));
+            first = new Coordinate(first.x - inputs.resolution,
+                first.y + Transforms.random(inputs.lower, inputs.upper));
+            newPoints.unshift(first);
             addedLeft++;
         }
         // re add the bottom point
@@ -78,11 +77,11 @@ export function addSurface(surface: ISurface,
     if (toAddRight > 0) {
         // remove last point - bottom of surface shape
         newPoints.pop();
+        var last: Coordinate = newPoints[newPoints.length - 1];
         for (let r: number = 0; toAddRight > r; r++) {
-            // toDO change to let
-            var last: Coordinate = newPoints[newPoints.length - 1];
-            newPoints.push(new Coordinate(last.x + inputs.resolution,
-                 last.y + Transforms.random(inputs.lower,inputs.upper)));
+            last = new Coordinate(last.x + inputs.resolution,
+                last.y + Transforms.random(inputs.lower,inputs.upper));
+            newPoints.push(last);
         }
         // re-add end point at bottom of shape
         newPoints.push(new Coordinate(last.x + 100, 1000));

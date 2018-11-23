@@ -26,8 +26,9 @@ export function CreateLandExplorer(ship: IShip, starfield: IParticleField, surfa
 }
 
 export function DisplayLandExplorer(ctx: DrawContext, state: ILandExplorerState): void {
-        DisplayField(ctx, state.starField.particles);
-        DisplaySurface(ctx, state.surface);
+    DisplayShip(ctx, state.ship);
+    DisplayField(ctx, state.starField.particles);
+    DisplaySurface(ctx, state.surface);
 }
 
 export function Sound(state: ILandExplorerState): ILandExplorerState {

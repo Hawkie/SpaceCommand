@@ -1,19 +1,22 @@
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
+import { Game } from "../Game/Game";
 
 export interface IView {
     zoomSpeed: number;
     viewScale: number;
     zoomLevel: number;
+    followObject: boolean;
 }
 export interface IDisplayBehaviour<TState> {
     displayState: (ctx: DrawContext, state: TState) => void;
 }
 
-export function CreateView(): IView {
+export function CreateView(followObject: boolean): IView {
     return {
         zoomSpeed: 0.01,
         viewScale: 1,
         zoomLevel: 1,
+        followObject: followObject,
     };
 }
 
@@ -38,6 +41,9 @@ export function DisplayView<TState>(ctx:DrawContext, view: IView,
     x: number, y: number, state: TState, d: IDisplayBehaviour<TState>): void {
     ctx.save();
     // move origin to location of ship - location of ship factored by zoom
+    if (view.followObject) {
+        ctx.translate(Game.assets.width/2 - x, Game.assets.height/2 - y);
+    }
     ctx.translate(x * (1 - view.zoomLevel), y * (1 - view.zoomLevel));
     ctx.zoom(view.zoomLevel, view.zoomLevel);
     // displayAsteroidsState(ctx, this.state);

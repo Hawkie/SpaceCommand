@@ -14,8 +14,14 @@ import { Game } from "../../Game/Game";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { MoveShip } from "../../Components/Ship/MovementComponent";
+import { CreateView, IView, DisplayView, Zoom } from "../../Components/ViewPortComponent";
 
-export function createLandExplorerGameState(): LandExplorerGameState {
+export interface ILandExplorerGameState extends IGameState {
+    state: ILandExplorerState;
+    view: IView;
+}
+
+export function createLandExplorerGameState(): ILandExplorerGameState {
     let surfaceGenerator: ISurfaceGeneration = {
         resolution: 5,
         upper: 5,
@@ -31,20 +37,17 @@ export function createLandExplorerGameState(): LandExplorerGameState {
     };
     let starfield: IParticleField = CreateField(true, 1, 1);
     let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
-    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", state);
+    let view: IView = CreateView(true);
+    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", state, view);
     return landExplorerState;
 }
 
-export class LandExplorerGameState implements IGameState {
-
+export class LandExplorerGameState implements ILandExplorerGameState {
     interactors: IInteractor[];
-    viewScale: number;
-    zoom: number;
 
     constructor(public name: string,
-        private state: ILandExplorerState) {
-        this.viewScale = 1;
-        this.zoom = 1;
+        public state: ILandExplorerState,
+        public view: IView) {
 
         // scene objects
         // this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.chassisObj.model.physics);
@@ -69,6 +72,7 @@ export class LandExplorerGameState implements IGameState {
         // this.stateObj.sceneObjs.forEach(x => x.update(lastDrawModifier));
         // this.stateObj.backgroundObjs.forEach(b => b.update(lastDrawModifier));
         this.state = StateCopyToUpdate(this.state, timeModifier);
+        this.view = Zoom(this.view, this.state.controls.zoomIn, this.state.controls.zoomOut);
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
@@ -80,26 +84,27 @@ export class LandExplorerGameState implements IGameState {
 
         // objects not affected by movement. e.g GUI
         DisplayTitle(ctx, this.state.title);
+        DisplayView(ctx, this.view, this.state.ship.x, this.state.ship.y, this.state, {displayState: DisplayLandExplorer});
 
-        // move screen to ship location, and draw to screen everything relative from there.
-        ctx.save();
-        let x: number = this.state.ship.x;
-        let y: number = this.state.ship.y;
-        if (this.state.controls.zoomIn) {
-            this.viewScale = 0.01;
-        } else if (this.state.controls.zoomOut) {
-            this.viewScale = -0.01;
-        } else {
-            this.viewScale = 0;
-        }
-        this.zoom *= 1 + this.viewScale;
-        // drawing origin moves to centre - ship location (when location > centre, origin moves left)
-        ctx.translate(Game.assets.width/2 - x + x * (1 - this.zoom),
-            Game.assets.height/2 - y + y * (1 - this.zoom));
-        ctx.zoom(this.zoom, this.zoom);
-        DisplayShip(ctx, this.state.ship);
-        DisplayLandExplorer(ctx, this.state);
-        ctx.restore();
+              // move screen to ship location, and draw to screen everything relative from there.
+        // ctx.save();
+        // let x: number = this.state.ship.x;
+        // let y: number = this.state.ship.y;
+        // if (this.state.controls.zoomIn) {
+        //     this.viewScale = 0.01;
+        // } else if (this.state.controls.zoomOut) {
+        //     this.viewScale = -0.01;
+        // } else {
+        //     this.viewScale = 0;
+        // }
+        // this.zoom *= 1 + this.viewScale;
+        // // drawing origin moves to centre - ship location (when location > centre, origin moves left)
+        // ctx.translate(Game.assets.width/2 - x + x * (1 - this.zoom),
+        // tslint:disable-next-line:comment-format
+        //     Game.assets.height/2 - y + y * (1 - this.zoom));
+        // ctx.zoom(this.zoom, this.zoom);
+        // displayLandExplorer(ctx, this.state);
+        // ctx.restore();
     }
 
     sound(timeModifier: number): void {
