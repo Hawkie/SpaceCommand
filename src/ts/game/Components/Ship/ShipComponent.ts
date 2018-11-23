@@ -1,21 +1,37 @@
 import { Coordinate, ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
-import { IVector, Vector } from "../../../gamelib/DataTypes/Vector";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DrawPoly } from "../../../gamelib/Views/PolyViews";
 import { IAsteroidsControls } from "../AsteroidsControlsComponent";
 import { IWeapon, WeaponCopyToUpdated, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
+import { Game } from "../../Game/Game";
 
+export interface IPhysics {
+    readonly x: number;
+    readonly y: number;
+    readonly Vx: number;
+    readonly Vy: number;
+    readonly forwardThrust: number;
+    readonly angle: number;
+    readonly spin: number;
+}
+
+export interface IAttached {
+    readonly attached: boolean;
+    readonly xTo: number;
+    readonly yTo: number;
+    readonly angularForce: number;
+}
 
 export interface IShip {
     readonly x: number;
     readonly y: number;
     readonly Vx: number;
     readonly Vy: number;
-    readonly thrust: IVector;
+    readonly forwardThrust: number;
     readonly angle: number;
     readonly spin: number;
     readonly mass: number;
@@ -36,6 +52,7 @@ export interface IShip {
     readonly maxForwardForce: number;
     readonly maxRotationalSpeed: number;
     readonly crashed: boolean;
+    readonly trigger1: boolean;
     readonly weapon1: IWeapon;
     readonly exhaust: IExhaust;
     readonly explosion: IExplosion;
@@ -61,7 +78,7 @@ export function CreateShip(x: number, y: number,
         y: y,
         Vx: 0,
         Vy: 0,
-        thrust: new Vector(0, 0),
+        forwardThrust: 0,
         angle: 0,
         spin: 0,
         mass: 1,
@@ -82,6 +99,7 @@ export function CreateShip(x: number, y: number,
         maxForwardForce: 16,
         maxRotationalSpeed: 64,
         crashed: false,
+        trigger1: false,
         weapon1: CreateWeapon(0.5, 128),
         exhaust: CreateExhaust(),
         explosion: CreateExplosion(),
@@ -97,7 +115,29 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
     DisplayWeapon(ctx, ship.weapon1);
 }
 
+// doesn't change state
+export function ShipSounds(ship: IShip): void {
+    if (ship.crashed) {
+        Game.assets.explosion.playOnce();
+    }
+    if (ship.exhaust.thrustOn) {
+        Game.assets.thrust.play();
+    } else {
+        Game.assets.thrust.pause();
+    }
+    if (ship.weapon1.fired) {
+        Game.assets.gun.replay();
+    }
+}
+
 export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: IAsteroidsControls): IShip {
+    let newShip: IShip = ShipApplyControls(ship, controls);
+    newShip = newShip.move(newShip, timeModifier);
+    newShip = ShipSubComponents(newShip, timeModifier);
+    return newShip;
+}
+
+function ShipApplyControls(ship: IShip, controls: IAsteroidsControls): IShip {
     let newShip: IShip = ship;
     let spin: number = 0;
     let thrust: number = 0;
@@ -116,18 +156,21 @@ export function ShipCopyToUpdated(timeModifier: number, ship: IShip, controls: I
             fireWeapon1 = true;
         }
     }
-    let newAngle: number = newShip.angle + spin * timeModifier;
-    newShip = {...newShip,
-        angle: newAngle,
+    return {...newShip,
         spin: spin,
         // update thrust angle
-        thrust: { angle: newAngle, length: thrust },
-        exhaust: ExhaustCopyToUpdated(timeModifier, ship.exhaust, thrust>0, ship.x, ship.y, ship.Vx, ship.Vy, newAngle, thrust),
-        weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, fireWeapon1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
+        forwardThrust: thrust,
+        trigger1: fireWeapon1,
+    };
+}
+
+function ShipSubComponents(ship: IShip, timeModifier: number): IShip {
+    return {...ship,
+        exhaust: ExhaustCopyToUpdated(timeModifier, ship.exhaust,
+            ship.forwardThrust>0, ship.x, ship.y, ship.Vx, ship.Vy, ship.angle, ship.forwardThrust),
+        weapon1: WeaponCopyToUpdated(timeModifier, ship.weapon1, ship.trigger1, ship.x, ship.y, ship.angle, ship.weapon1.bulletVelocity),
         explosion: UpdateExplosion(timeModifier, ship.explosion, ship.crashed, ship.x, ship.y, ship.Vx, ship.Vy),
     };
-    newShip = newShip.move(newShip, timeModifier);
-    return newShip;
 }
 
 export function ShipCopyToCrashedShip(ship: IShip, Vx: number, Vy: number): IShip {
@@ -143,6 +186,3 @@ export function ShipCopyToRemovedBullet(ship: IShip, bulletIndex: number,): IShi
         weapon1: RemoveBullet(ship.weapon1, bulletIndex),
     };
 }
-
-
-

@@ -6,7 +6,7 @@ import { IShape, Shape } from "../../../gamelib/DataTypes/Shape";
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IAsteroidPoints, IAsteroidStateStatic } from "../../States/Asteroids/AsteroidGameStatic";
-import { RotatePoly, RotateShape } from "../../../gamelib/Actors/Rotators";
+import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { Game } from "../../Game/Game";
 

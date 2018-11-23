@@ -3,32 +3,21 @@ import { ICoordinate } from "../../../../src/ts/gamelib/DataTypes/Coordinate";
 import { IShape } from "../../../../src/ts/gamelib/DataTypes/Shape";
 import { Transforms } from "../../../../src/ts/gamelib/Physics/Transforms";
 
-export interface IPolyRotator {
-    shape: IShape;
+export interface IAngled {
     angle: number;
 }
 
-// todo - use in and out functions
-// export class PolyRotator implements IActor {
-//     private previousAngle: number;
-//     constructor(private getInputs: () => IPolyRotator, private setOut:(out: IShape)=>void) {
-//         this.previousAngle = 0;
-//     }
+export interface IAngledShape extends IAngled {
+    shape: IShape;
+}
 
-//     update(timeModifier: number): void {
-//         let inputs: IPolyRotator = this.getInputs();
-//         if (this.previousAngle !== inputs.angle) {
-//             let rotateAngle: number = inputs.angle - this.previousAngle;
-//             // rotate the difference
-//             let newPoints: ICoordinate[] = Transforms.Rotate(inputs.shape.points, rotateAngle);
-//             let newOffset: ICoordinate = Transforms.Rotate([inputs.shape.offset], rotateAngle).pop();
-//             this.previousAngle = inputs.angle;
-//             this.setOut({points: newPoints, offset: newOffset});
-//         }
-//     }
-// }
+export function RotateAngle<T extends IAngled>(angled: T, spin:number, timeModifier: number): T {
+    return Object.assign({},  angled, {
+        angle: angled.angle + spin * timeModifier,
+    });
+}
 
-export function RotateShape<T extends IPolyRotator>(timeModifier: number, hasShape: T, angularVelocity: number): T {
+export function RotateShape<T extends IAngledShape>(timeModifier: number, hasShape: T, angularVelocity: number): T {
     return Object.assign({}, hasShape, {
         shape: RotatePoly(timeModifier, hasShape.shape, angularVelocity)
     });

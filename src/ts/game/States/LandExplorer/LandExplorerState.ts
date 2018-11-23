@@ -1,4 +1,4 @@
-import { IShip, CreateShip, ShipCopyToCrashedShip, DisplayShip, ShipCopyToUpdated } from "../../Components/Ship/ShipComponent";
+import { IShip, CreateShip, ShipCopyToCrashedShip, DisplayShip, ShipCopyToUpdated, ShipSounds } from "../../Components/Ship/ShipComponent";
 import { ISurfaceGeneration, ISurface, initSurface, DisplaySurface, addSurface } from "../../Components/SurfaceComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { IAsteroidsControls, InputAsteroidControls, CreateControls } from "../../Components/AsteroidsControlsComponent";
@@ -31,17 +31,7 @@ export function DisplayLandExplorer(ctx: DrawContext, state: ILandExplorerState)
 }
 
 export function Sound(state: ILandExplorerState): ILandExplorerState {
-    if (state.ship.crashed) {
-        Game.assets.explosion.playOnce();
-    }
-    if (state.ship.exhaust.thrustOn) {
-        Game.assets.thrust.play();
-    } else {
-        Game.assets.thrust.pause();
-    }
-    if (state.ship.weapon1.fired) {
-        Game.assets.gun.replay();
-    }
+    ShipSounds(state.ship);
     // turn off any sound triggers - need to think about this
     return state;
 }

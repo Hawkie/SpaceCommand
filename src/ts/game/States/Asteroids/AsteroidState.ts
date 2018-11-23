@@ -1,7 +1,7 @@
 
 import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { CreateShip, IShip, DisplayShip, ShipCopyToUpdated,
-    ShipCopyToCrashedShip, ShipCopyToRemovedBullet } from "../../Components/Ship/ShipComponent";
+    ShipCopyToCrashedShip, ShipCopyToRemovedBullet, ShipSounds } from "../../Components/Ship/ShipComponent";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
 import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
@@ -96,19 +96,9 @@ export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall):
 }
 
 export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
-    if (state.ship.crashed) {
-        Game.assets.explosion.playOnce();
-    }
-    if (state.ship.exhaust.thrustOn) {
-        Game.assets.thrust.play();
-    } else {
-        Game.assets.thrust.pause();
-    }
+    ShipSounds(state.ship);
     if (state.asteroids.asteroidHit) {
         Game.assets.blast.replay();
-    }
-    if (state.ship.weapon1.fired) {
-        Game.assets.gun.replay();
     }
     // turn off any sound triggers - need to think about this
     return {...state,

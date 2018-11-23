@@ -14,31 +14,33 @@ import { CreateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { CreateShip, IShip } from "../../Components/Ship/ShipComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { MoveAttachedShip } from "../../Components/Ship/MovementComponent";
+import { CreateView, IView, DisplayView, Zoom } from "../../Components/ViewPortComponent";
 
+export interface IAsteroidsGameState extends IGameState {
+    view: IView;
+    state: IAsteroidsState;
+}
 
-
-export function createGameState(): AsteroidGameState {
+export function createGameState(): IAsteroidsGameState {
     // let spriteField: IGameObject = createSpriteField();
     let asteroidStateStatic: IAsteroidStateStatic = CreateAsteroidGameStatic();
     let ship: IShip = CreateShip(256, 240, 0, true, MoveAttachedShip);
     let starfield: IParticleField = CreateField(true, 1, 1, 1);
     let state: IAsteroidsState = CreateAsteroidsState(asteroidStateStatic, ship, starfield);
-    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", asteroidStateStatic, state);
+    let view: IView = CreateView();
+    let asteroidState: AsteroidGameState = new AsteroidGameState("Asteroids", asteroidStateStatic, state, view);
     return asteroidState;
 }
 
 
-export class AsteroidGameState implements IGameState {
+export class AsteroidGameState implements IAsteroidsGameState {
     interactors: IInteractor[] = [];
-    viewScale: number;
-    zoom: number;
 
     constructor(public readonly name: string,
-        private readonly asteroidStateStatic: IAsteroidStateStatic,
-        private state: IAsteroidsState,
+        readonly asteroidStateStatic: IAsteroidStateStatic,
+        public state: IAsteroidsState,
+        public view: IView,
         ) {
-        this.viewScale = 1;
-        this.zoom = 1;
         let asteroidBulletDetector: IInteractor = new Multi2FieldCollisionDetector(()=>
             this.state.asteroids.asteroids.map((a)=> { return {
                 location: {x: a.x, y: a.y},
@@ -69,31 +71,33 @@ export class AsteroidGameState implements IGameState {
 
     update(timeModifier: number): void {
         this.state = UpdateAsteroidsState(timeModifier, this.state);
+        this.view = Zoom(this.view, this.state.controls.zoomIn, this.state.controls.zoomOut);
     }
 
     // order is important. Like layers on top of each other.
     display(ctx: DrawContext): void {
         ctx.clear();
-        ctx.save();
-        let x: number  = this.state.ship.x;
-        let y: number = this.state.ship.y;
-        if (this.state.controls.zoomIn) {
-            this.viewScale = 0.01;
-        } else if (this.state.controls.zoomOut && this.zoom > 1) {
-            this.viewScale = -0.01;
-        } else {
-            this.viewScale = 0;
-        }
-        this.zoom *= 1 + this.viewScale;
+        DisplayView(ctx, this.view, this.state.ship.x, this.state.ship.y,  this.state, { displayState: DisplayAsteroidsState });
+        // ctx.save();
+        // let x: number  = this.state.ship.x;
+        // let y: number = this.state.ship.y;
+        // if (this.state.controls.zoomIn) {
+        //     this.viewScale = 0.01;
+        // } else if (this.state.controls.zoomOut && this.zoom > 1) {
+        //     this.viewScale = -0.01;
+        // } else {
+        //     this.viewScale = 0;
+        // }
+        // this.zoom *= 1 + this.viewScale;
 
-        ctx.translate(x * (1 - this.zoom), y * (1 - this.zoom));
-        // move origin to location of ship - location of ship factored by zoom
-        // if zoom = 1 no change
-        // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
-        // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
-        ctx.zoom(this.zoom, this.zoom);
-        DisplayAsteroidsState(ctx, this.state);
-        ctx.restore();
+        // ctx.translate(x * (1 - this.zoom), y * (1 - this.zoom));
+        // // move origin to location of ship - location of ship factored by zoom
+        // // if zoom = 1 no change
+        // // if zoom > 1 then drawing origin moves to -ve figures and object coordinates can start off the top left of screen
+        // // if zoom < 1 then drawing origin moves to +ve figires and coordinates offset closer into screen
+        // ctx.zoom(this.zoom, this.zoom);
+        // displayAsteroidsState(ctx, this.state);
+        // ctx.restore();
     }
 
     sound(timeModifier: number): void {

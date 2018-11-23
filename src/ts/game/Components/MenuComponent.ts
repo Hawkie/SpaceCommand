@@ -27,10 +27,10 @@ export function DisplayMenu(ctx: DrawContext, x: number, y: number, menu: IMenu)
     }
 }
 
-export function SoundMenu(menuState: IMenu, music: IAudioObject, change: IAudioObject): IMenu {
+export function SoundMenu(menuState: IMenu, music: IAudioObject, changeSound: IAudioObject): IMenu {
     music.playOnce();
     if (menuState.moved) {
-        change.replay();
+        changeSound.replay();
     }
     return {...menuState,
         moved: false

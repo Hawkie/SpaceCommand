@@ -18,23 +18,8 @@ export interface ISurface {
 }
 
 export function DisplaySurface(ctx: DrawContext, surface: ISurface): void {
-    //     let surface: ISurface = getSurface();
-//     let surfaceExtender: IActor = new SurfaceGenerator2(getFrom, getSurfaceGenerator, getSurface);
     const shape: IShape = { offset: { x: 0, y: 0 }, points: surface.points};
     DrawPolyGraphic(ctx, 0, 0, shape, Game.assets.terrain);
-//         return {
-//             x: 0,
-//             y: 0,
-//             shape: {
-//                 offset: { x: 0, y: 0 },
-//                 points: surface.points,
-//             },
-//             graphic: texture,
-//         };
-//     });
-//     let obj: SingleGameObject = new SingleGameObject([surfaceExtender], [surfaceView]);
-//     return obj;
-// }
 }
 
 export function generatePoint(x: number, yBase: number, lower: number, upper: number): ICoordinate {
@@ -105,7 +90,6 @@ export function addSurface(surface: ISurface,
     return {...surface,
         points: newPoints,
         addedLeft: addedLeft,
-        surfaceGenerator: surface.surfaceGenerator
     };
 }
 
