@@ -37,7 +37,7 @@ export function CreateGameStateMenu(): IStateProcessor<IMenuState> {
     };
 }
 
-export function CreateMenuState(): IMenuState {
+export function CreateMenuState(items: string[]): IMenuState {
     return {
         title: "Menu",
         font: "Arial",
@@ -51,7 +51,7 @@ export function CreateMenuState(): IMenuState {
             moved: false,
             font: "Arial",
             fontSize: 16,
-            menuItems: ["Asteroids", "Lander"],
+            menuItems: items,
         },
         control: {
             up: false,

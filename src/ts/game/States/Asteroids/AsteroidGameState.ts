@@ -32,7 +32,6 @@ export function createGameState(): IAsteroidsGameState {
     return asteroidState;
 }
 
-
 export class AsteroidGameState implements IAsteroidsGameState {
     interactors: IInteractor[] = [];
 
@@ -138,9 +137,24 @@ export class AsteroidGameState implements IAsteroidsGameState {
         }
         return s;
     }
-
 }
 
+export function DisplayAsteroidsGameState(ctx: DrawContext, state: IAsteroidsGameState): void {
+    ctx.clear();
+    DisplayView(ctx, state.view, state.state.ship.x, state.state.ship.y,  state.state, { displayState: DisplayAsteroidsState });
+}
+
+export function SoundsAsteroidsGameState(state: IAsteroidsGameState): IAsteroidsGameState {
+    return {...state,
+        state: SoundAsteroidsState(state.state)
+    };
+}
+
+export function InputAsteroidsGameState(state: IAsteroidsGameState, keys: KeyStateProvider): IAsteroidsGameState {
+    return {...state,
+        state: InputAsteroidsState(state.state, keys)
+    };
+}
 
 export function Update(state: IAsteroidsGameState, timeModifier: number): IAsteroidsGameState {
     let subState: IAsteroidsState = state.state;
