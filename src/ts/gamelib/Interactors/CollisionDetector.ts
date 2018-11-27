@@ -40,25 +40,22 @@ export class Multi2FieldCollisionDetector implements IInteractor {
     }
 }
 
+export interface IDetected {
+    indexAsteroid: number;
+    indexBullet: number;
+}
 
-export function Detector(targets: IShapedLocation[], hitters: ICoordinate[], firstOnly: boolean = false): void {
-    let found: boolean = false;
+export function DetectOne(targets: IShapedLocation[],
+     hitters: ICoordinate[]): IDetected {
     for (let i1: number = targets.length - 1; i1 >= 0; i1--) {
         let target:IShapedLocation = targets[i1];
         for (let i2: number = hitters.length - 1; i2 >= 0; i2--) {
             let hitter:ICoordinate = hitters[i2];
             if (Transforms.hasPoint(target.shape.points, target.location, hitter)) {
-                this.hit(i1, i2);
-                if (firstOnly) {
-                    found = true;
-                    break;
-                }
+                return { indexAsteroid: i1, indexBullet: i2 };
             }
         }
-        // (if firstOnly - game speed optimisation - exit loop)
-        if (found) {
-            break;
-        }
     }
+    return undefined;
 }
 

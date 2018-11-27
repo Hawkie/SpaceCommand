@@ -13,7 +13,6 @@ import { IGameState } from "../../../gamelib/GameState/GameState";
 import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface ILandExplorerGameState {
-    name: string;
     landState: ILandExplorerState;
     view: IView;
 }
@@ -36,33 +35,32 @@ export function CreateGameStateLandExplorer(): ILandExplorerGameState {
     let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
     let view: IView = CreateView(true);
     return {
-        name: "LanderExplorer",
         landState: state,
         view: view,
     };
 }
 
 // for old event loop
-export function createLandExplorerGameState(): LandExplorerGameState {
-    let surfaceGenerator: ISurfaceGeneration = {
-        resolution: 5,
-        upper: 5,
-        lower: -5,
-    };
-    let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
-        MoveShip);
-    let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
-    let surface: ISurface = {
-        addedLeft: 0,
-        points: points,
-        surfaceGenerator: surfaceGenerator,
-    };
-    let starfield: IParticleField = CreateField(true, 1, 1);
-    let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
-    let view: IView = CreateView(true);
-    let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", state, view);
-    return landExplorerState;
-}
+// export function createLandExplorerGameState(): LandExplorerGameState {
+//     let surfaceGenerator: ISurfaceGeneration = {
+//         resolution: 5,
+//         upper: 5,
+//         lower: -5,
+//     };
+//     let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
+//         moveShip);
+//     let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
+//     let surface: ISurface = {
+//         addedLeft: 0,
+//         points: points,
+//         surfaceGenerator: surfaceGenerator,
+//     };
+//     let starfield: IParticleField = CreateField(true, 1, 1);
+//     let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
+//     let view: IView = CreateView(true);
+//     let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", state, view);
+//     return landExplorerState;
+// }
 
 export class LandExplorerGameState implements ILandExplorerGameState, IGameState {
 

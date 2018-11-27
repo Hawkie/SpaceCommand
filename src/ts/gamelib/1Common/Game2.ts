@@ -1,7 +1,6 @@
 import { Canvas } from "../../gamelib/1Common/Canvas";
 import { AsteroidAssets } from "../../game/Assets/assets";
 import { EventLoop2 } from "./EventLoop2";
-import { IState } from "./State";
 import { IStateProcessor } from "./StateProcessor";
 
 
