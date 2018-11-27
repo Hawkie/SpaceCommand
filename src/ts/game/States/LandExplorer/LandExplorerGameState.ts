@@ -1,5 +1,5 @@
 ﻿import { DrawContext} from "../../../gamelib/1Common/DrawContext";
-import { Keys, KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
+import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { CreateLandExplorer, ILandExplorerState, StateCopyToControls,
     StateCopyToUpdate, DisplayLandExplorer, LandExplorerSounds, TestPlayerHit } from "./LandExplorerState";
 import { CreateShip, IShip, DisplayShip } from "../../Components/Ship/ShipComponent";
@@ -40,33 +40,7 @@ export function CreateGameStateLandExplorer(): ILandExplorerGameState {
     };
 }
 
-// for old event loop
-// export function createLandExplorerGameState(): LandExplorerGameState {
-//     let surfaceGenerator: ISurfaceGeneration = {
-//         resolution: 5,
-//         upper: 5,
-//         lower: -5,
-//     };
-//     let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
-//         moveShip);
-//     let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
-//     let surface: ISurface = {
-//         addedLeft: 0,
-//         points: points,
-//         surfaceGenerator: surfaceGenerator,
-//     };
-//     let starfield: IParticleField = CreateField(true, 1, 1);
-//     let state: ILandExplorerState = CreateLandExplorer(ship, starfield, surface);
-//     let view: IView = CreateView(true);
-//     let landExplorerState: LandExplorerGameState = new LandExplorerGameState("Lander", state, view);
-//     return landExplorerState;
-// }
 
-export class LandExplorerGameState implements ILandExplorerGameState, IGameState {
-
-    constructor(public name: string,
-        public landState: ILandExplorerState,
-        public view: IView) {
 
         // scene objects
         // this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
@@ -82,35 +56,7 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
         // this.player.chassisObj.model.physics, this.playerLandingPadCollision.bind(this));
         // let windEffect: IInteractor = new Interactor(this.wind.model, this.player, this.windEffectCallback);
         // shipLandingPadDetector, windEffect];
-    }
 
-    update(timeModifier : number): void {
-        // this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.chassisObj.model.physics.velY));
-        // this.stateObj.sceneObjs.forEach(x => x.update(lastDrawModifier));
-        // this.stateObj.backgroundObjs.forEach(b => b.update(lastDrawModifier));
-        this.landState = StateCopyToUpdate(this.landState, timeModifier);
-        this.view = Zoom(this.view, this.landState.controls.zoomIn, this.landState.controls.zoomOut);
-    }
-
-    input(keys: KeyStateProvider, lastDrawModifier: number): void {
-        this.landState = StateCopyToControls(this.landState, keys);
-    }
-
-    display(ctx : DrawContext): void {
-        ctx.clear();
-
-        // objects not affected by movement. e.g GUI
-        DisplayTitle(ctx, this.landState.title);
-        DisplayView(ctx, this.view, this.landState.ship.x, this.landState.ship.y, this.landState, {displayState: DisplayLandExplorer});
-    }
-
-    sound(timeModifier: number): void {
-        this.landState = LandExplorerSounds(this.landState);
-    }
-
-    tests(lastTestModifier: number): void {
-        this.landState = TestPlayerHit(this.landState);
-    }
 
     // windEffectCallback(lastTestModifier: number, wind: WindModel, controller: SpaceShipController) {
     //     controller.chassisObj.model.physics.velX += wind.physics.value * lastTestModifier;
@@ -128,13 +74,6 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
     //         this.player.chassisObj.model.physics.velX = 0;
     //     }
     // }
-
-    returnState(): number {
-        if (this.landState.controls.exit) {
-            return 0; // menu state is id = 0
-        }
-        return undefined;
-    }
 
     // static createLandingPadObject(surface: SingleGameObject): void {
     //     let placeIndex = Transforms.random(0, 50);
@@ -195,12 +134,11 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
     //     let obj = new SingleGameObject(model, [windGenerator], [viewArrow, viewText]);
     //     return obj;
     // }
-}
 
 export function Update(state: ILandExplorerGameState, timeModifier: number): ILandExplorerGameState {
     let newState: ILandExplorerState = state.landState;
     // combine our three state changes from one update function
-    newState = StateCopyToUpdate(state.landState, timeModifier);
+    newState = StateCopyToUpdate(newState, timeModifier);
     newState = TestPlayerHit(newState);
     return {...state,
         landState: newState,

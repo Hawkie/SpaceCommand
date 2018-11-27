@@ -18,11 +18,9 @@ import { ICoin, CreateCoin, DisplayCoin, CopyCoinWithUpdate } from "../../Compon
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
-import { RemoveBullet } from "../../Components/Ship/WeaponComponent";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { Game2 } from "../../../gamelib/1Common/Game2";
 import { DetectOne, IDetected } from "../../../gamelib/Interactors/CollisionDetector";
-import { ShapeCollisionDetector } from "../../../gamelib/Interactors/ShapeCollisionDetector";
 import { CollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 
 export interface IAsteroidsState {
@@ -114,7 +112,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 }
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
-    let newState: IAsteroidsState = Test(state);
+    let newState: IAsteroidsState = TestBulletHitAsteroid(state);
     newState = TestForAsteroidHitPlayer(newState);
     let ship: IShip = ShipCopyToUpdated(timeModifier, newState.ship, newState.controls);
     // wrap in this game state only
@@ -197,7 +195,7 @@ export function BulletHitAsteroid(state: IAsteroidsState, asteroidIndex: number,
     return UpdateAsteroidsStateHit(state, newAsteroids, score, level, bulletIndex);
 }
 
-export function Test(state: IAsteroidsState): IAsteroidsState {
+export function TestBulletHitAsteroid(state: IAsteroidsState): IAsteroidsState {
     const detected: IDetected = DetectOne(state.asteroids.asteroids.map((a)=> { return {
         location: {x: a.x, y: a.y},
         shape: a.shape,
@@ -235,5 +233,3 @@ export function TestForAsteroidHitPlayer(state: IAsteroidsState): IAsteroidsStat
     }
     return state;
 }
-
-// this.asteroidPlayerHit.bind(this));
