@@ -22,6 +22,8 @@ import { RemoveBullet } from "../../Components/Ship/WeaponComponent";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { Game2 } from "../../../gamelib/1Common/Game2";
 import { DetectOne, IDetected } from "../../../gamelib/Interactors/CollisionDetector";
+import { ShapeCollisionDetector } from "../../../gamelib/Interactors/ShapeCollisionDetector";
+import { CollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -113,6 +115,7 @@ export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
 
 export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsState): IAsteroidsState {
     let newState: IAsteroidsState = Test(state);
+    newState = TestForAsteroidHitPlayer(newState);
     let ship: IShip = ShipCopyToUpdated(timeModifier, newState.ship, newState.controls);
     // wrap in this game state only
     ship = {...ship,
@@ -150,11 +153,7 @@ export function UpdateAsteroidsStateHit(state: IAsteroidsState,
     };
 }
 
-export function AsteroidHitPlayer(state: IAsteroidsState, Vx: number, Vy: number): IAsteroidsState {
-    return {...state,
-        ship: CrashShip(state.ship, Vx, Vy)
-    };
-}
+
 
 export function InputAsteroidsState(state: IAsteroidsState, keys: KeyStateProvider): IAsteroidsState {
     return {...state,
@@ -162,33 +161,40 @@ export function InputAsteroidsState(state: IAsteroidsState, keys: KeyStateProvid
     };
 }
 
+// ---
+
+export function AsteroidHitPlayer(state: IAsteroidsState, Vx: number, Vy: number): IAsteroidsState {
+    return {...state,
+        ship: CrashShip(state.ship, Vx, Vy)
+    };
+}
+
 export function BulletHitAsteroid(state: IAsteroidsState, asteroidIndex: number, bulletIndex: number): IAsteroidsState {
     let a:IAsteroid = state.asteroids.asteroids[asteroidIndex];
-        // remove bullet
-        // this.dataModel.ship.weapon1.bullets.splice(i2, 1);
-        // remove asteroid
-        let score: number = state.score;
-        let level: number = state.level;
-        let newAsteroids: IAsteroid[] = state.asteroids.asteroids.map(a => a);
-        newAsteroids.splice(asteroidIndex, 1);
 
-        // add two smaller asteroids
-        if (a.size > 1) {
-            for (let n:number = 0; n < 2; n++) {
-                let newAsteroid:IAsteroid = CreateAsteroid(asteroidStateStatic.shapes,a.x, a.y, a.Vx, a.Vy, a.size - 1);
-                newAsteroids.push(newAsteroid);
-            }
+    // remove asteroid
+    let score: number = state.score;
+    let level: number = state.level;
+    let newAsteroids: IAsteroid[] = state.asteroids.asteroids.map(a => a);
+    newAsteroids.splice(asteroidIndex, 1);
+
+    // add two smaller asteroids
+    if (a.size > 1) {
+        for (let n:number = 0; n < 2; n++) {
+            let newAsteroid:IAsteroid = CreateAsteroid(asteroidStateStatic.shapes,a.x, a.y, a.Vx, a.Vy, a.size - 1);
+            newAsteroids.push(newAsteroid);
         }
-        score += 10;
+    }
+    score += 10;
 
-        // if all asteroids cleared, create more at next level
-        if (state.asteroids.asteroids.length === 0) {
-            score += 50;
-            level += 1;
-            newAsteroids = CreateAsteroids(asteroidStateStatic, state.level);
-        }
+    // if all asteroids cleared, create more at next level
+    if (state.asteroids.asteroids.length === 0) {
+        score += 50;
+        level += 1;
+        newAsteroids = CreateAsteroids(asteroidStateStatic, state.level);
+    }
 
-        return UpdateAsteroidsStateHit(state, newAsteroids, score, level, bulletIndex);
+    return UpdateAsteroidsStateHit(state, newAsteroids, score, level, bulletIndex);
 }
 
 export function Test(state: IAsteroidsState): IAsteroidsState {
@@ -206,3 +212,28 @@ export function Test(state: IAsteroidsState): IAsteroidsState {
     // no hit
     return state;
 }
+
+export function TestForAsteroidHitPlayer(state: IAsteroidsState): IAsteroidsState {
+    const detected: IDetected = CollisionDetector(
+    state.asteroids.asteroids.map((a)=> { return {
+        location: {
+            x: a.x,
+            y: a.y},
+        shape: a.shape,
+    };}),
+    {
+        location: {
+            x: state.ship.x,
+            y: state.ship.y },
+        shape: state.ship.shape,
+    });
+    if (detected !== undefined) {
+        let a: IAsteroid = state.asteroids.asteroids[detected.indexAsteroid];
+        const Vx: number = a.Vx + Transforms.random(-2, 2);
+        const Vy: number = a.Vy + Transforms.random(-2, 2);
+        return AsteroidHitPlayer(state, Vx, Vy);
+    }
+    return state;
+}
+
+// this.asteroidPlayerHit.bind(this));
