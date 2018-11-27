@@ -7,7 +7,7 @@ import { IAsteroidsControls } from "../AsteroidsControlsComponent";
 import { IWeapon, PullTrigger, DisplayWeapon, CreateWeapon, RemoveBullet } from "./WeaponComponent";
 import { IExhaust, ExhaustCopyToUpdated, DisplayExhaust, CreateExhaust } from "./ThrustComponent";
 import { IExplosion, DisplayExplosion, CreateExplosion, UpdateExplosion } from "./ExplosionComponent";
-import { Game2 } from "../../../gamelib/1Common/Game2";
+import { Game } from "../../../gamelib/1Common/Game";
 
 export interface IPhysics {
     readonly x: number;
@@ -116,15 +116,15 @@ export function DisplayShip(ctx: DrawContext, ship: IShip): void {
 // doesn't change state
 export function ShipSounds(ship: IShip): void {
     if (ship.crashed) {
-        Game2.assets.explosion.playOnce();
+        Game.assets.explosion.playOnce();
     }
     if (ship.exhaust.thrustOn) {
-        Game2.assets.thrust.play();
+        Game.assets.thrust.play();
     } else {
-        Game2.assets.thrust.pause();
+        Game.assets.thrust.pause();
     }
     if (ship.weapon1.fired) {
-        Game2.assets.gun.replay();
+        Game.assets.gun.replay();
     }
 }
 

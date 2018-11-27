@@ -4,7 +4,7 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { DisplayField } from "../../../gamelib/Components/ParticleFieldComponent";
 import { DrawFlash } from "../../../gamelib/Views/ScreenFlashView";
 import { IncreaseCounter, Toggle, AddElapsedTime } from "../../../gamelib/Actors/Helpers/Counter";
-import { Game2 } from "../../../gamelib/1Common/Game2";
+import { Game } from "../../../gamelib/1Common/Game";
 
 export interface IExplosion {
     readonly explosionParticleField: IParticleField;
@@ -43,7 +43,7 @@ export function CreateExplosion(): IExplosion {
 
 export function DisplayExplosion(ctx: DrawContext, explosion: IExplosion, x: number, y: number): void {
     DisplayField(ctx, explosion.explosionParticleField.particles);
-    DrawFlash(ctx, 0, 0, Game2.assets.width, Game2.assets.height, explosion.flash.flashScreenValue);
+    DrawFlash(ctx, 0, 0, Game.assets.width, Game.assets.height, explosion.flash.flashScreenValue);
 }
 
 export function UpdateExplosion(timeModifier: number, explosion: IExplosion,

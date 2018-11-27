@@ -19,7 +19,7 @@ import { DisplayField, FieldGenMove } from "../../../gamelib/Components/Particle
 import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Components/GraphicShipComponent";
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
-import { Game2 } from "../../../gamelib/1Common/Game2";
+import { Game } from "../../../gamelib/1Common/Game";
 import { DetectOne, IDetected } from "../../../gamelib/Interactors/CollisionDetector";
 import { CollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
 
@@ -101,7 +101,7 @@ export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall):
 export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     ShipSounds(state.ship);
     if (state.asteroids.asteroidHit) {
-        Game2.assets.blast.replay();
+        Game.assets.blast.replay();
         // turn off any sound triggers - need to think about this
         return {...state,
             asteroids: {...state.asteroids,
@@ -117,8 +117,8 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
     let ship: IShip = ShipCopyToUpdated(timeModifier, newState.ship, newState.controls);
     // wrap in this game state only
     ship = {...ship,
-        x: Wrap(ship.x, 0, Game2.assets.width),
-        y: Wrap(ship.y, 0, Game2.assets.height)
+        x: Wrap(ship.x, 0, Game.assets.width),
+        y: Wrap(ship.y, 0, Game.assets.height)
     };
     return {...newState,
         starField: FieldGenMove(timeModifier, newState.starField, true, 2, (now: number) => {

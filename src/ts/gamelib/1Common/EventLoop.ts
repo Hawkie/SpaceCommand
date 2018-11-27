@@ -1,16 +1,18 @@
-import { Canvas } from "../../../../src/ts/gamelib/1Common/Canvas";
-import { IGameState } from "../../../../src/ts/gamelib/GameState/GameState";
-import { KeyStateProvider } from "../../../../src/ts/gamelib/1Common/KeyStateProvider";
+import { Canvas } from "./Canvas";
+import { KeyStateProvider } from "./KeyStateProvider";
+import { IStateProcessor } from "./StateProcessor";
 
-export class EventLoop {
 
-    currentState: IGameState;
+export class EventLoop<TState> {
+
+    keyStateProvider: KeyStateProvider;
+
     constructor(private document: Document,
         private window: Window,
         private canvas: Canvas,
-        private states: IGameState[]) {
+        private state: TState,
+        private stateMachine: IStateProcessor<TState>) {
         this.keyStateProvider = new KeyStateProvider(this.document);
-        this.currentState = states[0];
     }
 
     loop(): void {
@@ -18,7 +20,9 @@ export class EventLoop {
         let myLoop: FrameRequestCallback = (time => {
             const delta: number = time - lastTime;
             if (delta < 1000) {
-                this.processOneFrame(delta / 1000);
+                let nextState: TState = this.processOneFrame(this.state, delta / 1000);
+                // one place where we update state
+                this.state = nextState;
             }
             lastTime = time;
             this.window.requestAnimationFrame(myLoop);
@@ -27,20 +31,19 @@ export class EventLoop {
         myLoop(20);
     }
 
-    processOneFrame(delta: number): void {
-        let gs : IGameState = this.currentState;
-        gs.sound(delta);
-        gs.display(this.canvas.context());
-        gs.tests(delta);
-        gs.update(delta);
-        gs.input(this.keyStateProvider, delta);
-        let newState: number = gs.returnState();
-        if (newState !== undefined) {
-            this.currentState = this.states[newState];
+    processOneFrame(state: TState, delta: number): TState {
+        this.stateMachine.display(this.canvas.context(), state);
+        let newState: TState = this.stateMachine.input(state, this.keyStateProvider, delta);
+        newState = this.stateMachine.update(newState, delta);
+        newState = this.stateMachine.sound(newState, delta);
+        let idState: number = this.stateMachine.next(newState);
+        if (idState !== undefined) {
+            return Object.assign({}, newState, {
+                activeState: idState
+            });
         }
+        return newState;
     }
 
-    keyStateProvider: KeyStateProvider;
+
 }
-
-

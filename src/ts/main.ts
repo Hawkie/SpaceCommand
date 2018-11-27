@@ -2,7 +2,7 @@
     SoundMenuState, DisplayMenuState, InputMenuState, UpdateMenuState } from "./game/States/MenuState/MenuState";
 import { CreateGameStateLandExplorer, ILandExplorerGameState,
     Display, Input, Update, Sounds } from "./game/States/LandExplorer/LandExplorerGameState";
-import { Game2 } from "./gamelib/1Common/Game2";
+import { Game } from "./gamelib/1Common/Game";
 import { IStateProcessor } from "./gamelib/1Common/StateProcessor";
 import { IState, createStateMachineProcessor } from "./gamelib/1Common/StateMachine";
 import { CreateState } from "./game/States/CreateStateMachine";
@@ -19,5 +19,5 @@ let testfsm: IStateProcessor<string> = CreateTestStateMachine();
 // static _assets: AsteroidAssets = new AsteroidAssets();
 // static get assets(): AsteroidAssets { return this._assets; }
 
-let game: Game2<IState> = new Game2();
+let game: Game<IState> = new Game();
 game.run(window, document, state, fsm);

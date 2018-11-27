@@ -10,7 +10,7 @@ import { DisplayTitle } from "../../Components/TitleComponent";
 import { MoveShip } from "../../Components/Ship/MovementComponent";
 import { CreateView, IView, DisplayView, Zoom } from "../../Components/ViewPortComponent";
 import { IGameState } from "../../../gamelib/GameState/GameState";
-import { Game2 } from "../../../gamelib/1Common/Game2";
+import { Game } from "../../../gamelib/1Common/Game";
 
 export interface ILandExplorerGameState {
     landState: ILandExplorerState;
@@ -23,9 +23,9 @@ export function CreateGameStateLandExplorer(): ILandExplorerGameState {
         upper: 5,
         lower: -5,
     };
-    let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
+    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false,
         MoveShip);
-    let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
+    let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
     let surface: ISurface = {
         addedLeft: 0,
         points: points,

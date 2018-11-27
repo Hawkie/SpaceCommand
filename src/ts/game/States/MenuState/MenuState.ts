@@ -7,7 +7,7 @@ import { DisplayTitle } from "../../Components/TitleComponent";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { IStateProcessor } from "../../../gamelib/1Common/StateProcessor";
-import { Game2 } from "../../../gamelib/1Common/Game2";
+import { Game } from "../../../gamelib/1Common/Game";
 
 export interface IMenuState {
     readonly title: string;
@@ -97,7 +97,7 @@ export function UpdateMenuState(state:IMenuState, timeModifier: number): IMenuSt
 
 export function SoundMenuState(state: IMenuState): IMenuState {
     return {...state,
-        menu: SoundMenu(state.menu, Game2.assets.timePortal, Game2.assets.blast)
+        menu: SoundMenu(state.menu, Game.assets.timePortal, Game.assets.blast)
     };
 }
 

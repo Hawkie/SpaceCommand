@@ -1,5 +1,5 @@
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { Game2 } from "../../gamelib/1Common/Game2";
+import { Game } from "../../gamelib/1Common/Game";
 
 export interface IView {
     zoomSpeed: number;
@@ -42,7 +42,7 @@ export function DisplayView<TState>(ctx:DrawContext, view: IView,
     ctx.save();
     // move origin to location of ship - location of ship factored by zoom
     if (view.followObject) {
-        ctx.translate(Game2.assets.width/2 - x, Game2.assets.height/2 - y);
+        ctx.translate(Game.assets.width/2 - x, Game.assets.height/2 - y);
     }
     ctx.translate(x * (1 - view.zoomLevel), y * (1 - view.zoomLevel));
     ctx.zoom(view.zoomLevel, view.zoomLevel);
