@@ -16,7 +16,6 @@ export class Game<TState> {
         let canvas: Canvas = new Canvas(Game.assets.width, Game.assets.height, document);
         // let audioContext: AudioContext = new AudioContext();
         let gameloop: EventLoop<TState> = new EventLoop<TState>(document, window, canvas, state, fsm);
-
         gameloop.loop();
     }
 }

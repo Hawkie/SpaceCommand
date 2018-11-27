@@ -1,8 +1,4 @@
-﻿import { CreateMenuState, IMenuState,
-    SoundMenuState, DisplayMenuState, InputMenuState, UpdateMenuState } from "./game/States/MenuState/MenuState";
-import { CreateGameStateLandExplorer, ILandExplorerGameState,
-    Display, Input, Update, Sounds } from "./game/States/LandExplorer/LandExplorerGameState";
-import { Game } from "./gamelib/1Common/Game";
+﻿import { Game } from "./gamelib/1Common/Game";
 import { IStateProcessor } from "./gamelib/1Common/StateProcessor";
 import { IState, createStateMachineProcessor } from "./gamelib/1Common/StateMachine";
 import { CreateState } from "./game/States/CreateStateMachine";
