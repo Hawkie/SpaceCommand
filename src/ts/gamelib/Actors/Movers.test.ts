@@ -14,3 +14,11 @@ test("mover", () => {
     expect(result.x).toBeCloseTo(510);
     expect(result.y).toBeCloseTo(1020);
 });
+
+test("reducerTest", () => {
+    const immutable:ReadonlyArray<string> = ["alice","bob"];
+    let mutable:string[] = immutable.map(b => b);
+    mutable.splice(1,1);
+    expect(immutable.length).toBe(2);
+    expect(mutable.length).toBe(1);
+});

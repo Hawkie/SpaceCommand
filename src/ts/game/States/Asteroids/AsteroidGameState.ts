@@ -140,3 +140,14 @@ export class AsteroidGameState implements IAsteroidsGameState {
     }
 
 }
+
+
+export function Update(state: IAsteroidsGameState, timeModifier: number): IAsteroidsGameState {
+    let subState: IAsteroidsState = state.state;
+    subState = SoundAsteroidsState(subState);
+    subState = UpdateAsteroidsState(timeModifier, subState);
+    return {...state,
+        state: subState,
+        view: state.view = Zoom(state.view, state.state.controls.zoomIn, state.state.controls.zoomOut),
+    };
+}

@@ -4,9 +4,9 @@ import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { IAsteroidsControls, InputAsteroidControls, CreateControls } from "../../Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
-import { Game } from "../../Game/Game";
 import { DisplayField, FieldGenMove } from "../../../gamelib/Components/ParticleFieldComponent";
 import { Transforms } from "../../../gamelib/Physics/Transforms";
+import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface ILandExplorerState {
     readonly title: string;
@@ -43,7 +43,7 @@ export function StateCopyToUpdate(state: ILandExplorerState, timeModifier: numbe
         ship: ShipCopyToUpdated(timeModifier, state.ship, state.controls),
         starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
             return {
-                x: Transforms.random(0, Game.assets.width),
+                x: Transforms.random(0, Game2.assets.width),
                 y: 0,
                 Vx: 0,
                 Vy: Transforms.random(10, 30),
@@ -51,7 +51,7 @@ export function StateCopyToUpdate(state: ILandExplorerState, timeModifier: numbe
                 size: 1,
             };
         }),
-        surface: addSurface(state.surface, state.ship.x, Game.assets.width, state.surface.surfaceGenerator)
+        surface: addSurface(state.surface, state.ship.x, Game2.assets.width, state.surface.surfaceGenerator)
     };
 }
 

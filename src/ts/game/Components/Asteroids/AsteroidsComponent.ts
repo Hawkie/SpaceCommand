@@ -1,7 +1,7 @@
 import { IAsteroid, CreateAsteroidData, DisplayAsteroid, UpdateAsteroid } from "./AsteroidComponent";
 import { IAsteroidStateStatic } from "../../States/Asteroids/AsteroidGameStatic";
 import { DrawContext } from "../../../gamelib/1Common/DrawContext";
-import { Game } from "../../Game/Game";
+import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface IAsteroids {
     readonly asteroids: ReadonlyArray<IAsteroid>;
@@ -18,7 +18,7 @@ export function CreateAsteroids(asteroidStateStatic: IAsteroidStateStatic, level
 }
 
 export function DisplayAsteroids(ctx: DrawContext, asteroids: IAsteroids): void {
-    asteroids.asteroids.forEach((a)=> DisplayAsteroid(ctx, a, Game.assets.terrain));
+    asteroids.asteroids.forEach((a)=> DisplayAsteroid(ctx, a, Game2.assets.terrain));
 }
 
 export function UpdateAsteroids(timeModifier: number, asteroids: IAsteroids): IAsteroids {

@@ -1,8 +1,8 @@
 import { IAnimator, UpdateAnimator, UpdateSprite } from "../../gamelib/Actors/SpriteAnimator";
 import { ISprite, HorizontalSpriteSheet } from "../../gamelib/DataTypes/Sprite";
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { Game } from "../Game/Game";
 import { DrawSpriteAngled } from "../../gamelib/Views/Sprites/SpriteAngledView";
+import { Game2 } from "../../gamelib/1Common/Game2";
 
 
 export interface ICoin {
@@ -40,7 +40,7 @@ export function CreateCoin(x: number, y: number): ICoin {
 
 // move graphic part of sprite to assetsg
 export function DisplayCoin(ctx: DrawContext, coin: ICoin): void {
-    DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game.assets.coinSprite);
+    DrawSpriteAngled(ctx, coin.x, coin.y, coin.angle, coin.sprite, Game2.assets.coinSprite);
 }
 
 export function CopyCoinWithUpdate(timeModifier: number, coin: ICoin): ICoin {

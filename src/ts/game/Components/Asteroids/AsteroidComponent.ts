@@ -8,7 +8,7 @@ import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { IAsteroidPoints, IAsteroidStateStatic } from "../../States/Asteroids/AsteroidGameStatic";
 import { RotateShape } from "../../../gamelib/Actors/Rotators";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
-import { Game } from "../../Game/Game";
+import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface IAsteroid {
     readonly x: number;
@@ -52,11 +52,11 @@ export function CreateAsteroidData(asteroidStateStatic: IAsteroidStateStatic, si
     if (xy === 0) {
         x = Transforms.random(0, boundary);
     } else if (xy === 1) {
-        x = Transforms.random(Game.assets.width - boundary, Game.assets.width);
+        x = Transforms.random(Game2.assets.width - boundary, Game2.assets.width);
     } else if (xy === 2) {
         y = Transforms.random(0, boundary);
     } else if (xy === 3) {
-        y = Transforms.random(Game.assets.height - boundary, Game.assets.height);
+        y = Transforms.random(Game2.assets.height - boundary, Game2.assets.height);
     }
     return CreateAsteroid(asteroidStateStatic.shapes, x,y, 0, 0, size);
 }
@@ -73,8 +73,8 @@ export function UpdateAsteroid(timeModifier: number, asteroid: IAsteroid): IAste
     let moved: IAsteroid = MoveWithVelocity(timeModifier, asteroid, asteroid.Vx, asteroid.Vy);
     let spun: IAsteroid = RotateShape(timeModifier, moved, moved.spin);
     let wrapped: IAsteroid = {...spun,
-        x: Wrap(spun.x, 0, Game.assets.width),
-        y: Wrap(spun.y, 0, Game.assets.height)
+        x: Wrap(spun.x, 0, Game2.assets.width),
+        y: Wrap(spun.y, 0, Game2.assets.height)
     };
     return wrapped;
 }

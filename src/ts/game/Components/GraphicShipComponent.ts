@@ -1,6 +1,6 @@
 import { DrawContext } from "../../gamelib/1Common/DrawContext";
-import { Game } from "../Game/Game";
 import { DrawGraphicAngled } from "../../gamelib/Views/GraphicView";
+import { Game2 } from "../../gamelib/1Common/Game2";
 
 export interface IGraphicShip {
     readonly x: number;
@@ -28,5 +28,5 @@ export function CreateGraphicShip(x: number, y:number): IGraphicShip {
 }
 
 export function DisplayGraphicShip(ctx: DrawContext, graphicShip: IGraphicShip): void {
-    DrawGraphicAngled(ctx, graphicShip.x,graphicShip.y, graphicShip.angle, Game.assets.graphicShip);
+    DrawGraphicAngled(ctx, graphicShip.x,graphicShip.y, graphicShip.angle, Game2.assets.graphicShip);
 }

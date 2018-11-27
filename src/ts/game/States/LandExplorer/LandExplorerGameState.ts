@@ -6,16 +6,15 @@ import { CreateShip, IShip, DisplayShip } from "../../Components/Ship/ShipCompon
 import { ICoordinate } from "../../../gamelib/DataTypes/Coordinate";
 import { initSurface, ISurface, ISurfaceGeneration } from "../../Components/SurfaceComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
-import { Game } from "../../Game/Game";
 import { DisplayTitle } from "../../Components/TitleComponent";
-import { Transforms } from "../../../gamelib/Physics/Transforms";
 import { MoveShip } from "../../Components/Ship/MovementComponent";
 import { CreateView, IView, DisplayView, Zoom } from "../../Components/ViewPortComponent";
 import { IGameState } from "../../../gamelib/GameState/GameState";
+import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface ILandExplorerGameState {
     name: string;
-    state: ILandExplorerState;
+    landState: ILandExplorerState;
     view: IView;
 }
 
@@ -25,9 +24,9 @@ export function CreateGameStateLandExplorer(): ILandExplorerGameState {
         upper: 5,
         lower: -5,
     };
-    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false,
+    let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
         MoveShip);
-    let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
+    let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
     let surface: ISurface = {
         addedLeft: 0,
         points: points,
@@ -38,20 +37,21 @@ export function CreateGameStateLandExplorer(): ILandExplorerGameState {
     let view: IView = CreateView(true);
     return {
         name: "LanderExplorer",
-        state: state,
+        landState: state,
         view: view,
     };
 }
 
+// for old event loop
 export function createLandExplorerGameState(): LandExplorerGameState {
     let surfaceGenerator: ISurfaceGeneration = {
         resolution: 5,
         upper: 5,
         lower: -5,
     };
-    let ship: IShip = CreateShip(Game.assets.width/2, Game.assets.height/2, 10, false,
+    let ship: IShip = CreateShip(Game2.assets.width/2, Game2.assets.height/2, 10, false,
         MoveShip);
-    let points: ICoordinate[] = initSurface(Game.assets.width, surfaceGenerator);
+    let points: ICoordinate[] = initSurface(Game2.assets.width, surfaceGenerator);
     let surface: ISurface = {
         addedLeft: 0,
         points: points,
@@ -67,11 +67,10 @@ export function createLandExplorerGameState(): LandExplorerGameState {
 export class LandExplorerGameState implements ILandExplorerGameState, IGameState {
 
     constructor(public name: string,
-        public state: ILandExplorerState,
+        public landState: ILandExplorerState,
         public view: IView) {
 
         // scene objects
-        // this.surface = LandExplorerState.createPlanetSurfaceObject(new Coordinate(0, 0), player.chassisObj.model.physics);
         // this.landingPad = LandExplorerState.createLandingPadObject(this.surface);
         // this.ballObject = LandExplorerState.createBallObject(this.surface);
         // this.sceneObjects.push(this.surface, this.landingPad, this.ballObject,
@@ -91,28 +90,28 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
         // this.velocityText.model.text = "Velocity: " + Math.abs(Math.round(this.player.chassisObj.model.physics.velY));
         // this.stateObj.sceneObjs.forEach(x => x.update(lastDrawModifier));
         // this.stateObj.backgroundObjs.forEach(b => b.update(lastDrawModifier));
-        this.state = StateCopyToUpdate(this.state, timeModifier);
-        this.view = Zoom(this.view, this.state.controls.zoomIn, this.state.controls.zoomOut);
+        this.landState = StateCopyToUpdate(this.landState, timeModifier);
+        this.view = Zoom(this.view, this.landState.controls.zoomIn, this.landState.controls.zoomOut);
     }
 
     input(keys: KeyStateProvider, lastDrawModifier: number): void {
-        this.state = StateCopyToControls(this.state, keys);
+        this.landState = StateCopyToControls(this.landState, keys);
     }
 
     display(ctx : DrawContext): void {
         ctx.clear();
 
         // objects not affected by movement. e.g GUI
-        DisplayTitle(ctx, this.state.title);
-        DisplayView(ctx, this.view, this.state.ship.x, this.state.ship.y, this.state, {displayState: DisplayLandExplorer});
+        DisplayTitle(ctx, this.landState.title);
+        DisplayView(ctx, this.view, this.landState.ship.x, this.landState.ship.y, this.landState, {displayState: DisplayLandExplorer});
     }
 
     sound(timeModifier: number): void {
-        this.state = LandExplorerSounds(this.state);
+        this.landState = LandExplorerSounds(this.landState);
     }
 
     tests(lastTestModifier: number): void {
-        this.state = TestPlayerHit(this.state);
+        this.landState = TestPlayerHit(this.landState);
     }
 
     // windEffectCallback(lastTestModifier: number, wind: WindModel, controller: SpaceShipController) {
@@ -133,7 +132,7 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
     // }
 
     returnState(): number {
-        if (this.state.controls.exit) {
+        if (this.landState.controls.exit) {
             return 0; // menu state is id = 0
         }
         return undefined;
@@ -201,25 +200,31 @@ export class LandExplorerGameState implements ILandExplorerGameState, IGameState
 }
 
 export function Update(state: ILandExplorerGameState, timeModifier: number): ILandExplorerGameState {
-    let newState: ILandExplorerState = state.state;
-    newState = StateCopyToUpdate(state.state, timeModifier);
-    newState = LandExplorerSounds(state.state);
-    newState = TestPlayerHit(state.state);
+    let newState: ILandExplorerState = state.landState;
+    // combine our three state changes from one update function
+    newState = StateCopyToUpdate(state.landState, timeModifier);
+    newState = TestPlayerHit(newState);
     return {...state,
-        state: newState,
-        view: Zoom(this.view, this.state.controls.zoomIn, this.state.controls.zoomOut)
+        landState: newState,
+        view: Zoom(state.view, state.landState.controls.zoomIn, state.landState.controls.zoomOut)
+    };
+}
+
+export function Sounds(state: ILandExplorerGameState): ILandExplorerGameState {
+    return {...state,
+        landState: LandExplorerSounds(state.landState),
     };
 }
 
 export function Input(state: ILandExplorerGameState, keys: KeyStateProvider): ILandExplorerGameState {
     return {...state,
-        state: StateCopyToControls(state.state, keys)
+        landState: StateCopyToControls(state.landState, keys)
     };
 }
 
 export function Display(ctx: DrawContext, state: ILandExplorerGameState): void {
     ctx.clear();
     // objects not affected by movement. e.g GUI
-    DisplayTitle(ctx, state.state.title);
-    DisplayView(ctx, state.view, state.state.ship.x, state.state.ship.y, state.state, {displayState: DisplayLandExplorer});
+    DisplayTitle(ctx, state.landState.title);
+    DisplayView(ctx, state.view, state.landState.ship.x, state.landState.ship.y, state.landState, {displayState: DisplayLandExplorer});
 }

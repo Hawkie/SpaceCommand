@@ -7,7 +7,6 @@ import { DisplayTitle } from "../../Components/TitleComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { DrawText } from "../../../gamelib/Views/TextView";
 import { DrawNumber } from "../../../gamelib/Views/ValueView";
-import { Game } from "../../Game/Game";
 import { DrawCircle } from "../../../gamelib/Views/CircleView";
 import { DrawLine } from "../../../gamelib/Views/LineView";
 import { IAsteroid, UpdateAsteroid } from "../../Components/Asteroids/AsteroidComponent";
@@ -21,6 +20,7 @@ import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Compo
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { RemoveBullet } from "../../Components/Ship/WeaponComponent";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
+import { Game2 } from "../../../gamelib/1Common/Game2";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -98,7 +98,7 @@ export function DisplayAttachedBall(ctx: DrawContext, ship: IShip, ball: IBall):
 export function SoundAsteroidsState(state: IAsteroidsState): IAsteroidsState {
     ShipSounds(state.ship);
     if (state.asteroids.asteroidHit) {
-        Game.assets.blast.replay();
+        Game2.assets.blast.replay();
     }
     // turn off any sound triggers - need to think about this
     return {...state,
@@ -111,8 +111,8 @@ export function UpdateAsteroidsState(timeModifier: number, state: IAsteroidsStat
     let ship: IShip = ShipCopyToUpdated(timeModifier, state.ship, state.controls);
     // wrap in this game state only
     ship = {...ship,
-        x: Wrap(ship.x, 0, Game.assets.width),
-        y: Wrap(ship.y, 0, Game.assets.height)
+        x: Wrap(ship.x, 0, Game2.assets.width),
+        y: Wrap(ship.y, 0, Game2.assets.height)
     };
     return {...state,
         starField: FieldGenMove(timeModifier, state.starField, true, 2, (now: number) => {
