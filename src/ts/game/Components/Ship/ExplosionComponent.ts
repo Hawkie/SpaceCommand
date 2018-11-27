@@ -52,18 +52,19 @@ export function UpdateExplosion(timeModifier: number, explosion: IExplosion,
     let generate: boolean = false;
     let accumulatedTime: number = 0;
     let flash: boolean = false;
-    let counter: number = 0;
     let e: IExplosion = explosion;
+    let counter: number = e.flashCounter;
     if (crashed) {
-        accumulatedTime = AddElapsedTime(timeModifier, explosion.explosionTime);
+        accumulatedTime = explosion.explosionTime + timeModifier;
         if (accumulatedTime < explosion.explosionDuration) {
             generate = true;
         }
-        counter = IncreaseCounter(e.flashCounter);
+        counter++;
         if (counter <= e.flashRepeat) {
             flash = true;
         }
     }
+    // change of state
     e = {...e,
         explosionTime: accumulatedTime,
         flashCounter: counter,

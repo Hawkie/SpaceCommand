@@ -1,4 +1,4 @@
-export function AddElapsedTime(timeModifier: number, elapsedTime: number, timeCheck: number = undefined): number {
+export function AddElapsedTime(timeModifier: number, elapsedTime: number, timeCheck: number): number {
     let accumulatedTime: number = elapsedTime + timeModifier;
     if (timeCheck !== undefined && accumulatedTime >= timeCheck) {
         accumulatedTime = 0;
@@ -6,10 +6,10 @@ export function AddElapsedTime(timeModifier: number, elapsedTime: number, timeCh
     return accumulatedTime;
 }
 
-export function IncreaseCounter(counter: number, resetWhen: number = undefined, resetTo:number = 0): number {
+export function IncreaseCounter(counter: number, resetWhen: number, resetTo:number = 0): number {
     counter++;
     // check our index is within frame array
-    if (resetWhen !== undefined && counter >= resetWhen) {
+    if (counter >= resetWhen) {
         counter = resetTo;
     }
     return counter;

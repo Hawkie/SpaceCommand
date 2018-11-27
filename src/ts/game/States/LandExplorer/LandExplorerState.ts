@@ -1,5 +1,5 @@
 import { IShip, CreateShip, CrashShip, DisplayShip, ShipCopyToUpdated, ShipSounds } from "../../Components/Ship/ShipComponent";
-import { ISurfaceGeneration, ISurface, initSurface, DisplaySurface, addSurface } from "../../Components/SurfaceComponent";
+import { ISurface, initSurface, DisplaySurface, addSurface } from "../../Components/SurfaceComponent";
 import { IParticleField, CreateField } from "../../Components/FieldComponent";
 import { IAsteroidsControls, InputAsteroidControls, CreateControls } from "../../Components/AsteroidsControlsComponent";
 import { KeyStateProvider } from "../../../gamelib/1Common/KeyStateProvider";
