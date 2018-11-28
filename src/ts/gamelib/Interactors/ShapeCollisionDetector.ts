@@ -18,12 +18,13 @@ export interface IDetected {
 
 export function ShapesCollisionDetector(targets: IShapedLocation[],
      hitters: ICoordinate[]): IDetected {
-    for (let i1: number = targets.length - 1; i1 >= 0; i1--) {
-        const target:IShapedLocation = targets[i1];
-        const i2: number = ShapeCollisionDetector(target, hitters);
-        if (i2 !== -1) {
-            return { indexShape: i1, indexHitter: i2 };
-        }
+    let i2: number = -1;
+    const i1: number = targets.findIndex(t => {
+        i2 = ShapeCollisionDetector(t, hitters);
+        return i2 !== -1;
+    });
+    if (i1 !== -1) {
+        return { indexShape: i1, indexHitter: i2 };
     }
     return undefined;
 }

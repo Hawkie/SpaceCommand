@@ -18,7 +18,7 @@ export function ArrayToPoints(array: number[]): Coordinate[] {
 }
 
 // rotate the set of coordiantes about the origin.
-export function Rotate(points: ReadonlyArray<Coordinate>, degrees: number): ICoordinate[] {
+export function RotateCoordinates(points: ReadonlyArray<Coordinate>, degrees: number): ICoordinate[] {
     let radians: number = degrees / 180 * Math.PI;
     // simplifying computition of 2x2 matrix
     // for more information see slides in part 1

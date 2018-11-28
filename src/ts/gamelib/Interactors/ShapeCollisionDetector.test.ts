@@ -67,6 +67,13 @@ test("ShapesCollision_WithOutCollision_ExpectsUndefined", ()=> {
 test("ShapesCollision_WithCollision_ExpectsNumber", ()=> {
     const items:ICoordinate[] = [{x:2,y:2}, {x:11,y:11}, {x:51,y:51}];
     const result: IDetected = ShapesCollisionDetector([squareOrigin, square5050], items);
+    expect(result.indexShape).toBe(0);
+    expect(result.indexHitter).toBe(0);
+});
+
+test("ShapesCollision_WithCollision_ExpectsNumber", ()=> {
+    const items:ICoordinate[] = [{x:-1,y:-1}, {x:11,y:11}, {x:51,y:51}];
+    const result: IDetected = ShapesCollisionDetector([squareOrigin, square5050], items);
     expect(result.indexShape).toBe(1);
     expect(result.indexHitter).toBe(2);
 });

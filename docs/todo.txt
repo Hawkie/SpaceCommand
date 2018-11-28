@@ -3,14 +3,15 @@
 * Change structure to functional components (remove game objects)
 ** differentiate state/props
 ** add previous state
-** explosion
-*** flash
-*** timers
+* improve general timer / for sound too
+* Abstract the state transition object (extract logic out of event loop)
 
-** remove all game objects
+Bugs
+* Fix crash sound (if played once on one sceen it doesn't play on other)
+* flash - fix origin of flash on screen in land explorer
+* rotating ball dynamics incorrect when wrap around screen
 
 * Reinstate other states
-** Land Explorer
 ** Duel
 
 * Add space explorer state
@@ -38,6 +39,7 @@ done - initialise sound problem - with asset
 done - remove sound that doen't seem to work on a phone safari browser?
 done - explosion age particles
 done - graphic ship
+done - remove all game objects
 
 
 
