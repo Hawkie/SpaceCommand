@@ -14,7 +14,7 @@ Date.prototype.ConvertToDateFromTS = function(msg: string): number {
 // example of object composition (no inheritance)
 interface IAnimal<T> {
     name: string;
-    a: T;
+    legs: T;
 }
 
 interface IDogBehaviour<T> {
@@ -40,10 +40,11 @@ function bark<T extends number>(woofFactor: T, action: number): T { return woofF
 function meow(this: ICat<number>, action: number): number { return this.cuteFactor + action; }
 
 // create a base animal
-var myA: IAnimal<number> = { name: "Fluffy", a: 3 };
+var myA: IAnimal<number> = { name: "Blobby", legs: 4 };
 
 // create a cat by merging Animal (myA) and some cat behaviour using spread operator
 var myC:ICat<number> = {...myA,
+        name: "Fluffy",
         meow: meow,
         cuteFactor: 14,
         // cannot add random properties with spread operatorn
@@ -51,6 +52,7 @@ var myC:ICat<number> = {...myA,
 
 // create a dog by merging Animal (myA) and some bark behaviour using Object assign
 var myD:IDog<number> = Object.assign({}, myA, {
+    name: "Wolfy",
     bark: bark,
     woofFactor: 10,
     c: 5, // can add random properties with Object.assign
@@ -58,7 +60,7 @@ var myD:IDog<number> = Object.assign({}, myA, {
 
 
 test("Animal compositionTest", () => {
-    expect(myA.a).toBe(3);
+    expect(myA.legs).toBe(4);
 });
 test("Cat compositionTest", () => {
     const ACTION: number = 4;

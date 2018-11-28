@@ -19,7 +19,7 @@
 
 * Create randomising planet - Search for life
 * generalize gravity for ship
-* improve asteroid-ship collision detections (shape-shape)
+* improve asteroid-ship and surface-ship collision detections (shape-shape)
 * the space explosion dispersal - so its evenly spread - not upwards as in ground explosion.
 * put all helper functions in one place - 
 * help on a menu item

@@ -20,8 +20,8 @@ import { IGraphicShip, CreateGraphicShip, DisplayGraphicShip } from "../../Compo
 import { IAsteroids, CreateAsteroids, DisplayAsteroids, UpdateAsteroids } from "../../Components/Asteroids/AsteroidsComponent";
 import { Wrap } from "../../../gamelib/Actors/Wrap";
 import { Game } from "../../../gamelib/1Common/Game";
-import { DetectOne, IDetected } from "../../../gamelib/Interactors/CollisionDetector";
 import { CollisionDetector } from "../../../gamelib/Interactors/Multi2ShapeCollisionDetector";
+import { IDetected, ShapesCollisionDetector } from "../../../gamelib/Interactors/ShapeCollisionDetector";
 
 export interface IAsteroidsState {
     readonly controls: IAsteroidsControls;
@@ -196,7 +196,7 @@ export function BulletHitAsteroid(state: IAsteroidsState, asteroidIndex: number,
 }
 
 export function TestBulletHitAsteroid(state: IAsteroidsState): IAsteroidsState {
-    const detected: IDetected = DetectOne(state.asteroids.asteroids.map((a)=> { return {
+    const detected: IDetected = ShapesCollisionDetector(state.asteroids.asteroids.map((a)=> { return {
         location: {x: a.x, y: a.y},
         shape: a.shape,
     };}),
@@ -205,7 +205,7 @@ export function TestBulletHitAsteroid(state: IAsteroidsState): IAsteroidsState {
         y: b.y,
     };}));
     if (detected !== undefined) {
-        return BulletHitAsteroid(state, detected.indexAsteroid, detected.indexBullet);
+        return BulletHitAsteroid(state, detected.indexShape, detected.indexHitter);
     }
     // no hit
     return state;
@@ -226,7 +226,7 @@ export function TestForAsteroidHitPlayer(state: IAsteroidsState): IAsteroidsStat
         shape: state.ship.shape,
     });
     if (detected !== undefined) {
-        let a: IAsteroid = state.asteroids.asteroids[detected.indexAsteroid];
+        let a: IAsteroid = state.asteroids.asteroids[detected.indexShape];
         const Vx: number = a.Vx + Transforms.random(-2, 2);
         const Vy: number = a.Vy + Transforms.random(-2, 2);
         return AsteroidHitPlayer(state, Vx, Vy);

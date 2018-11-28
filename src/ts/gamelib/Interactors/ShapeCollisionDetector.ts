@@ -1,26 +1,29 @@
-import { IInteractor } from "../../../ts/gamelib/Interactors/Interactor";
 import { ICoordinate } from "../../../ts/gamelib/DataTypes/Coordinate";
 import { Transforms } from "../../../ts/gamelib/Physics/Transforms";
-import { IShapedLocation } from "./CollisionDetector";
-export class ShapeCollisionDetector implements IInteractor {
-    constructor(private getModel: () => IShapedLocation,
-    private points2: () => ICoordinate[],
-    private hit: (i2: number, model2s: ICoordinate[]) => void,
-    private searchFirstHitOnly: boolean = true) {
-    }
-    test(lastTestModifier: number): void {
-        let found: boolean = false;
-        let target: IShapedLocation = this.getModel();
-        let hitters: ICoordinate[] = this.points2();
-        for (let i2: number = hitters.length - 1; i2 >= 0; i2--) {
-            let hitter: ICoordinate = hitters[i2];
-            if (Transforms.hasPoint(target.shape.points, target.location, hitter)) {
-                this.hit(i2, hitters);
-                if (this.searchFirstHitOnly) {
-                    found = true;
-                    break;
-                }
-            }
+import { IShape } from "../DataTypes/Shape";
+
+export interface IShapedLocation {
+    location: ICoordinate;
+    shape: IShape;
+}
+
+export function ShapeCollisionDetector(target: IShapedLocation, hitters: ICoordinate[]): number {
+    return hitters.findIndex(h => Transforms.hasPoint(target.shape.points, target.location, h));
+}
+
+export interface IDetected {
+    indexShape: number;
+    indexHitter: number;
+}
+
+export function ShapesCollisionDetector(targets: IShapedLocation[],
+     hitters: ICoordinate[]): IDetected {
+    for (let i1: number = targets.length - 1; i1 >= 0; i1--) {
+        const target:IShapedLocation = targets[i1];
+        const i2: number = ShapeCollisionDetector(target, hitters);
+        if (i2 !== -1) {
+            return { indexShape: i1, indexHitter: i2 };
         }
     }
+    return undefined;
 }
