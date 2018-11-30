@@ -18,9 +18,9 @@ import { KeyStateProvider } from "./KeyStateProvider";
 // }
 
 export interface IState {
-    activeState: number;
-    states: ReadonlyArray<any>;
-    behaviours: ReadonlyArray<any>;
+    readonly activeState: number;
+    readonly states: ReadonlyArray<any>;
+    readonly behaviours: ReadonlyArray<any>;
 }
 
 
